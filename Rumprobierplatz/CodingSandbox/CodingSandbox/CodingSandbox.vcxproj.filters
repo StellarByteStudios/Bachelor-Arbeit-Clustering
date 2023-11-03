@@ -21,10 +21,19 @@
     <ClCompile Include="Printer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Reader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Printer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Reader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Testfile.txt" />
   </ItemGroup>
 </Project>

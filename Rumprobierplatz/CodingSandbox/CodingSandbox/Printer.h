@@ -24,10 +24,20 @@ public:
 	* this Method was called in this Instance
 	* of the Object
 	*
-	* @param msg The Message given as const char*
-	* or String will be printed with newline
+	* @param msg: The Message given as const char* is printed with counter
+	* 
 	* @return void
 	*/
-	void printWithPrintfnl(const char*);
+	void printWithCounter(const char*);
+
+	/* Printer Method
+	* Simply Prints given String with a
+	* new Line
+	*
+	* @param msg: The Message given as const char* is printed with counter
+	*
+	* @return void
+	*/
+	void printnl(const char*);
 };
 
