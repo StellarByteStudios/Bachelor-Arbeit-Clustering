@@ -1,11 +1,9 @@
-// ClusterAlgorithemBA.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
-//
-
 #include <iostream>
 #include <filesystem>
-#include <sstream>
+//#include <sstream>
 #include "Printer.h"
-#include "Reader.h"
+//#include "Reader.h"
+#include "BetterReader.h"
 
 
 
@@ -14,24 +12,25 @@ int main()
     std::cout << "Hello World!\n";
     std::cout << "Current path is " << std::filesystem::current_path() << '\n';
 
-    const char* fileName = "Testfile.txt";
+    const char* fileName = "CodingSandbox.cpp";
 
-    std::stringstream pathStream;
+    //std::stringstream pathStream;
 
-    pathStream << std::filesystem::current_path() << fileName;
+    //pathStream << std::filesystem::current_path() << fileName;
 
     //std::cout << "Current path is " << std::filesystem::current_path() << '\n';
     //std::cout << fileStringStream.str() << endl;;
 
-    const char* path;
+    //const char* path;
 
     Printer* printer = new Printer();
-    Reader* reader = new Reader(fileName);
+    //Reader* reader = new Reader(fileName);
+    BetterReader* reader = new BetterReader(fileName);
 
     printer->printnl("Printing via Printer");
     printer->printnl(fileName);
 
-    const char* fileInput = reader->readFile();
+    char* fileInput = reader->readFile();
 
     printer->printnl(fileInput);
 
@@ -46,7 +45,8 @@ int main()
     */
     delete printer;
     delete reader;
+    //delete fileInput;
 
-    std::cout << "End Programm" << endl;
+   std::cout << "End Programm" << std::endl;
 
 }

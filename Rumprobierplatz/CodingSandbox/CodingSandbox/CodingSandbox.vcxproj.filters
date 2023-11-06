@@ -24,12 +24,18 @@
     <ClCompile Include="Reader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="BetterReader.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Printer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Reader.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="BetterReader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
