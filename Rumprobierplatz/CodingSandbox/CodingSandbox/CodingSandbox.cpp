@@ -43,8 +43,8 @@ int main()
     printer->printWithCounter("Printing again");
     printer->printWithCounter("Printing again");
     */
-    delete printer;
-    delete reader;
+    //delete printer;
+    //delete reader;
     //delete fileInput;
 
    std::cout << "End Programm" << std::endl;
