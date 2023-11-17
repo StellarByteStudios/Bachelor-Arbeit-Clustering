@@ -2,7 +2,13 @@
 
 #include <string>
 
-class EuclidPoint
+enum Pointcolor
+{
+	RED,
+	BLUE
+};
+
+class ColoredPoint
 {
 private:
 	// Coordinates of the Point (Pointer because variable dimensions)
@@ -11,15 +17,19 @@ private:
 	// Dimensionality of the Point
 	int dim;
 
+	// Color of the Point
+	Pointcolor color;
+
+
 public:
 	/* Konstructor
 	*/
-	EuclidPoint(int, double[]);
+	ColoredPoint(int, double[], Pointcolor);
 
 	/* Destructor
 	* Prints death Message
 	*/
-	~EuclidPoint();
+	~ColoredPoint();
 
 
 	/* Distance-Method
@@ -30,7 +40,7 @@ public:
 	*
 	* @return relative distance
 	*/
-	double distTo(EuclidPoint);
+	double distTo(ColoredPoint);
 
 	/* ToString-Method
 	* Constructs a String representive of calling Point
@@ -40,11 +50,18 @@ public:
 	*/
 	char* toString();
 
-	/* ToString-Method
+	/* Info-Method
 	* Simply returns the size of the Point
 	*
 	* @return dimensions
 	*/
 	int getDim();
+
+	/* Info-Method
+	* Simply returns the color of the Point
+	*
+	* @return color
+	*/
+	Pointcolor getColor();
 };
 

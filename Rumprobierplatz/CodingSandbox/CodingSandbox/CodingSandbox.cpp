@@ -4,6 +4,7 @@
 #include "Printer.h"
 //#include "Reader.h"
 #include "BetterReader.h"
+#include "ColoredPoint.h"
 
 
 
@@ -13,6 +14,10 @@ int main()
     std::cout << "Current path is " << std::filesystem::current_path() << '\n';
 
     const char* fileName = "CodingSandbox.cpp";
+
+
+    
+
 
     //std::stringstream pathStream;
 
@@ -27,12 +32,24 @@ int main()
     //Reader* reader = new Reader(fileName);
     BetterReader* reader = new BetterReader(fileName);
 
+
+    // Knoten erzeugen und Ausgeben
+    double coords[] = { 1.0, 2.0, 3.0 };
+    std::cout << coords[0] << std::endl;
+    std::cout << coords[1] << std::endl;
+    std::cout << coords[2] << std::endl;
+    ColoredPoint* point = new ColoredPoint(3, coords, RED);
+
+    printer->printnl(point->toString());
+
+
+
     printer->printnl("Printing via Printer");
     printer->printnl(fileName);
 
-    char* fileInput = reader->readFile();
+    //char* fileInput = reader->readFile();
 
-    printer->printnl(fileInput);
+    //printer->printnl(fileInput);
 
     
     /*
