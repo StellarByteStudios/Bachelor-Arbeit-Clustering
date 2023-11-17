@@ -130,13 +130,13 @@
   <ItemGroup>
     <ClCompile Include="BetterReader.cpp" />
     <ClCompile Include="CodingSandbox.cpp" />
-    <ClCompile Include="EuclidPoint.cpp" />
+    <ClCompile Include="ColoredPoint.cpp" />
     <ClCompile Include="Printer.cpp" />
     <ClCompile Include="Reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BetterReader.h" />
-    <ClInclude Include="EuclidPoint.h" />
+    <ClInclude Include="ColoredPoint.h" />
     <ClInclude Include="Printer.h" />
     <ClInclude Include="Reader.h" />
   </ItemGroup>

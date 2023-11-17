@@ -27,7 +27,7 @@
     <ClCompile Include="BetterReader.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="EuclidPoint.cpp">
+    <ClCompile Include="ColoredPoint.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="BetterReader.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="EuclidPoint.h">
+    <ClInclude Include="ColoredPoint.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
