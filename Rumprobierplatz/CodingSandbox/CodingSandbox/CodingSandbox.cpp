@@ -47,6 +47,6 @@ int main()
     //delete reader;
     //delete fileInput;
 
-   std::cout << "End Programm" << std::endl;
+   std::cout << "End Programm" << std::endl; 
 
 }
