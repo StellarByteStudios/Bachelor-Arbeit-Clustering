@@ -2,6 +2,8 @@
 
 #include <string>
 
+using namespace std;
+
 enum Pointcolor
 {
 	RED,
@@ -46,9 +48,9 @@ public:
 	* Constructs a String representive of calling Point
 	* and returns it as char*
 	*
-	* @return char Pointer to Stringrepresentation of Point
+	* @return string to Stringrepresentation of Point
 	*/
-	char* toString();
+	string toString();
 
 	/* Info-Method
 	* Simply returns the size of the Point

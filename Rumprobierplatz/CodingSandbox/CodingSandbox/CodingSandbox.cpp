@@ -40,7 +40,7 @@ int main()
     std::cout << coords[2] << std::endl;
     ColoredPoint* point = new ColoredPoint(3, coords, RED);
 
-    printer->printnl(point->toString());
+    printer->printnl(point->toString().c_str());
 
 
 

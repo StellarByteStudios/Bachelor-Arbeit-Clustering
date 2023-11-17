@@ -1,4 +1,4 @@
-#include "EuclidPoint.h";
+#include "ColoredPoint.h";
 #include <sstream>  // stringstream (String builder)
 
 ColoredPoint::ColoredPoint(int dimensions, double coords[], Pointcolor color)
@@ -32,7 +32,7 @@ double ColoredPoint::distTo(ColoredPoint)
 	return 0.0;
 }
 
-char* ColoredPoint::toString()
+string ColoredPoint::toString()
 {
 	std::stringstream stringStream;
 	stringStream << "Dims: " << this->dim << "; Color: ";
@@ -55,9 +55,9 @@ char* ColoredPoint::toString()
 	}
 	stringStream << this->coordinates[dim-1];
 	stringStream << "]";
-	char* string = new char[strlen(stringStream.str().c_str())];
-	strcpy_s(string, strlen(string), stringStream.str().c_str());
-	return string;
+	//char* string = new char[strlen(stringStream.str().c_str())];
+	//strcpy_s(string, strlen(string), stringStream.str().c_str());
+	return stringStream.str();
 }
 
 int ColoredPoint::getDim()

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 class BetterReader
 {
 private:
@@ -23,6 +26,6 @@ public:
 	*
 	* @return char* of File-content
 	*/
-	char* readFile();
+	string readFile();
 };
 

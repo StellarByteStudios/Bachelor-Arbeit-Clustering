@@ -19,7 +19,7 @@ BetterReader::~BetterReader()
 	std::cout << "Reader is deleted" << std::endl;
 }
 
-char* BetterReader::readFile()
+string BetterReader::readFile()
 {
     // File aufmachen
     ifstream* file = new ifstream(this->path, ios::in);
@@ -54,7 +54,7 @@ char* BetterReader::readFile()
     }
 
     // Neuen groß genugen String erzeugen
-    char* page = new char[strlen(fileStringStream.str().c_str())];
-    strcpy_s(page, strlen(page), fileStringStream.str().c_str());
-	return page;
+    //char* page = new char[strlen(fileStringStream.str().c_str())];
+    //strcpy_s(page, strlen(page), fileStringStream.str().c_str());
+	return fileStringStream.str();
 }
