@@ -2,6 +2,8 @@
 
 #include <string>
 
+using namespace std;
+
 class Printer
 {
 private:
@@ -34,10 +36,31 @@ public:
 	* Simply Prints given String with a
 	* new Line
 	*
-	* @param msg: The Message given as const char* is printed with counter
+	* @param msg: The Message given as const char* is printed with new Line
 	*
 	* @return void
 	*/
 	void printnl(const char*);
+
+	/* Printer Method - string
+	* Prints given String and says how often
+	* this Method was called in this Instance
+	* of the Object
+	*
+	* @param msg: The Message given as std::string is printed with counter
+	*
+	* @return void
+	*/
+	void printWithCounter(string);
+
+	/* Printer Method - string
+	* Simply Prints given String with a
+	* new Line
+	*
+	* @param msg: The Message given as std::string is printed with new Line
+	*
+	* @return void
+	*/
+	void printnl(string);
 };
 

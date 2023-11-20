@@ -1,5 +1,6 @@
 #include <iostream>
 #include <filesystem>
+#include <string>
 //#include <sstream>
 #include "Printer.h"
 //#include "Reader.h"
@@ -13,7 +14,7 @@ int main()
     std::cout << "Hello World!\n";
     std::cout << "Current path is " << std::filesystem::current_path() << '\n';
 
-    const char* fileName = "CodingSandbox.cpp";
+    std::string fileName = "Points.txt";
 
 
     

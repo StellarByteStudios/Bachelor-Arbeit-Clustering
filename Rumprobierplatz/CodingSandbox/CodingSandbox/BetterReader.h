@@ -2,17 +2,19 @@
 
 #include <string>
 
+using namespace std;
+
 class BetterReader
 {
 private:
-	const char* path;
+	string path;
 	//const char* readLine(ifstream*);
 
 public:
 	/* Konstruktor
 	* @param path: Path of File to be read
 	*/
-	BetterReader(const char* path);
+	BetterReader(string path);
 
 	/* Destruktor
 	* Prints death Message

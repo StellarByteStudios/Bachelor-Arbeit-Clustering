@@ -34,7 +34,7 @@ double ColoredPoint::distTo(ColoredPoint)
 
 string ColoredPoint::toString()
 {
-	std::stringstream stringStream;
+	stringstream stringStream;
 	stringStream << "Dims: " << this->dim << "; Color: ";
 	switch (this->color)
 	{

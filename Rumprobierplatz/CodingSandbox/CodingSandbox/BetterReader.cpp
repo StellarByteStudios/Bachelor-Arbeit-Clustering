@@ -7,9 +7,9 @@
 
 #define MAXLINE 250
 
-using namespace std;
 
-BetterReader::BetterReader(const char* path)
+
+BetterReader::BetterReader(string path)
 {
 	this->path = path;
 }
@@ -35,7 +35,7 @@ string BetterReader::readFile()
 
 
     // C++ Version des Stringbuilders
-    std::stringstream fileStringStream;
+    stringstream fileStringStream;
 
     // Zeilenzähler
     int row = 0;

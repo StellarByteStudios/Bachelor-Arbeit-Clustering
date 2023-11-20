@@ -25,4 +25,14 @@ void Printer::printnl(const char* msg)
 	printf("%s\n", msg);
 }
 
+void Printer::printWithCounter(string msg)
+{
+	this->printWithCounter(msg.c_str());
+}
+
+void Printer::printnl(string msg)
+{
+	this->printnl(msg.c_str());
+}
+
 
