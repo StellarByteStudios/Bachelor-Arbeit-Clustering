@@ -44,6 +44,9 @@ string ColoredPoint::toString()
 	case(BLUE):
 		stringStream << "Blue; ";
 		break;
+	case(GREEN):
+		stringStream << "Green; ";
+		break;
 	default:
 		stringStream << "---; ";
 		break;
