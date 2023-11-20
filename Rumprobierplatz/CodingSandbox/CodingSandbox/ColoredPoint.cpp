@@ -24,7 +24,7 @@ ColoredPoint::ColoredPoint(int dimensions, double coords[], Pointcolor color)
 
 ColoredPoint::~ColoredPoint()
 {
-	free(this->coordinates);
+	//free(this->coordinates);
 }
 
 double ColoredPoint::distTo(ColoredPoint)

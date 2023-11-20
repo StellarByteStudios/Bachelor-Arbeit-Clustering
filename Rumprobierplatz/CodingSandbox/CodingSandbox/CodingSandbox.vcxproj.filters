@@ -30,6 +30,9 @@
     <ClCompile Include="ColoredPoint.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PointParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Printer.h">
@@ -44,8 +47,16 @@
     <ClInclude Include="ColoredPoint.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="PointParser.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Testfile.txt" />
+    <Text Include="Testfile.txt">
+      <Filter>Ressourcendateien</Filter>
+    </Text>
+    <Text Include="Points.txt">
+      <Filter>Ressourcendateien</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -6,9 +6,9 @@ using namespace std;
 
 enum Pointcolor
 {
-	RED,
-	BLUE,
-	GREEN
+	RED = 0,
+	BLUE = 1,
+	GREEN = 2
 };
 
 class ColoredPoint
