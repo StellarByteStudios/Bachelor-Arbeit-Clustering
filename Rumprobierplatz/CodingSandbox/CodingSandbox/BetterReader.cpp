@@ -53,8 +53,6 @@ string BetterReader::readFile()
         row++;
     }
 
-    // Neuen groﬂ genugen String erzeugen
-    //char* page = new char[strlen(fileStringStream.str().c_str())];
-    //strcpy_s(page, strlen(page), fileStringStream.str().c_str());
+    // Stringbuilder zu String machen
 	return fileStringStream.str();
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class ColoredPoint
 {
 private:
 	// Coordinates of the Point (Pointer because variable dimensions)
-	double* coordinates;
+	vector<double> coordinates;
 
 	// Dimensionality of the Point
 	int dim;

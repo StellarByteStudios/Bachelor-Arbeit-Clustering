@@ -17,14 +17,14 @@ PointParser::~PointParser()
 vector<ColoredPoint>* PointParser::parseFile()
 {
     // File aufmachen
-    ifstream* file = new ifstream(this->path, ios::in);
+    ifstream file = ifstream(this->path, ios::in);
 
     // Vector erstellen als Dynamische Datenstruktur
     vector<ColoredPoint>* points = new vector<ColoredPoint>;
 
 
     // Fehler falls File nicht offen
-    if (!file->good())
+    if (!file.good())
     {
         std::cout << "ERROR while opening File " << path << std::endl;
         return nullptr;
@@ -34,11 +34,11 @@ vector<ColoredPoint>* PointParser::parseFile()
     int numberOfPoints = 0;
 
     // Stück für Stück durch das File gehen und einlesen
-    while (!file->eof() && numberOfPoints < MAXPOINTS)
+    while (!file.eof() && numberOfPoints < MAXPOINTS)
     {
         // Zeile als String holen
         string line;
-        std::getline(*file, line);
+        std::getline(file, line);
 
         // Gunddaten anlegen
         int dim;
@@ -80,6 +80,9 @@ vector<ColoredPoint>* PointParser::parseFile()
 
         // In den Vector pushen
         points->push_back(*temp);
+
+        // Koordinaten wieder Freigeben
+        delete coords;
 
         // Zähler erhöhen
         numberOfPoints++;

@@ -15,19 +15,17 @@ int main()
 
     std::string fileName = "Points.txt";
 
-    Printer* printer = new Printer();
-    PointParser* parser = new PointParser(fileName);
+    Printer printer = Printer();
+    PointParser parser =  PointParser(fileName);
 
-    vector<ColoredPoint>* points = parser->parseFile();
+    vector<ColoredPoint>* points = parser.parseFile();
 
     for (int i = 0; i < (int) points->size(); i++)
     {
-        printer->printnl(points->at(i).toString());
+        printer.printnl(points->at(i).toString());
     }
 
-    //delete printer;
-    //delete reader;
-    //delete fileInput;
+    delete points;
 
    std::cout << "End Programm" << std::endl; 
 

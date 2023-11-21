@@ -9,22 +9,16 @@ ColoredPoint::ColoredPoint(int dimensions, double coords[], Pointcolor color)
 	// Farbe übertragen
 	this->color = color;
 
-	// Platz anlegen
-	this->coordinates = (double*)malloc(dimensions * sizeof(double));
-
-	
 
 	// Daten übertragen
 	for (int i = 0; i < this->dim; i++)
 	{
-		this->coordinates[i] = coords[i];
+		this->coordinates.push_back(coords[i]);
 	}
-	
 }
 
 ColoredPoint::~ColoredPoint()
 {
-	//free(this->coordinates);
 }
 
 double ColoredPoint::distTo(ColoredPoint)
@@ -58,8 +52,6 @@ string ColoredPoint::toString()
 	}
 	stringStream << this->coordinates[dim-1];
 	stringStream << "]";
-	//char* string = new char[strlen(stringStream.str().c_str())];
-	//strcpy_s(string, strlen(string), stringStream.str().c_str());
 	return stringStream.str();
 }
 
