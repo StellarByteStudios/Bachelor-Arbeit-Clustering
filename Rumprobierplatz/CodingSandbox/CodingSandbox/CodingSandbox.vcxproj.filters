@@ -59,4 +59,9 @@
       <Filter>Ressourcendateien</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+  </ItemGroup>
 </Project>
