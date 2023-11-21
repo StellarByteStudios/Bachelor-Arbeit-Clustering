@@ -133,14 +133,12 @@
     <ClCompile Include="ColoredPoint.cpp" />
     <ClCompile Include="PointParser.cpp" />
     <ClCompile Include="Printer.cpp" />
-    <ClCompile Include="Reader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BetterReader.h" />
     <ClInclude Include="ColoredPoint.h" />
     <ClInclude Include="PointParser.h" />
     <ClInclude Include="Printer.h" />
-    <ClInclude Include="Reader.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Points.txt" />
