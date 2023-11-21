@@ -1,7 +1,8 @@
 #include "ColoredPoint.h"
 #include <sstream>  // stringstream (String builder)
+#include <math.h>   // sqrt, pow
 
-ColoredPoint::ColoredPoint(int dimensions, double coords[], Pointcolor color)
+ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
 {
 	// Dimensionen übertragen
 	this->dim = dimensions;
@@ -21,9 +22,24 @@ ColoredPoint::~ColoredPoint()
 {
 }
 
-double ColoredPoint::distTo(ColoredPoint)
+double ColoredPoint::distTo(ColoredPoint other)
 {
-	return 0.0;
+	// Rückgabevariable
+	double dist = 0;
+
+	//Euklidische Distanz. Erst quadrate aufsummieren
+	for (int i = 0; i < dim; i++)
+	{
+		// p_i - q_i
+		double simpleDist = (this->coordinates[i] - other.coordinates[i]);
+		//(...)^2
+		dist += pow(simpleDist, 2);
+	}
+
+	// Wurzel ziehen
+	dist = sqrt(dist);
+
+	return dist;
 }
 
 string ColoredPoint::toString()

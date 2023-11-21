@@ -76,10 +76,10 @@ vector<ColoredPoint>* PointParser::parseFile()
         }
 
         // Alles zu einem Punkt zusammenfassen
-        ColoredPoint* temp = new ColoredPoint(dim, coords, color);
+        ColoredPoint temp = ColoredPoint(dim, color, coords);
 
         // In den Vector pushen
-        points->push_back(*temp);
+        points->push_back(temp);
 
         // Koordinaten wieder Freigeben
         delete coords;

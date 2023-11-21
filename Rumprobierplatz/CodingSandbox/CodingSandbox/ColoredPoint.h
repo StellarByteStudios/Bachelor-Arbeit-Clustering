@@ -27,8 +27,9 @@ private:
 
 public:
 	/* Konstructor
+	* (Dimensiones, Color of Point, Coords)
 	*/
-	ColoredPoint(int, double[], Pointcolor);
+	ColoredPoint(int, Pointcolor, double[]);
 
 	/* Destructor
 	* Prints death Message

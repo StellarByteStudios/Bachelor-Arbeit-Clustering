@@ -27,6 +27,16 @@ int main()
 
     delete points;
 
-   std::cout << "End Programm" << std::endl; 
+    std::cout << "\nTesting Distance\n";
+
+    double coord1[] = { 0, 2 };
+    ColoredPoint point1 = ColoredPoint(2, RED, coord1);
+
+    double coord2[] = { 0, 0 };
+    ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
+
+    std::cout << "Distance: " << point1.distTo(point2) << endl;
+
+    std::cout << "End Programm" << std::endl; 
 
 }
