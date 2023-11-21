@@ -1,4 +1,4 @@
-#include "ColoredPoint.h";
+#include "ColoredPoint.h"
 #include <sstream>  // stringstream (String builder)
 
 ColoredPoint::ColoredPoint(int dimensions, double coords[], Pointcolor color)

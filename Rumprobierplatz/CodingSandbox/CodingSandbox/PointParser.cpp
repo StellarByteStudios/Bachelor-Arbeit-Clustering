@@ -38,7 +38,7 @@ vector<ColoredPoint>* PointParser::parseFile()
     {
         // Zeile als String holen
         string line;
-        std:getline(*file, line);
+        std::getline(*file, line);
 
         // Gunddaten anlegen
         int dim;

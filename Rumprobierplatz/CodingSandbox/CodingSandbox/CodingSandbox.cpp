@@ -34,7 +34,7 @@ int main()
 
     vector<ColoredPoint>* points = parser->parseFile();
 
-    for (int i = 0; i < points->size(); i++)
+    for (int i = 0; i < (int) points->size(); i++)
     {
         printer->printnl(points->at(i).toString());
     }
