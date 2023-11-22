@@ -38,5 +38,6 @@ int main()
     std::cout << "Distance: " << point1.distTo(point2) << endl;
 
     std::cout << "End Programm" << std::endl; 
+    // Test Push from Lena Ubuntu-VM
 
 }
