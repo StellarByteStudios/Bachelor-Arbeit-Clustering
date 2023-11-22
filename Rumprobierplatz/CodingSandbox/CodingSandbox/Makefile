@@ -10,6 +10,9 @@ $(NAME): $(HDATEIEN) $(CPPDATEIEN)
 
 run: $(NAME)
 	./$(NAME)
+	
+all: $(NAME)
+	./$(NAME)
 
 val: $(NAME)
 	valgrind ./$(NAME)
