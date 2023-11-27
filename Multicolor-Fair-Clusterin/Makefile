@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -Wall -g
-NAME = Multicolor-Fair-Clustering
+NAME = Fair-Clustering
 #PX = ../../
 #HDATEIEN = $(PX)ColoredPoint.h $(PX)PointParser.h
 #CPPDATEIEN = $(PX)ClusteringMain.cpp $(PX)ColoredPoint.cpp $(PX)PointParser.cpp
