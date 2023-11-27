@@ -14,7 +14,7 @@ all: $(NAME)
 	./$(NAME)
 
 $(NAME): $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN) $(HDATEIEN)
+	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN)
 
 # noch mit Headderdateien
 #$(NAME): $(HDATEIEN) $(CPPDATEIEN)
