@@ -1,9 +1,11 @@
 CC = g++
 CFLAGS = -Wall -g
-NAME = FairCLustering
-PX = ../../
-HDATEIEN = 
-CPPDATEIEN = $(PX)ClusteringMain.cpp
+NAME = Multicolor-Fair-Clustering
+#PX = ../../
+#HDATEIEN = $(PX)ColoredPoint.h $(PX)PointParser.h
+#CPPDATEIEN = $(PX)ClusteringMain.cpp $(PX)ColoredPoint.cpp $(PX)PointParser.cpp
+HDATEIEN = ColoredPoint.h PointParser.h
+CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp
 
 
 
@@ -12,5 +14,9 @@ all: $(NAME)
 	./$(NAME)
 
 $(NAME): $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(NAME) $(HDATEIEN) $(CPPDATEIEN) 
+	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN) $(HDATEIEN)
+
+# noch mit Headderdateien
+#$(NAME): $(HDATEIEN) $(CPPDATEIEN)
+#	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN) $(HDATEIEN)
 	
