@@ -11,7 +11,18 @@ int main(int argc, char **argv) {
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(fileName);
 
+	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
+
+	// Einige Punkte Clustern
+	points->at(0).setCluster(1);
+	points->at(1).setCluster(1);
+	points->at(2).setCluster(2);
+	points->at(3).setCluster(2);
+	points->at(4).setCluster(points->at(3).getCluster());
+
+
+
 
 	for (int i = 0; i < (int) points->size(); i++)
 	{

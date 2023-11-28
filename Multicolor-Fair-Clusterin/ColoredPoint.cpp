@@ -16,6 +16,9 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
 	{
 		this->coordinates.push_back(coords[i]);
 	}
+
+	// Keinem Cluster zuweisen
+	this->cluster = -1;
 }
 
 ColoredPoint::~ColoredPoint()
@@ -42,10 +45,27 @@ double ColoredPoint::distTo(ColoredPoint other)
 	return dist;
 }
 
+
+bool ColoredPoint::sameClusterAs(ColoredPoint other)
+{
+	return this->cluster == other.cluster;
+}
+
+
+
 string ColoredPoint::toString()
 {
 	stringstream stringStream;
-	stringStream << "Dims: " << this->dim << "; Color: ";
+	stringStream << "Dims: " << this->dim ;
+	stringStream << "; Cluster: ";
+
+	if(this->cluster == -1){
+		stringStream << "--";
+	} else{
+		stringStream << this->cluster;
+	}
+
+	stringStream << "; Color: ";
 	switch (this->color)
 	{
 	case(RED):
@@ -79,4 +99,14 @@ int ColoredPoint::getDim()
 Pointcolor ColoredPoint::getColor()
 {
 	return this->color;
+}
+
+int ColoredPoint::getCluster()
+{
+	return this->cluster;
+}
+
+void ColoredPoint::setCluster(int cluster)
+{
+	this->cluster = cluster;
 }

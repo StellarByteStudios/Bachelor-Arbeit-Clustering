@@ -21,6 +21,9 @@ private:
 	// Dimensionality of the Point
 	int dim;
 
+	// Which cluster the Point is part of
+	int cluster;
+
 	// Color of the Point
 	Pointcolor color;
 
@@ -47,6 +50,16 @@ public:
 	*/
 	double distTo(ColoredPoint);
 
+	/* Same-Cluster-Method
+	* Lookup if given Point is in the
+	* same vluster as caller
+	*
+	* @param partner: Other Point to compare vluster
+	*
+	* @return true if same vluster
+	*/
+	bool sameClusterAs(ColoredPoint);
+
 	/* ToString-Method
 	* Constructs a String representive of calling Point
 	* and returns it as char*
@@ -68,5 +81,19 @@ public:
 	* @return color
 	*/
 	Pointcolor getColor();
+
+	/* Info-Method
+	* Simply returns the cluster the Point is in
+	*
+	* @return cluster
+	*/
+	int getCluster();
+
+	/* Cluster-Method
+	* Sets Cluster of Point to given Value
+	*
+	* @param cluster: Value to set Cluster to
+	*/
+	void setCluster(int);
 };
 
