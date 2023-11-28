@@ -64,7 +64,7 @@ vector<ColoredPoint>* PointParser::parseFile()
         }
 
         // Array f�r Punkte anlegen
-        double* coords = new double[dim];
+        double coords[dim];
 
         // Einzelne Koordinaten parsen
         for (int i = 0; i < dim; i++)
@@ -81,8 +81,6 @@ vector<ColoredPoint>* PointParser::parseFile()
         // In den Vector pushen
         points->push_back(temp);
 
-        // Koordinaten wieder Freigeben
-        delete coords;
 
         // Z�hler erh�hen
         numberOfPoints++;

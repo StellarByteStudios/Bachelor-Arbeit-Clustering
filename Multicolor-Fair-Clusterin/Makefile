@@ -19,4 +19,7 @@ $(NAME): $(HDATEIEN) $(CPPDATEIEN)
 # noch mit Headderdateien
 #$(NAME): $(HDATEIEN) $(CPPDATEIEN)
 #	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN) $(HDATEIEN)
+
+val: $(NAME)
+	valgrind ./$(NAME) 
 	
