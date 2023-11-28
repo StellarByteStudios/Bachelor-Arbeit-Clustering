@@ -18,8 +18,6 @@ int main(int argc, char **argv) {
 		std::cout << i << ": " << points->at(i).toString() << endl;;
 	}
 
-	// vector für Punkte wieder Freigeben
-	delete points;
 
 	std::cout << "\nTesting Distance\n";
 
@@ -29,7 +27,11 @@ int main(int argc, char **argv) {
 	double coord2[] = { 0, 0 };
 	ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
 
-	std::cout << "Distance: " << point1.distTo(point2) << endl;
+	std::cout << "Distance Hard: " << point1.distTo(point2) << endl;
+	std::cout << "Distance ReadIn: " << points->at(0).distTo(points->at(1)) << endl;
+
+	// vector für Punkte wieder Freigeben
+	delete points;
 
 	std::cout << "End Program" << std::endl;
 }
