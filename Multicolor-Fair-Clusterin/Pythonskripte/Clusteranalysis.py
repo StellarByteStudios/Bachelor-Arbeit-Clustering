@@ -49,7 +49,7 @@ def main():
      
      fileName = "../ClusterOut2D.csv"
           
-     points = read_points(fileName)
+     points, maxRadius = read_points(fileName)
      
      #print(points)
      
@@ -57,8 +57,8 @@ def main():
      for i in range(0, len(points)):
          print(points[i].toStringLong())
      
-     show_points(points)   
-     show_points(points, colorByCluster=False) 
+     show_points(points, maxRadius=maxRadius)   
+     #show_points(points, colorByCluster=False) 
      
      return
  
@@ -67,8 +67,8 @@ def main():
     
     
 
-def show_points(listOfPoints, colorByCluster = True):
-    fig, ax = plt.subplots()
+def show_points(listOfPoints, colorByCluster = True, maxRadius = -1):
+    fig, ax = plt.subplots(figsize=(5,5))
     
     # Ersten zwei Coordinaten
     firstCoordinate = [point.coordinates[0] for point in listOfPoints]
@@ -87,6 +87,13 @@ def show_points(listOfPoints, colorByCluster = True):
     for i in range(0, len(listOfPoints)):
         if(listOfPoints[i].isCenter):
             ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
+            # ggf. Radius hinzufügen
+            if(maxRadius != -1):
+                circle = plt.Circle((listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1]),
+                                    color="black", fill=False)
+                circle.set_radius(maxRadius)
+                ax.add_artist(circle)
+            
     
     plt.show()
     return
@@ -103,10 +110,17 @@ def read_points(fileName):
 def parse_points_from_list(rawDataList):
     
     numberOfPoints = len(rawDataList)
+    firstPoint = 0
+    maxRadius = -1
+    
+    # abfangen, dass erste Zeile der MaxRadius ist
+    if(rawDataList[0][0] == "maxRadius"):
+        firstPoint = 1
+        maxRadius = float(rawDataList[0][1])
     
     listOfPoints = []
     
-    for i in range(0, numberOfPoints):
+    for i in range(firstPoint, numberOfPoints):
         # Metadata
         dim = int(rawDataList[i][0])
         center = bool(int(rawDataList[i][1]))
@@ -128,7 +142,7 @@ def parse_points_from_list(rawDataList):
         listOfPoints.append(newPoint)
     
     
-    return listOfPoints
+    return listOfPoints, maxRadius
 
 
 main()

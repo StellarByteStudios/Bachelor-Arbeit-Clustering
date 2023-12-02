@@ -68,6 +68,10 @@ int main(int argc, char **argv) {
 	if(!outputFile.good()){
 		cout << "Error opening Outputfile" << endl;
 	} else{
+		// max Radius an den Anfang packen
+		outputFile << "maxRadius," << maxRadius << endl;
+
+		// Punte abspeichern
 		for (int i = 0; i < (int) points->size(); i++){
 			outputFile << points->at(i).toCSV() << endl;
 		}
