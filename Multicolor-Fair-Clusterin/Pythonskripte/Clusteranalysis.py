@@ -58,6 +58,7 @@ def main():
          print(points[i].toStringLong())
      
      show_points(points)   
+     show_points(points, colorByCluster=False) 
      
      return
  

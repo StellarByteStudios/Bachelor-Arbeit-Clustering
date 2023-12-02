@@ -38,7 +38,7 @@ class Colorpoint:
 def main():
     
     # Anfangsbedingungen
-    numberOfPoints = 100
+    numberOfPoints = 1000
     fileName = "Points2D.txt"
     dimensions = 2
     colors = 3
