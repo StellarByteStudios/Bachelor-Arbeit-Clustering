@@ -15,6 +15,9 @@ all: $(NAME)
 
 $(NAME): $(HDATEIEN) $(CPPDATEIEN)
 	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN)
+	
+build: $(HDATEIEN) $(CPPDATEIEN)
+	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN)
 
 # noch mit Headderdateien
 #$(NAME): $(HDATEIEN) $(CPPDATEIEN)
