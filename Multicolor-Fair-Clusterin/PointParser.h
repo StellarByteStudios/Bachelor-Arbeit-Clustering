@@ -10,8 +10,7 @@
 
 using namespace std;
 
-class PointParser
-{
+class PointParser{
 public:
 	/* Konstruktor
 	* @param path: Path of File to be read

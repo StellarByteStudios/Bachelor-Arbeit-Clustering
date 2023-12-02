@@ -4,18 +4,15 @@
 
 
 
-PointParser::PointParser(string path)
-{
+PointParser::PointParser(string path){
 	this->path = path;
 }
 
-PointParser::~PointParser()
-{
+PointParser::~PointParser(){
 	cout << "PointParser is deleted" << endl;
 }
 
-vector<ColoredPoint>* PointParser::parseFile()
-{
+vector<ColoredPoint>* PointParser::parseFile(){
     // File aufmachen
     ifstream file = ifstream(this->path, ios::in);
 
@@ -24,8 +21,7 @@ vector<ColoredPoint>* PointParser::parseFile()
 
 
     // Fehler falls File nicht offen
-    if (!file.good())
-    {
+    if (!file.good()){
         std::cout << "ERROR while opening File " << path << std::endl;
         return nullptr;
     }
@@ -34,8 +30,7 @@ vector<ColoredPoint>* PointParser::parseFile()
     int numberOfPoints = 0;
 
     // St�ck f�r St�ck durch das File gehen und einlesen
-    while (!file.eof() && numberOfPoints < MAXPOINTS)
-    {
+    while (!file.eof() && numberOfPoints < MAXPOINTS){
         // Zeile als String holen
         string line;
         std::getline(file, line);
@@ -58,8 +53,7 @@ vector<ColoredPoint>* PointParser::parseFile()
         color = static_cast<Pointcolor>(colorAsInt);
 
         // Abbruchfall f�r die letzte Zeile
-        if (dim < 1)
-        {
+        if (dim < 1){
             break;
         }
 
@@ -67,8 +61,7 @@ vector<ColoredPoint>* PointParser::parseFile()
         double coords[dim];
 
         // Einzelne Koordinaten parsen
-        for (int i = 0; i < dim; i++)
-        {
+        for (int i = 0; i < dim; i++){
             pos = line.find(',');
             double temp = atof(line.substr(0, pos).c_str());
             line.erase(0, pos + 1);

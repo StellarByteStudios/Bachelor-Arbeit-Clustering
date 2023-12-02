@@ -24,8 +24,7 @@ int main(int argc, char **argv) {
 
 
 
-	for (int i = 0; i < (int) points->size(); i++)
-	{
+	for (int i = 0; i < (int) points->size(); i++){
 		std::cout << i << ": " << points->at(i).toString() << endl;;
 	}
 

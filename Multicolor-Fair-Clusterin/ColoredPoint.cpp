@@ -12,27 +12,25 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
 
 
 	// Daten �bertragen
-	for (int i = 0; i < this->dim; i++)
-	{
+	for (int i = 0; i < this->dim; i++){
 		this->coordinates.push_back(coords[i]);
 	}
 
 	// Keinem Cluster zuweisen
 	this->cluster = -1;
+
+	// Punkt ist erstmal kein Zentrum
+	this->isCenter = false;
 }
 
-ColoredPoint::~ColoredPoint()
-{
-}
+ColoredPoint::~ColoredPoint(){}
 
-double ColoredPoint::distTo(ColoredPoint other)
-{
+double ColoredPoint::distTo(ColoredPoint other){
 	// R�ckgabevariable
 	double dist = 0;
 
 	//Euklidische Distanz. Erst quadrate aufsummieren
-	for (int i = 0; i < dim; i++)
-	{
+	for (int i = 0; i < dim; i++){
 		// p_i - q_i
 		double simpleDist = (this->coordinates[i] - other.coordinates[i]);
 		//(...)^2
@@ -46,15 +44,13 @@ double ColoredPoint::distTo(ColoredPoint other)
 }
 
 
-bool ColoredPoint::sameClusterAs(ColoredPoint other)
-{
+bool ColoredPoint::sameClusterAs(ColoredPoint other){
 	return this->cluster == other.cluster;
 }
 
 
 
-string ColoredPoint::toString()
-{
+string ColoredPoint::toString(){
 	stringstream stringStream;
 	stringStream << "Dims: " << this->dim ;
 	stringStream << "; Cluster: ";
@@ -66,8 +62,7 @@ string ColoredPoint::toString()
 	}
 
 	stringStream << "; Color: ";
-	switch (this->color)
-	{
+	switch (this->color){
 	case(RED):
 		stringStream << "Red; ";
 		break;
@@ -82,8 +77,7 @@ string ColoredPoint::toString()
 		break;
 	}
 	stringStream << "Coords [";
-	for (int i = 0; i < this->dim -1; i++)
-	{
+	for (int i = 0; i < this->dim -1; i++){
 		stringStream << this->coordinates[i] << ", ";
 	}
 	stringStream << this->coordinates[dim-1];
@@ -91,22 +85,18 @@ string ColoredPoint::toString()
 	return stringStream.str();
 }
 
-int ColoredPoint::getDim()
-{
+int ColoredPoint::getDim(){
 	return this->dim;
 }
 
-Pointcolor ColoredPoint::getColor()
-{
+Pointcolor ColoredPoint::getColor(){
 	return this->color;
 }
 
-int ColoredPoint::getCluster()
-{
+int ColoredPoint::getCluster(){
 	return this->cluster;
 }
 
-void ColoredPoint::setCluster(int cluster)
-{
+void ColoredPoint::setCluster(int cluster){
 	this->cluster = cluster;
 }

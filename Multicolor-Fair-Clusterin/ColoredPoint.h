@@ -5,15 +5,13 @@
 
 using namespace std;
 
-enum Pointcolor
-{
+enum Pointcolor{
 	RED = 0,
 	BLUE = 1,
 	GREEN = 2
 };
 
-class ColoredPoint
-{
+class ColoredPoint{
 private:
 	// Coordinates of the Point (Pointer because variable dimensions)
 	vector<double> coordinates;
