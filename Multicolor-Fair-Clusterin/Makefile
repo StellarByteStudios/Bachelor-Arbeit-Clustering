@@ -4,8 +4,8 @@ NAME = Fair-Clustering
 #PX = ../../
 #HDATEIEN = $(PX)ColoredPoint.h $(PX)PointParser.h
 #CPPDATEIEN = $(PX)ClusteringMain.cpp $(PX)ColoredPoint.cpp $(PX)PointParser.cpp
-HDATEIEN = ColoredPoint.h PointParser.h
-CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp
+HDATEIEN = ColoredPoint.h PointParser.h Gonzales.h
+CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzales.cpp
 
 
 

@@ -53,6 +53,7 @@ bool ColoredPoint::sameClusterAs(ColoredPoint other){
 string ColoredPoint::toString(){
 	stringstream stringStream;
 	stringStream << "Dims: " << this->dim ;
+	stringStream << "; IsCenter: " << this->isCenter;
 	stringStream << "; Cluster: ";
 
 	if(this->cluster == -1){
@@ -100,3 +101,8 @@ int ColoredPoint::getCluster(){
 void ColoredPoint::setCluster(int cluster){
 	this->cluster = cluster;
 }
+
+void ColoredPoint::setToCenter(){
+	this->isCenter = true;
+}
+

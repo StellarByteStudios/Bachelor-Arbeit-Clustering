@@ -2,11 +2,13 @@
 
 #include "ColoredPoint.h"
 #include "PointParser.h"
+#include "Gonzales.h"
 
 int main(int argc, char **argv) {
 	std::cout << "Hello World!\n";
 
-	std::string fileName = "HandmadePoints.txt";
+	//std::string fileName = "HandmadePoints.txt";
+	std::string fileName = "Points5D.txt";
 
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(fileName);
@@ -14,6 +16,7 @@ int main(int argc, char **argv) {
 	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
 
+	/*
 	// Einige Punkte Clustern
 	points->at(0).setCluster(1);
 	points->at(1).setCluster(1);
@@ -25,8 +28,8 @@ int main(int argc, char **argv) {
 
 
 	for (int i = 0; i < (int) points->size(); i++){
-		std::cout << i << ": " << points->at(i).toString() << endl;;
-	}
+		std::cout << i << ": " << points->at(i).toString() << endl;
+	}*/
 
 
 	std::cout << "\nTesting Distance\n";
@@ -39,6 +42,21 @@ int main(int argc, char **argv) {
 
 	std::cout << "Distance Hard: " << point1.distTo(point2) << endl;
 	std::cout << "Distance ReadIn: " << points->at(0).distTo(points->at(1)) << endl;
+
+
+
+
+
+	std::cout << "\n-----------------\nTesting Gonzales\n";
+	Gonzales gonzales = Gonzales();
+	double maxRadius = gonzales.makeGonzales(points, 3);
+
+	for (int i = 0; i < (int) points->size(); i++){
+			std::cout << i << ": " << points->at(i).toString() << endl;
+		}
+
+	std::cout << "MaxRadius: " << maxRadius << endl;
+
 
 	// vector für Punkte wieder Freigeben
 	delete points;

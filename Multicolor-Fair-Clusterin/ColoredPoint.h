@@ -22,6 +22,9 @@ private:
 	// Which cluster the Point is part of
 	int cluster;
 
+	// Is the Point a Center
+	bool isCenter;
+
 	// Color of the Point
 	Pointcolor color;
 
@@ -93,5 +96,10 @@ public:
 	* @param cluster: Value to set Cluster to
 	*/
 	void setCluster(int);
+
+	/* Center-Method
+	* Makes Point a Center
+	*/
+	void setToCenter();
 };
 
