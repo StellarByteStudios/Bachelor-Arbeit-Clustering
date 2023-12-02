@@ -57,7 +57,8 @@ def main():
      for i in range(0, len(points)):
          print(points[i].toStringLong())
      
-     show_points(points, maxRadius=maxRadius)   
+     show_points(points)
+     show_points(points, maxRadius=maxRadius)
      #show_points(points, colorByCluster=False) 
      
      return

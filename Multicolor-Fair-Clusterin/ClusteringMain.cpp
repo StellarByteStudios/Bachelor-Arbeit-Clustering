@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 	//std::string fileName = "HandmadePoints.txt";
 	string fileName = "Pythonskripte/Points2D.txt";
 	string outputFileName = "ClusterOut2D.csv";
-	int numberOfCluster = 5;
+	int numberOfCluster = 15;
 
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(fileName);
