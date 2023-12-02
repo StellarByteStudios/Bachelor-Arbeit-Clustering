@@ -86,6 +86,20 @@ string ColoredPoint::toString(){
 	return stringStream.str();
 }
 
+string ColoredPoint::toCSV(){
+	stringstream stringStream;
+	stringStream << this->dim <<",";
+	stringStream << this->isCenter <<",";
+	stringStream << this->cluster <<",";
+	stringStream << this->color <<",";
+	for (int i = 0; i < this->dim -1; i++){
+		stringStream << this->coordinates[i] << ",";
+	}
+	stringStream << this->coordinates[dim-1];
+
+	return stringStream.str();
+}
+
 int ColoredPoint::getDim(){
 	return this->dim;
 }

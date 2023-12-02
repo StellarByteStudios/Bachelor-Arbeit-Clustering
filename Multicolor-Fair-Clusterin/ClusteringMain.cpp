@@ -1,14 +1,17 @@
-#include <iostream>
+#include <iostream> // std::cout; std::endl
+#include <fstream>  // ifstream (Dateien ein/auslesen)
 
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzales.h"
 
 int main(int argc, char **argv) {
-	std::cout << "Hello World!\n";
+	cout << "Hello World!\n";
 
 	//std::string fileName = "HandmadePoints.txt";
-	std::string fileName = "Points5D.txt";
+	string fileName = "Pythonskripte/Points2D.txt";
+	string outputFileName = "ClusterOut2D.csv";
+	int numberOfCluster = 5;
 
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(fileName);
@@ -32,7 +35,7 @@ int main(int argc, char **argv) {
 	}*/
 
 
-	std::cout << "\nTesting Distance\n";
+	cout << "\nTesting Distance\n";
 
 	double coord1[] = { 0, 2 };
 	ColoredPoint point1 = ColoredPoint(2, RED, coord1);
@@ -40,26 +43,42 @@ int main(int argc, char **argv) {
 	double coord2[] = { 0, 0 };
 	ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
 
-	std::cout << "Distance Hard: " << point1.distTo(point2) << endl;
-	std::cout << "Distance ReadIn: " << points->at(0).distTo(points->at(1)) << endl;
+	cout << "Distance Hard: " << point1.distTo(point2) << endl;
+	cout << "Distance ReadIn: " << points->at(0).distTo(points->at(1)) << endl;
 
 
 
 
 
-	std::cout << "\n-----------------\nTesting Gonzales\n";
+	cout << "\n-----------------\nTesting Gonzales\n";
 	Gonzales gonzales = Gonzales();
-	double maxRadius = gonzales.makeGonzales(points, 3);
+	double maxRadius = gonzales.makeGonzales(points, numberOfCluster);
 
 	for (int i = 0; i < (int) points->size(); i++){
-			std::cout << i << ": " << points->at(i).toString() << endl;
-		}
+		cout << i << ": " << points->at(i).toString() << endl;
+	}
 
-	std::cout << "MaxRadius: " << maxRadius << endl;
+	cout << "MaxRadius: " << maxRadius << endl;
+
+
+	cout << "\n-----------------\nWrite Data into File\n";
+
+	ofstream outputFile = ofstream(outputFileName, ios::out);
+
+	if(!outputFile.good()){
+		cout << "Error opening Outputfile" << endl;
+	} else{
+		for (int i = 0; i < (int) points->size(); i++){
+			outputFile << points->at(i).toCSV() << endl;
+		}
+	}
+
+
+
 
 
 	// vector für Punkte wieder Freigeben
 	delete points;
 
-	std::cout << "End Program" << std::endl;
+	cout << "End Program" << endl;
 }

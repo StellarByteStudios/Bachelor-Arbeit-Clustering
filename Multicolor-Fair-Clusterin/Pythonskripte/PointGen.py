@@ -39,10 +39,12 @@ def main():
     
     # Anfangsbedingungen
     numberOfPoints = 100
-    fileName = "Points.txt"
+    fileName = "Points2D.txt"
+    dimensions = 2
+    colors = 3
     
     # Punkte erstellen
-    points = createListOfPoints(numberOfPoints, dim = 5, colors = 3)
+    points = createListOfPoints(numberOfPoints, dim = dimensions, colors = colors)
     
     # Punkte ausgeben
     for i in range(0, len(points)):
@@ -53,7 +55,8 @@ def main():
     
     # Punkte in Textdatei speichern
     with open(fileName, 'w') as f:
-        f.write('Format: dim,color,coord1,coord2,...,coordn\n')
+        # Kopf direkt weglassen
+        # f.write('Format: dim,color,coord1,coord2,...,coordn\n')
         for i in range(0, len(points)):
             f.write(points[i].toString())
             f.write('\n')
@@ -74,7 +77,7 @@ def createListOfPoints(numberOfPoints = 100, dim = 2, colors = 2):
 
 
 
-def createRandomPoint(dim = 2, colors = 2, borderLow = 0, borderHigh = 1):
+def createRandomPoint(dim = 2, colors = 2, borderLow = 0, borderHigh = 100):
     
     # Zufällige Koordinaten bestimmen
     coords = []

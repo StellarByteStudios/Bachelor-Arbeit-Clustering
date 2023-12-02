@@ -69,6 +69,14 @@ public:
 	*/
 	string toString();
 
+	/* ToString-Method
+	* Constructs a String of csv's with
+	* data of the Point
+	*
+	* @return string of csv of the Point
+	*/
+	string toCSV();
+
 	/* Info-Method
 	* Simply returns the size of the Point
 	*
