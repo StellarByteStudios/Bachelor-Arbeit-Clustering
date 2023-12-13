@@ -39,7 +39,7 @@ def main():
     
     # Anfangsbedingungen
     numberOfPoints = 1000
-    fileName = "Points2D.txt"
+    OutputFileName = "../Data/RandomGenerated/Points2DNew.txt"
     dimensions = 2
     colors = 3
     
@@ -54,7 +54,7 @@ def main():
     show_Points(points)   
     
     # Punkte in Textdatei speichern
-    with open(fileName, 'w') as f:
+    with open(OutputFileName, 'w') as f:
         # Kopf direkt weglassen
         # f.write('Format: dim,color,coord1,coord2,...,coordn\n')
         for i in range(0, len(points)):

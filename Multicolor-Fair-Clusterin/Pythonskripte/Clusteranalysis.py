@@ -47,7 +47,7 @@ class Colorpoint:
     
 def main():
      
-     fileName = "../ClusterOut2D.csv"
+     fileName = "../Data/OutputData/ClusteredData/ClusterOut2D.csv"
           
      points, maxRadius = read_points(fileName)
      
