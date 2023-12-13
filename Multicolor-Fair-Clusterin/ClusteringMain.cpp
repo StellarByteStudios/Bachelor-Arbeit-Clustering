@@ -9,20 +9,26 @@ int main(int argc, char *argv[]) {
 	cout << "Hello World!\n";
 
 	// ==== getting Commandlinearguments ==== //
-
+	/*
 	cout << "Number of Arguments: " << argc-1 << endl;
 	cout << "Name of Programm: " << argv[0] << endl;;
 	cout << "Now the Arguments: " << endl;
 	for(int i = 1; i < argc; i++){
 		cout << "\t- " << argv[i] << endl;
-	}
+	}*/
  
+	if (argc < 3)
+	{
+		cout << "Not enough Arguments\nneeded: \"inputFilePath\" \"outputFilePath\"" << endl;
+		return -1;
+	}
+	
+	string inputFileName = argv[1];//"Data/RandomGenerated/Points2D.txt";
+	string outputFileName = argv[2];//"Data/OutputData/ClusteredData/ClusterOut2DNew.csv";
 
 	// ==== Parsing of Points ==== //
 
-	//std::string fileName = "HandmadePoints.txt";
-	string inputFileName = "Data/RandomGenerated/Points2D.txt"; //Pythonskripte/Points2D.txt";
-	string outputFileName = "Data/OutputData/ClusteredData/ClusterOut2DNew.csv";
+	
 	int numberOfCluster = 15;
 
 	//Printer printer = Printer();
@@ -62,7 +68,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	// ==== Testing of Gonuales ==== //
+	// ==== Testing of Gonzalez ==== //
 
 	cout << "\n-----------------\nTesting Gonzales\n";
 	Gonzales gonzales = Gonzales();

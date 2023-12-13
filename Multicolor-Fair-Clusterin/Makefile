@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -Wall -g
 NAME = Fair-Clustering
-ARGS = Punkt1 datastring "Data with Space" Path
+ARGS = Data/RandomGenerated/Points2D.txt Data/OutputData/PathTesting/ClusterOut2DPath.csv
 #PX = ../../
 #HDATEIEN = $(PX)ColoredPoint.h $(PX)PointParser.h
 #CPPDATEIEN = $(PX)ClusteringMain.cpp $(PX)ColoredPoint.cpp $(PX)PointParser.cpp
