@@ -9,12 +9,12 @@ int main(int argc, char **argv) {
 	cout << "Hello World!\n";
 
 	//std::string fileName = "HandmadePoints.txt";
-	string fileName = "Pythonskripte/Points2D.txt";
-	string outputFileName = "ClusterOut2D.csv";
+	string inputFileName = "Data/RandomGenerated/Points2D.txt"; //Pythonskripte/Points2D.txt";
+	string outputFileName = "Data/OutputData/ClusteredData/ClusterOut2DNew.csv";
 	int numberOfCluster = 15;
 
 	//Printer printer = Printer();
-	PointParser parser =  PointParser(fileName);
+	PointParser parser =  PointParser(inputFileName);
 
 	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
