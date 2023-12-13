@@ -5,8 +5,20 @@
 #include "PointParser.h"
 #include "Gonzales.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 	cout << "Hello World!\n";
+
+	// ==== getting Commandlinearguments ==== //
+
+	cout << "Number of Arguments: " << argc-1 << endl;
+	cout << "Name of Programm: " << argv[0] << endl;;
+	cout << "Now the Arguments: " << endl;
+	for(int i = 1; i < argc; i++){
+		cout << "\t- " << argv[i] << endl;
+	}
+ 
+
+	// ==== Parsing of Points ==== //
 
 	//std::string fileName = "HandmadePoints.txt";
 	string inputFileName = "Data/RandomGenerated/Points2D.txt"; //Pythonskripte/Points2D.txt";
@@ -34,6 +46,7 @@ int main(int argc, char **argv) {
 		std::cout << i << ": " << points->at(i).toString() << endl;
 	}*/
 
+	// ==== Testing of Distancefunction ==== //
 
 	cout << "\nTesting Distance\n";
 
@@ -49,17 +62,20 @@ int main(int argc, char **argv) {
 
 
 
+	// ==== Testing of Gonuales ==== //
 
 	cout << "\n-----------------\nTesting Gonzales\n";
 	Gonzales gonzales = Gonzales();
 	double maxRadius = gonzales.makeGonzales(points, numberOfCluster);
 
+	/*
 	for (int i = 0; i < (int) points->size(); i++){
 		cout << i << ": " << points->at(i).toString() << endl;
-	}
+	}*/
 
 	cout << "MaxRadius: " << maxRadius << endl;
 
+	// ==== Write Clusterdata into File ==== //
 
 	cout << "\n-----------------\nWrite Data into File\n";
 
@@ -79,7 +95,7 @@ int main(int argc, char **argv) {
 
 
 
-
+	// ==== Clear-Up ==== //
 
 	// vector für Punkte wieder Freigeben
 	delete points;
