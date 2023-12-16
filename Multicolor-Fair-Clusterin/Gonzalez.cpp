@@ -1,11 +1,11 @@
-#include "Gonzales.h"
+#include "Gonzalez.h"
 #include <iostream> // std::cout; std::endl
 
-Gonzales::Gonzales(){}
+Gonzalez::Gonzalez(){}
 
-Gonzales::~Gonzales(){}
+Gonzalez::~Gonzalez(){}
 
-double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
+double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters){
 	// Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
 	int n = (int) points->size();
 

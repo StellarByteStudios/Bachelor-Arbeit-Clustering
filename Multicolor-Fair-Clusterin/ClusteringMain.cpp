@@ -3,7 +3,7 @@
 
 #include "ColoredPoint.h"
 #include "PointParser.h"
-#include "Gonzales.h"
+#include "Gonzalez.h"
 
 int main(int argc, char *argv[]) {
 	cout << "Hello World!\n";
@@ -70,9 +70,9 @@ int main(int argc, char *argv[]) {
 
 	// ==== Testing of Gonzalez ==== //
 
-	cout << "\n-----------------\nTesting Gonzales\n";
-	Gonzales gonzales = Gonzales();
-	double maxRadius = gonzales.makeGonzales(points, numberOfCluster);
+	cout << "\n-----------------\nTesting Gonzalez\n";
+	Gonzalez gonzalez = Gonzalez();
+	double maxRadius = gonzalez.makeGonzalez(points, numberOfCluster);
 
 	/*
 	for (int i = 0; i < (int) points->size(); i++){
