@@ -6,8 +6,15 @@
 #include "Gonzalez.h"
 
 int main(int argc, char *argv[]) {
-	
-	// ==== getting Commandlinearguments ==== //
+
+	/* ==== getting Commandlinearguments ==== //
+	* Format:
+	*	1) Inputfile Path 
+	*	2) Outputfile Path
+	*	3) number of Clusters
+	*	[4) later: kind of Algorithm]
+	*/
+
 	/*
 	cout << "Number of Arguments: " << argc-1 << endl;
 	cout << "Name of Programm: " << argv[0] << endl;;
@@ -16,19 +23,20 @@ int main(int argc, char *argv[]) {
 		cout << "\t- " << argv[i] << endl;
 	}*/
  
-	if (argc < 3)
+	if (argc < 4)
 	{
-		cout << "Not enough Arguments\nneeded: \"inputFilePath\" \"outputFilePath\"" << endl;
+		cout << "Not enough Arguments\nneeded: \"inputFilePath\" \"outputFilePath\" numOfClusters" << endl;
 		return -1;
 	}
 	
 	string inputFileName = argv[1];//"Data/RandomGenerated/Points2D.txt";
 	string outputFileName = argv[2];//"Data/OutputData/ClusteredData/ClusterOut2DNew.csv";
+	int numberOfCluster = stoi(argv[3]);
 
 	// ==== Parsing of Points ==== //
 
 	
-	int numberOfCluster = 15;
+	
 
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(inputFileName);
