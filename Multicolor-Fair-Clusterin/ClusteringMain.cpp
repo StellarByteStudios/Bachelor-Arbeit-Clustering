@@ -6,8 +6,7 @@
 #include "Gonzalez.h"
 
 int main(int argc, char *argv[]) {
-	cout << "Hello World!\n";
-
+	
 	// ==== getting Commandlinearguments ==== //
 	/*
 	cout << "Number of Arguments: " << argc-1 << endl;
@@ -37,21 +36,6 @@ int main(int argc, char *argv[]) {
 	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
 
-	/*
-	// Einige Punkte Clustern
-	points->at(0).setCluster(1);
-	points->at(1).setCluster(1);
-	points->at(2).setCluster(2);
-	points->at(3).setCluster(2);
-	points->at(4).setCluster(points->at(3).getCluster());
-
-
-
-
-	for (int i = 0; i < (int) points->size(); i++){
-		std::cout << i << ": " << points->at(i).toString() << endl;
-	}*/
-
 	// ==== Testing of Distancefunction ==== //
 
 	cout << "\nTesting Distance\n";
@@ -74,11 +58,6 @@ int main(int argc, char *argv[]) {
 	Gonzalez gonzalez = Gonzalez();
 	double maxRadius = gonzalez.makeGonzalez(points, numberOfCluster);
 
-	/*
-	for (int i = 0; i < (int) points->size(); i++){
-		cout << i << ": " << points->at(i).toString() << endl;
-	}*/
-
 	cout << "MaxRadius: " << maxRadius << endl;
 
 	// ==== Write Clusterdata into File ==== //
@@ -98,8 +77,6 @@ int main(int argc, char *argv[]) {
 			outputFile << points->at(i).toCSV() << endl;
 		}
 	}
-
-
 
 	// ==== Clear-Up ==== //
 
