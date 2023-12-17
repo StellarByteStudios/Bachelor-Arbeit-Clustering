@@ -3,12 +3,18 @@
 
 #include "ColoredPoint.h"
 #include "PointParser.h"
-#include "Gonzales.h"
+#include "Gonzalez.h"
 
 int main(int argc, char *argv[]) {
-	cout << "Hello World!\n";
 
-	// ==== getting Commandlinearguments ==== //
+	/* ==== getting Commandlinearguments ==== //
+	* Format:
+	*	1) Inputfile Path 
+	*	2) Outputfile Path
+	*	3) number of Clusters
+	*	[4) later: kind of Algorithm]
+	*/
+
 	/*
 	cout << "Number of Arguments: " << argc-1 << endl;
 	cout << "Name of Programm: " << argv[0] << endl;;
@@ -17,40 +23,26 @@ int main(int argc, char *argv[]) {
 		cout << "\t- " << argv[i] << endl;
 	}*/
  
-	if (argc < 3)
+	if (argc < 4)
 	{
-		cout << "Not enough Arguments\nneeded: \"inputFilePath\" \"outputFilePath\"" << endl;
+		cout << "Not enough Arguments\nneeded: \"inputFilePath\" \"outputFilePath\" numOfClusters" << endl;
 		return -1;
 	}
 	
 	string inputFileName = argv[1];//"Data/RandomGenerated/Points2D.txt";
 	string outputFileName = argv[2];//"Data/OutputData/ClusteredData/ClusterOut2DNew.csv";
+	int numberOfCluster = stoi(argv[3]);
 
 	// ==== Parsing of Points ==== //
 
 	
-	int numberOfCluster = 15;
+	
 
 	//Printer printer = Printer();
 	PointParser parser =  PointParser(inputFileName);
 
 	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
-
-	/*
-	// Einige Punkte Clustern
-	points->at(0).setCluster(1);
-	points->at(1).setCluster(1);
-	points->at(2).setCluster(2);
-	points->at(3).setCluster(2);
-	points->at(4).setCluster(points->at(3).getCluster());
-
-
-
-
-	for (int i = 0; i < (int) points->size(); i++){
-		std::cout << i << ": " << points->at(i).toString() << endl;
-	}*/
 
 	// ==== Testing of Distancefunction ==== //
 
@@ -70,14 +62,9 @@ int main(int argc, char *argv[]) {
 
 	// ==== Testing of Gonzalez ==== //
 
-	cout << "\n-----------------\nTesting Gonzales\n";
-	Gonzales gonzales = Gonzales();
-	double maxRadius = gonzales.makeGonzales(points, numberOfCluster);
-
-	/*
-	for (int i = 0; i < (int) points->size(); i++){
-		cout << i << ": " << points->at(i).toString() << endl;
-	}*/
+	cout << "\n-----------------\nTesting Gonzalez\n";
+	Gonzalez gonzalez = Gonzalez();
+	double maxRadius = gonzalez.makeGonzalez(points, numberOfCluster);
 
 	cout << "MaxRadius: " << maxRadius << endl;
 
@@ -98,8 +85,6 @@ int main(int argc, char *argv[]) {
 			outputFile << points->at(i).toCSV() << endl;
 		}
 	}
-
-
 
 	// ==== Clear-Up ==== //
 

@@ -1,11 +1,11 @@
-#include "Gonzales.h"
+#include "Gonzalez.h"
 #include <iostream> // std::cout; std::endl
 
-Gonzales::Gonzales(){}
+Gonzalez::Gonzalez(){}
 
-Gonzales::~Gonzales(){}
+Gonzalez::~Gonzalez(){}
 
-double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
+double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters){
 	// Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
 	int n = (int) points->size();
 
@@ -26,28 +26,18 @@ double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
 	for(int i = 1; i < n; i++){
 		// Distanz zum einzigen gewählten Zentrum
 		minDist[i] = points->at(0).distTo(points->at(i));
-		// Debug
-		//cout << minDist[i] << endl;
 	}
-	//cout << minDist << endl;
 
 	// Clusterzugehörigkeit eingragen O(n)
 	for(int i = 0; i < n; i++){
 		points->at(i).setCluster(0);
-		//cout << "Points at " << i << ": " << points.at(i).toString() << endl;
 	}
 
 	// So oft wie man Cluster haben will O(k)
 	for(int i = 1; i < clusters; i++){
-
-		// Debug
-		//cout << "Getting Center Number " << i << endl;
 		// Die Größte Distanz zu allen Clustern bestimmen (max von d_min) O(n)
 		double maxDist = minDist[0];
 		int maxIndex = 0;
-
-		// Debug
-		//cout << "Max Dist before: " << maxDist << endl;
 
 		for(int a = 1; a < n; a++){
 			if( maxDist < minDist[a]){
@@ -55,8 +45,6 @@ double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
 				maxIndex = a;
 			}
 		}
-		// Debug
-		//cout << "Max Dist after: " << maxDist << endl;
 
 		// Diesen Punkt zu neuem Zentrum machen O(1)
 		points->at(maxIndex).setToCenter();
@@ -73,15 +61,7 @@ double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
 			}
 		}
 
-		/* Debug
-		cout << "* * * * * * * \nPoints in Iteration" << i << endl;
-		for(int p = 0; p < n; p++){
-			cout << points->at(p).toString() << endl;
-		}*/
 	}
-
-	// Debug
-	//cout << "* * * * * * * \nEnd of search \n* * * * * * * " << endl;
 
 	// maximalen Radius zurückgeben (max of d_min)
 	double maxRad = minDist[0];
@@ -92,5 +72,4 @@ double Gonzales::makeGonzales(vector<ColoredPoint>* points, int clusters){
 	}
 
 	return maxRad;
-
 }
