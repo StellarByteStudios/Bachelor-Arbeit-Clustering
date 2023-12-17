@@ -1,4 +1,3 @@
-
 # Standartwerte
 INPUT=False
 OUTPUT=Output/
@@ -25,9 +24,21 @@ done
 
 
 
-# # Hilfs-Text (vielleicht irgendwann) # # 
+# # Hilfs-Text # # 
 if [ $HELP = "True" ]; then
-    echo -e "Hilfe Text wird ausgegeben\nneue zeile mit Text"
+    # echo -e "Hilfe Text wird ausgegeben\nneue zeile mit Text"
+    echo -e "    To use this Skript correctly you have to be in the same Folder as the
+    Makefile and the Executable.
+    Some Parameters have to be given: 
+    \t- input-data
+    
+    Options:
+    -i | --input [INPUT-FILE]\t\tFile, where the Data to be Clustered is coming from (required)\n
+    -o | --output [OUTPUT-FOLDER]\tFolder, where the Outputdata is saved. If it isn't existing it will be created (Standard: $OUTPUT)\n
+    -c | --maxCluster [MAXCLUSTER]\tWhat is the maximum of Clusters to be generated (Standard: $CLUSTER)\n
+    -n | --dataName [NAME]\t\tThe Outputfiles are Named \"Clusterdata[NAME]Cluster[i].csv\" (Standard: $DATANAME)\n
+    -h | --help \t\t\tgenerates this Help-Output
+    "
     # Abbruch, dass programm nicht merh weiter geht
     exit 0
 fi
@@ -63,5 +74,3 @@ done
 #echo "$INPUT"
 #echo "$OUTPUT"
 #echo "$CLUSTER"
-
-
