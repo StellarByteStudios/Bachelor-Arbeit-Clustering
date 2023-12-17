@@ -100,3 +100,5 @@
         6) Verbindung Testen mit `ssh -T git@gitlab.cs.uni-duesseldorf.de`
     * Lesezeichen auf StellarBuntu angelegt
     * Übertragen des Pads auf das Repo zum Backup
+
+Auto-Merch auf beide Repos testen
