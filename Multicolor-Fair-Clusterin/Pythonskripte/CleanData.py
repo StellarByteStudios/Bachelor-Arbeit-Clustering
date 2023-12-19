@@ -22,50 +22,12 @@ def main():
     
     
     # # Dateien normalisieren
-    
-    
     # Zensusdaten
     normalizeCensus(pathRawCensus, pathNormalizedCensus)
-    """
-    # Daten als String holen
-    f = open(pathRawCensus,'r')
-    filedata = f.read()
-    f.close()
-    # Überschrifften hinzufügen
-    captions = "age,workclass,fnlwgt,education,education-num,marital-status,"\
-            "occupation,relationship,race,sex,capital-gain,capital-loss,"\
-            "hours-per-week,native-country,income\n"
-            
-    newdata = captions + filedata
-    
-    
-    # Neue Daten in Datei schreiben
-    f = open(pathNormalizedCensus,'w')
-    f.write(newdata)
-    f.close()
-    """
-    
+
     # Bankdaten
     normalizeBank(pathRawBank, pathNormalizedBank)
-    
-    """
-    # Daten als String holen
-    f = open(pathRawBank,'r')
-    filedata = f.read()
-    f.close()
-    
-    # Anführungszeichen löschen
-    newdata = filedata.replace('"','')
-    # Semicola löschen
-    newdata = newdata.replace(';',',')
-            
-    
-    
-    # Neue Daten in Datei schreiben
-    f = open(pathNormalizedBank,'w')
-    f.write(newdata)
-    f.close()
-    """
+
     
     # Daten in Pandas Tabelle
     pdFrameCensus = readPandaFromFile(pathNormalizedCensus)
