@@ -42,6 +42,24 @@ def main():
     print(pdFrameCensus.head(10))
     print(pdFrameBank.head(10))
     
+    # Verhältnisse des Kritischen Features testen
+    # Zensus
+    print("---- Census Ratio ----")
+    pdCensusBySex = pdFrameCensus.groupby("sex").size()
+    print(pdCensusBySex[:]) # Female 10771 / Male 21790
+    ratioCensus = pdCensusBySex['Male']/pdCensusBySex['Female']
+    print(f"Verhältniss Male/Female bei Zensus: {ratioCensus}")
+    
+    
+    # Bank 
+    print("---- Bank Ratios ----")
+    pdBankByMartial = pdFrameCensus.groupby("marital-status").size()
+    print(pdBankByMartial[:])
+    
+    # Married <--> not Married zusammensetzten
+    #ratioBank = pdBankByMartial['Female']/pdBankByMartial['Male']
+    #print(f"Verhältniss Female/Male bei Zensus: {ratioBank}")
+    
     #
     
     # # # Spalten Aussortieren # # #
