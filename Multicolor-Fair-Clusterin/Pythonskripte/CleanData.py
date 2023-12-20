@@ -37,6 +37,8 @@ def main():
     
     
     
+    
+    
     # # # Daten Angucken # # #
     # Einfach mal ein paar einträge
     print(pdFrameCensus.head(10))
@@ -53,28 +55,29 @@ def main():
     
     # Bank 
     print("---- Bank Ratios ----")
-    pdBankByMartial = pdFrameCensus.groupby("marital-status").size()
+    pdBankByMartial = pdFrameBank.groupby("marital").size()
     print(pdBankByMartial[:])
     
     # Neue Spalte für binäres Feature married <--> not married
-    pdFrameCensus["bin-martial"] = 0 
+    pdFrameBank["bin-martial"] = 0 
     
     # Liste an Status, die ich als married interpretiere
-    martialStatusList = ["Married-AF-spouse", "Married-civ-spouse", "Married-spouse-absent"]
+    #martialStatusList = ["married", "Married-civ-spouse", "Married-spouse-absent"]
     
-    for status in martialStatusList:
-        pdFrameCensus.loc[pdFrameCensus["marital-status"] == status, "bin-martial"] = 1
-    print(pdFrameCensus[["age", "workclass", "marital-status", "bin-martial"]].head(10))    
+    #for status in martialStatusList:
+    #    pdFrameBank.loc[pdFrameBank["marital-status"] == status, "bin-martial"] = 1
     
+    pdFrameBank.loc[pdFrameBank["marital"] == "married", "bin-martial"] = 1
+    print(pdFrameBank[["age", "job", "marital", "bin-martial"]].head(10))    
+
     # Nochmal neu gruppieren
     print("---- Binary Bank Ratio ----")
-    pdBankByMartial = pdFrameCensus.groupby("bin-martial").size()
+    pdBankByMartial = pdFrameBank.groupby("bin-martial").size()
     print(pdBankByMartial[:])
-    # Married <--> not Married zusammensetzten
-    #ratioBank = pdBankByMartial['Female']/pdBankByMartial['Male']
-    #print(f"Verhältniss Female/Male bei Zensus: {ratioBank}")
-    
-    #
+
+
+
+
     
     # # # Spalten Aussortieren # # #
     
