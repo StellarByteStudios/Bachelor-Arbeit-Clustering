@@ -74,6 +74,8 @@ def main():
     print("---- Binary Bank Ratio ----")
     pdBankByMartial = pdFrameBank.groupby("bin-martial").size()
     print(pdBankByMartial[:])
+    ratioBank = pdCensusBySex[1]/pdCensusBySex[0]
+    print(f"Verhältniss married/not-married bei Zensus: {ratioBank}")
 
 
 
