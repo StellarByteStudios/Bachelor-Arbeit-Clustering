@@ -102,6 +102,19 @@ def main():
     
     
     # # # Subsamples erzeugen # # #
+    # Zensus
+    listOfCensusSamples = []
+    
+    """
+    for i in range(0, 10):
+        pdSubsampleCensus = pdFilteredCensus.drop(1000)
+        listOfCensusSamples.append(pdSubsampleCensus)
+    
+    print(listOfCensusSamples)
+    """
+    # Bank
+    #listOfBankSamples = []
+    
     
     # # # In einzelne Dateien speichern # # #
     
