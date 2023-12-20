@@ -7,6 +7,7 @@ into usable subsamples
 
 import numpy as np
 import pandas as pd
+import os 
 #import matplotlib.pyplot as plt
 
 
@@ -19,6 +20,8 @@ def main():
     pathRawBank = "../Data/Raw-Chierichetti/bank/bank-full.csv"
     pathNormalizedCensus = "../Data/Raw-Chierichetti/census/census-normalized.csv"
     pathNormalizedBank = "../Data/Raw-Chierichetti/bank/bank-normalized.csv"
+    pathCleanedCensus = "../Data/CleanedData/census"
+    pathCleanedBank = "../Data/CleanedData/bank"
     
     
     # # Dateien normalisieren
@@ -82,6 +85,21 @@ def main():
 
     
     # # # Spalten Aussortieren # # #
+    # Zensus
+    pdFilteredCensus = pdFrameCensus[["age", "fnlwgt", "education-num", "capital-gain", "hours-per-week"]]
+    print(pdFilteredCensus.head(10))
+    
+    # Bank
+    pdFilteredBank = pdFrameBank[["age", "balance", "duration"]]
+    print(pdFilteredBank.head(10))
+    
+    # # Cleaned-Data zwischendurch mal abspeichern
+    os.makedirs(pathCleanedCensus, exist_ok=True) 
+    saveToFile(pathCleanedCensus + "/census-cleaned.csv", pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
+    os.makedirs(pathCleanedBank, exist_ok=True) 
+    saveToFile(pathCleanedBank + "/bank-cleaned.csv", pdFilteredBank.to_csv(index=False, lineterminator="\n"))
+    
+    
     
     # # # Subsamples erzeugen # # #
     
