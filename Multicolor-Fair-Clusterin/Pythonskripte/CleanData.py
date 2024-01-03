@@ -27,7 +27,7 @@ def main():
     subSamSeed = 5
     
     # Dimensionierung der Subsamples
-    numOfSamples = 3
+    numOfSamples = 30
     subsampleSize = 1000
     
     
@@ -130,8 +130,14 @@ def main():
     
     
     
-    # # # In einzelne Dateien speichern # # #
     
+    
+    # # # In einzelne Dateien speichern # # #
+    # Zensus
+    safeListOfSamples(pathSubsamplesCensus, "censusSample-", listOfCensusSamples)
+    
+    # Bank
+    safeListOfSamples(pathSubsamplesBank, "bankSample-", listOfBankSamples)
     
     
     
@@ -205,13 +211,19 @@ def subsampleData(pdData, sampleSize = 1000, sampleCount = 10, seed = 0):
         
         #länge als Sanatiy-Check ausgeben
         print(f"Länge des Ursprungssatzes nach {i+1} Iteration/en: {len(pdData)}")
-            
-    
+             
     return dataList
 
 
-
-
+def safeListOfSamples(folder, naming, listOfSamples):
+    
+    counter = 0
+    for sample in listOfSamples:
+        saveToFile(folder, f"{naming}{counter}.csv", 
+                   sample.to_csv(index=False, lineterminator="\n"))
+        counter += 1
+        
+    return
 
 
 
