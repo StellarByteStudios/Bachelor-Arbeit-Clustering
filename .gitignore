@@ -1,11 +1,11 @@
 # # # Eigene Ignors # # #
 
 # Gereinigte Daten sollen nicht jedes mal mitgepusht werden
-Data/CleanedData/*
-Data/Subsamples/*
+Multicolor-Fair-Clusterin/Data/CleanedData/
+Multicolor-Fair-Clusterin/Data/Subsamples/
 
 # Geclusterde Daten nicht mit hochladen. Wollen nur die Auswertung
-Data/OutputData/clustered/*
+Multicolor-Fair-Clusterin/Data/OutputData/clustered/
 
 
 
