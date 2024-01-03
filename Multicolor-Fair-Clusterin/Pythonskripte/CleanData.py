@@ -18,10 +18,10 @@ def main():
     # Pfade Hardcoden
     pathRawCensus = "../Data/Raw-Chierichetti/census/adult.data"
     pathRawBank = "../Data/Raw-Chierichetti/bank/bank-full.csv"
-    pathNormalizedCensus = "../Data/Raw-Chierichetti/census/census-normalized.csv"
-    pathNormalizedBank = "../Data/Raw-Chierichetti/bank/bank-normalized.csv"
-    pathCleanedCensus = "../Data/CleanedData/census"
-    pathCleanedBank = "../Data/CleanedData/bank"
+    pathNormalizedData = "../Data/Raw-Chierichetti/normalized"
+    pathCleanedData = "../Data/CleanedData"
+    pathSubsamplesCensus = "../Data/Subsamples/census"
+    pathSubsamplesBank = "../Data/Subsamples/bank"
     
     # Seed für Subsamples
     subSamSeed = 5
@@ -33,15 +33,15 @@ def main():
     
     # # Dateien normalisieren
     # Zensusdaten
-    normalizeCensus(pathRawCensus, pathNormalizedCensus)
+    normalizeCensus(pathRawCensus, pathNormalizedData)
 
     # Bankdaten
-    normalizeBank(pathRawBank, pathNormalizedBank)
+    normalizeBank(pathRawBank, pathNormalizedData)
 
     
     # Daten in Pandas Tabelle
-    pdFrameCensus = readPandaFromFile(pathNormalizedCensus)
-    pdFrameBank = readPandaFromFile(pathNormalizedBank)
+    pdFrameCensus = readPandaFromFile(pathNormalizedData + "/census-normalized.csv")
+    pdFrameBank = readPandaFromFile(pathNormalizedData + "/bank-normalized.csv")
     
     
     
@@ -101,12 +101,12 @@ def main():
     print(pdFilteredBank.head(10))
     
     # # Cleaned-Data zwischendurch mal abspeichern
-    os.makedirs(pathCleanedCensus, exist_ok=True) 
-    saveToFile(pathCleanedCensus + "/census-cleaned.csv", 
+    #os.makedirs(pathCleanedCensus, exist_ok=True) 
+    saveToFile(pathCleanedData, "census-cleaned.csv", 
                pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
     
-    os.makedirs(pathCleanedBank, exist_ok=True) 
-    saveToFile(pathCleanedBank + "/bank-cleaned.csv", 
+    #os.makedirs(pathCleanedBank, exist_ok=True) 
+    saveToFile(pathCleanedData, "bank-cleaned.csv", 
                pdFilteredBank.to_csv(index=False, lineterminator="\n"))
     
     
@@ -117,7 +117,7 @@ def main():
     listOfCensusSamples = subsampleData(pdFilteredCensus, sampleSize = subsampleSize, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
-    print() # neue Zeile
+    print("\n# Samples of Census #") # neue Zeile
     [print(listOfCensusSamples[i].head(5)) for i in range(0, numOfSamples)]
     
     
@@ -125,10 +125,15 @@ def main():
     listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSize, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
-    print() # neue Zeile
+    print("\n# Samples of Bank #") # neue Zeile
     [print(listOfBankSamples[i].head(5)) for i in range(0, numOfSamples)]
     
+    
+    
     # # # In einzelne Dateien speichern # # #
+    
+    
+    
     
     
     print("\n\n ---- After all --- \n\n")
@@ -143,8 +148,9 @@ def readPandaFromFile(path):
     return pandaDataset
 
 
-def saveToFile(path, content):   
-    f = open(path,'w')
+def saveToFile(path, filename, content): 
+    os.makedirs(path, exist_ok=True) 
+    f = open(path + "/" + filename,'w')
     f.write(content)
     f.close()
     return
@@ -165,7 +171,7 @@ def normalizeCensus(rawPath, normalizedPath):
     newdata = newdata.replace(' ','')
     
     # Neue Daten in Datei schreiben
-    saveToFile(normalizedPath, newdata)
+    saveToFile(normalizedPath, "census-normalized.csv", newdata)
     return
 
 def normalizeBank(rawPath, normalizedPath):
@@ -180,7 +186,7 @@ def normalizeBank(rawPath, normalizedPath):
     newdata = newdata.replace(';',',')
     
     # Neue Daten in Datei schreiben
-    saveToFile(normalizedPath, newdata)    
+    saveToFile(normalizedPath, "bank-normalized.csv", newdata)    
     return
 
 
