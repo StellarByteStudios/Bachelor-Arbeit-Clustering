@@ -27,7 +27,7 @@ def main():
     subSamSeed = 5
     
     # Dimensionierung der Subsamples
-    numOfSamples = 30
+    numOfSamples = 40
     subsampleSize = 1000
     
     
@@ -117,16 +117,21 @@ def main():
     listOfCensusSamples = subsampleData(pdFilteredCensus, sampleSize = subsampleSize, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
-    print("\n# Samples of Census #") # neue Zeile
-    [print(listOfCensusSamples[i].head(5)) for i in range(0, numOfSamples)]
-    
     
     # Bank
     listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSize, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
+    # Ein paar Beispiele ausgeben
+    shownum = 3
+    if numOfSamples < shownum:
+        shownum = numOfSamples
+    
+    print("\n# Samples of Census #") # neue Zeile
+    [print(listOfCensusSamples[i].head(5)) for i in range(0, shownum)]
+    
     print("\n# Samples of Bank #") # neue Zeile
-    [print(listOfBankSamples[i].head(5)) for i in range(0, numOfSamples)]
+    [print(listOfBankSamples[i].head(5)) for i in range(0, shownum)]
     
     
     
@@ -197,10 +202,19 @@ def normalizeBank(rawPath, normalizedPath):
 
 
 def subsampleData(pdData, sampleSize = 1000, sampleCount = 10, seed = 0):
+    # Sicherung falls Zahlen nicht passen
+    instances = len(pdData.index)
+    
+    if instances < sampleSize * sampleCount:
+        print(f"!- - Not enough instances ({instances}) for sampling Dataset to {sampleSize} by {sampleCount} Sets ({sampleSize*sampleCount} Instances needed)- -!")
+    
+        while instances < sampleSize * sampleCount:
+            sampleCount -= 1
+        print(f"reduced to {sampleCount} samples\nnow using {sampleSize*sampleCount} of {instances} Instances\n")
 
+    # Leere Liste in welche die Daten reinkommen
     dataList = []
-    
-    
+
     for i in range(0, sampleCount):
         # Sample holen
         pdSubsample = pdData.sample(n=sampleSize, random_state=seed)
