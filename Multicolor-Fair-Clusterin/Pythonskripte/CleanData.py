@@ -152,7 +152,7 @@ def main():
     
     
     
-    print("\n\n ---- After all --- \n\n")
+    print("\n\n ------ Cleaning ans Sampling finished ------ \n\n")
     return
 
 
