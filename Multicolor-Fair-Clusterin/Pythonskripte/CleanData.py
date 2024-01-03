@@ -4,7 +4,6 @@ Skript to roughly analyse given Data by Chierichetti and divide it
 into usable subsamples
 """
 
-import numpy as np
 import pandas as pd
 import os 
 import shutil
