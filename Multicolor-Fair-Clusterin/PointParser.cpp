@@ -29,6 +29,12 @@ vector<ColoredPoint>* PointParser::parseFile(){
     // Punktez�hler
     int numberOfPoints = 0;
 
+    // Dimensionen bestimmen
+    // Erste Zeile als String holen
+    string firstLine;
+    std::getline(file, firstLine);
+    int dim = this->countDim(firstLine);
+
     // St�ck f�r St�ck durch das File gehen und einlesen
     while (!file.eof() && numberOfPoints < MAXPOINTS){
         // Zeile als String holen
@@ -36,26 +42,20 @@ vector<ColoredPoint>* PointParser::parseFile(){
         std::getline(file, line);
 
         // Gunddaten anlegen
-        int dim;
         int colorAsInt;
         Pointcolor color;
 
-        // Grunddaten aus dem String holen
+        // Farbe aus dem String holen
         size_t pos = 0;
-        // Dimensionen
-        pos = line.find(',');
-        dim = atoi(line.substr(0, pos).c_str());
-        line.erase(0, pos + 1);
-        // Farbe
         pos = line.find(',');
         colorAsInt = atoi(line.substr(0, pos).c_str());
         line.erase(0, pos + 1);
         color = static_cast<Pointcolor>(colorAsInt);
 
         // Abbruchfall f�r die letzte Zeile
-        if (dim < 1){
-            break;
-        }
+        //if (colorAsInt < 1){
+        //    break;
+        //}
 
         // Array f�r Punkte anlegen
         double coords[dim];
@@ -80,4 +80,16 @@ vector<ColoredPoint>* PointParser::parseFile(){
     }
 
 	return points;
+}
+
+int PointParser::countDim(string line){
+    int coms = 0;
+    // Durch alle Character des Strings durchgehen
+    for (int i = 0; i < (int) line.length(); i++){
+        // ist der Character ein Komma?
+        if (line[i] == ','){
+            coms++;
+        }
+    }
+    return coms;
 }

@@ -32,4 +32,6 @@ public:
 
 private:
 	string path;
+
+	int countDim(string);
 };
