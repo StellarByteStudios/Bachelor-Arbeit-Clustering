@@ -23,6 +23,13 @@ def main():
     pathCleanedCensus = "../Data/CleanedData/census"
     pathCleanedBank = "../Data/CleanedData/bank"
     
+    # Seed für Subsamples
+    subSamSeed = 5
+    
+    # Dimensionierung der Subsamples
+    numOfSamples = 3
+    subsampleSize = 1000
+    
     
     # # Dateien normalisieren
     # Zensusdaten
@@ -49,7 +56,7 @@ def main():
     
     # Verhältnisse des Kritischen Features testen
     # Zensus
-    print("---- Census Ratio ----")
+    print("\n---- Census Ratio ----\n")
     pdCensusBySex = pdFrameCensus.groupby("sex").size()
     print(pdCensusBySex[:]) # Female 10771 / Male 21790
     ratioCensus = pdCensusBySex['Male']/pdCensusBySex['Female']
@@ -57,7 +64,7 @@ def main():
     
     
     # Bank 
-    print("---- Bank Ratios ----")
+    print("\n---- Bank Ratios ----\n")
     pdBankByMartial = pdFrameBank.groupby("marital").size()
     print(pdBankByMartial[:])
     
@@ -74,7 +81,7 @@ def main():
     print(pdFrameBank[["age", "job", "marital", "bin-martial"]].head(10))    
 
     # Nochmal neu gruppieren
-    print("---- Binary Bank Ratio ----")
+    print("\n---- Binary Bank Ratio ----\n")
     pdBankByMartial = pdFrameBank.groupby("bin-martial").size()
     print(pdBankByMartial[:])
     ratioBank = pdCensusBySex[1]/pdCensusBySex[0]
@@ -95,31 +102,36 @@ def main():
     
     # # Cleaned-Data zwischendurch mal abspeichern
     os.makedirs(pathCleanedCensus, exist_ok=True) 
-    saveToFile(pathCleanedCensus + "/census-cleaned.csv", pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
+    saveToFile(pathCleanedCensus + "/census-cleaned.csv", 
+               pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
+    
     os.makedirs(pathCleanedBank, exist_ok=True) 
-    saveToFile(pathCleanedBank + "/bank-cleaned.csv", pdFilteredBank.to_csv(index=False, lineterminator="\n"))
+    saveToFile(pathCleanedBank + "/bank-cleaned.csv", 
+               pdFilteredBank.to_csv(index=False, lineterminator="\n"))
     
     
     
     # # # Subsamples erzeugen # # #
+    print("\n\n---- Create Sub Samples ---- \n")
     # Zensus
-    listOfCensusSamples = []
+    listOfCensusSamples = subsampleData(pdFilteredCensus, sampleSize = subsampleSize, 
+                                        sampleCount = numOfSamples, seed = subSamSeed)
     
-    """
-    for i in range(0, 10):
-        pdSubsampleCensus = pdFilteredCensus.drop(1000)
-        listOfCensusSamples.append(pdSubsampleCensus)
+    print() # neue Zeile
+    [print(listOfCensusSamples[i].head(5)) for i in range(0, numOfSamples)]
     
-    print(listOfCensusSamples)
-    """
+    
     # Bank
-    #listOfBankSamples = []
+    listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSize, 
+                                        sampleCount = numOfSamples, seed = subSamSeed)
     
+    print() # neue Zeile
+    [print(listOfBankSamples[i].head(5)) for i in range(0, numOfSamples)]
     
     # # # In einzelne Dateien speichern # # #
     
     
-    
+    print("\n\n ---- After all --- \n\n")
     return
 
 
@@ -170,6 +182,26 @@ def normalizeBank(rawPath, normalizedPath):
     # Neue Daten in Datei schreiben
     saveToFile(normalizedPath, newdata)    
     return
+
+
+def subsampleData(pdData, sampleSize = 1000, sampleCount = 10, seed = 0):
+
+    dataList = []
+    
+    
+    for i in range(0, sampleCount):
+        # Sample holen
+        pdSubsample = pdData.sample(n=sampleSize, random_state=seed)
+        # Aus original Set löschen
+        pdData = pdData.drop(pdSubsample.index)
+        # In die Liste der Subsamples hinzufügen
+        dataList.append(pdSubsample)
+        
+        #länge als Sanatiy-Check ausgeben
+        print(f"Länge des Ursprungssatzes nach {i+1} Iteration/en: {len(pdData)}")
+            
+    
+    return dataList
 
 
 
