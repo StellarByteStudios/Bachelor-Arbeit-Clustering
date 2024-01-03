@@ -96,11 +96,15 @@ def main():
     
     # # # Spalten Aussortieren # # #
     # Zensus
-    pdFilteredCensus = pdFrameCensus[["age", "fnlwgt", "education-num", "capital-gain", "hours-per-week"]]
+    pdFrameCensus["kritFeature"] = 0 
+    pdFrameCensus.loc[pdFrameCensus["sex"] == "Female", "kritFeature"] = 1
+    pdFilteredCensus = pdFrameCensus[["kritFeature", "age", "fnlwgt", "education-num", "capital-gain", "hours-per-week"]]
     print(pdFilteredCensus.head(10))
     
     # Bank
-    pdFilteredBank = pdFrameBank[["age", "balance", "duration"]]
+    pdFrameBank["kritFeature"] = 0 
+    pdFrameBank.loc[pdFrameBank["bin-martial"] == "married", "kritFeature"] = 1
+    pdFilteredBank = pdFrameBank[["kritFeature", "age", "balance", "duration"]]
     print(pdFilteredBank.head(10))
     
     # # Cleaned-Data zwischendurch mal abspeichern
@@ -174,8 +178,9 @@ def flushFiles(listOfFolders):
     print("\n---- Deleting Folders with files ----")
     
     for path in listOfFolders:
-        print(f"Delete Folder {path}")    
-        shutil.rmtree(path, ignore_errors=False)  
+        print(f"Delete Folder {path}") 
+        if os.path.isdir(path):
+            shutil.rmtree(path, ignore_errors=False)  
     
     return
 
