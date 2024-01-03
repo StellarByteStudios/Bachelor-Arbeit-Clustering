@@ -8,7 +8,7 @@ into usable subsamples
 import numpy as np
 import pandas as pd
 import os 
-#import matplotlib.pyplot as plt
+import shutil
 
 
 
@@ -27,8 +27,15 @@ def main():
     subSamSeed = 5
     
     # Dimensionierung der Subsamples
-    numOfSamples = 40
-    subsampleSize = 1000
+    numOfSamples = 20
+    subsampleSizeCensus = 600
+    subsampleSizeBank = 1000
+    
+    
+    
+    # # Ordner Spülen
+    foldersToDelete = [pathNormalizedData, pathCleanedData, pathSubsamplesCensus, pathSubsamplesBank]
+    flushFiles(foldersToDelete)   
     
     
     # # Dateien normalisieren
@@ -85,6 +92,9 @@ def main():
 
 
 
+
+
+
     
     # # # Spalten Aussortieren # # #
     # Zensus
@@ -96,25 +106,27 @@ def main():
     print(pdFilteredBank.head(10))
     
     # # Cleaned-Data zwischendurch mal abspeichern
-    #os.makedirs(pathCleanedCensus, exist_ok=True) 
     saveToFile(pathCleanedData, "census-cleaned.csv", 
                pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
     
-    #os.makedirs(pathCleanedBank, exist_ok=True) 
     saveToFile(pathCleanedData, "bank-cleaned.csv", 
                pdFilteredBank.to_csv(index=False, lineterminator="\n"))
+    
+    
+    
     
     
     
     # # # Subsamples erzeugen # # #
     print("\n\n---- Create Sub Samples ---- \n")
     # Zensus
-    listOfCensusSamples = subsampleData(pdFilteredCensus, sampleSize = subsampleSize, 
+    print("Create Subs of Census:")
+    listOfCensusSamples = subsampleData(pdFilteredCensus, sampleSize = subsampleSizeCensus, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
-    
+    print("\nCreate Subs of Bank:")
     # Bank
-    listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSize, 
+    listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSizeBank, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
     # Ein paar Beispiele ausgeben
@@ -146,6 +158,28 @@ def main():
     return
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+def flushFiles(listOfFolders):
+    
+    print("\n---- Deleting Folders with files ----")
+    
+    for path in listOfFolders:
+        print(f"Delete Folder {path}")    
+        shutil.rmtree(path, ignore_errors=False)  
+    
+    return
 
 
 
