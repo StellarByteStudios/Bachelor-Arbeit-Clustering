@@ -69,22 +69,17 @@ def main():
     print(pdBankByMartial[:])
     
     # Neue Spalte für binäres Feature married <--> not married
-    pdFrameBank["bin-martial"] = 0 
+    pdFrameBank["bin-martial"] = "not-married" 
     
-    # Liste an Status, die ich als married interpretiere
-    #martialStatusList = ["married", "Married-civ-spouse", "Married-spouse-absent"]
     
-    #for status in martialStatusList:
-    #    pdFrameBank.loc[pdFrameBank["marital-status"] == status, "bin-martial"] = 1
-    
-    pdFrameBank.loc[pdFrameBank["marital"] == "married", "bin-martial"] = 1
+    pdFrameBank.loc[pdFrameBank["marital"] == "married", "bin-martial"] = "married"
     print(pdFrameBank[["age", "job", "marital", "bin-martial"]].head(10))    
 
     # Nochmal neu gruppieren
     print("\n---- Binary Bank Ratio ----\n")
     pdBankByMartial = pdFrameBank.groupby("bin-martial").size()
     print(pdBankByMartial[:])
-    ratioBank = pdCensusBySex[1]/pdCensusBySex[0]
+    ratioBank = pdBankByMartial["married"]/pdBankByMartial["not-married"]
     print(f"Verhältniss married/not-married bei Zensus: {ratioBank}")
 
 
