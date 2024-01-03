@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Skript to roughly analyse given Data by Chierichetti and divide it
