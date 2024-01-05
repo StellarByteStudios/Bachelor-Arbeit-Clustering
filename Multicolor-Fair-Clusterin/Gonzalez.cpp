@@ -1,10 +1,6 @@
 #include "Gonzalez.h"
 #include <iostream> // std::cout; std::endl
 
-Gonzalez::Gonzalez(){}
-
-Gonzalez::~Gonzalez(){}
-
 double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters){
 	// Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
 	int n = (int) points->size();

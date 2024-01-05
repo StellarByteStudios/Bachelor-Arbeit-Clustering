@@ -6,16 +6,7 @@
 
 using namespace std;
 
-class Gonzalez{
-public:
-	/* Konstruktor
-	*/
-	Gonzalez();
-
-	/* Destruktor
-	*/
-	~Gonzalez();
-
+namespace Gonzalez{
 	/* Gonzales-Algorithm
 	* Calculates the good Centers for given Points
 	*
@@ -25,6 +16,4 @@ public:
 	* @return max radius
 	*/
 	double makeGonzalez(vector<ColoredPoint>*, int);
-
-private:
 };

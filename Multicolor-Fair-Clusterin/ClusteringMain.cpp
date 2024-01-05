@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
 	// ==== Testing of Distancefunction ==== //
 
-	cout << "\nTesting Distance\n";
+	cout << "\nTesting Distance Funktion: \n";
 
 	double coord1[] = { 0, 2 };
 	ColoredPoint point1 = ColoredPoint(2, RED, coord1);
@@ -54,23 +54,23 @@ int main(int argc, char *argv[]) {
 	double coord2[] = { 0, 0 };
 	ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
 
-	cout << "Distance Hard: " << point1.distTo(point2) << endl;
-	cout << "Distance ReadIn: " << points->at(0).distTo(points->at(1)) << endl;
+	cout << "Distance Hardcoded Points: " << point1.distTo(point2) << endl;
+	cout << "Distance ReadIn Points: " << points->at(0).distTo(points->at(1)) << endl;
 
 
 
 
 	// ==== Testing of Gonzalez ==== //
 
-	cout << "\n-----------------\nTesting Gonzalez\n";
-	Gonzalez gonzalez = Gonzalez();
-	double maxRadius = gonzalez.makeGonzalez(points, numberOfCluster);
+	cout << "\n-----------------\nTesting Gonzalez: \n";
+
+	double maxRadius = Gonzalez::makeGonzalez(points, numberOfCluster);
 
 	cout << "MaxRadius: " << maxRadius << endl;
 
 	// ==== Write Clusterdata into File ==== //
 
-	cout << "\n-----------------\nWrite Data into File\n";
+	cout << "\n-----------------\nWrite Data into File:\n";
 
 	ofstream outputFile = ofstream(outputFileName, ios::out);
 
@@ -91,5 +91,5 @@ int main(int argc, char *argv[]) {
 	// vector für Punkte wieder Freigeben
 	delete points;
 
-	cout << "End Program" << endl;
+	cout << "\n-----------------\nEnd Program" << endl;
 }
