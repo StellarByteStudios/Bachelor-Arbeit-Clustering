@@ -52,10 +52,10 @@ vector<ColoredPoint>* PointParser::parseFile(){
         line.erase(0, pos + 1);
         color = static_cast<Pointcolor>(colorAsInt);
 
-        // Abbruchfall f�r die letzte Zeile
-        //if (colorAsInt < 1){
-        //    break;
-        //}
+        //Abbruchfall für die letzte Zeile (leerzeilen)
+        if (line.size() < 1){
+            break;
+        }
 
         // Array f�r Punkte anlegen
         double coords[dim];

@@ -108,11 +108,12 @@ int main(int argc, char *argv[]) {
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
 	}
-	cout << "Points: " << endl;
+	
+	//cout << "Points: " << endl;
 	// punkte anzeigen
-	for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
-		cout << "\t- " << i << ": " << returnValues->clusteredPoints->at(i).toString() << endl;
-	}
+	//for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
+	//	cout << "\t- " << i << ": " << returnValues->clusteredPoints->at(i).toString() << endl;
+	//}
 
 
 	
