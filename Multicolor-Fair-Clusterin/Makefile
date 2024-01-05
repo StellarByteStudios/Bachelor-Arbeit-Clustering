@@ -1,26 +1,41 @@
 CC = g++
 CFLAGS = -Wall -g
-NAME = Fair-Clustering
+BINNAME = Fair-Clustering
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
-OUTPUTFILE = Data/OutputData/MakefileTest/ClusterOut.csv
+OUTPUTFOLDER = Data/OutputData/MakefileTest/
+OUTPUTFILENAME = ClusterOut.csv
 CLUSTERNUM = 5
-ARGS = $(INPUTFILE) $(OUTPUTFILE) $(CLUSTERNUM)
+ARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h
 CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzalez.cpp
 
 
 
 
-all: $(NAME)
-	./$(NAME) $(ARGS)
+all: $(BINNAME)
+	mkdir -p $(OUTPUTFOLDER)
+	./$(BINNAME) $(ARGS)
 
-$(NAME): $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN)
+$(BINNAME): $(HDATEIEN) $(CPPDATEIEN)
+	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN)
 	
 build: $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(NAME) $(CPPDATEIEN)
+	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN)
 
 
-val: $(NAME)
-	valgrind ./$(NAME) $(ARGS)
+val: $(BINNAME)
+	valgrind ./$(BINNAME) $(ARGS)
+
+printVar: Makefile
+
+#	echo "CC: $(CC)"
+#	echo "CFLAGS: $(CFLAGS)"
+#	echo "BINNAME: $(BINNAME)"
+#	echo "INPUTFILE: $(INPUTFILE)"
+#	echo "OUTPUTFOLDER: $(OUTPUTFOLDER)"
+#	echo "OUTPUTFILENAME: $(OUTPUTFILENAME)"
+#	echo "CLUSTERNUM: $(CLUSTERNUM)"
+	echo "ARGS: $(ARGS)"
+#	echo "HDATEIEN: $(HDATEIEN)"
+#	echo "CPPDATEIEN: $(CPPDATEIEN)" 
 	
