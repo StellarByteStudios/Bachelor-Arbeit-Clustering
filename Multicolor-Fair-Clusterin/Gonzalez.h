@@ -7,6 +7,30 @@
 using namespace std;
 
 namespace Gonzalez{
+	/* Gonzalez Return Struct
+	* Struct with all importent Values returned
+	* by the Gonzalez-Algorithm
+	*
+	* clusteredPoints: Deep-Copy of Points with Clustersignature
+	* centers: List of all Centers as Points
+	* maxRadius: value of the calculated maxRadius
+	*/
+	typedef struct GonzalezReturns_s
+	{
+		vector<ColoredPoint>* clusteredPoints;
+		vector<ColoredPoint>* centers;
+		double maxRadius;
+	}GonzalezReturnValues;
+
+	// Creating an empty Struct for Gonzalez
+	GonzalezReturnValues initGonzalezReturns();
+
+	// Clean-Up for Gonzalez Returnvalues
+	void deleteGonzalezReturns(GonzalezReturnValues);
+	
+
+
+
 	/* Gonzales-Algorithm
 	* Calculates the good Centers for given Points
 	*
