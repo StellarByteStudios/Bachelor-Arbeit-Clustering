@@ -28,7 +28,8 @@ class Colorpoint:
     # To-String-Metode für die Datei später
     # Format: dim,color,coord1,coord2,...,coordn
     def toString(self):
-        stringRep = str(self.dim) + "," + str(self.color) + ","
+        #stringRep = str(self.dim) + "," + str(self.color) + ","
+        stringRep = str(self.color) + ","
         for i in range(0, self.dim - 1):
             stringRep += str(self.coordinates[i]) + ","
         stringRep += str(self.coordinates[self.dim - 1])
@@ -55,8 +56,12 @@ def main():
     
     # Punkte in Textdatei speichern
     with open(OutputFileName, 'w') as f:
-        # Kopf direkt weglassen
-        # f.write('Format: dim,color,coord1,coord2,...,coordn\n')
+        # Kopf für Dimberechnung wichtig
+        f.write('color')
+        for i in range(0, points[0].dim):
+            f.write(f',coord{i}')
+        f.write('\n')
+        
         for i in range(0, len(points)):
             f.write(points[i].toString())
             f.write('\n')
