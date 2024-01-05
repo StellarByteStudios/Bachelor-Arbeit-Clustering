@@ -2,36 +2,38 @@
 #include <iostream> // std::cout; std::endl
 
 
-double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters)
+Gonzalez::GonzalezReturnValues* Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters)
 {
     // Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
 	int n = (int) points->size();
 
 	if(n < clusters){
 		cout << "No valid ClusterCount" << endl;
-		return -1.0;
+		return nullptr;
 	}
 
-	// TODO: Returnstruct erstellen
-	// TODO: Deep-Copy von Punkten in Struct
+	// Returnstruct erstellen, sodass wir mehrere Werte zurückgeben können
+	GonzalezReturnValues* retValues = Gonzalez::createGonzalezReturns(points);
 
 	// Array für die Minimalen Distanzen erzeugen O(1)
 	// minDist = -1 => Punkt ist Zentrum
 	double minDist[n];
 
 	// Beliebiges erstes Zentrum wählen (Einfach Index 0) O(1)
-	points->at(0).setToCenter();
+	retValues->clusteredPoints->at(0).setToCenter();
+	retValues->clusteredPoints->at(0).setCluster(0);
+	retValues->centers->push_back(retValues->clusteredPoints->at(0));
 	minDist[0] = -1.0;
 
 	// Minimale Distanz ausrechnen O(n)
 	for(int i = 1; i < n; i++){
 		// Distanz zum einzigen gewählten Zentrum
-		minDist[i] = points->at(0).distTo(points->at(i));
+		minDist[i] = retValues->clusteredPoints->at(0).distTo(retValues->clusteredPoints->at(i));
 	}
 
 	// Clusterzugehörigkeit eingragen O(n)
 	for(int i = 0; i < n; i++){
-		points->at(i).setCluster(0);
+		retValues->clusteredPoints->at(i).setCluster(0);
 	}
 
 	// So oft wie man Cluster haben will O(k)
@@ -48,17 +50,20 @@ double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters)
 		}
 
 		// Diesen Punkt zu neuem Zentrum machen O(1)
-		points->at(maxIndex).setToCenter();
-		points->at(maxIndex).setCluster(i);
+		retValues->clusteredPoints->at(maxIndex).setToCenter();
+		retValues->clusteredPoints->at(maxIndex).setCluster(i);
+		retValues->centers->push_back(retValues->clusteredPoints->at(maxIndex));
+		minDist[maxIndex] = -1.0; // Soll nicht noch einem anderem Cluster zugeteilt werden
 
 		// Alle minimalen Distanzen aktuallisieren ggf. Clusterzugehörigkeit aktuallisieren O(n)
+		// Aber nur wenn nicht selbst schon Zentrum
 		for(int a = 0; a < n; a++){
-			double distToNewCenter = points->at(maxIndex).distTo(points->at(a));
+			double distToNewCenter = retValues->clusteredPoints->at(maxIndex).distTo(retValues->clusteredPoints->at(a));
 			if(distToNewCenter < minDist[a] ){
 				// Distanz aktualliesieren
 				minDist[a] = distToNewCenter;
 				// Clusterzugehörigkeit Aktuallisieren
-				points->at(a).setCluster(i);
+				retValues->clusteredPoints->at(a).setCluster(i);
 			}
 		}
 
@@ -72,7 +77,8 @@ double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters)
 		}
 	}
 
-	return maxRad;
+	retValues->maxRadius = maxRad;
+	return retValues;
 }
 
 Gonzalez::GonzalezReturnValues* Gonzalez::createGonzalezReturns(vector<ColoredPoint>* originalPoints){
@@ -84,7 +90,7 @@ Gonzalez::GonzalezReturnValues* Gonzalez::createGonzalezReturns(vector<ColoredPo
 	// Vielleicht hier schon Deep-Copy
 	values->clusteredPoints = new vector<ColoredPoint>(*originalPoints);
 	values->centers = new vector<ColoredPoint>();
-	values->maxRadius = -1;
+	values->maxRadius = -1.0;
 
     return values;
 }

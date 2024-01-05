@@ -100,9 +100,20 @@ int main(int argc, char *argv[]) {
 
 	cout << "\n-----------------\nTesting Gonzalez: \n";
 
-	double maxRadius = Gonzalez::makeGonzalez(points, numberOfCluster);
+	Gonzalez::GonzalezReturnValues* returnValues= Gonzalez::makeGonzalez(points, numberOfCluster);
 
-	cout << "MaxRadius: " << maxRadius << endl;
+	cout << "MaxRadius: " << returnValues->maxRadius << endl;
+	cout << "Centers: " << endl;
+	// Centren anzeigen
+	for (int i = 0; i < (int) returnValues->centers->size(); i++){
+		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
+	}
+	cout << "Points: " << endl;
+	// punkte anzeigen
+	for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
+		cout << "\t- " << i << ": " << returnValues->clusteredPoints->at(i).toString() << endl;
+	}
+
 
 	
 	
@@ -118,11 +129,11 @@ int main(int argc, char *argv[]) {
 		cout << "Error opening Outputfile" << endl;
 	} else{
 		// max Radius an den Anfang packen
-		outputFile << "maxRadius," << maxRadius << endl;
+		outputFile << "maxRadius," << returnValues->maxRadius << endl;
 
 		// Punte abspeichern
-		for (int i = 0; i < (int) points->size(); i++){
-			outputFile << points->at(i).toCSV() << endl;
+		for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
+			outputFile << returnValues->clusteredPoints->at(i).toCSV() << endl;
 		}
 	}
 

@@ -38,5 +38,5 @@ namespace Gonzalez{
 	*
 	* @return max radius
 	*/
-	double makeGonzalez(vector<ColoredPoint>*, int);
+	Gonzalez::GonzalezReturnValues* makeGonzalez(vector<ColoredPoint>*, int);
 };
