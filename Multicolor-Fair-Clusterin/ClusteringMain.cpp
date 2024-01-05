@@ -1,5 +1,6 @@
 #include <iostream> // std::cout; std::endl
 #include <fstream>  // ifstream (Dateien ein/auslesen)
+#include <string>
 
 #include "ColoredPoint.h"
 #include "PointParser.h"
@@ -59,7 +60,42 @@ int main(int argc, char *argv[]) {
 
 
 
+	// ==== Testing Gonzalez Struct==== //
 
+	cout << "\n-----------------\nTesting Struct: \n";
+
+	Gonzalez::GonzalezReturnValues* values;
+	values = Gonzalez::createGonzalezReturns(points);
+
+	values->centers->push_back(point1);
+	values->centers->push_back(point2);
+	values->maxRadius = 50;
+
+	
+	
+	cout << "First two Points of Readin: \n\t- " << points->at(0).toString() 
+	<< "\n\t- "<< points->at(1).toString() << endl;
+	
+	cout << "\nFirst two Points of Struct: \n\t- " << values->clusteredPoints->at(0).toString() 
+	<< "\n\t- "<< values->clusteredPoints->at(1).toString() << endl;
+	
+	cout << "\nCenters of Struct: \n\t-" << values->centers->at(0).toString() 
+	<< "\n\t-" << values->centers->at(1).toString() << endl;
+	
+	cout << "\nMax Radius: " << values->maxRadius << endl;
+
+
+	values->clusteredPoints->at(0).setToCenter();
+	values->clusteredPoints->at(0).setCluster(500);
+
+	
+	cout << "Ursprungsliste nicht verändert?: \n"
+	<< values->clusteredPoints->at(0).toString() << " \n!= \n" 
+	<< points->at(0).toString() << endl;
+
+	
+	
+	
 	// ==== Testing of Gonzalez ==== //
 
 	cout << "\n-----------------\nTesting Gonzalez: \n";
@@ -67,6 +103,10 @@ int main(int argc, char *argv[]) {
 	double maxRadius = Gonzalez::makeGonzalez(points, numberOfCluster);
 
 	cout << "MaxRadius: " << maxRadius << endl;
+
+	
+	
+
 
 	// ==== Write Clusterdata into File ==== //
 
@@ -90,6 +130,9 @@ int main(int argc, char *argv[]) {
 
 	// vector für Punkte wieder Freigeben
 	delete points;
+
+	// Struct für Gonzaleswerte wieder freigeben
+	Gonzalez::deleteGonzalezReturns(values);
 
 	cout << "\n-----------------\nEnd Program" << endl;
 }

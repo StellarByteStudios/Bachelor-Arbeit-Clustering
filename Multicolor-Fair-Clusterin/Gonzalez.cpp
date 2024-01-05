@@ -1,14 +1,19 @@
 #include "Gonzalez.h"
 #include <iostream> // std::cout; std::endl
 
-double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters){
-	// Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
+
+double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters)
+{
+    // Zählen wie viele Punkte (überhaubt genung für die Cluster) O(1)
 	int n = (int) points->size();
 
 	if(n < clusters){
 		cout << "No valid ClusterCount" << endl;
 		return -1.0;
 	}
+
+	// TODO: Returnstruct erstellen
+	// TODO: Deep-Copy von Punkten in Struct
 
 	// Array für die Minimalen Distanzen erzeugen O(1)
 	// minDist = -1 => Punkt ist Zentrum
@@ -68,4 +73,28 @@ double Gonzalez::makeGonzalez(vector<ColoredPoint>* points, int clusters){
 	}
 
 	return maxRad;
+}
+
+Gonzalez::GonzalezReturnValues* Gonzalez::createGonzalezReturns(vector<ColoredPoint>* originalPoints){
+	// Durch fällt das Gonzalez Weg vor jeder Typbeschreibung
+	using namespace Gonzalez;
+	
+	GonzalezReturnValues* values = new GonzalezReturnValues();
+	
+	// Vielleicht hier schon Deep-Copy
+	values->clusteredPoints = new vector<ColoredPoint>(*originalPoints);
+	values->centers = new vector<ColoredPoint>();
+	values->maxRadius = -1;
+
+    return values;
+}
+
+void Gonzalez::deleteGonzalezReturns(GonzalezReturnValues* values){
+	// Weiß noch nicht ob ich die Brauche
+	// Durch fällt das Gonzalez Weg vor jeder Typbeschreibung
+	//using namespace Gonzalez;
+
+	delete values->clusteredPoints;
+	delete values->centers;
+	delete values;
 }
