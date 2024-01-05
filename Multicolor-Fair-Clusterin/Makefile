@@ -1,7 +1,10 @@
 CC = g++
 CFLAGS = -Wall -g
 NAME = Fair-Clustering
-ARGS = Data/RandomGenerated/Points2D.txt Data/OutputData/PathTesting/ClusterOut2DPath.csv 4
+INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
+OUTPUTFILE = Data/OutputData/MakefileTest/ClusterOut.csv
+CLUSTERNUM = 5
+ARGS = $(INPUTFILE) $(OUTPUTFILE) $(CLUSTERNUM)
 HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h
 CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzalez.cpp
 
