@@ -6,7 +6,7 @@
 #include "ColoredPoint.h"
 
 #define MAXLINEPARSER 250
-#define MAXPOINTS 1000
+#define MAXPOINTS 10000
 
 using namespace std;
 
