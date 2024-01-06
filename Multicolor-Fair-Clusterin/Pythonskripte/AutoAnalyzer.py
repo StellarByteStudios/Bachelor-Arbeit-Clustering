@@ -1,5 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-Skript for Automate feeding of the Algorithms and Analyzing their data
+Skript for automate feeding of the algorithms and analyzing their data
 """
 
+import Points
+import os
+
+
+def main():
+    
+    return
+
+
+
+
+
+
+
+
+
+
+main()
