@@ -5,7 +5,15 @@
 * [x] Treffen mit Melanie und Daniel am 7.11 um 10:30
 * [x] Treffen mit Daniel am 20.11 um 15:00
 * [x] Treffen mit Daniel am 5.12 um 10:30
-* [ ] Treffen mit Daniel (Melanie?) am 8.1 um 13:00
+* [ ] Treffen mit Daniel ~~(Melanie?)~~ am 8.1 um 13:00
+* [ ] Vortrag von Irina zu ihrer Bachelor-Arbeit am 17.1 um 10:30
+* [ ] Treffen mit Daniel und Melanie am 18.1 um 12:00
+
+### Fragen an Besprechung
+* Wahl disjunkter Samples ok?
+
+
+
 ### To-Dos
 * [x] Gitprojekt aufsetzen
     * [x] Projektstrukur anlegen
@@ -13,16 +21,16 @@
     * [x] Auf GitHub hochladen
 * [x] Irinas Arbeit Lesen
     * [x] Gelesen bis S.13
-* [x] Gonzales implementieren
+* [x] Gonzalez implementieren
 * [x] Ein- Ausgabe normen
-* [ ] Subsamples machen
-* [ ] Skript für automatisches Testen
+* [x] Subsamples machen
+* [x] Skript für automatisches Testen
 * [ ] Linken der Libary
-* [ ] Daten reproduzierbar aus Paper?
-* [ ] Gozalez soll auch Zentren zurückgeben
+* [x] Daten reproduzierbar aus Paper? *so halb irgendwie*
+* [x] Gozalez soll auch Zentren zurückgeben
 * [ ] Danielgespräch Liste
-    * [ ] Zentrendistanz bei Wahl auf 0 setzten
-    * [ ] Liste um Zentren zurück zu geben
+    * [x] Zentrendistanz bei Wahl auf 0 setzten
+    * [x] Liste um Zentren zurück zu geben
     * [ ] Matching/Flussalgorithmen durchlesen `LibLemon`
         * Max Flow (PreFlow Alg)
     * [ ] Sanaty-Check (Distanzen zu Zentrum mit Max Radius Gegenchecken)
@@ -30,13 +38,47 @@
 ### Notizen zum Thema/Code
 * POpen um Konsolenbefehle auszuführen mit Python
 
+#### Daten
+* Diabetes:
+    * Punktwerte: age, time in hospital
+    * Fair-Attribut: gender (Verhältniss: --- TO-DO ---)
+    * Sample size: 1000
+    * Wird nicht repoduzierbar sein, da es sich bei den Referenzierten Daten lediglich um die Messungen handelt und sonst keine Patientendaten vorhanden sind. Auch sind nur die Daten von 70 Patienten dabei, was einiges weniger ist als 1000
+* Bank calls:
+    * Punktwerte:  age, balance, duration of call (Bereitsteller der Daten warnt vor der Verwendung von duration, aber für Benchmarking ok)
+    * Fair-Attribut: marital ~~status (married <-> not married [einige Möglichkeiten] (wähle mal Divorced, Never-Married und Widowed als not married))~~ es gibt single, married und divorced. Zahle single und divorced zusammen (Verhältniss: 27214 married / 17997 not-married ≈ 1.51)
+    * Sample size: 1000
+    * Wähle `bank-full.csv`
+        * Größerer Datensatz um selbst besser Randomisiert zu Samplen
+        * nicht additional, da es sich um Metadaten und nicht um anrufspezifische Daten handelt
+        * Sind sortiert nach Datum
+* Census:
+    * Punkwerte: age, fnlwgt(erklärung adult.names), education-num, capital-gain, hours-perweek
+    * Fair-Attribut: gender (Gibt nur Spalte Sex) (Verhältniss: Male 21790 / Female 10771 ≈ 2.02)
+    * Sample size: 600
+    * Es existiert ein Train-Test-Split, für mich irrelevant 
+    * --> wähle die Traindaten -> `adult.data`
+
 ## Hauptaufgaben/Plan
 * [x] Möglichkeit Punkte einzulesen von Datei
-    * [ ] Punkte des Papers
-* [x] Gonzales Implementieren
+    * [x] Punkte des Papers
+* [x] Gonzalez Implementieren
 * [x] Erste Auswertung mit Python
-* [ ] Reinigen der Quelldaten auf mein Format
-    * [ ] Subsamples machen
+* [x] Reinigen der Quelldaten auf mein Format
+    * [x] Subsamples machen
+
+### Als Nächstes
+1) Daten Putzen (CleanData.py)
+    2) Link von Daniel zu Paper nochmal angucken
+3) Analyse (Verhältnisse) fertig machen
+4) Subsamples erzeugen und abspeichern
+5) Struct für Rückgabe von Gonzalez erstellen
+    5) Aktualisierte Liste der Punkte (Deep-Copy)
+    6) Liste an Zentren
+    7) Max Radius
+8) Skript für Automatische Auswertung
+    9) Daten in Algorithmus Stecken (Über Feeder.sh)
+    10) Outputdaten einlesen und Plotten
 
 
 
@@ -140,7 +182,7 @@
         * Selber Ort wie oben: make -> make build
         * Run Funktioniert nur, wenn Run-Config ausgewählt
     * Formatierung der Klammern vereintlicht
-    * Angefangen Gonzales zu implementieren (und debuggen)
+    * Angefangen Gonzalez zu implementieren (und debuggen)
         * Tatsächlich fertig geworden
         * Erste Tests sehen vielversprechend aus
     * Möglichkeit eingebaut die geclusterten Punkte als CSV auszugeben für besseren Datentransver zwischen Programmen
@@ -182,7 +224,7 @@
             * Wird nicht repoduzierbar sein, da es sich bei den Referenzierten Daten lediglich um die Messungen handelt und sonst keine Patientendaten vorhanden sind. Auch sind nur die Daten von 70 Patienten dabei, was einiges weniger ist als 1000
         * Bank calls:
             * Punktwerte:  age, balance, duration of call (Bereitsteller der Daten warnt vor der Verwendung von duration, aber für Benchmarking ok)
-            * Fair-Attribut: marital status (married <-> not married [einige Möglichkeiten]) (Verhältniss: --- TO-DO ---)
+            * Fair-Attribut: marital ~~status (married <-> not married [einige Möglichkeiten] (wähle mal Divorced, Never-Married und Widowed als not married))~~ es gibt single, married und divorced. Zahle single und divorced zusammen (Verhältniss: 27214 married / 17997 not-married ≈ 1.51)
             * Sample size: 1000
             * Wähle `bank-full.csv`
                 * Größerer Datensatz um selbst besser Randomisiert zu Samplen
@@ -190,11 +232,10 @@
                 * Sind sortiert nach Datum
         * Census:
             * Punkwerte: age, fnlwgt(erklärung adult.names), education-num, capital-gain, hours-perweek
-            * Fair-Attribut: gender (Verhältniss: --- TO-DO ---)
+            * Fair-Attribut: gender (Gibt nur Spalte Sex) (Verhältniss: Male 21790 / Female 10771 ≈ 2.02)
             * Sample size: 600
             * Es existiert ein Train-Test-Split, für mich irrelevant 
             * --> wähle die Traindaten -> `adult.data`
-            * 
     * Wiki in Markdown eingerichtet
 * Mi: 13.12
     * 	[x] Mail an Daniel wegen fehlenden Diabetes-Daten
@@ -219,6 +260,87 @@
     * Auto-Merge Testen auf beiden Repos
         * Erfolgreich
     * Erneuertes Log hochgeladen
+* Mo: 18.12
+    * Überflüssige Outputdaten gelöscht (Pathtesting)
+    * Weg-Plan erstellen was jetzt als nächstes kommt
+* Di: 19.12
+    * Angefangen mit DataCleaner-Skript
+        * Kann schon die Zensusdaten und die Bankdaten auf csv normalisieren
+        * Zählt die Verhältnisse des Fairen Attributes
+    * Mail an Daniel wegen schlechter Reproduzierbarkeit des Chierichetti Papers
+* Mi: 20.12 
+    * Weiter mit DataCleaner
+        * Aufgefallen, das ich bei Bank-Daten die Falsche Tabelle genommen habe, deswegen schlechtes martial-Feature
+        * Leichtes Feature-Engeeniering um Binäre-Fair-Attributes zu bekommen
+        * CleanedData wird jetzt gespeichert
+        * Anfänge die Subsamples zu erzeugen
+* Mi: 3.1
+    * Weiter mit DataCleaner
+        * Deterministisch Subsamples erzeugen
+        * **Designentscheidung: disjunkte Samples**
+    * Subsamples werden jetzt ohne Probleme erzeugt
+    * PointParser mehr auf CSV des Pythonskripts umkrempeln
+* Fr: 5.1
+    * Makefile an neue Testdaten rangelassen
+    * Gonzalez vom Object zum Namespace gemacht
+    * Struct für Rückgabe von Gonzalez gebaut
+        * Struct enthält Deep-Copy von Punkten
+        * Gewählte Zentren
+        * Max Radius
+    * Fixen des Punkteparsens, da das nicht mehr so gut funktioniert (Problem mit Leerzeilen)
+* Sa: 6.1
+    * AnalyzerSkript angefangen
+        * Punkte-Handling in ein eigenes Modul geschoben für bessere übersicht
+        * Angefangen Shell-Commands über Python zu benutzen
+    * TO-DO: Einlesen + Analyse
+    * Iteratives ausführen des Shell-Skriptes
+* So: 7.1
+    * Analyzerskript weitermachen
+        * Skript kann jetztGenerisch mehrere Files einlesen
+            * Zusammensetzen von Datenpfad
+            * Liste aus Listen für Radien
+        * Erste Visuelle Ausgabe
+            * Erst von einem File
+            * Dann von mehreren Daten mit Mean und Min/max
+    * Analyse bisher nur von Bankdaten
+* Mo: 8.1
+    * [ ] Treffen mit Daniel
+    * Daten auf dem Laptop erzeugen
+    * Graph mit dem aus dem Paper vergleichen -> sieht gut aus
+        * Es fällt auf, dass die Daten aus dem Paper eher der min-Linie annähern
+    * Analyse auch für die Zensus-Daten
+    * Refactoring des Analyseskripts
+    * Anfangen die Lemon Libary zu lesesn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Wikis
