@@ -14,19 +14,33 @@ import pandas as pd
 def main():
     
     # Parameter (Später noch über schleifen)
-    inputfile = "Data/Subsamples/bank/bankSample-0.csv"
-    outputfolder = "Data/OutputData/Autoanalyzer/bank/Sample0/"
-    outputfile = "bank0"
-    maxCluster = 20
+    maxCluster = 30
     pictureFolder = "../Data/OutputData/Pictures/FirstDiagrams/"
     numOfSamples = 20
     
     # # # Algorithmus ausführen
+    do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
+    do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster)
+ 
+
+    # ====== Verarbeitung Bank ====== #
+    do_analysis_of_sampleset("bank", pictureFolder, 
+                             numOfSamples=numOfSamples, maxCluster=maxCluster)
+    # ====== Verarbeitung Zensus ====== #
+    do_analysis_of_sampleset("census", pictureFolder, 
+                             numOfSamples=numOfSamples, maxCluster=maxCluster)
+    
+    
+    return
+
+# # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
+def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
     for i in range(0, numOfSamples):
+        # # Bankdaten
         # Pfade algorithmisch zusammensetzen
-        inputfile = f"Data/Subsamples/bank/bankSample-{i}.csv"
-        outputfolder = f"Data/OutputData/Autoanalyzer/bank/Sample{i}/"
-        outputfile = f"bank{i}"
+        inputfile = f"Data/Subsamples/{samplename}/{samplename}Sample-{i}.csv"
+        outputfolder = f"Data/OutputData/Autoanalyzer/{samplename}/Sample{i}/"
+        outputfile = f"{samplename}{i}"
         # Shellcommand zusammensetzen
         command = f"cd .. && ./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster}"
         # Prozess erzeugen
@@ -35,17 +49,19 @@ def main():
         process.communicate()
         print(f"Cluster made for Sample: {inputfile}")
     
-        # Wenn man die Ausgabe als String haben will
-        # outputString = process.communicate()[0]
+    return
 
-
+# # # Analysiert die geclusterten Daten und gibt ein Diagramm dazu aus # # #
+def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCluster = 20):
+    print(f"\n# --------- Working with {samplename} Data --------- # \n")
+    
     # # # Einlesen der neuen Daten
     listOfRadiiLists = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
-        inputfile = f"Data/Subsamples/bank/bankSample-{i}.csv"
-        outputfolder = f"Data/OutputData/Autoanalyzer/bank/Sample{i}/"
-        outputfile = f"bank{i}"
+        #inputfile = f"Data/Subsamples/{bank}/{bank}Sample-{i}.csv"
+        outputfolder = f"Data/OutputData/Autoanalyzer/{samplename}/Sample{i}/"
+        outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
         radiiList = get_radii_of_subsample(outputfolder, outputfile, maxCluster)
         # radienverlauf hinszufügen
@@ -54,7 +70,7 @@ def main():
     
     
     # # # Analyse der Daten
-    # RAdien in Pandas-Dataframe für weiterverarbeitung packen
+    # Radien in Pandas-Dataframe für weiterverarbeitung packen
     dfRadius = pd.DataFrame(listOfRadiiLists)#.transpose()
     print(dfRadius.head())
     
@@ -68,22 +84,16 @@ def main():
     dfImportantValues["upperQuantile"] = dfRadius.quantile(0.75)
     dfImportantValues["lowerQuantile"] = dfRadius.quantile(0.25)
     
-    #dfRadius["median"] = -1 
-    #dfRadius.loc[dfRadius["sex"] == "Female", "kritFeature"] = 1
-    
-    #listAvarageMaxRadius = []
-    #for i in range(0, numOfSamples):
-        #radiiOfIndex
-    
     print(dfImportantValues.head(10))
     
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(pictureFolder, exist_ok=True) 
-    #print_radii(radiiList, pictureFolder+"TestPic1.jpg", "Bank k-median")
-    print_radii(dfImportantValues, pictureFolder+"TestPic2(mean).jpg", "Bank k-median")
-    
-    
+    print_radii(dfImportantValues, f"{pictureFolder}Unfair{samplename}(auslagertest).jpg", f"{samplename} k-center")
+
     return
+
+
+
 
 
 
@@ -94,6 +104,7 @@ def bash_command(cmd, ignoreStdout = True):
         return subprocess.Popen(cmd, shell=True, executable='/bin/bash', stdout=subprocess.DEVNULL)
     # Stdout vom Skript in Pythonkonsole
     return subprocess.Popen(cmd, shell=True, executable='/bin/bash')
+
 
 
 def print_radii(dfRadius, picturePath, title):
@@ -134,5 +145,8 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster):
         radiiList.append(maxRadius)
 
     return radiiList
+
+
+
 
 main()
