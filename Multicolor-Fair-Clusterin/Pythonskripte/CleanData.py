@@ -16,10 +16,12 @@ def main():
     # Pfade Hardcoden
     pathRawCensus = "../Data/Raw-Chierichetti/census/adult.data"
     pathRawBank = "../Data/Raw-Chierichetti/bank/bank-full.csv"
+    pathRawDiabetes = "../Data/Raw-Chierichetti/diabetes/Gupta-Data/diabetic_data.csv"
     pathNormalizedData = "../Data/Raw-Chierichetti/normalized"
     pathCleanedData = "../Data/CleanedData"
     pathSubsamplesCensus = "../Data/Subsamples/census"
     pathSubsamplesBank = "../Data/Subsamples/bank"
+    pathSubsamplesDiabetes = "../Data/Subsamples/diabetes"
     
     # Seed für Subsamples
     subSamSeed = 5
@@ -28,11 +30,14 @@ def main():
     numOfSamples = 20
     subsampleSizeCensus = 600
     subsampleSizeBank = 1000
+    subsampleSizeDiabetes = 1000
     
     
     
     # # Ordner Spülen
-    foldersToDelete = [pathNormalizedData, pathCleanedData, pathSubsamplesCensus, pathSubsamplesBank]
+    foldersToDelete = [pathNormalizedData, pathCleanedData, 
+                       pathSubsamplesCensus, pathSubsamplesBank,
+                       pathSubsamplesDiabetes]
     flushFiles(foldersToDelete)   
     
     
@@ -43,10 +48,13 @@ def main():
     # Bankdaten
     normalizeBank(pathRawBank, pathNormalizedData)
 
+    # Diabetesdaten
+    normalizeDiabetes(pathRawDiabetes, pathNormalizedData)
     
     # Daten in Pandas Tabelle
     pdFrameCensus = readPandaFromFile(pathNormalizedData + "/census-normalized.csv")
     pdFrameBank = readPandaFromFile(pathNormalizedData + "/bank-normalized.csv")
+    pdFrameDiabetes = readPandaFromFile(pathNormalizedData + "/diabetes-normalized.csv")
     
     
     
@@ -58,6 +66,7 @@ def main():
     # Einfach mal ein paar einträge
     print(pdFrameCensus.head(10))
     print(pdFrameBank.head(10))
+    print(pdFrameDiabetes.head(10)) # TO-DO: Weitere Analyse
     
     # Verhältnisse des Kritischen Features testen
     # Zensus
@@ -231,6 +240,21 @@ def normalizeBank(rawPath, normalizedPath):
     # Neue Daten in Datei schreiben
     saveToFile(normalizedPath, "bank-normalized.csv", newdata)    
     return
+
+
+def normalizeDiabetes(rawPath, normalizedPath):
+    # Daten als String holen
+    f = open(rawPath,'r')
+    filedata = f.read()
+    f.close()
+    
+    # Hier passiert nichts, da die Daten hier schon in einem 
+    # brauchbaren Format sind
+    
+    # Neue Daten in Datei schreiben
+    saveToFile(normalizedPath, "diabetes-normalized.csv", filedata)    
+    return
+
 
 
 def subsampleData(pdData, sampleSize = 1000, sampleCount = 10, seed = 0):
