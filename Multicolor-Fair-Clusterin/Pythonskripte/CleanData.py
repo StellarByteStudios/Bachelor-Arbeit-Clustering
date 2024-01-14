@@ -69,7 +69,7 @@ def main():
     print(pdFrameDiabetes.head(10)) # TO-DO: Weitere Analyse
     
     # Verhältnisse des Kritischen Features testen
-    # Zensus
+    # Zensus # 
     print("\n---- Census Ratio ----\n")
     pdCensusBySex = pdFrameCensus.groupby("sex").size()
     print(pdCensusBySex[:]) # Female 10771 / Male 21790
@@ -77,7 +77,7 @@ def main():
     print(f"Verhältniss Male/Female bei Zensus: {ratioCensus}")
     
     
-    # Bank 
+    # Bank #
     print("\n---- Bank Ratios ----\n")
     pdBankByMartial = pdFrameBank.groupby("marital").size()
     print(pdBankByMartial[:])
@@ -96,6 +96,21 @@ def main():
     ratioBank = pdBankByMartial["married"]/pdBankByMartial["not-married"]
     print(f"Verhältniss married/not-married bei Zensus: {ratioBank}")
 
+
+    # Diabetes #
+    print("\n---- Diabetes Ratio ----\n")
+    pdDiabetesByGender = pdFrameDiabetes.groupby("gender").size()
+    print(pdDiabetesByGender[:]) # Female 54708 / Male 47055
+    
+    print("\n---- Binary Bank Ratio ----\n")
+    pdFrameDiabetes = pdFrameDiabetes.drop(pdFrameDiabetes[pdFrameDiabetes["gender"] == "Unknown/Invalid"].index)
+    pdDiabetesByGender = pdFrameDiabetes.groupby("gender").size()
+    print(pdDiabetesByGender[:]) # Female 54708 / Male 47055
+    ratioDiabetes = pdDiabetesByGender['Male']/pdDiabetesByGender['Female']
+    print(f"Verhältniss Male/Female bei Diabetes: {ratioDiabetes}")
+    
+    # age zur Zahl machen
+    pdFrameDiabetes["age"] = pdFrameDiabetes["age"].apply(getAgeAsNumber) 
 
 
 
@@ -116,12 +131,26 @@ def main():
     pdFilteredBank = pdFrameBank[["kritFeature", "age", "balance", "duration"]]
     print(pdFilteredBank.head(10))
     
+    # Diabetes
+    pdFrameDiabetes["kritFeature"] = 0 
+    pdFrameDiabetes.loc[pdFrameDiabetes["gender"] == "Female", "kritFeature"] = 1
+    pdFilteredDiabetes = pdFrameDiabetes[["kritFeature", "age", "time_in_hospital"]]
+    print(pdFilteredDiabetes.head(10))
+    
+    
+    
+    
     # # Cleaned-Data zwischendurch mal abspeichern
     saveToFile(pathCleanedData, "census-cleaned.csv", 
                pdFilteredCensus.to_csv(index=False, lineterminator="\n"))
     
     saveToFile(pathCleanedData, "bank-cleaned.csv", 
                pdFilteredBank.to_csv(index=False, lineterminator="\n"))
+    
+    saveToFile(pathCleanedData, "diabetes-cleaned.csv", 
+               pdFilteredDiabetes.to_csv(index=False, lineterminator="\n"))
+    
+    
     
     
     
@@ -140,6 +169,11 @@ def main():
     listOfBankSamples = subsampleData(pdFilteredBank, sampleSize = subsampleSizeBank, 
                                         sampleCount = numOfSamples, seed = subSamSeed)
     
+    print("\nCreate Subs of Diabetes:")
+    # Bank
+    listOfDiabetesSamples = subsampleData(pdFilteredDiabetes, sampleSize = subsampleSizeDiabetes, 
+                                        sampleCount = numOfSamples, seed = subSamSeed)
+    
     # Ein paar Beispiele ausgeben
     shownum = 3
     if numOfSamples < shownum:
@@ -151,6 +185,9 @@ def main():
     print("\n# Samples of Bank #") # neue Zeile
     [print(listOfBankSamples[i].head(5)) for i in range(0, shownum)]
     
+    print("\n# Samples of Diabetes #") # neue Zeile
+    [print(listOfDiabetesSamples[i].head(5)) for i in range(0, shownum)]
+    
     
     
     
@@ -161,6 +198,9 @@ def main():
     
     # Bank
     safeListOfSamples(pathSubsamplesBank, "bankSample-", listOfBankSamples)
+    
+    # Diabetes
+    safeListOfSamples(pathSubsamplesDiabetes, "diabetesSample-", listOfDiabetesSamples)
     
     
     
@@ -296,6 +336,10 @@ def safeListOfSamples(folder, naming, listOfSamples):
     return
 
 
+def getAgeAsNumber(agestring):
+    if agestring[2] == '-':
+        return 0
+    return int(agestring[1:3])
 
 
 
