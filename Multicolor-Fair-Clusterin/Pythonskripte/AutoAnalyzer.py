@@ -8,6 +8,7 @@ import subprocess
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+import time
 
 
 
@@ -19,10 +20,13 @@ def main():
     numOfSamples = 20
     
     # # # Algorithmus ausführen
-    do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
-    do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster)
-    do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster)
+    timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
+    timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster)
+    timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster)
  
+    timestamps = [timeBank, timeCensus, timeDiabetes]
+    
+    analyze_times(timestamps, pictureFolder + "Timinganalysis1.jpg", ["bank", "census", "diabetes"])
 
     # ====== Verarbeitung Bank ====== #
     do_analysis_of_sampleset("bank", pictureFolder, 
@@ -39,6 +43,7 @@ def main():
 
 # # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
 def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
+    algoTimer = []
     for i in range(0, numOfSamples):
         # # Bankdaten
         # Pfade algorithmisch zusammensetzen
@@ -49,11 +54,15 @@ def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
         command = f"cd .. && ./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster}"
         # Prozess erzeugen
         process = bash_command(command)
+        # Zeitmessung Starten
+        startTime = time.process_time();
         # Prozess starten
         process.communicate()
+        # Zeitmessung stoppen
+        algoTimer.append(time.process_time() - startTime)
         print(f"Cluster made for Sample: {inputfile}")
     
-    return
+    return algoTimer
 
 # # # Analysiert die geclusterten Daten und gibt ein Diagramm dazu aus # # #
 def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCluster = 20):
@@ -151,6 +160,22 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster):
     return radiiList
 
 
+def analyze_times(timestamps, picturePath, labels):
+    
+    intervalls = max(int(len(timestamps[0])/10),1)
+    
+    fig, ax = plt.subplots(figsize=(9,6))
+    for i in range(0, len(labels)):
+        ax.plot(range(0, len(timestamps[0])), timestamps[i], label = labels[i])
 
+    ax.set_xticks(list(range(1, len(timestamps[0]) + 1, intervalls)))
+    ax.set_title("CPU Times of Algorithm Excecution")
+    ax.set_xlabel("Sample")
+    ax.set_ylabel("time in s")
+    ax.legend()
+    plt.savefig(picturePath)
+    plt.show()   
+    
+    return
 
 main()
