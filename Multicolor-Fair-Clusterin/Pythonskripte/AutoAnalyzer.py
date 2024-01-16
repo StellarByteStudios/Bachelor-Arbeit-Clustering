@@ -21,6 +21,7 @@ def main():
     # # # Algorithmus ausführen
     do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
     do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster)
+    do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster)
  
 
     # ====== Verarbeitung Bank ====== #
@@ -28,6 +29,9 @@ def main():
                              numOfSamples=numOfSamples, maxCluster=maxCluster)
     # ====== Verarbeitung Zensus ====== #
     do_analysis_of_sampleset("census", pictureFolder, 
+                             numOfSamples=numOfSamples, maxCluster=maxCluster)
+    # ====== Verarbeitung Diabetes ====== #
+    do_analysis_of_sampleset("diabetes", pictureFolder, 
                              numOfSamples=numOfSamples, maxCluster=maxCluster)
     
     
@@ -72,7 +76,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     # # # Analyse der Daten
     # Radien in Pandas-Dataframe für weiterverarbeitung packen
     dfRadius = pd.DataFrame(listOfRadiiLists)#.transpose()
-    print(dfRadius.head())
+    #print(dfRadius.head())
     
     # erzeugen eines Analyse-Dataframes
     dfImportantValues = pd.DataFrame()
@@ -88,7 +92,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(pictureFolder, exist_ok=True) 
-    print_radii(dfImportantValues, f"{pictureFolder}Unfair{samplename}(auslagertest).jpg", f"{samplename} k-center")
+    print_radii(dfImportantValues, f"{pictureFolder}Unfair{samplename}(Cluster:{maxCluster}).jpg", f"{samplename} k-center")
 
     return
 
