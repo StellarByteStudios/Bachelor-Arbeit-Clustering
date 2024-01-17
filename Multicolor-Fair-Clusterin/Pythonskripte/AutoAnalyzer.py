@@ -55,11 +55,11 @@ def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
         # Prozess erzeugen
         process = bash_command(command)
         # Zeitmessung Starten
-        startTime = time.process_time();
+        startTime = time.process_time_ns();
         # Prozess starten
         process.communicate()
         # Zeitmessung stoppen
-        algoTimer.append(time.process_time() - startTime)
+        algoTimer.append(time.process_time_ns() - startTime)
         print(f"Cluster made for Sample: {inputfile}")
     
     return algoTimer
@@ -166,12 +166,12 @@ def analyze_times(timestamps, picturePath, labels):
     
     fig, ax = plt.subplots(figsize=(9,6))
     for i in range(0, len(labels)):
-        ax.plot(range(0, len(timestamps[0])), timestamps[i], label = labels[i])
+        ax.plot(range(0, len(timestamps[0])), [e / 1_000_000 for e in timestamps[i]], label = labels[i])
 
     ax.set_xticks(list(range(1, len(timestamps[0]) + 1, intervalls)))
     ax.set_title("CPU Times of Algorithm Excecution")
     ax.set_xlabel("Sample")
-    ax.set_ylabel("time in s")
+    ax.set_ylabel("time in ms")
     ax.legend()
     plt.savefig(picturePath)
     plt.show()   
