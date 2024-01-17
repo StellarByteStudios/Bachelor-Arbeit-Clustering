@@ -1,3 +1,5 @@
+// Complile with g++ -o LibTest LemonLibTest.cpp -lemon
+
 #include <iostream>
 #include <lemon/list_graph.h>
 using namespace lemon;
