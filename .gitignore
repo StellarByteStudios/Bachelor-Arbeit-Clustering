@@ -9,8 +9,9 @@ Multicolor-Fair-Clusterin/Data/OutputData/*
 !Multicolor-Fair-Clusterin/Data/OutputData/ClusteredData (Old)
 !Multicolor-Fair-Clusterin/Data/OutputData/Pictures/
 
-
-
+# Zusatzdateien von der Lemon Libary
+Multicolor-Fair-Clusterin/Lemon-Libary/*
+!Multicolor-Fair-Clusterin/Lemon-Libary/lemon-1.3.1.zip
 
 
 
