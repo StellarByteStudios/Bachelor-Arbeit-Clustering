@@ -101,7 +101,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(pictureFolder, exist_ok=True) 
-    print_radii(dfImportantValues, f"{pictureFolder}Unfair{samplename}(Cluster:{maxCluster}).jpg", f"{samplename} k-center")
+    print_radii(dfImportantValues, f"{pictureFolder}Unfair{samplename}(Cluster-{maxCluster}).jpg", f"{samplename} k-center")
 
     return
 
