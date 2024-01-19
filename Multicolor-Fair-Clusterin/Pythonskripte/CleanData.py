@@ -153,6 +153,29 @@ def main():
     
     
     
+    # # # Daten auf Itervall [0, 1] Mappen
+    # Zensus
+    pdFrameScaledCensus = mapFeaturesToIntervall(pdFilteredCensus, ["age", "fnlwgt", "education-num", "capital-gain", "hours-per-week"])
+    print(pdFrameScaledCensus.head(5))
+    
+    # Bank
+    pdFrameScaledBank = mapFeaturesToIntervall(pdFilteredBank, ["age", "balance", "duration"])
+    print(pdFrameScaledBank.head(5))
+    
+    # Diabetes
+    pdFrameScaledDiabetes = mapFeaturesToIntervall(pdFilteredDiabetes, ["age", "time_in_hospital"])
+    print(pdFrameScaledDiabetes.head(5))
+    
+    
+    # # Genormte Daten abspeichern
+    saveToFile(pathCleanedData, "census-scaled.csv", 
+               pdFrameScaledCensus.to_csv(index=False, lineterminator="\n"))
+    
+    saveToFile(pathCleanedData, "bank-scaled.csv", 
+               pdFrameScaledBank.to_csv(index=False, lineterminator="\n"))
+    
+    saveToFile(pathCleanedData, "diabetes-scaled.csv", 
+               pdFrameScaledDiabetes.to_csv(index=False, lineterminator="\n"))
     
     
     
@@ -340,6 +363,15 @@ def getAgeAsNumber(agestring):
     if agestring[2] == '-':
         return 0
     return int(agestring[1:3])
+
+    
+def mapFeaturesToIntervall(pd, listOfFeatures):   
+    scaledPd = pd    
+    for i in range(0, len(listOfFeatures)):
+        scaledPd[listOfFeatures[i]] = pd[listOfFeatures[i]] /pd[listOfFeatures[i]].abs().max()   
+    
+    return scaledPd
+
 
 
 
