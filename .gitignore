@@ -5,13 +5,9 @@ Multicolor-Fair-Clusterin/Data/CleanedData/
 Multicolor-Fair-Clusterin/Data/Subsamples/
 
 # Geclusterde Daten nicht mit hochladen. Wollen nur die Auswertung
-Multicolor-Fair-Clusterin/Data/OutputData/clustered/
-
-
-
-
-
-
+Multicolor-Fair-Clusterin/Data/OutputData/*
+!Multicolor-Fair-Clusterin/Data/OutputData/ClusteredData (Old)
+!Multicolor-Fair-Clusterin/Data/OutputData/Pictures/
 
 
 

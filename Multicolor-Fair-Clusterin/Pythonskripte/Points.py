@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Skript for reading, analysing and Showing ColoredPoints to test the Algorithm
+Own Module for Pointclass
 """
 
 import csv
 import matplotlib.pyplot as plt
 
 class Colorpoint:
-    def __init__(self, dim, isCenter, clustermember, color, coords):
+    def __init__(self, dim, isCenter, clusterAffiliation, color, coords):
         # Dimensionalität
         self.dim = dim
         
@@ -20,8 +20,8 @@ class Colorpoint:
         # Zentrum
         self.isCenter = isCenter
         
-        # Zentrum
-        self.cluster = clustermember
+        # Clusterzugehörigkeit
+        self.cluster = clusterAffiliation
         
         
     # To-String-Methode für schönes anschauen
@@ -43,30 +43,8 @@ class Colorpoint:
             stringRep += str(self.coordinates[i]) + ","
         stringRep += str(self.coordinates[self.dim - 1])
         return stringRep
-    
-    
-def main():
-     
-     fileName = "../Data/OutputData/MakefileTest/ClusterOut.csv"
-          
-     points, maxRadius = read_points(fileName)
-     
-     #print(points)
-     
-     # Punkte ausgeben
-     for i in range(0, len(points)):
-         print(points[i].toStringLong())
-     
-     show_points(points)
-     show_points(points, maxRadius=maxRadius)
-     #show_points(points, colorByCluster=False) 
-     
-     return
- 
-    
-    
-    
-    
+
+
 
 def show_points(listOfPoints, colorByCluster = True, maxRadius = -1):
     fig, ax = plt.subplots(figsize=(5,5))
@@ -99,6 +77,7 @@ def show_points(listOfPoints, colorByCluster = True, maxRadius = -1):
     plt.show()
     return
 
+
 def read_points(fileName):
     csvFile = open(fileName, "r")
     rawDataList = list(csv.reader(csvFile, delimiter=","))
@@ -106,6 +85,7 @@ def read_points(fileName):
     pointsData = parse_points_from_list(rawDataList)
     
     return pointsData
+
 
 
 def parse_points_from_list(rawDataList):
@@ -128,9 +108,6 @@ def parse_points_from_list(rawDataList):
         cluster = int(rawDataList[i][2])
         color = int(rawDataList[i][3])
         
-        #print(dim, center, cluster, color)
-        #print(center)
-        
         # Coordinates
         coords = []
         for k in range(4, 4+dim):
@@ -144,6 +121,3 @@ def parse_points_from_list(rawDataList):
     
     
     return listOfPoints, maxRadius
-
-
-main()

@@ -6,17 +6,31 @@
 
 using namespace std;
 
-class Gonzalez{
-public:
-	/* Konstruktor
+namespace Gonzalez{
+	/* Gonzalez Return Struct
+	* Struct with all importent Values returned
+	* by the Gonzalez-Algorithm
+	*
+	* clusteredPoints: Deep-Copy of Points with Clustersignature
+	* centers: List of all Centers as Points
+	* maxRadius: value of the calculated maxRadius
 	*/
-	Gonzalez();
+	struct GonzalezReturnValues{
+		vector<ColoredPoint>* clusteredPoints;
+		vector<ColoredPoint>* centers;
+		double maxRadius;
+	};
 
-	/* Destruktor
-	*/
-	~Gonzalez();
+	// Creating an empty Struct for Gonzalez
+	GonzalezReturnValues* createGonzalezReturns(vector<ColoredPoint>*);
 
-	/* Gonzales-Algorithm
+	// Clean-Up for Gonzalez Returnvalues
+	void deleteGonzalezReturns(GonzalezReturnValues*);
+	
+
+
+
+	/* Gonzalez-Algorithm
 	* Calculates the good Centers for given Points
 	*
 	* @param points: Set of Points to be Clusterd
@@ -24,7 +38,5 @@ public:
 	*
 	* @return max radius
 	*/
-	double makeGonzalez(vector<ColoredPoint>*, int);
-
-private:
+	Gonzalez::GonzalezReturnValues* makeGonzalez(vector<ColoredPoint>*, int);
 };
