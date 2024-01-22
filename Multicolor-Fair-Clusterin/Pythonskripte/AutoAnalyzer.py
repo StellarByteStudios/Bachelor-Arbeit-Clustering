@@ -16,7 +16,7 @@ def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 30
-    pictureFolder = "../Data/OutputData/Pictures/FirstDiagrams/"
+    pictureFolder = "../Data/OutputData/Pictures/FirstDiagrams/Scaled/"
     numOfSamples = 20
     
     # # # Algorithmus ausführen
@@ -26,7 +26,7 @@ def main():
  
     timestamps = [timeBank, timeCensus, timeDiabetes]
     
-    analyze_times(timestamps, pictureFolder + "Timinganalysis1.jpg", ["bank", "census", "diabetes"])
+    analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"])
 
     # ====== Verarbeitung Bank ====== #
     do_analysis_of_sampleset("bank", pictureFolder, 
@@ -161,6 +161,8 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster):
 
 
 def analyze_times(timestamps, picturePath, labels):
+    # Ordner erstellen, falls nicht vorhanden
+    os.makedirs(picturePath, exist_ok=True) 
     
     intervalls = max(int(len(timestamps[0])/10),1)
     
@@ -173,7 +175,7 @@ def analyze_times(timestamps, picturePath, labels):
     ax.set_xlabel("Sample")
     ax.set_ylabel("time in ms")
     ax.legend()
-    plt.savefig(picturePath)
+    plt.savefig(picturePath + "Timinganalysis1.jpg")
     plt.show()   
     
     return
