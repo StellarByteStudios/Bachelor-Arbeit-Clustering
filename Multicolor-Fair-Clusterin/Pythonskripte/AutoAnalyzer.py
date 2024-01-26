@@ -10,13 +10,15 @@ import os
 import pandas as pd
 import time
 
+import sys
+from PIL import Image
 
 
 def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 30
-    pictureFolder = "../Data/OutputData/Pictures/FirstDiagrams/Scaled/"
+    pictureFolder = "../Data/OutputData/Pictures/Gonzalez/"
     numOfSamples = 20
     
     # # # Algorithmus ausführen
@@ -39,6 +41,9 @@ def main():
                              numOfSamples=numOfSamples, maxCluster=maxCluster)
     
     
+    # ====== Große Bilder zusammensetzen ====== #
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)    
+
     return
 
 # # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
@@ -177,6 +182,28 @@ def analyze_times(timestamps, picturePath, labels):
     ax.legend()
     plt.savefig(picturePath + "Timinganalysis1.jpg")
     plt.show()   
+    
+    return
+
+
+def clue_pictures_together(samplename, pictureFolder, maxCluster):
+    print("\n# --------- Cluing Pictures together --------- #\n")
+    images = [Image.open(x) for x in [f"{pictureFolder}Unfair{samplename[0]}(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}Unfair{samplename[1]}(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}Unfair{samplename[2]}(Cluster-{maxCluster}).jpg"]]
+    widths, heights = zip(*(i.size for i in images))
+    
+    total_width = sum(widths)
+    max_height = max(heights)
+    
+    new_im = Image.new('RGB', (total_width, max_height))
+    
+    x_offset = 0
+    for im in images:
+      new_im.paste(im, (x_offset,0))
+      x_offset += im.size[0]
+    
+    new_im.save(f"{pictureFolder}UnfairBig(Cluster-{maxCluster}).jpg")
     
     return
 
