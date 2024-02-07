@@ -3,10 +3,16 @@
 
 \chapter{Aufbereiten der Daten}
 
-    Was waren die Ursprungsdaten, und wie habe ich diese Aufgebereitet (Subsampling und so)
+    %Was waren die Ursprungsdaten, und wie habe ich diese Aufgebereitet (Subsampling und so)
+    Um vergleichbare Werte Zu erhalten, habe ich mich an einem Paper orientiert, welches ebenfall probiert hat Fair-k-Center zu lösen \cite{chierichetti2018fair}. Für die Vergleichbarkeit
 
 \section{Ursprungsdaten}
-    Rant darüber wie schlecht das Ursprungspaper Dokumentiert war
+    In dem Chierichetti-Paper \cite{chierichetti2018fair} wurden 3 Unterschiedliche Datensätze verwendet. Darunter:
+    \begin{itemize}
+        \item Daten eines US-Zensus \cite{misc_adult_2}
+        \item Daten von Telefongesprächen einer Bank \cite{misc_bank_marketing_222}
+        \item Einen Diabetes-Datensatz, wobei der im Paper \cite{chierichetti2018fair} verlinkte Datensatz \cite{misc_diabetes_34_falsch} nicht der Richtige Datensatz sein kann (Er enthält andere Felder als die genannten). Nachforschungen haben herausgestellt, dass sie in wirklichkeit einen anderen Diabetes-Datensatz \cite{misc_diabetes_130_richtig} benutzt haben
+    \end{itemize}
 
 
 
@@ -15,11 +21,18 @@
         Dieses wird automatisch von Bibtex erzeugt.
         Dazu muss zunächst ein Eintrag in der Bibliographie-Datenbank im bib-Ordner angelegt werden.
         Man findet z.\,B. mit Google Scho\-lar für wissenschaftliche Veröffentlichungen fertige Zitationsangaben im Bibtex-Format.
-
-        Wenn ich eine Veröffentlichung zitiere, sieht das so aus.~\cite{Krauthoff2017a}
-        Man kann auch, insbesondere bei längeren Quellen wie Büchern, eine Seitenzahl ergänzen.~\cite[S.~5]{Krauthoff2017a}
-        Es ist auch möglich, mehrere Quellen auf einmal zu nennen.\cite{Krauthoff2017a,dun:j:argument-acceptability}
-
+        
+        Noch ein wenig Mehr Zitieren:
+        
+        \begin{enumerate}
+            \item Chierichetti-Paper \cite{chierichetti2018fair}
+            \item Zensusdaten \cite{misc_adult_2}
+            \item Bankdaten \cite{misc_bank_marketing_222}
+            \item Diabetes (Falsch) \cite{misc_diabetes_34_falsch}
+            \item Diabetes (Richtig) \cite{misc_diabetes_130_richtig}
+            \item BA von Irina \cite{BA_Clustering}
+            \item Vorlesungsskript Clustering \cite{Clustering_Skript}
+        \end{enumerate}
 
 \section{Cleaning-Pipeline}
 
