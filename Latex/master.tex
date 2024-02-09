@@ -17,7 +17,8 @@ bibliography=totoc]{scrbook}
 \usepackage[utf8]{inputenc} % erlaubt direkte Eingabe von Unicode-Zeichen, insbesondere Umlaute
 \usepackage[T1]{fontenc}
 \usepackage[babel]{csquotes}
-\usepackage[style=alphabetic, backend=bibtex]{biblatex}
+\usepackage[style=alphabetic, backend=biber, block=ragged]{biblatex}
+
 \usepackage{mathptmx}
 \usepackage[scaled=0.92]{helvet}
 \usepackage{courier}
@@ -100,6 +101,21 @@ bibliography=totoc]{scrbook}
 
 % Include all BibTeX resources in the preambel
 \addbibresource{bib/references.bib}
+
+
+
+% ============== Eigene Preambel befehle ============== %
+
+% Unterdrücken der Warnungen, wenn etwas leicht über den Schriftrand geht
+\vfuzz=2.000pt 
+\hfuzz=9.000pt 
+
+%\bibliographystyle{abbrv}
+%\bibliography{bib/erferences}
+
+% ============== ... ============== %
+
+
 
 \begin{document}
 \onehalfspacing
