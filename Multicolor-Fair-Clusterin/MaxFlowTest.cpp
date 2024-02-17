@@ -11,12 +11,98 @@ typedef ListDigraph Graph;
 typedef int LimitValueType;
 typedef Graph::Node Node;
 typedef Graph::Arc Arc;
-//typedef ListDigraph::ArcMap CapacityMap;
+
+
+// * Eigenes Dynamisches Beispiel * //
+void maxFlowDynamicBipatite(){
+
+    // Leeren Graph erzeugen
+    Graph bibatiteGraph;
+
+
+    /* = Knoten = */
+    // Quelle und Senke hinzufügen
+    Node s = bibatiteGraph.addNode();
+    Node t = bibatiteGraph.addNode();
+
+    // 10 Rote und 10 Blaue Knoten hinzufügen
+    std::vector<Node> redNodes;
+    std::vector<Node> blueNodes;
+
+    for (int i = 0; i < 10; i++){
+        redNodes.push_back(bibatiteGraph.addNode());
+        blueNodes.push_back(bibatiteGraph.addNode());
+    }
+
+
+    /* = Kanten = */
+    // Kanten von s zu Rot
+    std::vector<Arc> sourceArcs;
+    for (size_t i = 0; i < 10; i++){
+        sourceArcs.push_back(bibatiteGraph.addArc(s, redNodes.at(i)));
+    }
+
+    // Kanten von Blau zu t
+    std::vector<Arc> sinkArcs;
+    for (size_t i = 0; i < 10; i++){
+        sinkArcs.push_back(bibatiteGraph.addArc(blueNodes.at(i), t));
+    }
+
+    // Kanten von Rot nach Blau, aber um eins versetzt, bzw letztes Rot geht auf erstes Blau
+    std::vector<Arc> mainArcs;
+    for (size_t i = 0; i < 9; i++){
+        mainArcs.push_back(bibatiteGraph.addArc(redNodes.at(i), blueNodes.at(i+1)));
+    }
+    // Letzte Quer-Kante
+    mainArcs.push_back(bibatiteGraph.addArc(redNodes.at(9), blueNodes.at(0)));
+
+
+    /* = Kapazitäten = */
+    // Kapazitäten map erstellen
+    ListDigraph::ArcMap<LimitValueType> capacity(bibatiteGraph);
+
+    // Kapazität 5 von Quelle zu allen Roten
+    for (size_t i = 0; i < 10; i++){
+        capacity[sourceArcs.at(i)] = 5;
+    }
+
+    // Kapazität 6 von allen Blauen zur Senke
+    for (size_t i = 0; i < 10; i++){
+        capacity[sinkArcs.at(i)] = 6;
+    }
+
+    // Zwischenkanten Kapazität hochzählen
+    for (size_t i = 0; i < 10; i++){
+        capacity[mainArcs.at(i)] = i+1;
+    }
+    /**
+	 * calculate max flow via preflows
+	 */
+	Preflow<Graph> preflow(bibatiteGraph, capacity, s, t);
+
+	preflow.run();
+
+	std::cout << "maximum (Hardcoded Graph)flow by preflow: " << preflow.flowValue() << std::endl << std::endl;
+
+
+    // Finale Ausgabe
+
+    // print graph details
+	digraphWriter(bibatiteGraph).                 			 // write g to the standard output
+			arcMap("cap", capacity).        	 // write 'cost' for for arcs
+			arcMap("flow", preflow.flowMap()).   // write 'flow' for for arcs
+			node("source", s).            		 // write s to 'source'
+			node("target", t).            		 // write t to 'target'
+			run();
+    return;  
+}
 
 
 
 
-void flowPreflow()
+
+// * Kopiertes & Modifiziertes Beispiel * //
+void flowPreflowHardcoded()
 {
 /*    Beispielgraph 1
 *      o---->q
@@ -67,7 +153,7 @@ void flowPreflow()
 
 	preflow.run();
 
-	std::cout << "maximum flow by preflow: " << preflow.flowValue() << std::endl;
+	std::cout << "maximum (Hardcoded Graph)flow by preflow: " << preflow.flowValue() << std::endl << std::endl;
 
 	// print graph details
 	digraphWriter(g).                 			 // write g to the standard output
@@ -80,6 +166,9 @@ void flowPreflow()
 }
 
 int main(){
-    flowPreflow();
+
+    flowPreflowHardcoded();
+    printf("\n===========================\nJetzt Dynamischer Graph:\n");
+    maxFlowDynamicBipatite();
     return 0;
 }
