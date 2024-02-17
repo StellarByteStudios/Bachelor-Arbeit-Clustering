@@ -24,7 +24,7 @@
 #include <vector>
 #include <map>
 
-#include <lemon/core.h>
+#include "core.h"
 
 ///\file
 ///\ingroup maps

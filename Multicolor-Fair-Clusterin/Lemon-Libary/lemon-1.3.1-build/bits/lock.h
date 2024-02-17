@@ -19,11 +19,11 @@
 #ifndef LEMON_BITS_LOCK_H
 #define LEMON_BITS_LOCK_H
 
-#include <lemon/config.h>
+#include "../config.h.in"
 #if defined(LEMON_USE_PTHREAD)
 #include <pthread.h>
 #elif defined(LEMON_USE_WIN32_THREADS)
-#include <lemon/bits/windows.h>
+#include "windows.h"
 #endif
 
 namespace lemon {

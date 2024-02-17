@@ -26,16 +26,16 @@
 #include <vector>
 #include <limits>
 
-#include <lemon/core.h>
-#include <lemon/maps.h>
-#include <lemon/path.h>
-#include <lemon/math.h>
-#include <lemon/static_graph.h>
-#include <lemon/adaptors.h>
-#include <lemon/circulation.h>
-#include <lemon/bellman_ford.h>
-#include <lemon/howard_mmc.h>
-#include <lemon/hartmann_orlin_mmc.h>
+#include "core.h"
+#include "maps.h"
+#include "path.h"
+#include "math.h"
+#include "static_graph.h"
+#include "adaptors.h"
+#include "circulation.h"
+#include "bellman_ford.h"
+#include "howard_mmc.h"
+#include "hartmann_orlin_mmc.h"
 
 namespace lemon {
 

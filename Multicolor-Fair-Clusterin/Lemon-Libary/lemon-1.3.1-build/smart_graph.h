@@ -25,9 +25,9 @@
 
 #include <vector>
 
-#include <lemon/core.h>
-#include <lemon/error.h>
-#include <lemon/bits/graph_extender.h>
+#include "core.h"
+#include "error.h"
+#include "bits/graph_extender.h"
 
 namespace lemon {
 

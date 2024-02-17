@@ -33,11 +33,11 @@
 #include <vector>
 #include <functional>
 
-#include <lemon/core.h>
-#include <lemon/maps.h>
+#include "core.h"
+#include "maps.h"
 
-#include <lemon/concept_check.h>
-#include <lemon/concepts/maps.h>
+#include "concept_check.h"
+#include "concepts/maps.h"
 
 namespace lemon {
 

@@ -31,12 +31,12 @@
 #include <set>
 #include <map>
 
-#include <lemon/core.h>
+#include "core.h"
 
-#include <lemon/lgf_writer.h>
+#include "lgf_writer.h"
 
-#include <lemon/concept_check.h>
-#include <lemon/concepts/maps.h>
+#include "concept_check.h"
+#include "concepts/maps.h"
 
 namespace lemon {
 
