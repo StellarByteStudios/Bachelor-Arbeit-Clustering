@@ -5,15 +5,14 @@
 
 using namespace lemon;
 typedef ListDigraph Graph;
-typedef int LimitValueType;
+//typedef int LimitValueType;
 typedef Graph::Node Node;
 typedef Graph::Arc Arc;
+typedef ListDigraph::ArcMap<double> CapacityMap;
+typedef Preflow<Graph, CapacityMap> Flow;
 
 // Struktur eines Aufgebauten Graphen zum durchreichen durch Methoden
-struct GraphStructure{
-    // Graph an sich
-    ListDigraph* graph;
-
+struct GraphData{
     // Key-Nodes (Quelle und Senke)
     Node s;
     Node t;
@@ -29,21 +28,14 @@ struct GraphStructure{
 
     // Kanten zwischen den Hauptpunkten des Graphen
     std::vector<Arc> mainArcs;
-
-    // Kapazitäten der einzelnen Kanten
-    // Vielelicht Rausschmeißen und in jeder Methode neu erzeugen
-    // Persistenz ist dann noch zu überprüfen
-    ListDigraph::ArcMap<LimitValueType> capacityValues;
-
-    //GraphStructure(){ListDigraph::ArcMap<LimitValueType> capacityValues(graph)}
 };
 
 
 // * Eigenes Dynamisches Beispiel * //
-GraphStructure* buildBipatiteGraph();
+void buildBipatiteGraph(Graph&, CapacityMap&, GraphData&);
 
-Preflow<Graph>* calculateFlow(GraphStructure*);
+Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
 
-ListDigraph::ArcMap<double> createCapacityMap(Graph& );
+//ListDigraph::ArcMap<double> createCapacityMap(Graph& );
 
-void printFlow(Preflow<Graph>*, GraphStructure*);
+void printFlow(Flow*, Graph&, CapacityMap&, GraphData&);
