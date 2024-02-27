@@ -130,6 +130,8 @@ int main(){
 
     printFlow(preflow, graph, capacity, gData);
 
+    delete(preflow);
+
     return 0;
 }
 
