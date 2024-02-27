@@ -12,7 +12,7 @@ typedef Graph::Arc Arc;
 // Struktur eines Aufgebauten Graphen zum durchreichen durch Methoden
 struct GraphStructure{
     // Graph an sich
-    Graph graph;
+    ListDigraph* graph;
 
     // Key-Nodes (Quelle und Senke)
     Node s;
