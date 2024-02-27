@@ -5,7 +5,6 @@
 
 using namespace lemon;
 typedef ListDigraph Graph;
-//typedef int LimitValueType;
 typedef Graph::Node Node;
 typedef Graph::Arc Arc;
 typedef ListDigraph::ArcMap<double> CapacityMap;
@@ -34,8 +33,12 @@ struct GraphData{
 // * Eigenes Dynamisches Beispiel * //
 void buildBipatiteGraph(Graph&, CapacityMap&, GraphData&);
 
-Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
+void addNodesToGraph(Graph&, GraphData&);
 
-//ListDigraph::ArcMap<double> createCapacityMap(Graph& );
+void addArcsToGraph(Graph&, GraphData&);
+
+void addCapacitiesToGraph(CapacityMap&, GraphData&);
+
+Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
 
 void printFlow(Flow*, Graph&, CapacityMap&, GraphData&);
