@@ -25,17 +25,23 @@ void buildBipatiteGraph(Graph& graph, CapacityMap& capacityMap, GraphData& gData
 
 // * = Knoten = * //
 void addNodesToGraph(Graph& graph, GraphData& gData){
+    
+    // 10 Rote Knoten hinzufügen
+    for (int i = 0; i < 10; i++){
+        gData.redNodes.push_back(graph.addNode());
+    }
+    printf("Rote Knoten hinzugefügt\n");
+
+    // 10 Blaue Knoten hinzufügen
+    for (int i = 0; i < 10; i++){
+        gData.blueNodes.push_back(graph.addNode());
+    }
+    printf("Blaue Knoten hinzugefügt\n");
+
     // Quelle und Senke hinzufügen
     gData.s = graph.addNode();
     gData.t = graph.addNode();
-
     printf("Quelle und Senke hinzugefügt\n");
-
-    // 10 Rote und 10 Blaue Knoten hinzufügen
-    for (int i = 0; i < 10; i++){
-        gData.redNodes.push_back(graph.addNode());
-        gData.blueNodes.push_back(graph.addNode());
-    }
 
     return; 
 }
