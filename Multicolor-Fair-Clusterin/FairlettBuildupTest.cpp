@@ -57,7 +57,7 @@ void addArcsToGraph(Graph& graph, GraphData& gData){
 
     // Kanten von Blau zu t
     for (size_t i = 0; i < 10; i++){
-        gData.sinkArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
+        gData.targetArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
     }
 
     // Kanten von Rot nach Blau, aber um eins versetzt, bzw letztes Rot geht auf erstes Blau
@@ -81,7 +81,7 @@ void addCapacitiesToGraph(CapacityMap& capacityMap, GraphData& gData){
 
     // Kapazität 6 von allen Blauen zur Senke
     for (size_t i = 0; i < 10; i++){
-        capacityMap[gData.sinkArcs.at(i)] = 6;
+        capacityMap[gData.targetArcs.at(i)] = 6;
     }
 
     // Zwischenkanten Kapazität hochzählen

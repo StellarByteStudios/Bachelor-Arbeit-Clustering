@@ -23,7 +23,7 @@ struct GraphData{
     // Grundstruktur-Kanten (alles von Quelle und Senke)
     // Voraussichtlich nicht mehr notwendig
     std::vector<Arc> sourceArcs;
-    std::vector<Arc> sinkArcs;
+    std::vector<Arc> targetArcs;
 
     // Kanten zwischen den Hauptpunkten des Graphen
     std::vector<Arc> mainArcs;
