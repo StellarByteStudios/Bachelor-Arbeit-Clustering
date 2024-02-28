@@ -29,6 +29,11 @@ struct GraphData{
     std::vector<Arc> mainArcs;
 };
 
+struct EvenFairlett{
+    int redNodeId;
+    int blueNodeId;
+};
+
 
 // * Eigenes Dynamisches Beispiel * //
 void buildBipatiteGraph(Graph&, CapacityMap&, GraphData&);
