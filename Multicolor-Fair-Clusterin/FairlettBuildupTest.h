@@ -7,7 +7,7 @@ using namespace lemon;
 typedef ListDigraph Graph;
 typedef Graph::Node Node;
 typedef Graph::Arc Arc;
-typedef ListDigraph::ArcMap<double> CapacityMap;
+typedef ListDigraph::ArcMap<int> CapacityMap;
 typedef Preflow<Graph, CapacityMap> Flow;
 
 // Struktur eines Aufgebauten Graphen zum durchreichen durch Methoden
