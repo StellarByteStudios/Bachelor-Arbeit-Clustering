@@ -42,3 +42,5 @@ void addCapacitiesToGraph(CapacityMap&, GraphData&);
 Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
 
 void printFlow(Flow*, Graph&, CapacityMap&, GraphData&);
+
+int getFlowOfArc(Flow&, Arc);
