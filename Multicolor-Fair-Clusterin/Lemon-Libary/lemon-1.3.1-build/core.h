@@ -22,10 +22,10 @@
 #include <vector>
 #include <algorithm>
 
-#include <lemon/config.h>
-#include <lemon/bits/enable_if.h>
-#include <lemon/bits/traits.h>
-#include <lemon/assert.h>
+#include "config.h.in"
+#include "bits/enable_if.h"
+#include "bits/traits.h"
+#include "assert.h"
 
 // Disable the following warnings when compiling with MSVC:
 // C4250: 'class1' : inherits 'class2::member' via dominance

@@ -25,13 +25,13 @@
 ///
 /// This file contains several useful adaptors for digraphs and graphs.
 
-#include <lemon/core.h>
-#include <lemon/maps.h>
-#include <lemon/bits/variant.h>
+#include "core.h"
+#include "maps.h"
+#include "bits/variant.h"
 
-#include <lemon/bits/graph_adaptor_extender.h>
-#include <lemon/bits/map_extender.h>
-#include <lemon/tolerance.h>
+#include "bits/graph_adaptor_extender.h"
+#include "bits/map_extender.h"
+#include "tolerance.h"
 
 #include <algorithm>
 

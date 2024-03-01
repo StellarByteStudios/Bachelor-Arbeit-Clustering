@@ -39,10 +39,10 @@ class Colorpoint:
 def main():
     
     # Anfangsbedingungen
-    numberOfPoints = 1000
-    OutputFileName = "../Data/RandomGenerated/Points2DNew.txt"
+    numberOfPoints = 30
+    OutputFileName = "../Data/RandomGenerated/Fair-Twocolor-2D.txt"
     dimensions = 2
-    colors = 3
+    colors = 2
     
     # Punkte erstellen
     points = createListOfPoints(numberOfPoints, dim = dimensions, colors = colors)

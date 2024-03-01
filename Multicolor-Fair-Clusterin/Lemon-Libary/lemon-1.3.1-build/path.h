@@ -27,9 +27,9 @@
 #include <vector>
 #include <algorithm>
 
-#include <lemon/error.h>
-#include <lemon/core.h>
-#include <lemon/concepts/path.h>
+#include "error.h"
+#include "core.h"
+#include "concepts/path.h"
 
 namespace lemon {
 
