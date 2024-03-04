@@ -14,6 +14,12 @@ Multicolor-Fair-Clusterin/Lemon-Libary/*
 !Multicolor-Fair-Clusterin/Lemon-Libary/lemon-1.3.1-build/
 !Multicolor-Fair-Clusterin/Lemon-Libary/lemon-1.3.1.zip
 
+# Binaries ignoren. Werden sonst bei jedem Kompilieren komplett wieder gepuscht
+Multicolor-Fair-Clusterin/Fair-Clustering
+Multicolor-Fair-Clusterin/FairlettBuildupTest
+Multicolor-Fair-Clusterin/LibTest
+Multicolor-Fair-Clusterin/MaxFlowTest
+
 # Output von Latex
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:

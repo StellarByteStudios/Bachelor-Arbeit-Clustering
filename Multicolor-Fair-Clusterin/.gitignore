@@ -1,8 +1,0 @@
-/build/
-
-# Ghost Files
-.sc*.cpp
-.sc*.h
-
-# Binaries
-Fair-Clustering
