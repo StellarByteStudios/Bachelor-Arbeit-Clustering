@@ -120,3 +120,11 @@ void ColoredPoint::setToCenter(){
 	this->isCenter = true;
 }
 
+int ColoredPoint::getFairlettID(){
+	return this->fairlettID;
+}
+
+void ColoredPoint::setFairlettID(int fairlettID){
+	this->fairlettID = fairlettID;
+}
+
