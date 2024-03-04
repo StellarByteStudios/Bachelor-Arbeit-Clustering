@@ -36,71 +36,15 @@ int main(int argc, char *argv[]) {
 
 	// ==== Parsing of Points ==== //
 
-	
-	
-
-	//Printer printer = Printer();
 	PointParser parser =  PointParser(inputFileName);
-
-	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
-
-	// ==== Testing of Distancefunction ==== //
-
-	cout << "\nTesting Distance Funktion: \n";
-
-	double coord1[] = { 0, 2 };
-	ColoredPoint point1 = ColoredPoint(2, RED, coord1);
-
-	double coord2[] = { 0, 0 };
-	ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
-
-	cout << "Distance Hardcoded Points: " << point1.distTo(point2) << endl;
-	cout << "Distance ReadIn Points: " << points->at(0).distTo(points->at(1)) << endl;
-
-
-
-	// ==== Testing Gonzalez Struct==== //
-
-	cout << "\n-----------------\nTesting Struct: \n";
-
-	Gonzalez::GonzalezReturnValues* values;
-	values = Gonzalez::createGonzalezReturns(points);
-
-	values->centers->push_back(point1);
-	values->centers->push_back(point2);
-	values->maxRadius = 50;
-
-	
-	
-	cout << "First two Points of Readin: \n\t- " << points->at(0).toString() 
-	<< "\n\t- "<< points->at(1).toString() << endl;
-	
-	cout << "\nFirst two Points of Struct: \n\t- " << values->clusteredPoints->at(0).toString() 
-	<< "\n\t- "<< values->clusteredPoints->at(1).toString() << endl;
-	
-	cout << "\nCenters of Struct: \n\t-" << values->centers->at(0).toString() 
-	<< "\n\t-" << values->centers->at(1).toString() << endl;
-	
-	cout << "\nMax Radius: " << values->maxRadius << endl;
-
-
-	values->clusteredPoints->at(0).setToCenter();
-	values->clusteredPoints->at(0).setCluster(500);
-
-	
-	cout << "Ursprungsliste nicht verändert?: \n"
-	<< values->clusteredPoints->at(0).toString() << " \n!= \n" 
-	<< points->at(0).toString() << endl;
-
 	
 	
 	
 	// ==== Testing of Gonzalez ==== //
-
 	cout << "\n-----------------\nTesting Gonzalez: \n";
 
-	Gonzalez::GonzalezReturnValues* returnValues= Gonzalez::makeGonzalez(points, numberOfCluster);
+	Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, numberOfCluster);
 
 	cout << "MaxRadius: " << returnValues->maxRadius << endl;
 	cout << "Centers: " << endl;
@@ -108,16 +52,6 @@ int main(int argc, char *argv[]) {
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
 	}
-	
-	//cout << "Points: " << endl;
-	// punkte anzeigen
-	//for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
-	//	cout << "\t- " << i << ": " << returnValues->clusteredPoints->at(i).toString() << endl;
-	//}
-
-
-	
-	
 
 
 	// ==== Write Clusterdata into File ==== //
@@ -144,7 +78,7 @@ int main(int argc, char *argv[]) {
 	delete points;
 
 	// Struct für Gonzaleswerte wieder freigeben
-	Gonzalez::deleteGonzalezReturns(values);
+	Gonzalez::deleteGonzalezReturns(returnValues);
 
 	cout << "\n-----------------\nEnd Program" << endl;
 }
