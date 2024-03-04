@@ -9,8 +9,8 @@ CLUSTERNUM = 5
 ARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
 
-HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h
-CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzalez.cpp
+HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h
+CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp
 
 LINKLIB = -LLemon-Libary/lemon-1.3.1-build/ -llemon
 
