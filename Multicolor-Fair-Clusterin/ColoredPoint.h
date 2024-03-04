@@ -109,5 +109,12 @@ public:
 	* Makes Point a Center
 	*/
 	void setToCenter();
+
+	/* Info-Method
+	* Simply returns if the Point is a center
+	*
+	* @return isCenter
+	*/
+	bool getIsCenter();
 };
 

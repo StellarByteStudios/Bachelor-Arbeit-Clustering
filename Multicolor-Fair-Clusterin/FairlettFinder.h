@@ -97,7 +97,7 @@ namespace fairlettFinder{
     vector<ColoredPoint>* filterRedPoints(vector<ColoredPoint>*);
 
     // walks though all points, filter by their cluster and calculates the biggest cluster
-    double calculateMaxRadius(vector<ColoredPoint>*);
+    double calculateMaxRadius(vector<ColoredPoint>, int);
 
     // using the clustered red points and their fairlettID to asign 
     // the clusters to blue points. Includes outlier

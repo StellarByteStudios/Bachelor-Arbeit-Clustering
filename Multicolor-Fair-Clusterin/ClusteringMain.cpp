@@ -5,6 +5,7 @@
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzalez.h"
+#include "FairlettFinder.h"
 
 int main(int argc, char *argv[]) {
 
@@ -46,12 +47,23 @@ int main(int argc, char *argv[]) {
 
 	Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, numberOfCluster);
 
-	cout << "MaxRadius: " << returnValues->maxRadius << endl;
+	cout << "MaxRadius (PlainGonzalez): " << returnValues->maxRadius << endl;
+	/*
 	cout << "Centers: " << endl;
 	// Centren anzeigen
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
-	}
+	}*/
+
+
+	// ==== Testing of MaxRadius function ==== //
+	double maxRadiusViaFunction = fairlettFinder::calculateMaxRadius(*returnValues->clusteredPoints, numberOfCluster);
+
+	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
+
+
+
+
 
 
 	// ==== Write Clusterdata into File ==== //
