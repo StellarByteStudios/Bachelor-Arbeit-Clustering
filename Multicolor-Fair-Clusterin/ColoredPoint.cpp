@@ -18,6 +18,9 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Keinem Cluster zuweisen
 	this->cluster = -1;
 
+	// Keinem Fairlett zuweisen
+	this->fairlettID = -1;
+
 	// Punkt ist erstmal kein Zentrum
 	this->isCenter = false;
 }
@@ -61,6 +64,15 @@ string ColoredPoint::toString(){
 		stringStream << this->cluster;
 	}
 
+	stringStream << "; FairlettID: ";
+	if(this->fairlettID == -1){
+		stringStream << "--";
+	} else if (this->fairlettID == -2){
+		stringStream << "Ausreißer";
+	} else {
+		stringStream << this->cluster;
+	}
+
 	stringStream << "; Color: ";
 	switch (this->color){
 	case(RED):
@@ -90,6 +102,7 @@ string ColoredPoint::toCSV(){
 	stringStream << this->dim <<",";
 	stringStream << this->isCenter <<",";
 	stringStream << this->cluster <<",";
+	stringStream << this->fairlettID <<",";
 	stringStream << this->color <<",";
 	for (int i = 0; i < this->dim -1; i++){
 		stringStream << this->coordinates[i] << ",";
@@ -123,4 +136,11 @@ void ColoredPoint::setToCenter(){
 	this->isCenter = true;
 }
 
+int ColoredPoint::getFairlettID(){
+	return this->fairlettID;
+}
+
+void ColoredPoint::setFairlettID(int fairlettID){
+	this->fairlettID = fairlettID;
+}
 

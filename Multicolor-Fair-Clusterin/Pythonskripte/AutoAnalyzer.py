@@ -18,8 +18,8 @@ def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 30
-    pictureFolder = "../Data/OutputData/Pictures/Gonzalez/"
-    numOfSamples = 20
+    pictureFolder = "../Data/OutputData/Pictures/GonzalezTest/"
+    numOfSamples = 3
     
     # # # Algorithmus ausführen
     timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
@@ -53,7 +53,7 @@ def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
         # # Bankdaten
         # Pfade algorithmisch zusammensetzen
         inputfile = f"Data/Subsamples/{samplename}/{samplename}Sample-{i}.csv"
-        outputfolder = f"Data/OutputData/Autoanalyzer/{samplename}/Sample{i}/"
+        outputfolder = f"Data/OutputData/AutoanalyzerTest/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Shellcommand zusammensetzen
         command = f"cd .. && ./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster}"
@@ -78,7 +78,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
         #inputfile = f"Data/Subsamples/{bank}/{bank}Sample-{i}.csv"
-        outputfolder = f"Data/OutputData/Autoanalyzer/{samplename}/Sample{i}/"
+        outputfolder = f"Data/OutputData/AutoanalyzerTest/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
         radiiList = get_radii_of_subsample(outputfolder, outputfile, maxCluster)

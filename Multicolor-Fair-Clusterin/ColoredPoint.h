@@ -22,6 +22,9 @@ private:
 	// Which cluster the Point is part of
 	int cluster;
 
+	// Which Fairlett the Point is part of
+	int fairlettID;
+
 	// Is the Point a Center
 	bool isCenter;
 
@@ -116,5 +119,19 @@ public:
 	* @return isCenter
 	*/
 	bool getIsCenter();
+
+	/* Info-Method
+	* Simply returns the fairlettID the Point belongs to
+	*
+	* @return fairlettID
+	*/
+	int getFairlettID();
+
+	/* Cluster-Method
+	* Sets the fairlettID of Point to given Value
+	*
+	* @param cluster: Value to set fairlettID to
+	*/
+	void setFairlettID(int);
 };
 
