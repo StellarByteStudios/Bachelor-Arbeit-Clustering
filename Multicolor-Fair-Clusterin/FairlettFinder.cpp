@@ -136,11 +136,35 @@ void fairlettFinder::updateClusterOfBluePoints(vector<ColoredPoint> *){
 
 
 // ==== Debugging ==== //
-void fairlettFinder::printGraph(Graph &, GraphData &){
+void fairlettFinder::printGraph(Graph& graph, GraphData& gData){
+    // Graphstruktur ausgeben
+    digraphWriter(graph).                           // write g to the standard output
+			node("source", gData.s).                // write s to 'source'
+			node("target", gData.t).                // write t to 'target'
+			run();
+    return; 
 }
 
-void fairlettFinder::printGraphCapacity(Graph &, CapacityMap &, GraphData &){
+void fairlettFinder::printGraphCapacity(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Graphstruktur ausgeben
+    digraphWriter(graph).                           // write g to the standard output
+			arcMap("cap", capacityMap).             // write 'cost' for for arcs
+			node("source", gData.s).                // write s to 'source'
+			node("target", gData.t).                // write t to 'target'
+			run();
+    return; 
 }
 
-void fairlettFinder::printFlow(Flow *, Graph &, CapacityMap &, GraphData &){
+void fairlettFinder::printFlow(Flow* preflow, Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Maximaler Flussert ausgeben
+    printf("Maximaler Flusswert: %d\nGraphausgabe:\n", preflow->flowValue());
+
+    // Graphstruktur ausgeben
+    digraphWriter(graph).                           // write g to the standard output
+			arcMap("cap", capacityMap).             // write 'cost' for for arcs
+			arcMap("flow", preflow->flowMap()).     // write 'flow' for for arcs
+			node("source", gData.s).                // write s to 'source'
+			node("target", gData.t).                // write t to 'target'
+			run();
+    return; 
 }
