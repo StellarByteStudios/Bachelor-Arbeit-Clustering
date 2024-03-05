@@ -36,7 +36,6 @@ int main(int argc, char *argv[]) {
 	int numberOfCluster = stoi(argv[3]);
 
 	// ==== Parsing of Points ==== //
-
 	PointParser parser =  PointParser(inputFileName);
 	vector<ColoredPoint>* points = parser.parseFile();
 	
@@ -61,6 +60,23 @@ int main(int argc, char *argv[]) {
 
 	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
 
+
+
+	// ==== Testing graph Buildup ==== //
+	// Get new Points
+	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
+	parser =  PointParser(unfairHandpointsFile);
+	vector<ColoredPoint>* unfairPoints = parser.parseFile();
+
+	// Buildup Graph
+	Graph g;
+	fairlettFinder::GraphData gData;
+
+	// Add Nodes
+	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
+
+	// Print outcome
+	fairlettFinder::printGraph(g, gData);
 
 
 
@@ -88,6 +104,7 @@ int main(int argc, char *argv[]) {
 
 	// vector für Punkte wieder Freigeben
 	delete points;
+	delete unfairPoints;
 
 	// Struct für Gonzaleswerte wieder freigeben
 	Gonzalez::deleteGonzalezReturns(returnValues);

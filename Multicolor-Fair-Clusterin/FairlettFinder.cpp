@@ -6,11 +6,11 @@ using namespace fairlettFinder;
 
 
 // * * * =========== Using the Algorithm =========== * * * //
-FairFlowReturnValues makeFairFlowClustering(vector<ColoredPoint> *, int){
-    return FairFlowReturnValues();
+FairFlowReturnValues* fairlettFinder::makeFairFlowClustering(vector<ColoredPoint> *, int){
+    return nullptr;
 }
 
-FairFlowReturnValues *fairlettFinder::createGonzalezReturns(vector<ColoredPoint> *){
+FairFlowReturnValues* fairlettFinder::createGonzalezReturns(vector<ColoredPoint> *){
     return nullptr;
 }
 
@@ -23,10 +23,36 @@ void fairlettFinder::deleteFairFlowReturns(FairFlowReturnValues *){
 
 // * * * =========== Building the Graph and let it Flow =========== * * * //
 
-void fairlettFinder::addNodesToGraph(Graph &, GraphData &){
+void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPoint>* points){
+
+    // Anzahl aller Punkte
+    int n = (int) points->size();
+
+    // Rote Knoten hinzufügen (Krit Feature = 0)
+    for (int i = 0; i < n; i++){
+        if (points->at(i).getColor() == RED){
+            gData.redNodes.push_back(graph.addNode());
+        }
+    }
+    //printf("Rote Knoten hinzugefügt\n");
+
+    // Blaue Knoten hinzufügen (Krit Feature = 1)
+    for (int i = 0; i < n; i++){
+        if (points->at(i).getColor() == BLUE){
+            gData.blueNodes.push_back(graph.addNode());
+        }
+    }
+    //printf("Blaue Knoten hinzugefügt\n");
+
+    // Quelle und Senke hinzufügen
+    gData.s = graph.addNode();
+    gData.t = graph.addNode();
+    //printf("Quelle und Senke hinzugefügt\n");
+
+    return; 
 }
 
-void fairlettFinder::addArcsToGraph(Graph &, GraphData &, double){
+void fairlettFinder::addArcsToGraph(Graph &, GraphData &, double, vector<ColoredPoint>* points){
 }
 
 void fairlettFinder::addCapacitiesToGraph(CapacityMap &, GraphData &){
@@ -137,25 +163,44 @@ void fairlettFinder::updateClusterOfBluePoints(vector<ColoredPoint> *){
 
 // ==== Debugging ==== //
 void fairlettFinder::printGraph(Graph& graph, GraphData& gData){
+    // Grunddaten
+    printf("=== Daten welche zum Graphen gespeichert sind ===\n");
+    printf("Anzahl roter Knoten im Graphen: %d\n", (int) gData.redNodes.size());
+    printf("Anzahl blauer Knoten im Graphen: %d\n", (int) gData.blueNodes.size());
+    
+    
     // Graphstruktur ausgeben
     digraphWriter(graph).                           // write g to the standard output
-			node("source", gData.s).                // write s to 'source'
-			node("target", gData.t).                // write t to 'target'
+            node("first-red:", gData.redNodes.at(0)).// Erster Roter Knoten
+            node("first-blue:", gData.blueNodes.at(0)).// Erster Roter Knoten
+			node("source:", gData.s).                // write s to 'source'
+			node("target:", gData.t).                // write t to 'target'
 			run();
     return; 
 }
 
 void fairlettFinder::printGraphCapacity(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Grunddaten
+    printf("=== Daten welche zum Graphen gespeichert sind ===\n");
+    printf("Anzahl roter Knoten im Graphen: %d\n", (int) gData.redNodes.size());
+    printf("Anzahl blauer Knoten im Graphen: %d\n", (int) gData.blueNodes.size());
+
     // Graphstruktur ausgeben
     digraphWriter(graph).                           // write g to the standard output
 			arcMap("cap", capacityMap).             // write 'cost' for for arcs
-			node("source", gData.s).                // write s to 'source'
-			node("target", gData.t).                // write t to 'target'
+            node("first-red:", gData.redNodes.at(0)).// Erster Roter Knoten
+            node("first-blue:", gData.blueNodes.at(0)).// Erster Roter Knoten
+			node("source:", gData.s).                // write s to 'source'
+			node("target:", gData.t).                // write t to 'target'
 			run();
     return; 
 }
 
 void fairlettFinder::printFlow(Flow* preflow, Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Grunddaten
+    printf("=== Daten welche zum Graphen gespeichert sind ===\n");
+    printf("Anzahl roter Knoten im Graphen: %d\n", (int) gData.redNodes.size());
+    printf("Anzahl blauer Knoten im Graphen: %d\n", (int) gData.blueNodes.size());
     // Maximaler Flussert ausgeben
     printf("Maximaler Flusswert: %d\nGraphausgabe:\n", preflow->flowValue());
 
@@ -163,8 +208,10 @@ void fairlettFinder::printFlow(Flow* preflow, Graph& graph, CapacityMap& capacit
     digraphWriter(graph).                           // write g to the standard output
 			arcMap("cap", capacityMap).             // write 'cost' for for arcs
 			arcMap("flow", preflow->flowMap()).     // write 'flow' for for arcs
-			node("source", gData.s).                // write s to 'source'
-			node("target", gData.t).                // write t to 'target'
+            node("first-red:", gData.redNodes.at(0)).// Erster Roter Knoten
+            node("first-blue:", gData.blueNodes.at(0)).// Erster Roter Knoten
+			node("source:", gData.s).                // write s to 'source'
+			node("target:", gData.t).                // write t to 'target'
 			run();
     return; 
 }

@@ -27,7 +27,7 @@ namespace fairlettFinder{
 	};
 
     // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
-    FairFlowReturnValues makeFairFlowClustering(vector<ColoredPoint>*, int);
+    FairFlowReturnValues* makeFairFlowClustering(vector<ColoredPoint>*, int);
 
     // Creating an empty Struct for Max-Flow-Clustering
 	FairFlowReturnValues* createGonzalezReturns(vector<ColoredPoint>*);
@@ -55,16 +55,20 @@ namespace fairlettFinder{
 
         // Arcs between the main-nodes of the graph
         std::vector<Arc> mainArcs;
+
+        // Quantities of Nodes
+        int nRed;
+        int nBlue;
     };
 
     // Adding all red and blue Nodes and s and t to the graph
-    void addNodesToGraph(Graph&, GraphData&);
+    void addNodesToGraph(Graph&, GraphData&, vector<ColoredPoint>*);
     
     // Adding all needed arcs to Graph
     // source --> redNodes
     // blueNodes --> target
     // redNodes --> blueNodes (potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double);
+    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*);
 
     // sets the capacity of all arcs to one
     void addCapacitiesToGraph(CapacityMap&, GraphData&);
