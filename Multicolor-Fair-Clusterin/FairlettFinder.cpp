@@ -129,3 +129,18 @@ double fairlettFinder::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, 
 
 void fairlettFinder::updateClusterOfBluePoints(vector<ColoredPoint> *){
 }
+
+
+
+
+
+
+// ==== Debugging ==== //
+void fairlettFinder::printGraph(Graph &, GraphData &){
+}
+
+void fairlettFinder::printGraphCapacity(Graph &, CapacityMap &, GraphData &){
+}
+
+void fairlettFinder::printFlow(Flow *, Graph &, CapacityMap &, GraphData &){
+}

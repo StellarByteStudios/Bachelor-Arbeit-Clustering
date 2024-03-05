@@ -103,4 +103,15 @@ namespace fairlettFinder{
     // the clusters to blue points. Includes outlier
     void updateClusterOfBluePoints(vector<ColoredPoint>*);
 
+
+
+    // ==== Debugging ==== //
+    // Print Data from Graph
+    void printGraph(Graph&, GraphData&);
+    
+    // Print Data from Graph
+    void printGraphCapacity(Graph&, CapacityMap&, GraphData&);
+
+    // Print all Data with Flow
+    void printFlow(Flow*, Graph&, CapacityMap&, GraphData&);
 }
