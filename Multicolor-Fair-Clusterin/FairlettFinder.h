@@ -21,13 +21,13 @@ namespace fairlettFinder{
     
     // ==== Calculating the Fairlets ==== //
     // calclulates the fairletts of some Points and updates the vector
-    void markFairletts(vector<ColoredPoint>*);
+    void markFairletts(vector<ColoredPoint>*); // * * TO-DO * * //
 
     // Change Kritical feature that 0 has less member than 1 for simpler calculation
-    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
+    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*); // * * TO-DO * * //
 
     // Calculate all possible radii and find the lowest working radius
-    double findPotentionalRadius(vector<ColoredPoint>*);
+    double findPotentionalRadius(vector<ColoredPoint>*); // * * TO-DO * * //
 
     
 
@@ -66,16 +66,16 @@ namespace fairlettFinder{
     // source --> redNodes
     // blueNodes --> target
     // redNodes --> blueNodes (potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*);
+    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*); // * * TO-DO * * //
 
     // sets the capacity of all arcs to one
-    void addCapacitiesToGraph(CapacityMap&, GraphData&);
+    void addCapacitiesToGraph(CapacityMap&, GraphData&); // * * TO-DO * * //
 
     // calculates the Flow of the build-up graph
-    Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
+    Flow* calculateFlow(Graph&, CapacityMap&, GraphData&); // * * TO-DO * * //
 
     // gets the Flow on a single Arc
-    int getFlowOfArc(Flow&, Arc);
+    int getFlowOfArc(Flow&, Arc); // * * TO-DO * * //
 
     
 
