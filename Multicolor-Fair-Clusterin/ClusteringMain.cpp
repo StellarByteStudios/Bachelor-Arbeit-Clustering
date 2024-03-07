@@ -6,6 +6,7 @@
 #include "PointParser.h"
 #include "Gonzalez.h"
 #include "FairlettFinder.h"
+#include "RedCenterClustering.h"
 
 int main(int argc, char *argv[]) {
 
@@ -56,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing of MaxRadius function ==== //
-	double maxRadiusViaFunction = fairlettFinder::calculateMaxRadius(*returnValues->clusteredPoints, numberOfCluster);
+	double maxRadiusViaFunction = redclustering::calculateMaxRadius(*returnValues->clusteredPoints, numberOfCluster);
 
 	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
 

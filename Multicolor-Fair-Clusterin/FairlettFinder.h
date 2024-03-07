@@ -19,26 +19,24 @@ typedef Preflow<Graph, CapacityMap> Flow;
 
 namespace fairlettFinder{
     
+    // ==== Calculating the Fairlets ==== //
+    // calclulates the fairletts of some Points and updates the vector
+    void markFairletts(vector<ColoredPoint>*);
+
+    // Change Kritical feature that 0 has less member than 1 for simpler calculation
+    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
+
+    // Calculate all possible radii and find the lowest working radius
+    double findPotentionalRadius(vector<ColoredPoint>*);
+
     
-    struct FairFlowReturnValues{
-		vector<ColoredPoint>* clusteredPoints;
-		vector<ColoredPoint>* centers;
-		double maxRadius;
-	};
 
-    // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
-    FairFlowReturnValues* makeFairFlowClustering(vector<ColoredPoint>*, int);
+    
 
-    // Creating an empty Struct for Max-Flow-Clustering
-	FairFlowReturnValues* createGonzalezReturns(vector<ColoredPoint>*);
-
-	// Clean-Up for Max-Flow-Clustering Returnvalues
-	void deleteFairFlowReturns(FairFlowReturnValues*);
 
     
     // ==== Building the Graph and let it Flow ==== //
     // struct of an build-up graph to pass-through functions
-
     struct GraphData{
         // Key-Nodes (source and target)
         Node s;
@@ -79,35 +77,7 @@ namespace fairlettFinder{
     // gets the Flow on a single Arc
     int getFlowOfArc(Flow&, Arc);
 
-
-    // ==== Calculating the Fairlets ==== //
-    // Calculate all possible radii and find the lowest working radius
-    double findPotentionalRadius(vector<ColoredPoint>*);   
-
-    // Change Kritical feature that 0 has less member than 1 for simpler calculation
-    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
-
-    // calclulates the fairletts of some Points and updates the vector
-    void markFairletts(vector<ColoredPoint>*);
     
-
-
-
-    // ==== Clustering with Fairlets ==== //
-    // clusters points with krit-feature = 0 with Gonzalez algorithm
-    void clusterRedPoints(vector<ColoredPoint>*);
-    
-    // returns just the red points which a used for the clustering
-    vector<ColoredPoint>* filterRedPoints(vector<ColoredPoint>*);
-
-    // walks though all points, filter by their cluster and calculates the biggest cluster
-    double calculateMaxRadius(vector<ColoredPoint>, int);
-
-    // using the clustered red points and their fairlettID to asign 
-    // the clusters to blue points. Includes outlier
-    void updateClusterOfBluePoints(vector<ColoredPoint>*);
-
-
 
     // ==== Debugging ==== //
     // Print Data from Graph
