@@ -41,7 +41,7 @@ bibliography=totoc]{scrbook}
 \usepackage{lscape}
 \usepackage{tabularx}
 \usepackage{booktabs}
-\usepackage{todonotes}
+
 \usepackage{listings}
 %\usepackage[chapter]{minted}
 %\usepackage[%
@@ -110,6 +110,17 @@ bibliography=totoc]{scrbook}
 \vfuzz=2.000pt 
 \hfuzz=9.000pt 
 
+% Eingefügt vor todo-Package auf Empfelung einer Fehlermeldung 
+\setlength {\marginparwidth }{2cm}
+% Dieses Pacet war auch vorher schon drin nur wirft es warnungen
+\usepackage{todonotes}
+% Das soll auch helfen
+\usepackage{scrhack}
+
+% Darstellung von Pseudocode
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 %\bibliographystyle{abbrv}
 %\bibliography{bib/erferences}
 
@@ -163,7 +174,7 @@ bibliography=totoc]{scrbook}
 
 \input{conclusion}
 
-\input{citeinport.tex}
+\input{citeinport}
 
 % Auskommentieren, falls kein Anhang notwendig
 %\input{anhang}
