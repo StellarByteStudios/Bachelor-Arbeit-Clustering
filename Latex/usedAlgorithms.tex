@@ -3,14 +3,31 @@
 
 \chapter{Algorithmen}
 
-    Welche Algorithmen habe ich implementiert/genutzt und was habe ich mit ihnen gemacht.
-    Vielleicht technische Feinheiten wie geben die Algorithmen etwas zurück
+    In der Arbeit wurden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erleutert werden
+
+\section{Matching}
+    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare, wobei gilt dass alle Punkte in einem Paar sind, die Paare sich nicht überschneiden und die Knoten eines Paares über eine Kante verbunden sind.
+    \subsection{Bipatites Matching}
+        Wird ein Matching in einem Bipatiten Graphen, also einem Graphen welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren, gesucht, dann ist das ein Bipatites Matching.
+
+\section{Max-Flow Algorithmus}
+    Das bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann.
+    \subsection{Flusseigenschaften}
+        Für einen Fluss, welcher durch ein Flussnetzwerk fließt müssen immer folgende 3 Eigenschaften gelten:
+        \begin{enumerate}
+            \item Jede Kante im Netzwerk muss eine nicht negative Kapazität und Fluss haben 
+            \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle s und Senke t immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv.
+            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten
+        \end{enumerate}
+    Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle s und der Senke t, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt um Knoten verschiedener Farbe in einem Bipatiten Graphen zu Matchen.
+    Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
 \section{Gonzalez}
-    \begin{itemize}
-        \item Wie funktioniert Gonzalez grob
-        \item vielleicht, was ist die Rückgabe (Zentren, Knoten mit Clusterzugehörigkeit, maxradius)
-    \end{itemize}
+    Der Algorithmus von Gonzalez berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmusses hier verwendet.
+    Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik und ein k welches die Anzahl an gewünschten Clustern angibt.
+    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der minimale Abstand zu einem der Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Zum Schluss wird jeder Punkt dem Zentrum zugewießen zu welchem er den geringsten Abstand hat. 
+    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und der maximale Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
 \section{Fairletts}
     \begin{itemize}
