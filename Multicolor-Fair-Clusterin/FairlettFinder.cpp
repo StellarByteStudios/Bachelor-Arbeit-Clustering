@@ -48,7 +48,34 @@ void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<Colo
     return; 
 }
 
-void fairlettFinder::addArcsToGraph(Graph &, GraphData &, double, vector<ColoredPoint>* points){
+void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
+
+    // Anzahl an Knoten herausfinden
+    int n = (int) points->size();
+    int nRed = (int) gData.redNodes.size();
+    int nBlue = (int) gData.blueNodes.size();
+
+
+    // Kanten von s zu allen Roten Knoten
+    for (int i = 0; i < nRed; i++){
+        gData.sourceArcs.push_back(graph.addArc(gData.s, gData.redNodes.at(i)));
+    }
+
+    // Kanten von Blau zu t
+    for (int i = 0; i < nBlue; i++){
+        gData.targetArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
+    }
+
+
+    // Kanten von Rot nach Blau, abhänging von ihrem Abstand (potRad)
+    /*
+    for (size_t i = 0; i < 9; i++){
+        gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(i), gData.blueNodes.at(i+1)));
+    }
+    // Letzte Quer-Kante
+    gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(9), gData.blueNodes.at(0)));
+    */
+    return;
 }
 
 void fairlettFinder::addCapacitiesToGraph(CapacityMap &, GraphData &){
