@@ -81,6 +81,38 @@ int main(int argc, char *argv[]) {
 
 
 
+	// ==== Testing Color-Filter ==== //	
+	cout << "\n===== Testing Colorfilter =====\n" << endl;
+
+	cout << "Original Vector before filtering:" << endl;
+	for (size_t i = 0; i < unfairPoints->size(); i++){
+		cout << unfairPoints->at(i).toString() << endl;
+	}
+
+	// Filtern
+	vector<ColoredPoint>* redPoints = fairlettFinder::getPointsOfColor(unfairPoints, RED);
+	vector<ColoredPoint>* bluePoints = fairlettFinder::getPointsOfColor(unfairPoints, BLUE);
+
+	cout << "\nOriginal Vector after filtering:" << endl;
+	for (size_t i = 0; i < unfairPoints->size(); i++){
+		cout << unfairPoints->at(i).toString() << endl;
+	}
+
+	cout << "\nFiltered RedVector after filtering:" << endl;
+	for (size_t i = 0; i < redPoints->size(); i++){
+		cout << redPoints->at(i).toString() << endl;
+	}
+	
+	cout << "\nSize-Comparison:" << endl;
+	cout << "\nAll Points: " << unfairPoints->size() << endl;
+	cout << "\nRed Points: " << redPoints->size() << endl;
+	cout << "\nBlue Points: " << bluePoints->size() << endl;
+
+
+	delete redPoints;
+	delete bluePoints;
+
+
 
 
 	// ==== Write Clusterdata into File ==== //

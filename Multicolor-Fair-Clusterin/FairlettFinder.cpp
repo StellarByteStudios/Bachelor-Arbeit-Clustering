@@ -51,7 +51,7 @@ void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<Colo
 void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
 
     // Anzahl an Knoten herausfinden
-    int n = (int) points->size();
+    //int n = (int) points->size();
     int nRed = (int) gData.redNodes.size();
     int nBlue = (int) gData.blueNodes.size();
 
@@ -92,6 +92,29 @@ int fairlettFinder::getFlowOfArc(Flow &, Arc){
 
 
 
+
+
+
+
+
+// ==== Utility ==== //
+vector<ColoredPoint>* fairlettFinder::getPointsOfColor(vector<ColoredPoint>* points, Pointcolor color){
+    // Neuer Vector anlegen
+    vector<ColoredPoint>* filteredPoints = new vector<ColoredPoint>;
+
+    // Wie viele Punkte muss ich durchgehen
+    int n = (int) points->size();
+
+    for (int i = 0; i < n; i++){
+        // Falls der Punkt die richtige Farbe hat, hinzufügen
+        if(points->at(i).getColor() == color){
+            filteredPoints->push_back(points->at(i));
+        }
+    }
+    
+    // den neuen, einfarbigen vector zurückgeben
+    return filteredPoints;
+}
 
 
 

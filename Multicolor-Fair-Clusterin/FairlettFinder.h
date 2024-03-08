@@ -79,6 +79,13 @@ namespace fairlettFinder{
 
     
 
+
+    // ==== Utility ==== //
+    // goes though vector of points and returns a new vector with just one color
+    vector<ColoredPoint>* getPointsOfColor(vector<ColoredPoint>*, Pointcolor);
+
+
+
     // ==== Debugging ==== //
     // Print Data from Graph
     void printGraph(Graph&, GraphData&);
