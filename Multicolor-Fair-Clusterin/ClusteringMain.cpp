@@ -76,12 +76,15 @@ int main(int argc, char *argv[]) {
 	// Add Nodes
 	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
 
+	fairlettFinder::addArcsToGraph(g, gData, 20, unfairPoints);
+
 	// Print outcome
 	fairlettFinder::printGraph(g, gData);
 
 
 
-	// ==== Testing Color-Filter ==== //	
+	// ==== Testing Color-Filter ==== //
+	/*	
 	cout << "\n===== Testing Colorfilter =====\n" << endl;
 
 	cout << "Original Vector before filtering:" << endl;
@@ -111,7 +114,7 @@ int main(int argc, char *argv[]) {
 
 	delete redPoints;
 	delete bluePoints;
-
+	*/
 
 
 

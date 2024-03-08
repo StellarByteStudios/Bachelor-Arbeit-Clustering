@@ -1,6 +1,6 @@
 #include "FairlettFinder.h"
 
-#include <iostream> // std::cout; std::endl
+//#include <iostream> // std::cout; std::endl
 
 using namespace fairlettFinder;
 
@@ -68,13 +68,33 @@ void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRa
 
 
     // Kanten von Rot nach Blau, abhänging von ihrem Abstand (potRad)
-    /*
-    for (size_t i = 0; i < 9; i++){
-        gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(i), gData.blueNodes.at(i+1)));
+    // Punkte in Farben Aufteilen
+    vector<ColoredPoint>* redPoints = getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = getPointsOfColor(points, BLUE);
+
+    // Kurzer Sanity Check
+    if (nRed != (int) redPoints->size() || nBlue != (int) bluePoints->size()){
+        printf("ERROR: Fehler bei Grapherstellung!\n");
+        printf("Anzahl roter Knoten im Graph %d; \t Anzahl roter Punkte %ld\n", nRed, redPoints->size());
+        printf("Anzahl blauer Knoten im Graph %d; \t Anzahl blauer Punkte %ld\n", nBlue, bluePoints->size());
     }
-    // Letzte Quer-Kante
-    gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(9), gData.blueNodes.at(0)));
-    */
+    
+    // Alle roten Punkte durchgehen
+    for (int redIndex = 0; redIndex < nRed; redIndex++){
+        // Alle blauen Punkte durchgehen
+        for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
+            // Schauen ob das eine Passende Kante ist
+            if (redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)) < potRad){
+                // Kante Hinzufügen
+                gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
+            } 
+        } 
+    }
+    
+    // Gefilterte Punkte wieder frei geben
+    delete redPoints;
+    delete bluePoints;
+
     return;
 }
 
