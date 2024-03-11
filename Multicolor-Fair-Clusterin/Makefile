@@ -2,6 +2,8 @@ CC = g++
 CFLAGS = -Wall -g -std=c++14
 BINNAME = Fair-Clustering
 
+VALFLAGS = --leak-check=full
+
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
 OUTPUTFILENAME = ClusterOut.csv
@@ -29,7 +31,7 @@ build: $(HDATEIEN) $(CPPDATEIEN)
 
 
 val: $(BINNAME)
-	valgrind ./$(BINNAME) $(ARGS)
+	valgrind $(VALFLAGS) ./$(BINNAME) $(ARGS) 
 
 
 libtest: Lemon-Libary/lemon-1.3.1-build/liblemon.a LemonLibTest.cpp

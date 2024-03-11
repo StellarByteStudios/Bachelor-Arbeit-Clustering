@@ -29,6 +29,9 @@ namespace fairlettFinder{
     // Calculate all possible radii and find the lowest working radius
     double findPotentionalRadius(vector<ColoredPoint>*); // * * TO-DO * * //
 
+    // Calculates a List of all Potentional Radii, which is sorted
+    vector<double>* calculateAllRadii(vector<ColoredPoint>*);
+
     
 
     

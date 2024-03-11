@@ -63,6 +63,9 @@ int main(int argc, char *argv[]) {
 
 
 
+
+
+
 	// ==== Testing graph Buildup ==== //
 	// Get new Points
 	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
@@ -84,8 +87,24 @@ int main(int argc, char *argv[]) {
 	fairlettFinder::addCapacitiesToGraph(capacity, gData);
 
 	// Print outcome
-	fairlettFinder::printGraphCapacity(g, capacity, gData);
+	//fairlettFinder::printGraphCapacity(g, capacity, gData);
 
+
+
+	// ==== More Testing ==== //
+
+	/*
+	// Calculate all possible Radii
+	vector<double>* potRadii = fairlettFinder::calculateAllRadii(unfairPoints);
+
+	// Print Radii
+	cout << "All Possible Radii:" << endl;
+	for (size_t i = 0; i < potRadii->size(); i++){
+		cout << potRadii->at(i) << endl;
+	}
+
+	delete potRadii;
+	*/
 
 
 	// ==== Testing Color-Filter ==== //

@@ -18,6 +18,38 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint> *){
 }
 
 
+vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
+    // Erstmal nach Blau und Rot filtern
+    vector<ColoredPoint>* redPoints = getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = getPointsOfColor(points, BLUE);
+
+    // Liste für alle Radien Anlegen
+    vector<double>* potentalRadii = new vector<double>;
+
+    // Alle möglichen Radien berechnen
+    // Alle roten Punkte durchgehen
+    for (int redIndex = 0; redIndex < (int) redPoints->size(); redIndex++){
+        // Alle blauen Punkte durchgehen
+        for (int blueIndex = 0; blueIndex < (int) bluePoints->size(); blueIndex++){
+            // Radius hinzufügen
+            potentalRadii->push_back(redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)));
+        } 
+    }
+
+    // Radien Sortieren
+    std::sort(potentalRadii->begin(), potentalRadii->end());
+
+    delete redPoints;
+    delete bluePoints;
+
+    return potentalRadii;
+}
+
+
+
+
+
+
 // * * * =========== Building the Graph and let it Flow =========== * * * //
 void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPoint>* points){
 
