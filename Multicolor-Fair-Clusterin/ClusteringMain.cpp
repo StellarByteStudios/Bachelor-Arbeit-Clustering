@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
 	parser =  PointParser(unfairHandpointsFile);
 	vector<ColoredPoint>* unfairPoints = parser.parseFile();
-
+	/*
 	// Buildup Graph
 	Graph g;
 	fairlettFinder::GraphData gData;
@@ -103,11 +103,57 @@ int main(int argc, char *argv[]) {
 
 	delete(flow);
 
-
+	*/
 
 
 
 	// ==== More Testing ==== //
+	cout << "\n===== Testing Radius checker =====\n" << endl;
+
+	// Farben richtig rum haben
+	fairlettFinder::makeCritFeatureSmalestFirst(unfairPoints);
+
+	// Kleine Radius Testen
+	double radSmall = 5;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radSmall, fairlettFinder::checkRadius(unfairPoints, radSmall));
+
+	// Mittleren Radius Testen
+	double radMedium = 20;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radMedium, fairlettFinder::checkRadius(unfairPoints, radMedium));
+
+	// Großen Radius Testen
+	double radBig = 50;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fairlettFinder::checkRadius(unfairPoints, radBig));
+
+	// Gegentest mit Print
+	double sanatyRadius = 50;
+
+	Graph g;
+	fairlettFinder::GraphData gData;
+	CapacityMap capacity(g);
+
+	// Add Nodes
+	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
+
+	// Add Arcs
+	fairlettFinder::addArcsToGraph(g, gData, sanatyRadius, unfairPoints);
+
+	// Add Capacities
+	fairlettFinder::addCapacitiesToGraph(capacity, gData);
+
+	// Get Max Flow Value
+	int maxFlowValue = fairlettFinder::getMaxFlow(g, capacity, gData);
+
+	// Get Flow itself
+	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
+
+	// Print outcome
+	fairlettFinder::printFlow(flow, g, capacity, gData);
+	printf("Value of this Flow is %d\n", maxFlowValue);
+	
+
+	delete(flow);
+
 
 	/*
 	// Calculate all possible Radii

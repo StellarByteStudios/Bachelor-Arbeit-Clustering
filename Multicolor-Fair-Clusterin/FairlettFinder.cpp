@@ -95,6 +95,33 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 }
 
 
+bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
+    // Graphenstruktur aufbauen
+    // Variablen erzeugen
+	Graph g;
+	GraphData gData;
+	CapacityMap capacity(g);
+
+	// Knoten hinzufügen
+	addNodesToGraph(g, gData, points);
+
+	// Kanten hinzufügen
+	addArcsToGraph(g, gData, potRad, points);
+
+	// Kapazitäten hinzufügen
+	addCapacitiesToGraph(capacity, gData);
+
+    // Fluss berechnen
+    int maxFlowValue = getMaxFlow(g, capacity, gData);
+    
+    // Vergleichwert holen
+    int nRed = (int) getPointsOfColor(points, RED)->size();
+
+    // Zurückgeben ob Fluss groß genug ist
+    return maxFlowValue >= nRed;
+}
+
+
 
 
 

@@ -32,6 +32,9 @@ namespace fairlettFinder{
     // Calculates a List of all Potentional Radii, which is sorted
     vector<double>* calculateAllRadii(vector<ColoredPoint>*);
 
+    // Checks if given radius is building all Fairletts
+    // Needs first to have nRed <= nBlue
+    bool checkRadius(vector<ColoredPoint>*, double); // * * TO-DO * * //
     
 
     
@@ -69,7 +72,7 @@ namespace fairlettFinder{
     // source --> redNodes
     // blueNodes --> target
     // redNodes --> blueNodes (potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*); // * * TO-DO * * //
+    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*);
 
     // sets the capacity of all arcs to one
     void addCapacitiesToGraph(CapacityMap&, GraphData&);
@@ -81,7 +84,7 @@ namespace fairlettFinder{
     int getMaxFlow(Graph&, CapacityMap&, GraphData&);
 
     // gets the Flow on a single Arc
-    int getFlowOfArc(Flow&, Arc); // * * TO-DO * * //
+    int getFlowOfArc(Flow&, Arc);
 
     
 
