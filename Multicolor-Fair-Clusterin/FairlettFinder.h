@@ -27,14 +27,14 @@ namespace fairlettFinder{
     void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
 
     // Calculate all possible radii and find the lowest working radius
-    double findPotentionalRadius(vector<ColoredPoint>*); // * * TO-DO * * //
+    double findPotentionalRadius(vector<ColoredPoint>*);
 
     // Calculates a List of all Potentional Radii, which is sorted
     vector<double>* calculateAllRadii(vector<ColoredPoint>*);
 
     // Checks if given radius is building all Fairletts
     // Needs first to have nRed <= nBlue
-    bool checkRadius(vector<ColoredPoint>*, double); // * * TO-DO * * //
+    bool checkRadius(vector<ColoredPoint>*, double);
     
 
     

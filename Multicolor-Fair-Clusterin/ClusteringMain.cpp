@@ -125,34 +125,10 @@ int main(int argc, char *argv[]) {
 	double radBig = 50;
 	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fairlettFinder::checkRadius(unfairPoints, radBig));
 
-	// Gegentest mit Print
-	double sanatyRadius = 50;
+	// Optimalen Radius finden
+	double optRad = fairlettFinder::findPotentionalRadius(unfairPoints);
 
-	Graph g;
-	fairlettFinder::GraphData gData;
-	CapacityMap capacity(g);
-
-	// Add Nodes
-	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
-
-	// Add Arcs
-	fairlettFinder::addArcsToGraph(g, gData, sanatyRadius, unfairPoints);
-
-	// Add Capacities
-	fairlettFinder::addCapacitiesToGraph(capacity, gData);
-
-	// Get Max Flow Value
-	int maxFlowValue = fairlettFinder::getMaxFlow(g, capacity, gData);
-
-	// Get Flow itself
-	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
-
-	// Print outcome
-	fairlettFinder::printFlow(flow, g, capacity, gData);
-	printf("Value of this Flow is %d\n", maxFlowValue);
-	
-
-	delete(flow);
+	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
 
 
 	/*

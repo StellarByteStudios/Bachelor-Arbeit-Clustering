@@ -10,6 +10,8 @@ using namespace fairlettFinder;
 void fairlettFinder::markFairletts(vector<ColoredPoint> *){
 }
 
+
+
 void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint>* points){
     // Punkte durchzählen
     int nRed = 0;
@@ -62,9 +64,31 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint>* points){
     return;  
 }
 
-double fairlettFinder::findPotentionalRadius(vector<ColoredPoint> *){
-    return 0.0;
+
+
+double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
+    // Alle möglichen Radien berechnen
+    vector<double>* potRadii = calculateAllRadii(points);
+
+    // Solange durchprobieren, bis ein Radius erfolgreich ist
+    for (int i = 0; i < (int) potRadii->size(); i++){
+        // Ist der Radius Groß genug
+        if (checkRadius(points, potRadii->at(i))){
+            // Funktionierenden Radius abspeichern
+            double trueRadius = potRadii->at(i);
+            // Aufräumen
+            delete(potRadii);
+            // Zurückgeben
+            return trueRadius;
+        }
+        
+    }
+    // Fehlerfall
+    printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
+    delete potRadii;
+    return -1.0;
 }
+
 
 
 vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
@@ -93,6 +117,7 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
     return potentalRadii;
 }
+
 
 
 bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
@@ -156,6 +181,8 @@ void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<Colo
     return; 
 }
 
+
+
 void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
 
     // Anzahl an Knoten herausfinden
@@ -206,6 +233,8 @@ void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRa
     return;
 }
 
+
+
 void fairlettFinder::addCapacitiesToGraph(CapacityMap& capacityMap, GraphData& gData){
     // Kapazität von Quelle zu allen Roten
     for (size_t i = 0; i < gData.sourceArcs.size(); i++){
@@ -224,6 +253,8 @@ void fairlettFinder::addCapacitiesToGraph(CapacityMap& capacityMap, GraphData& g
 
 }
 
+
+
 Flow* fairlettFinder::calculateFlow(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
     // Preflow-Object erstellen
     Flow* preflow = new Flow(graph, capacityMap, gData.s, gData.t);
@@ -233,6 +264,7 @@ Flow* fairlettFinder::calculateFlow(Graph& graph, CapacityMap& capacityMap, Grap
 
     return preflow;
 }
+
 
 int fairlettFinder::getMaxFlow(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
     // Flussalgorithmus laufen lassen
@@ -247,6 +279,8 @@ int fairlettFinder::getMaxFlow(Graph& graph, CapacityMap& capacityMap, GraphData
     // Wert zurück geben
     return flowValue;
 }
+
+
 
 int fairlettFinder::getFlowOfArc(Flow& flow, Arc arc){
     int flowValue = flow.flow(arc);
