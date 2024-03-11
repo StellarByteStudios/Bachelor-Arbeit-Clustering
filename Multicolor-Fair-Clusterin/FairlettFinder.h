@@ -69,7 +69,7 @@ namespace fairlettFinder{
     void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*); // * * TO-DO * * //
 
     // sets the capacity of all arcs to one
-    void addCapacitiesToGraph(CapacityMap&, GraphData&); // * * TO-DO * * //
+    void addCapacitiesToGraph(CapacityMap&, GraphData&);
 
     // calculates the Flow of the build-up graph
     Flow* calculateFlow(Graph&, CapacityMap&, GraphData&); // * * TO-DO * * //

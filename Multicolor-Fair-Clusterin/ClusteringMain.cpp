@@ -72,14 +72,19 @@ int main(int argc, char *argv[]) {
 	// Buildup Graph
 	Graph g;
 	fairlettFinder::GraphData gData;
+	CapacityMap capacity(g);
 
 	// Add Nodes
 	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
 
-	fairlettFinder::addArcsToGraph(g, gData, 20, unfairPoints);
+	// Add Arcs
+	fairlettFinder::addArcsToGraph(g, gData, 10, unfairPoints);
+
+	// Add Capacities
+	fairlettFinder::addCapacitiesToGraph(capacity, gData);
 
 	// Print outcome
-	fairlettFinder::printGraph(g, gData);
+	fairlettFinder::printGraphCapacity(g, capacity, gData);
 
 
 

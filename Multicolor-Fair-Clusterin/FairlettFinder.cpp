@@ -98,7 +98,22 @@ void fairlettFinder::addArcsToGraph(Graph& graph, GraphData& gData, double potRa
     return;
 }
 
-void fairlettFinder::addCapacitiesToGraph(CapacityMap &, GraphData &){
+void fairlettFinder::addCapacitiesToGraph(CapacityMap& capacityMap, GraphData& gData){
+    // Kapazität von Quelle zu allen Roten
+    for (size_t i = 0; i < gData.sourceArcs.size(); i++){
+        capacityMap[gData.sourceArcs.at(i)] = 1;
+    }
+
+    // Kapazität von allen Blauen zur Senke
+    for (size_t i = 0; i < gData.targetArcs.size(); i++){
+        capacityMap[gData.targetArcs.at(i)] = 1;
+    }
+
+    // Zwischenkanten Kapazität
+    for (size_t i = 0; i < gData.mainArcs.size(); i++){
+        capacityMap[gData.mainArcs.at(i)] = 1;
+    }
+
 }
 
 Flow *fairlettFinder::calculateFlow(Graph &, CapacityMap &, GraphData &){
