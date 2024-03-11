@@ -221,10 +221,10 @@ int fairlettFinder::getMaxFlow(Graph& graph, CapacityMap& capacityMap, GraphData
     return flowValue;
 }
 
-int fairlettFinder::getFlowOfArc(Flow &, Arc){
-    return 0;
+int fairlettFinder::getFlowOfArc(Flow& flow, Arc arc){
+    int flowValue = flow.flow(arc);
+    return flowValue;
 }
-
 
 
 

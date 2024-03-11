@@ -96,7 +96,14 @@ int main(int argc, char *argv[]) {
 	fairlettFinder::printFlow(flow, g, capacity, gData);
 	printf("Value of this Flow is %d\n", maxFlowValue);
 
+	// Flow von Kante nehmen
+	printf("Flow der ersten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(0)));
+	printf("Flow der zweiten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(1)));
+	
+
 	delete(flow);
+
+
 
 
 
