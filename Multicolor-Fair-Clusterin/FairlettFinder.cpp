@@ -140,7 +140,11 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
     int maxFlowValue = getMaxFlow(g, capacity, gData);
     
     // Vergleichwert holen
-    int nRed = (int) getPointsOfColor(points, RED)->size();
+    vector<ColoredPoint>* redPoints = getPointsOfColor(points, RED);
+    int nRed = (int) redPoints->size();
+
+    // Aufräumen
+    delete(redPoints);
 
     // Zurückgeben ob Fluss groß genug ist
     return maxFlowValue >= nRed;
