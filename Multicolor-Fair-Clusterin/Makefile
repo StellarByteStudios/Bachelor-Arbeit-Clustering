@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -std=c++14
 BINNAME = Fair-Clustering
 
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
