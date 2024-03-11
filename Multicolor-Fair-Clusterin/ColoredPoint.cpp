@@ -120,8 +120,13 @@ Pointcolor ColoredPoint::getColor(){
 	return this->color;
 }
 
-int ColoredPoint::getCluster(){
-	return this->cluster;
+void ColoredPoint::setColor(Pointcolor color){
+	this->color = color;
+}
+
+int ColoredPoint::getCluster()
+{
+    return this->cluster;
 }
 
 void ColoredPoint::setCluster(int cluster){

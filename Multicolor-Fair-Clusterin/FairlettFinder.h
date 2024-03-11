@@ -24,7 +24,7 @@ namespace fairlettFinder{
     void markFairletts(vector<ColoredPoint>*); // * * TO-DO * * //
 
     // Change Kritical feature that 0 has less member than 1 for simpler calculation
-    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*); // * * TO-DO * * //
+    void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
 
     // Calculate all possible radii and find the lowest working radius
     double findPotentionalRadius(vector<ColoredPoint>*); // * * TO-DO * * //

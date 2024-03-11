@@ -94,6 +94,13 @@ public:
 	*/
 	Pointcolor getColor();
 
+	/* Update-Method
+	* Sets Color of Point to new Color
+	*
+	* @param color: Value to set Color to
+	*/
+	void setColor(Pointcolor);
+
 	/* Info-Method
 	* Simply returns the cluster the Point is in
 	*

@@ -107,10 +107,34 @@ int main(int argc, char *argv[]) {
 	*/
 
 
-	// ==== Testing Color-Filter ==== //
-	/*	
+	// ==== Testing Color-Filter ==== //	
 	cout << "\n===== Testing Colorfilter =====\n" << endl;
 
+	// Fehler reinbringen
+	unfairPoints->at(0).setColor(GREEN);
+	unfairPoints->at(1).setColor(GREEN);
+	unfairPoints->at(3).setColor(GREEN);
+
+	// Filtern und Richtig mappen
+	fairlettFinder::makeCritFeatureSmalestFirst(unfairPoints);
+
+	vector<ColoredPoint>* redPoints = fairlettFinder::getPointsOfColor(unfairPoints, RED);
+	vector<ColoredPoint>* bluePoints = fairlettFinder::getPointsOfColor(unfairPoints, BLUE);
+
+	
+
+	cout << "\nSize-Comparison:" << endl;
+	cout << "\nAll Points: " << unfairPoints->size() << endl;
+	cout << "\nRed Points: " << redPoints->size() << endl;
+	cout << "\nBlue Points: " << bluePoints->size() << endl;
+
+
+	delete redPoints;
+	delete bluePoints;
+	
+
+
+	/*
 	cout << "Original Vector before filtering:" << endl;
 	for (size_t i = 0; i < unfairPoints->size(); i++){
 		cout << unfairPoints->at(i).toString() << endl;
@@ -129,7 +153,7 @@ int main(int argc, char *argv[]) {
 	for (size_t i = 0; i < redPoints->size(); i++){
 		cout << redPoints->at(i).toString() << endl;
 	}
-	
+
 	cout << "\nSize-Comparison:" << endl;
 	cout << "\nAll Points: " << unfairPoints->size() << endl;
 	cout << "\nRed Points: " << redPoints->size() << endl;
@@ -138,7 +162,7 @@ int main(int argc, char *argv[]) {
 
 	delete redPoints;
 	delete bluePoints;
-	*/
+*/
 
 
 

@@ -10,7 +10,56 @@ using namespace fairlettFinder;
 void fairlettFinder::markFairletts(vector<ColoredPoint> *){
 }
 
-void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *){
+void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint>* points){
+    // Punkte durchzählen
+    int nRed = 0;
+    int nBlue = 0;
+    int nOther = 0;
+
+    for (int i = 0; i < (int) points->size(); i++){
+        switch (points->at(i).getColor()){
+        case RED:
+            nRed++;
+            break;
+
+        case BLUE:
+            nBlue++;
+            break;
+        
+        default:
+            nOther++;
+            break;
+        }
+    }
+
+    // Sanity-Check
+    if (nOther > 0){
+        printf("Es wurden %d Punkte gezählt die weder rot noch blau sind\n", nOther);        
+    }
+
+    // Muss denn getauscht werden?
+    if (nBlue > nRed){
+        return;
+    }
+
+    // Zahlen Tauschen
+    for (int i = 0; i < (int) points->size(); i++){
+        switch (points->at(i).getColor()){
+        case RED:
+            points->at(i).setColor(BLUE);
+            break;
+
+        case BLUE:
+            points->at(i).setColor(RED);
+            break;
+        
+        default:
+            nOther++;
+            break;
+        }
+    }
+    
+    return;  
 }
 
 double fairlettFinder::findPotentionalRadius(vector<ColoredPoint> *){
