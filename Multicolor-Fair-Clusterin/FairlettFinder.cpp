@@ -197,8 +197,28 @@ void fairlettFinder::addCapacitiesToGraph(CapacityMap& capacityMap, GraphData& g
 
 }
 
-Flow *fairlettFinder::calculateFlow(Graph &, CapacityMap &, GraphData &){
-    return nullptr;
+Flow* fairlettFinder::calculateFlow(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Preflow-Object erstellen
+    Flow* preflow = new Flow(graph, capacityMap, gData.s, gData.t);
+
+    // Flussalgorithmus ausführen
+    preflow->run();
+
+    return preflow;
+}
+
+int fairlettFinder::getMaxFlow(Graph& graph, CapacityMap& capacityMap, GraphData& gData){
+    // Flussalgorithmus laufen lassen
+    Flow* flow = calculateFlow(graph, capacityMap, gData);
+
+    // Wert abspeichern
+    double flowValue = flow->flowValue();
+
+    // Speicher wieder freigeben
+    delete(flow);
+
+    // Wert zurück geben
+    return flowValue;
 }
 
 int fairlettFinder::getFlowOfArc(Flow &, Arc){

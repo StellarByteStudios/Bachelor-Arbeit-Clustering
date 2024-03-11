@@ -81,13 +81,22 @@ int main(int argc, char *argv[]) {
 	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
 
 	// Add Arcs
-	fairlettFinder::addArcsToGraph(g, gData, 10, unfairPoints);
+	fairlettFinder::addArcsToGraph(g, gData, 15, unfairPoints);
 
 	// Add Capacities
 	fairlettFinder::addCapacitiesToGraph(capacity, gData);
 
+	// Get Max Flow Value
+	int maxFlowValue = fairlettFinder::getMaxFlow(g, capacity, gData);
+
+	// Get Flow itself
+	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
+
 	// Print outcome
-	//fairlettFinder::printGraphCapacity(g, capacity, gData);
+	fairlettFinder::printFlow(flow, g, capacity, gData);
+	printf("Value of this Flow is %d\n", maxFlowValue);
+
+	delete(flow);
 
 
 
@@ -106,7 +115,7 @@ int main(int argc, char *argv[]) {
 	delete potRadii;
 	*/
 
-
+	/*
 	// ==== Testing Color-Filter ==== //	
 	cout << "\n===== Testing Colorfilter =====\n" << endl;
 
@@ -131,7 +140,7 @@ int main(int argc, char *argv[]) {
 
 	delete redPoints;
 	delete bluePoints;
-	
+	*/
 
 
 	/*
