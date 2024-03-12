@@ -2,48 +2,82 @@
 
 ## Allgemeine Notizen
 ### Termine
+Abgabe der Arbeit: 07.06.2024
+
 * [x] Treffen mit Melanie und Daniel am 7.11 um 10:30
 * [x] Treffen mit Daniel am 20.11 um 15:00
 * [x] Treffen mit Daniel am 5.12 um 10:30
-* [ ] Treffen mit Daniel ~~(Melanie?)~~ am 8.1 um 13:00
-* [ ] Vortrag von Irina zu ihrer Bachelor-Arbeit am 17.1 um 10:30
-* [ ] Treffen mit Daniel und Melanie am 18.1 um 12:00
+* [x] Treffen mit Daniel ~~(Melanie?)~~ am 8.1 um 13:00
+* [x] Vortrag von Irina zu ihrer Bachelor-Arbeit am 17.1 um 10:30
+* [x] Treffen mit Daniel und Melanie am 18.1 um 12:00
+* [ ] Treffen mit Daniel am 12.3 um 11:00
 
 ### Fragen an Besprechung
-* Wahl disjunkter Samples ok?
+* [ ] Welche Art der Formulierung nutzt man eher? Persönliche oder außenstehender
+    * Ich habe ... gemacht, ich habe ... verwendet
+    * Es wurde ... druchgeführt, folgende ... wurden verwendet
+* [ ] Soll die Lemon Library bzw. der Verwendete Algorithmus zitiert werden? Wenn ja, wie?
+* [ ] Sollen die Einschübe wie zu Bipatitem Matching und Flusseigenschaften im Inhaltsverzeichniss auftauchen oder nicht?
+* [ ] Warnings von Pandas, aber noch keine Lösung gefunden
+    * Problem kommt von depricated Code
+* [ ] Warnings von der LemonLibrary. Wie soll ich damit umgehen?
+    * angeblich depricated
+    * Tritt jetzt erst mit dem neuen Compiler auf
+    * mit -std=c++14 kein Problem mehr
+* [ ] Welcher genau ist jetzt der erste Algorithmus
+    * **Red-Clustering**: Erklärung von Melanie (nur eine Farbe Clustern)
+    * **Anchor-Clusterning**: Irina (Ankerpunkt)
+* [ ] Sehr unschöne Art Die Graphen zu verwenden. Ist das Ok?
+    * Leere Initialisierung in Obermethode und weitergabe nur durch Adresse
+    * Andere Möglichkeit wäre als Objekt
 
 
 
+
+---
 ### To-Dos
-* [x] Gitprojekt aufsetzen
-    * [x] Projektstrukur anlegen
-    * [x] ersten C++ Code schreiben
-    * [x] Auf GitHub hochladen
-* [x] Irinas Arbeit Lesen
-    * [x] Gelesen bis S.13
-* [x] Gonzalez implementieren
-* [x] Ein- Ausgabe normen
-* [x] Subsamples machen
-* [x] Skript für automatisches Testen
-* [ ] Linken der Libary
-* [x] Daten reproduzierbar aus Paper? *so halb irgendwie*
-* [x] Gozalez soll auch Zentren zurückgeben
-* [ ] Danielgespräch Liste
-    * [x] Zentrendistanz bei Wahl auf 0 setzten
-    * [x] Liste um Zentren zurück zu geben
-    * [ ] Matching/Flussalgorithmen durchlesen `LibLemon`
-        * Max Flow (PreFlow Alg)
-    * [ ] Sanaty-Check (Distanzen zu Zentrum mit Max Radius Gegenchecken)
+* FairlettFinder fertig machen
+    * Suche nach Fairletts
+    * Gonzalez mit Roten Knoten
+    * Zuweißung der Cluster
+* Analyse
+    * Pythonskript modifizieren um den neuen Algorithmus zu testen
+    * Main c++ Datei so abändern, dass man den Algorithmus wählen kann
+    * Feeder Shell-Skript auf neuen Algorithmus anpassen
+* Schreiben
+    * Weiter an Latex-Text schreiben
 
+
+
+
+
+
+
+
+
+
+---
 ### Notizen zum Thema/Code
-* POpen um Konsolenbefehle auszuführen mit Python
+Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf8d6df66d3e7ab3e9a85af90
 
+!! Lemon Lib ist sehr einschränkend was auslagern in Funktionen betrifft !!
+
+
+
+
+
+
+
+
+---
 #### Daten
 * Diabetes:
     * Punktwerte: age, time in hospital
-    * Fair-Attribut: gender (Verhältniss: --- TO-DO ---)
+    * Fair-Attribut: gender (Verhältniss: Male 47055 / Female 54708 ≈ 0.86)
+        * Es gibt genau 3 Unknown von 101766 Instanzen
+            * -> Rausschmeißen?
     * Sample size: 1000
-    * Wird nicht repoduzierbar sein, da es sich bei den Referenzierten Daten lediglich um die Messungen handelt und sonst keine Patientendaten vorhanden sind. Auch sind nur die Daten von 70 Patienten dabei, was einiges weniger ist als 1000
+    * ~~Wird nicht repoduzierbar sein, da es sich bei den Referenzierten Daten lediglich um die Messungen handelt und sonst keine Patientendaten vorhanden sind. Auch sind nur die Daten von 70 Patienten dabei, was einiges weniger ist als 1000~~
 * Bank calls:
     * Punktwerte:  age, balance, duration of call (Bereitsteller der Daten warnt vor der Verwendung von duration, aber für Benchmarking ok)
     * Fair-Attribut: marital ~~status (married <-> not married [einige Möglichkeiten] (wähle mal Divorced, Never-Married und Widowed als not married))~~ es gibt single, married und divorced. Zahle single und divorced zusammen (Verhältniss: 27214 married / 17997 not-married ≈ 1.51)
@@ -59,40 +93,100 @@
     * Es existiert ein Train-Test-Split, für mich irrelevant 
     * --> wähle die Traindaten -> `adult.data`
 
+</br></br></br>
+
+
+
+
+
+
+
+
+
+
+---
 ## Hauptaufgaben/Plan
-* [x] Möglichkeit Punkte einzulesen von Datei
-    * [x] Punkte des Papers
-* [x] Gonzalez Implementieren
-* [x] Erste Auswertung mit Python
-* [x] Reinigen der Quelldaten auf mein Format
-    * [x] Subsamples machen
 
+* [x] Gitprojekt aufsetzen
+    * [x] Projektstrukur anlegen
+    * [x] ersten C++ Code schreiben
+    * [x] Auf GitHub hochladen
+* [x] Irinas Arbeit Lesen
+    * [x] Gelesen bis S.13
+* [x] Gonzalez implementieren
+* [x] Ein- Ausgabe normen
+* [x] Subsamples machen
+* [x] Skript für automatisches Testen
+* [x] Linken der Libary
+* [x] Daten reproduzierbar aus Paper? *so halb irgendwie*
+* [x] Gozalez soll auch Zentren zurückgeben
+* [ ] Danielgespräch Liste
+    * [x] Zentrendistanz bei Wahl auf 0 setzten
+    * [x] Liste um Zentren zurück zu geben
+    * [x] Matching/Flussalgorithmen durchlesen `LibLemon`
+        * Max Flow (PreFlow Alg)
+        * Ins Repo mit rein packen
+    * [ ] Sanaty-Check (Distanzen zu Zentrum mit Max Radius Gegenchecken)
+* [x] Diabetes Datensatz hinzufügen
+* [x] Samplesize an paper anpassen anpassen
+* [x] Laufzeitmessung
+* [x] Erste Zeilen für Bachelor-Arbeit verfassen
+
+
+
+--- 
 ### Als Nächstes
-1) Daten Putzen (CleanData.py)
-    2) Link von Daniel zu Paper nochmal angucken
-3) Analyse (Verhältnisse) fertig machen
-4) Subsamples erzeugen und abspeichern
-5) Struct für Rückgabe von Gonzalez erstellen
-    5) Aktualisierte Liste der Punkte (Deep-Copy)
-    6) Liste an Zentren
-    7) Max Radius
-8) Skript für Automatische Auswertung
-    9) Daten in Algorithmus Stecken (Über Feeder.sh)
-    10) Outputdaten einlesen und Plotten
+* [ ] FairlettFinder fertig machen
+    * [ ] Suche nach Fairletts
+    * [ ] Gonzalez mit Roten Knoten
+    * [ ] Zuweißung der Cluster
+* [ ] Analyse
+    * [ ] Pythonskript modifizieren um den neuen Algorithmus zu testen
+    * [ ] Main c++ Datei so abändern, dass man den Algorithmus wählen kann
+    * [ ] Feeder Shell-Skript auf neuen Algorithmus anpassen
+* [ ] Schreiben
+    * [ ] Weiter an Latex-Text schreiben
+
+
+</br></br></br>
 
 
 
+
+
+
+---
 ## Quellen
 ### Algemeine Links
 * Paper "Fair Clustering Through Fairlets" von Flavio Chierichetti, Ravi Kumar, Silvio Lattanzi, Sergei Vassilvitskii https://arxiv.org/abs/1802.05733
-    * Dataset: Diabetis: https://archive.ics.uci.edu/dataset/34/diabetes
+    * Dataset: Diabetis (Falsch Zitiert): https://archive.ics.uci.edu/dataset/34/diabetes
         * GitHub Dataset: https://github.com/guptakhil/fair-clustering-fairlets/blob/master/data/diabetic_data.csv
+    * Dataset: Diabetis (richtiger): https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008
     * Dataset: Zensus: https://archive.ics.uci.edu/dataset/2/adult
     * Dataset: Bank Telefon: https://archive.ics.uci.edu/dataset/222/bank+marketing
 
-### Zizierungsvorgaben
-* Bank Telefon:   [Moro et al., 2011] S. Moro, R. Laureano and P. Cortez. Using Data Mining for Bank Direct Marketing: An Application of the CRISP-DM Methodology. In P. Novais et al. (Eds.), Proceedings of the European Simulation and Modelling Conference - ESM'2011, pp. 117-121, Guimarães, Portugal, October, 2011. EUROSIS.
+</br></br></br></br></br>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
 ## Logging
 * Di: 17.10
     * Gespräch mit Melanie in dem das Vormat der Bachelorarbeit etwas besprochen wurde
@@ -296,7 +390,7 @@
     * Iteratives ausführen des Shell-Skriptes
 * So: 7.1
     * Analyzerskript weitermachen
-        * Skript kann jetztGenerisch mehrere Files einlesen
+        * Skript kann jetzt Generisch mehrere Files einlesen
             * Zusammensetzen von Datenpfad
             * Liste aus Listen für Radien
         * Erste Visuelle Ausgabe
@@ -304,13 +398,133 @@
             * Dann von mehreren Daten mit Mean und Min/max
     * Analyse bisher nur von Bankdaten
 * Mo: 8.1
-    * [ ] Treffen mit Daniel
+    * [x] Treffen mit Daniel
     * Daten auf dem Laptop erzeugen
     * Graph mit dem aus dem Paper vergleichen -> sieht gut aus
         * Es fällt auf, dass die Daten aus dem Paper eher der min-Linie annähern
     * Analyse auch für die Zensus-Daten
     * Refactoring des Analyseskripts
     * Anfangen die Lemon Libary zu lesesn
+* Fr: 12.1
+    * Plan wieder erstellen
+    * Arbeit von Irina angefangen zu lesen
+* So: 14.1
+    * Diabetes Daten vernünftig machen
+        * Erste Analyse
+        * Subsamples erzeugen
+        * Age zu numerischen Wert machen?
+* Di: 16.1
+    * Irinas Arbeit nochmal weiterlesen
+    * Diabetes-Daten in Analyzer mit aufnehmen
+    * Erstes Timing probiert
+        * Tipp: time.perf_counter_ns()
+* Mi 17.1
+    * Vortrag von Irina besucht
+    * Timing verbessert
+    * Lemon Libary angefangen zu installieren
+        * Nach diesem Guide: 
+            * [Install](https://lemon.cs.elte.hu/trac/lemon/wiki/InstallLinux)
+            * [How to Compile](https://lemon.cs.elte.hu/trac/lemon/wiki/HowToCompile)
+        * Erstes Testskript sieht gut aus
+        * Libary wird jetzt über das installierte benutzt und nicht das Lokale
+* Do 18.1:
+    * Bildpfade Repariert
+        * -> Windows mag keine ":"
+    * [x] Treffen mit Daniel und Melanie
+    * Normalisierung der Daten auf [-1, 1] gelungen
+        * Auswertung sieht nicht Signifikant anders aus
+* Fr 19.1:
+    * Nochmal linken gegen die kompilierte Libary probieren
+* Di 23.1
+    * Vorlage für Bachelorarbeit runterladen und anschauen
+* Do 25.1
+    * Latex auf Home-Ubuntu installieren
+    * Vorlage aufräumen
+* Fr 26.1
+    * Latex vorlage weiter aufräumen
+        * Eigene Kapitel anlegen
+    * Autoanalyzer Clue-Methode
+        * Die 3 einzelnen Graphen werden jetzt am Ende zu einem großen Bild zusammengepackt
+        * Bild in Latex eingefügt
+    * Abgefangen Zitierungen rauszusuchen
+* Mi 7.2:
+    * Zitierungen weiter machen
+* Fr 9.2:
+    * Erste Zeilen zur Data-Cleaning Pipeline schreiben
+    * Ersten entwurf an Daniel und Melanie schicken
+* Sa 17.2:
+    * Erste Max-Flow Experimente
+        * Alle Libary-Headder die von Testprogramm verwendet werden zu Relativen Pfaden umgeschrieben
+    * Dynamisch aufgebauter Bibatiter Graph mit Flow berechnet
+* Mi 21.2:
+    * Erste Versuche den Max-Flow Modularer zu gestalten
+        * Einzelne Abschnitte in Methoden unterteilen
+        * Dafür Eigene Struct erstellen um Daten um den Graphen zu speichern
+            * Probleme, da man die Lemon-Library Sachen nicht normal zu Variablen zuweisen kann
+            * Probleme, da manche Variablen nicht uniitialisiert sein können
+* Mo 26.2: 
+    * Weiter versucht die Graph-Struct zum laufen zu bringen
+        * Lemon Lib ist sehr einschränkend. Befürchte ich muss alles in einer Methode machen
+* Di 27.2: 
+    * Erneut versucht die Max-Flow Berechnung in Funktionen aufzuteilen
+        * Es scheint zu Funktionieren. Bedingungen
+            * **Der Graph und die CapacityMap dürfen nicht im Struct sein**
+            * **Alle Funktionsaufrufe brauchen Graph, CapacityMap und GraphData als Parameter**
+            * **Alle Davon müssen wegen Scope als Referenz übergeben werden:** 
+            ```cpp
+            void buildBipatiteGraph(Graph&, CapacityMap&, GraphData&)
+            ```
+    * Erfolgreich Sukzessive einen Bipatiten Graphen aufgebaut mit unterteilung in einzelne Methoden
+* Mi 28.2: 
+    * Flowzugriff einzelner Kanten
+        * Funktioniert über die Referenzen in der Vector-Struktur auch GraphData
+    * Weitere Daten aus den Kanten ablesen
+        * Kann jetzt nicht nur den Flow, sondern auch die Id sowie die anliegenden Nodes abrufen 
+    * Fairlettalgorithmus in Textform angefangen
+* Do 29.2:
+    * Fairlettalgorithmus in Textform soweit fertig gemacht
+    * Pullrequest geschrieben
+* Fr 1.3:
+    * Pullrequest gemacht
+    * Mit Melanie über ersten Bachelor-Entwurf gesprochen: Sieht gut aus
+    * Latex endlich zentriert
+* Mo 4.3:
+    * Daniel geschrieben wegen Anmeldung 
+        * Warte noch auf das "Go"
+    * Angefangen die Dateien für den neuen Algorithmus anzulegen
+        * Headder Datei mit voraussichtlich benötigten Methoden gefüllt
+        * Neue Dateien zu Makefile hinzugefügt, sodass sie direkt mitkompiliert werden
+    * Punkteklasse so modifiziert, dass sie jetzt auch eine FairlettID speichert
+    * Implementierung der Methode `double fairlettFinder::calculateMaxRadius()`
+* Di 5.3:
+    * Debuggingmethoden einführen
+    * Repository ein wenig aufgeräumt
+        * Alle Binaries in .gitignore
+        * alte eclipse Dateien gelöscht
+        * unnötige vscode Sachen gelöscht
+    * Methode für Knoten in Graph einzuführen schreiben und testen
+* Do 7.3:
+    * Antrag für Bachelor-Arbeit gestellt
+    * Latex Algorithmenbeschreibung angefangen
+    * Angefangen mit Methode zum hinzufügen der Kanten in den Graphen zum finden der Fairletts
+* Fr. 8.3
+    * Repo auf Lenabuntu wieder geflickt
+    * ColorFilter angefangen
+* Sa. 9.3
+    * Laptop neu eingerichtet
+        * Notwendige Sachen installiert
+        * ssh Keys eingerichtet
+        * git initialisiert
+        * Latex aufgesetzt
+* Mo 11.3
+    * Python richtig eingerichtet
+    * Plötzlich wirft der Kompiler Warnings, dass elemente aus der Lemon-Library depricated sind
+    * Weitere Funktionen ausgeschrieben und getestet
+        * Es kann jetzt ein kompletter Graph aufgebaut werden
+        * Der Fluss kann berechnet werden
+        * Eine Methode checkt ob bei einem Radius ein Matching möglich ist
+            * ggf wird Rot und Blau getauscht
+        * Alle Radien werden durchprobiert um den optimalen zu finden
 
 
 
@@ -333,39 +547,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-## Wikis
-### Git Setup
-1) agend für ssh starten `eval $(ssh-agent -s)`
-2) schauen ob ssh-Key vorhanden ist `cd ~/.ssh/ && ls`
-3) **Falls Key nicht vorhanden:** 
-    5) In ssh-Ordner gehen `cd ~/.ssh/ && ls`
-    5) `ssh-keygen -t ed25519 -C "krollmann.carsten@gmail.com"`
-4) code holen und kopieren `cat ~/.ssh/id_ed25519.pub` (oder anderes Keyfile)
-5) In richtigen Ordner gehen
-6) in User-Einstellungen ssh-key mit gutem Namen anlegen
-    7) Github: Profil -> Settings -> SSH und GPG keys -> SSH keys (New SSH key)
-    8) GitLab: Profilbild -> Edit Profile -> SSH Keys -> Your SSH keys (Add new key)
-8) Verbindung Testen mit `ssh -T git@gitlab.cs.uni-duesseldorf.de` oder `ssh -T git@github.com`
-
-### Github Desktop mit Sync
-1) In vernünftigen Downloadordner gehen
-2) Download: `sudo wget https://github.com/shiftkey/desktop/releases/download/release-3.1.1-linux1/GitHubDesktop-linux-3.1.1-linux1.deb`
-3) Install: `sudo dpkg -i GitHubDesktop-linux-3.1.1-linux1.deb`
-4) Sync der Repos
-    5) Beide Repos händisch klonen über SSH in geeignete Ordner
-    6) in beiden Repos die Datei in `Repo/.git/config` öffnen
-    7) in die GitHub Config den Abschnitt unter `[remote "origin"]` den Teil von GitLab kopieren
-8) Das Github Repo mit GitHub-Desktop öffnen
 
 
 
