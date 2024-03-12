@@ -4,6 +4,8 @@ BINNAME = Fair-Clustering
 
 VALFLAGS = --leak-check=full
 
+HEADERS=-isystem./Lemon-Library
+
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
 OUTPUTFILENAME = ClusterOut.csv
