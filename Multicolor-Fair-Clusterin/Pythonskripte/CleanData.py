@@ -365,10 +365,14 @@ def getAgeAsNumber(agestring):
     return int(agestring[1:3])
 
     
-def mapFeaturesToIntervall(pd, listOfFeatures):   
-    scaledPd = pd    
+def mapFeaturesToIntervall(pData, listOfFeatures):   
+    # Pandas Warning: view vs copy
+    pd.options.mode.copy_on_write = True
+    
+    # Normen der Daten auf einen Intervall von [-1, 1]
+    scaledPd = pData    
     for i in range(0, len(listOfFeatures)):
-        scaledPd[listOfFeatures[i]] = pd[listOfFeatures[i]] /pd[listOfFeatures[i]].abs().max()   
+        scaledPd[listOfFeatures[i]] = pData[listOfFeatures[i]] /pData[listOfFeatures[i]].abs().max()   
     
     return scaledPd
 
