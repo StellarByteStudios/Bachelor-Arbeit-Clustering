@@ -10,7 +10,6 @@ import os
 import pandas as pd
 import time
 
-import sys
 from PIL import Image
 
 

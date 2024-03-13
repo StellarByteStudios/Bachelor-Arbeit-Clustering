@@ -2,8 +2,7 @@
 #include <sstream>  // stringstream (String builder)
 #include <math.h>   // sqrt, pow
 
-ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
-{
+ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Dimensionen �bertragen
 	this->dim = dimensions;
 
@@ -121,12 +120,21 @@ Pointcolor ColoredPoint::getColor(){
 	return this->color;
 }
 
-int ColoredPoint::getCluster(){
-	return this->cluster;
+void ColoredPoint::setColor(Pointcolor color){
+	this->color = color;
+}
+
+int ColoredPoint::getCluster()
+{
+    return this->cluster;
 }
 
 void ColoredPoint::setCluster(int cluster){
 	this->cluster = cluster;
+}
+
+bool ColoredPoint::getIsCenter(){
+    return this->isCenter;
 }
 
 void ColoredPoint::setToCenter(){

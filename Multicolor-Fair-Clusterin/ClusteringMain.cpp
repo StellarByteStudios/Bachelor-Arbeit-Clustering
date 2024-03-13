@@ -5,6 +5,8 @@
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzalez.h"
+#include "FairlettFinder.h"
+#include "RedCenterClustering.h"
 
 int main(int argc, char *argv[]) {
 
@@ -35,89 +37,171 @@ int main(int argc, char *argv[]) {
 	int numberOfCluster = stoi(argv[3]);
 
 	// ==== Parsing of Points ==== //
-
-	
-	
-
-	//Printer printer = Printer();
 	PointParser parser =  PointParser(inputFileName);
-
-	// Punkte einlesen
 	vector<ColoredPoint>* points = parser.parseFile();
-
-	// ==== Testing of Distancefunction ==== //
-
-	cout << "\nTesting Distance Funktion: \n";
-
-	double coord1[] = { 0, 2 };
-	ColoredPoint point1 = ColoredPoint(2, RED, coord1);
-
-	double coord2[] = { 0, 0 };
-	ColoredPoint point2 = ColoredPoint(2, BLUE, coord2);
-
-	cout << "Distance Hardcoded Points: " << point1.distTo(point2) << endl;
-	cout << "Distance ReadIn Points: " << points->at(0).distTo(points->at(1)) << endl;
-
-
-
-	// ==== Testing Gonzalez Struct==== //
-
-	cout << "\n-----------------\nTesting Struct: \n";
-
-	Gonzalez::GonzalezReturnValues* values;
-	values = Gonzalez::createGonzalezReturns(points);
-
-	values->centers->push_back(point1);
-	values->centers->push_back(point2);
-	values->maxRadius = 50;
-
-	
-	
-	cout << "First two Points of Readin: \n\t- " << points->at(0).toString() 
-	<< "\n\t- "<< points->at(1).toString() << endl;
-	
-	cout << "\nFirst two Points of Struct: \n\t- " << values->clusteredPoints->at(0).toString() 
-	<< "\n\t- "<< values->clusteredPoints->at(1).toString() << endl;
-	
-	cout << "\nCenters of Struct: \n\t-" << values->centers->at(0).toString() 
-	<< "\n\t-" << values->centers->at(1).toString() << endl;
-	
-	cout << "\nMax Radius: " << values->maxRadius << endl;
-
-
-	values->clusteredPoints->at(0).setToCenter();
-	values->clusteredPoints->at(0).setCluster(500);
-
-	
-	cout << "Ursprungsliste nicht verändert?: \n"
-	<< values->clusteredPoints->at(0).toString() << " \n!= \n" 
-	<< points->at(0).toString() << endl;
-
 	
 	
 	
 	// ==== Testing of Gonzalez ==== //
-
 	cout << "\n-----------------\nTesting Gonzalez: \n";
 
-	Gonzalez::GonzalezReturnValues* returnValues= Gonzalez::makeGonzalez(points, numberOfCluster);
+	Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, numberOfCluster);
 
-	cout << "MaxRadius: " << returnValues->maxRadius << endl;
+	cout << "MaxRadius (PlainGonzalez): " << returnValues->maxRadius << endl;
+	/*
 	cout << "Centers: " << endl;
 	// Centren anzeigen
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
+	}*/
+
+
+	// ==== Testing of MaxRadius function ==== //
+	double maxRadiusViaFunction = redclustering::calculateMaxRadius(*returnValues->clusteredPoints, numberOfCluster);
+
+	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
+
+
+
+
+
+
+	// ==== Testing graph Buildup ==== //
+	// Get new Points
+	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
+	parser =  PointParser(unfairHandpointsFile);
+	vector<ColoredPoint>* unfairPoints = parser.parseFile();
+	
+	// Buildup Graph
+	Graph g;
+	fairlettFinder::GraphData gData;
+	CapacityMap capacity(g);
+
+	// Add Nodes
+	fairlettFinder::addNodesToGraph(g, gData, unfairPoints);
+
+	// Add Arcs
+	fairlettFinder::addArcsToGraph(g, gData, 15, unfairPoints);
+
+	// Add Capacities
+	fairlettFinder::addCapacitiesToGraph(capacity, gData);
+
+	// Get Max Flow Value
+	int maxFlowValue = fairlettFinder::getMaxFlow(g, capacity, gData);
+
+	// Get Flow itself
+	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
+
+	// Print outcome
+	fairlettFinder::printFlow(*flow, g, capacity, gData);
+	printf("Value of this Flow is %d\n", maxFlowValue);
+
+	// Flow von Kante nehmen
+	printf("Flow der ersten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(0)));
+	printf("Flow der zweiten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(1)));
+	
+
+	delete(flow);
+
+	
+
+
+
+	// ==== More Testing ==== //
+	cout << "\n===== Testing Radius checker =====\n" << endl;
+
+	// Farben richtig rum haben
+	fairlettFinder::makeCritFeatureSmalestFirst(unfairPoints);
+
+	// Kleine Radius Testen
+	double radSmall = 5;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radSmall, fairlettFinder::checkRadius(unfairPoints, radSmall));
+
+	// Mittleren Radius Testen
+	double radMedium = 20;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radMedium, fairlettFinder::checkRadius(unfairPoints, radMedium));
+
+	// Großen Radius Testen
+	double radBig = 50;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fairlettFinder::checkRadius(unfairPoints, radBig));
+
+	// Optimalen Radius finden
+	double optRad = fairlettFinder::findPotentionalRadius(unfairPoints);
+
+	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
+
+
+	/*
+	// Calculate all possible Radii
+	vector<double>* potRadii = fairlettFinder::calculateAllRadii(unfairPoints);
+
+	// Print Radii
+	cout << "All Possible Radii:" << endl;
+	for (size_t i = 0; i < potRadii->size(); i++){
+		cout << potRadii->at(i) << endl;
 	}
+
+	delete potRadii;
+	*/
+
+	/*
+	// ==== Testing Color-Filter ==== //	
+	cout << "\n===== Testing Colorfilter =====\n" << endl;
+
+	// Fehler reinbringen
+	unfairPoints->at(0).setColor(GREEN);
+	unfairPoints->at(1).setColor(GREEN);
+	unfairPoints->at(3).setColor(GREEN);
+
+	// Filtern und Richtig mappen
+	fairlettFinder::makeCritFeatureSmalestFirst(unfairPoints);
+
+	vector<ColoredPoint>* redPoints = fairlettFinder::getPointsOfColor(unfairPoints, RED);
+	vector<ColoredPoint>* bluePoints = fairlettFinder::getPointsOfColor(unfairPoints, BLUE);
+
 	
-	//cout << "Points: " << endl;
-	// punkte anzeigen
-	//for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
-	//	cout << "\t- " << i << ": " << returnValues->clusteredPoints->at(i).toString() << endl;
-	//}
+
+	cout << "\nSize-Comparison:" << endl;
+	cout << "\nAll Points: " << unfairPoints->size() << endl;
+	cout << "\nRed Points: " << redPoints->size() << endl;
+	cout << "\nBlue Points: " << bluePoints->size() << endl;
 
 
-	
-	
+	delete redPoints;
+	delete bluePoints;
+	*/
+
+
+	/*
+	cout << "Original Vector before filtering:" << endl;
+	for (size_t i = 0; i < unfairPoints->size(); i++){
+		cout << unfairPoints->at(i).toString() << endl;
+	}
+
+	// Filtern
+	vector<ColoredPoint>* redPoints = fairlettFinder::getPointsOfColor(unfairPoints, RED);
+	vector<ColoredPoint>* bluePoints = fairlettFinder::getPointsOfColor(unfairPoints, BLUE);
+
+	cout << "\nOriginal Vector after filtering:" << endl;
+	for (size_t i = 0; i < unfairPoints->size(); i++){
+		cout << unfairPoints->at(i).toString() << endl;
+	}
+
+	cout << "\nFiltered RedVector after filtering:" << endl;
+	for (size_t i = 0; i < redPoints->size(); i++){
+		cout << redPoints->at(i).toString() << endl;
+	}
+
+	cout << "\nSize-Comparison:" << endl;
+	cout << "\nAll Points: " << unfairPoints->size() << endl;
+	cout << "\nRed Points: " << redPoints->size() << endl;
+	cout << "\nBlue Points: " << bluePoints->size() << endl;
+
+
+	delete redPoints;
+	delete bluePoints;
+*/
+
 
 
 	// ==== Write Clusterdata into File ==== //
@@ -142,9 +226,10 @@ int main(int argc, char *argv[]) {
 
 	// vector für Punkte wieder Freigeben
 	delete points;
+	delete unfairPoints;
 
 	// Struct für Gonzaleswerte wieder freigeben
-	Gonzalez::deleteGonzalezReturns(values);
+	Gonzalez::deleteGonzalezReturns(returnValues);
 
 	cout << "\n-----------------\nEnd Program" << endl;
 }

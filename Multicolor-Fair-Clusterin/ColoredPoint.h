@@ -94,6 +94,13 @@ public:
 	*/
 	Pointcolor getColor();
 
+	/* Update-Method
+	* Sets Color of Point to new Color
+	*
+	* @param color: Value to set Color to
+	*/
+	void setColor(Pointcolor);
+
 	/* Info-Method
 	* Simply returns the cluster the Point is in
 	*
@@ -112,6 +119,13 @@ public:
 	* Makes Point a Center
 	*/
 	void setToCenter();
+
+	/* Info-Method
+	* Simply returns if the Point is a center
+	*
+	* @return isCenter
+	*/
+	bool getIsCenter();
 
 	/* Info-Method
 	* Simply returns the fairlettID the Point belongs to
