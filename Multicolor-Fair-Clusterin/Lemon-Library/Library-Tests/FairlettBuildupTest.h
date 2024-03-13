@@ -1,7 +1,7 @@
-#include "Lemon-Libary/lemon-1.3.1-build/lgf_writer.h"
-#include "Lemon-Libary/lemon-1.3.1-build/list_graph.h"
+#include <lemon/lgf_writer.h>
+#include <lemon/list_graph.h>
 
-#include "Lemon-Libary/lemon-1.3.1-build//preflow.h"
+#include <lemon/preflow.h>
 
 using namespace lemon;
 typedef ListDigraph Graph;

@@ -1,10 +1,5 @@
 // Copied and edited from https://gist.github.com/huanyud/45f98d8bf8d6df66d3e7ab3e9a85af90
 
-//#include "Lemon-Libary/lemon-1.3.1-build/lgf_writer.h"
-//#include "Lemon-Libary/lemon-1.3.1-build/list_graph.h"
-
-//#include "Lemon-Libary/lemon-1.3.1-build/preflow.h"
-
 #include <lemon/lgf_writer.h>
 #include <lemon/list_graph.h>
 
