@@ -79,13 +79,13 @@ namespace fairlettFinder{
     void addCapacitiesToGraph(CapacityMap&, GraphData&);
 
     // calculates the Flow of the build-up graph
-    Flow* calculateFlow(Graph&, CapacityMap&, GraphData&);
+    Flow* calculateFlow(const Graph&, const CapacityMap&, const GraphData&);
 
     // Returns the Max-Flow Value of an given Graph
-    int getMaxFlow(Graph&, CapacityMap&, GraphData&);
+    int getMaxFlow(const Graph&, const CapacityMap&, const GraphData&);
 
     // gets the Flow on a single Arc
-    int getFlowOfArc(Flow&, Arc);
+    int getFlowOfArc(const Flow&, const Arc);
 
     
 
@@ -98,11 +98,11 @@ namespace fairlettFinder{
 
     // ==== Debugging ==== //
     // Print Data from Graph
-    void printGraph(Graph&, GraphData&);
+    void printGraph(const Graph&, const GraphData&);
     
     // Print Data from Graph
-    void printGraphCapacity(Graph&, CapacityMap&, GraphData&);
+    void printGraphCapacity(const Graph&, const CapacityMap&, const GraphData&);
 
     // Print all Data with Flow
-    void printFlow(Flow*, Graph&, CapacityMap&, GraphData&);
+    void printFlow(const Flow&, const Graph&, const CapacityMap&, const GraphData&);
 }

@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
 	parser =  PointParser(unfairHandpointsFile);
 	vector<ColoredPoint>* unfairPoints = parser.parseFile();
-	/*
+	
 	// Buildup Graph
 	Graph g;
 	fairlettFinder::GraphData gData;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
 
 	// Print outcome
-	fairlettFinder::printFlow(flow, g, capacity, gData);
+	fairlettFinder::printFlow(*flow, g, capacity, gData);
 	printf("Value of this Flow is %d\n", maxFlowValue);
 
 	// Flow von Kante nehmen
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
 
 	delete(flow);
 
-	*/
+	
 
 
 
