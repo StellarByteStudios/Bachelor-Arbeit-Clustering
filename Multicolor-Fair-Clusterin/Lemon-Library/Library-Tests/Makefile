@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -Wall -g #-std=c++14
 LINKLIB = -lemon -L/home/stellarbyte/Installationen/Lemon-Lib/lib
-HEADERS = -I/home/stellarbyte/Installationen/Lemon-Lib/include
+HEADERS = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
 
 
 libtest: LemonLibTest.cpp
