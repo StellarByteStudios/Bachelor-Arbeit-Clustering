@@ -31,6 +31,46 @@
 
     \subsection{Format der Datensätze}
         Hier möchte ich jetzt nochmal klar die Datensätze Dokumentieren. Von jedem Datensatz habe ich jeweils 20 Disjukte Subsampels erzeugt.
+        
+        
+        
+        %\begin{table}[htbp]
+        %    \centering
+        %    \caption{Datenformat}
+        %    \begin{tabular}{|p{2,8cm}||p{4cm}|p{4cm}|p{4cm}|} % Adjust the number of "c" to match the number of columns, and adjust alignment as needed (e.g., l, c, r)
+        %        \toprule % Top horizontal rule
+        %        Datensatz & Zensusdaten \cite{misc_adult_2} & Bankdaten \cite{misc_bank_marketing_222} & Diabetesdaten \cite{misc_diabetes_130_richtig} \\ % Table header row
+        %        \midrule % Mid horizontal rule
+        %        Größe der Subsampels & 600 & 1000 & 1000 \\ % First row of data
+        %        Critical-Feature & sex (male = 0; female = 1) & bin-martial (selbsterzeugt aus Spalte "marital")
+        %        (single = 0; divorced = 0; married = 1) & sex (male = 0; female = 1) \\ % Second row of data
+        %        Verhältniss des Critical-Feature & Male 21790 / Female 10771 $\approx$ 2.02 & --- & Male 47055 / Female 54708 $\approx$ 0.86 \\ % Third row of data
+        %        Verwendete nummerische Feature & age, fnlwgt, education-num, capital-gain, hours-perweek & Row 3 Data 3 & \\ % Row 4
+        %        \bottomrule % Bottom horizontal rule
+        %    \end{tabular}
+        %    \label{tab:my_table} % Label for referencing the table
+        %\end{table}
+
+        \begin{table}[htbp]
+            \centering
+            \caption{Datenformat}
+            \begin{tabular}{|p{2.3cm}||p{1.3cm}|p{4cm}|p{4cm}|p{2.5cm}|} % Adjust the number of "c" to match the number of columns, and adjust alignment as needed (e.g., l, c, r)
+                \toprule % Top horizontal rule
+                Datensatz & Sub-sample-größe & Citical-Feature & Verhältniss des Critical-Feature & Verwendete nummerische Feature \\ % Table header row
+                \midrule % Mid horizontal rule
+                Zensusdaten \cite{misc_adult_2}                 & 600   & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek \\
+                \midrule % Mid horizontal rule
+                Bankdaten \cite{misc_bank_marketing_222}        & 1000  & bin-martial (selbsterzeugt aus Spalte "marital") (single = 0; divorced = 0; married = 1) & es gibt single, married und divorced. \newline Zähle single und divorced zusammen \newline Verhältniss: 27214 married / 17997 not-married $\approx$ 1.51 & age, balance, duration of call \\
+                \midrule % Mid horizontal rule
+                Diabetesdaten \cite{misc_diabetes_130_richtig}  & 1000  & sex (male = 0; female = 1) & Verhältniss Male 47055 / Female 54708 $\approx$ 0.86 & age, fnlwgt, education-num, capital-gain, hours-perweek \\
+                \bottomrule % Bottom horizontal rule
+            \end{tabular}
+            \label{tab:newTable} % Label for referencing the table
+        \end{table}
+        
+        
+
+        \iffalse
         \begin{enumerate}
             \item Zensusdaten \cite{misc_adult_2}:
                 \begin{itemize}
@@ -54,4 +94,5 @@
                     \item Verwendete nummerische Feature: age, fnlwgt, education-num, capital-gain, hours-perweek
                 \end{itemize}
         \end{enumerate}
+        \fi
 
