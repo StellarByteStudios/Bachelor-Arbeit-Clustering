@@ -66,6 +66,9 @@ namespace fairlettFinder{
         int nBlue;
     };
 
+    // uses an Radius and builds up finished Graph
+    void buildupGraphFromRadius(Graph&, GraphData&, CapacityMap&, double, vector<ColoredPoint>*);
+    
     // Adding all red and blue Nodes and s and t to the graph
     void addNodesToGraph(Graph&, GraphData&, vector<ColoredPoint>*);
     
@@ -86,6 +89,8 @@ namespace fairlettFinder{
 
     // gets the Flow on a single Arc
     int getFlowOfArc(const Flow&, const Arc);
+
+
 
     
 

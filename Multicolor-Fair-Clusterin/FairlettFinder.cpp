@@ -127,15 +127,9 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 	GraphData gData;
 	CapacityMap capacity(g);
 
-	// Knoten hinzufügen
-	addNodesToGraph(g, gData, points);
+    buildupGraphFromRadius(g, gData, capacity, potRad, points);
 
-	// Kanten hinzufügen
-	addArcsToGraph(g, gData, potRad, points);
-
-	// Kapazitäten hinzufügen
-	addCapacitiesToGraph(capacity, gData);
-
+    
     // Fluss berechnen
     int maxFlowValue = getMaxFlow(g, capacity, gData);
     
@@ -156,6 +150,20 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 
 
 // * * * =========== Building the Graph and let it Flow =========== * * * //
+void fairlettFinder::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityMap& capacity, double potRad, vector<ColoredPoint>* points){
+    // Knoten hinzufügen
+	addNodesToGraph(graph, gData, points);
+
+	// Kanten hinzufügen
+	addArcsToGraph(graph, gData, potRad, points);
+
+	// Kapazitäten hinzufügen
+	addCapacitiesToGraph(capacity, gData);
+
+}
+
+
+
 void fairlettFinder::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPoint>* points){
 
     // Anzahl aller Punkte
