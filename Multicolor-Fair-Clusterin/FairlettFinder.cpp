@@ -5,14 +5,109 @@
 using namespace fairlettFinder;
 
 // * * * =========== Calculating the Fairlets =========== * * * //
+double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
+    // Farben richtig Sortieren
+    makeCritFeatureSmalestFirst(points);
 
+    // Optimalen Radius Finden
+    double optRad = findPotentionalRadius(points);
 
-void fairlettFinder::markFairletts(vector<ColoredPoint> *){
+    // Graph mit Optimalem Radius Aufbauen
+    // Variablen erzeugen
+	Graph g;
+	GraphData gData;
+	CapacityMap capacity(g);
+
+    // Graph Initialisieren
+    buildupGraphFromRadius(g, gData, capacity, optRad, points);
+
+    // Fluss berechnen
+    Flow* preflow = calculateFlow(g, capacity, gData);
+
+    // Main-Kanten durchgehen und Partner markieren
+    // Punkte Filtern
+    vector<ColoredPoint>* redPoints = getPointsOfColor(points, RED);
+    int nRed = (int) redPoints->size();
+	//vector<ColoredPoint>* bluePoints = getPointsOfColor(points, BLUE);
+
+    // Main Fairletts bilden
+    int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points);    
+
+    // Ausreißer markieren
+    
+    int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
+
+    // Debug
+    printf("Anzahl an Fairletts: %d;\tAnzahl an Outlier: %d\n", fairlettCounter, numOfOutlier);
+
+    // Aufräumen
+    delete redPoints;
+    //delete bluePoints;
+    delete preflow;
+
+    return optRad;
 }
 
 
+int fairlettFinder::markMainNodes(const Graph& g, const Flow& preflow, 
+                                    vector<Arc> mainArcs, int nRed, 
+                                    vector<ColoredPoint>* points){
+    //int nRed = (int) redPoints->size();
 
-void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint>* points){
+    int fairlettCounter = 0;
+
+    // Alle main-Kanten durchgehen
+    for (int i = 0; i < (int) mainArcs.size(); i++){
+        // Hat die Kante überhaupt Fluss?
+        if (getFlowOfArc(preflow, mainArcs.at(i)) < 1){
+            continue;
+        }
+        
+        // Nodes herausfinden
+        Node redNode = g.source(mainArcs.at(i));
+        Node blueNode = g.target(mainArcs.at(i));
+
+        // Echte Punkte mit fairlettID markieren
+        markSinglePointWithFairlett(fairlettCounter, g.id(redNode), RED, nRed, points);
+        markSinglePointWithFairlett(fairlettCounter, g.id(blueNode), BLUE, nRed, points);
+
+        // IDs hochzählen
+        fairlettCounter++;
+    }
+    
+    // Anzahl an Fairletts zurückgeben
+    return fairlettCounter;
+}
+
+
+int fairlettFinder::markOutliers(const Graph& g, const Flow& preflow, 
+                                    vector<Arc> targetArcs, int nRed, 
+                                    vector<ColoredPoint>* points){
+    int outlier = 0;
+
+    // Alle main-Kanten durchgehen
+    for (int i = 0; i < (int) targetArcs.size(); i++){
+        // Hat die Kante überhaupt Fluss?
+        if (getFlowOfArc(preflow, targetArcs.at(i)) > 0){
+            continue;
+        }
+        
+        // Nodes herausfinden
+        Node blueNode = g.source(targetArcs.at(i));
+
+        // Echte Punkte mit fairlettID markieren
+        markSinglePointWithFairlett(-2, g.id(blueNode), BLUE, nRed, points);
+
+        // Anzahl hochzählen
+        outlier++;
+    }
+
+    return outlier;
+}
+
+
+void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points)
+{
     // Punkte durchzählen
     int nRed = 0;
     int nBlue = 0;
@@ -61,9 +156,8 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint>* points){
         }
     }
     
-    return;  
+    return;
 }
-
 
 
 double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
@@ -127,9 +221,10 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 	GraphData gData;
 	CapacityMap capacity(g);
 
+    // Graph Initialisieren
     buildupGraphFromRadius(g, gData, capacity, potRad, points);
 
-    
+
     // Fluss berechnen
     int maxFlowValue = getMaxFlow(g, capacity, gData);
     
@@ -323,6 +418,60 @@ vector<ColoredPoint>* fairlettFinder::getPointsOfColor(vector<ColoredPoint>* poi
     
     // den neuen, einfarbigen vector zurückgeben
     return filteredPoints;
+}
+
+int fairlettFinder::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
+    // Farben-Fallunterscheidung
+    if (color == RED)   { return ID; }
+    if (color == BLUE)  { return ID - nRed; }
+    
+    // Fehlerfall  
+    return -1;
+}
+
+
+
+void fairlettFinder::markSinglePointWithFairlett(int fairlettID, int nodeID, Pointcolor color, int nRed, vector<ColoredPoint>* points){
+    // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
+    int colorIndex = mapIDtoIndexByColor(nodeID, color, nRed);
+
+    ///*
+    // Index des entsprechenden Punktes suchen
+    int trueIndex = -1;
+    // So lange durchgehen bis ich den richtigen Index gefunden habe oder am Ende der Liste bin
+    for (int i = 0; i < (int) points->size(); i++){
+        // Hat der Knoten die richtige Farbe?
+        if (points->at(i).getColor() == color){
+            // Haben wir schon genug gesehen?
+            // Nein:
+            if (colorIndex > 0) {
+                colorIndex--;
+                continue;
+            }
+            // Ja:
+            trueIndex = i;
+            break;
+        }
+        
+    }//*/
+
+    // Noch unklar welche Variante ich benutze
+    /*
+    // Index des entsprechenden Punktes suchen
+    int trueIndex = -1;
+    // So lange durchgehen bis ich den richtigen Index gefunden
+    while (colorIndex >= 0) {
+        trueIndex++;
+
+        // Hat der Knoten die richtige Farbe?
+        if (points->at(trueIndex).getColor() == color){
+                colorIndex--;
+        }
+    }*/
+
+    points->at(trueIndex).setFairlettID(fairlettID);
+
+    return;
 }
 
 

@@ -70,7 +70,7 @@ string ColoredPoint::toString(){
 	} else if (this->fairlettID == -2){
 		stringStream << "Ausreißer";
 	} else {
-		stringStream << this->cluster;
+		stringStream << this->fairlettID;
 	}
 
 	stringStream << "; Color: ";
@@ -124,8 +124,7 @@ void ColoredPoint::setColor(Pointcolor color){
 	this->color = color;
 }
 
-int ColoredPoint::getCluster()
-{
+int ColoredPoint::getCluster(){
     return this->cluster;
 }
 
