@@ -140,5 +140,13 @@ public:
 	* @param cluster: Value to set fairlettID to
 	*/
 	void setFairlettID(int);
+
+
+
+
+	/* Utility-Method
+	* Filters a list of Points in a certain color
+	*/
+	static vector<ColoredPoint>* getPointsOfColor(vector<ColoredPoint>*, Pointcolor);
 };
 

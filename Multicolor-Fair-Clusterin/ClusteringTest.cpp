@@ -8,6 +8,7 @@
 #include "Gonzalez.h"
 #include "FairlettFinder.h"
 #include "RedCenterClustering.h"
+#include "GraphFlow.h"
 
 
 // Declaration of Test functions
@@ -188,31 +189,31 @@ void testGraphBuildup(vector<ColoredPoint>* points){
 
 	// Buildup Graph
 	Graph g;
-	fairlettFinder::GraphData gData;
+	graphFlow::GraphData gData;
 	CapacityMap capacity(g);
 
 	// Add Nodes
-	fairlettFinder::addNodesToGraph(g, gData, points);
+	graphFlow::addNodesToGraph(g, gData, points);
 
 	// Add Arcs
-	fairlettFinder::addArcsToGraph(g, gData, 15, points);
+	graphFlow::addArcsToGraph(g, gData, 15, points);
 
 	// Add Capacities
-	fairlettFinder::addCapacitiesToGraph(capacity, gData);
+	graphFlow::addCapacitiesToGraph(capacity, gData);
 
 	// Get Max Flow Value
-	int maxFlowValue = fairlettFinder::getMaxFlow(g, capacity, gData);
+	int maxFlowValue = graphFlow::getMaxFlow(g, capacity, gData);
 
 	// Get Flow itself
-	Flow* flow = fairlettFinder::calculateFlow(g, capacity, gData);
+	Flow* flow = graphFlow::calculateFlow(g, capacity, gData);
 
 	// Print outcome
-	fairlettFinder::printFlow(*flow, g, capacity, gData);
+	graphFlow::printFlow(*flow, g, capacity, gData);
 	printf("Value of this Flow is %d\n", maxFlowValue);
 
 	// Flow von Kante nehmen
-	printf("Flow der ersten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(0)));
-	printf("Flow der zweiten Haupt-Kante: %d\n", fairlettFinder::getFlowOfArc(*flow, gData.mainArcs.at(1)));
+	printf("Flow der ersten Haupt-Kante: %d\n", graphFlow::getFlowOfArc(*flow, gData.mainArcs.at(0)));
+	printf("Flow der zweiten Haupt-Kante: %d\n", graphFlow::getFlowOfArc(*flow, gData.mainArcs.at(1)));
 	
 
 	delete(flow);
@@ -326,8 +327,8 @@ void testColorFiltering(vector<ColoredPoint>* points){
 	// Filtern und Richtig mappen
 	fairlettFinder::makeCritFeatureSmalestFirst(points);
 
-	vector<ColoredPoint>* redPoints = fairlettFinder::getPointsOfColor(points, RED);
-	vector<ColoredPoint>* bluePoints = fairlettFinder::getPointsOfColor(points, BLUE);
+	vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
 
 	
 

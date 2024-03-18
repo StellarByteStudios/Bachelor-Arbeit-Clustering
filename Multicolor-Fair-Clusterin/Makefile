@@ -11,8 +11,8 @@ CLUSTERNUM = 5
 TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
 
-HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h
-CPPSOURCE = ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp
+HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
+CPPSOURCE = ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
 CPPMAIN = ClusteringMain.cpp $(CPPSOURCE)
 CPPTEST = ClusteringTest.cpp $(CPPSOURCE)
 
