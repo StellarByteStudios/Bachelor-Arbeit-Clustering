@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "ColoredPoint.h"
+#include "Gonzalez.h"
+
 
 using namespace std;
 
@@ -26,16 +28,22 @@ namespace redclustering{
 
 
     // ==== Clustering with Fairlets ==== //
-    // clusters points with krit-feature = 0 with Gonzalez algorithm
-    void clusterRedPoints(vector<ColoredPoint>*);  // * * TO-DO * * //
     
+    // clusters points with krit-feature = 0 with Gonzalez algorithm
+    void clusterRedPoints(FairFlowReturnValues*, int);  // * * TO-DO * * //
+    
+    /* Überflüssig, weil es jetzt eine Methode dafür in der Punkteklasse gibt
     // returns just the red points which a used for the clustering
     vector<ColoredPoint>* filterRedPoints(vector<ColoredPoint>*);  // * * TO-DO * * //
+    */
 
     // walks though all points, filter by their cluster and calculates the biggest cluster
     double calculateMaxRadius(vector<ColoredPoint>, int);
 
-    // using the clustered red points and their fairlettID to asign 
+    // Updates the red points in the real of the clustering points from the filtered List of points
+    void updateClusterOfMainRedPoints(vector<ColoredPoint>*, vector<ColoredPoint>*);
+
+    // Using the clustered red points and their fairlettID to asign 
     // the clusters to blue points. Includes outlier
     void updateClusterOfBluePoints(vector<ColoredPoint>*);  // * * TO-DO * * //
 }

@@ -19,6 +19,8 @@ void testRadiusChecker(vector<ColoredPoint>*);
 void testCalculationOfAllRadii(vector<ColoredPoint>*);
 void testMarkingFairlets(vector<ColoredPoint>*);
 void testColorFiltering(vector<ColoredPoint>*);
+void testOnlyRedClustering(vector<ColoredPoint>*, int);
+
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -95,13 +97,17 @@ int main(int argc, char *argv[]) {
 
 
     // ==== Mark the Fairletts ==== //
-    testMarkingFairlets(clusteredPoints);
+    //testMarkingFairlets(clusteredPoints);
 
 
 
 
 	// ==== Testing Color-Filter ==== //
     //testColorFiltering(unfairPoints);	
+
+
+	// ==== Testing Clustering only with red points ==== //
+	testOnlyRedClustering(unfairPoints, numberOfCluster);
 	
 
 
@@ -341,6 +347,40 @@ void testColorFiltering(vector<ColoredPoint>* points){
 	delete redPoints;
 	delete bluePoints;
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Clustering of only red points =====\n" << endl;
+
+	printf("Aufbauen der Rückgabewerte\n");
+
+	redclustering::FairFlowReturnValues* fairValues = redclustering::createFairFlowReturns(points);
+
+	printf("Erstmal alle Punkte vor dem Clustern\n");
+	printAllpoints(points);
+
+
+	redclustering::clusterRedPoints(fairValues, k);
+
+	printf("Alle Punkte nach dem Clustern nur mit den roten Punkten\n");
+    printAllpoints(fairValues->clusteredPoints);
+
+	//printf("Jetzt nur die Zentren\n");
+    //printAllpoints(fairValues->centers);
+
+	delete fairValues;
 }
 
 
