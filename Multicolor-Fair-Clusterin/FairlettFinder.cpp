@@ -43,7 +43,6 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 
     // Aufräumen
     delete redPoints;
-    //delete bluePoints;
     delete preflow;
 
     return optRad;
@@ -114,7 +113,6 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
     int nOther = 0;
 
     for (int i = 0; i < (int) points->size(); i++){
-        printf("test CritFeature at %d\n", i);
         switch (points->at(i).getColor()){
         case RED:
             nRed++;
@@ -136,15 +134,12 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
     }
 
     // Muss denn getauscht werden?
-    printf("Muss denn Getauscht werden?\n");
     if (nBlue > nRed){
-        printf("Es muss nicht getauscht werden\n");
         return;
     }
 
     // Zahlen Tauschen
     for (int i = 0; i < (int) points->size(); i++){
-        printf("flip CritFeature at %d\n", i);
         switch (points->at(i).getColor()){
         case RED:
             points->at(i).setColor(BLUE);
@@ -167,7 +162,7 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
 double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points);
-    printf("Checking %d potentional Radii\n", (int) potRadii->size());
+    printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
     // Solange durchprobieren, bis ein Radius erfolgreich ist
@@ -224,12 +219,10 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
     // Radien Sortieren
     std::sort(potentalRadii->begin(), potentalRadii->end());
-    printf("Sorted\n");
 
     delete redPoints;
     delete bluePoints;
 
-    printf("Aufgeräumt\n");
     return potentalRadii;
 }
 
