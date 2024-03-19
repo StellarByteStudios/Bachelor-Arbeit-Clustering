@@ -163,7 +163,7 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points);
     printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
-    int checkedNumbers = 0;
+    //int checkedNumbers = 0;
 
     // Solange durchprobieren, bis ein Radius erfolgreich ist
     for (int i = 0; i < (int) potRadii->size(); i++){
@@ -174,12 +174,12 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
             // Aufräumen
             delete(potRadii);
 
-            printf("\n");
+            //printf("\n");
 
             // Zurückgeben
             return trueRadius;
         }
-
+        /*
         printf("Check: %d\n", checkedNumbers);
         // Progressbar
         if (checkedNumbers > (int) potRadii->size()/100){
@@ -188,7 +188,7 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
         }
         
 
-        checkedNumbers++;        
+        checkedNumbers++;   */     
     }
     // Fehlerfall
     printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());

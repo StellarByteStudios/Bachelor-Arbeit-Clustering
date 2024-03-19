@@ -18,7 +18,12 @@ def main():
     # Parameter (Später noch über schleifen)
     maxCluster = 30
     pictureFolder = "../Data/OutputData/Pictures/GonzalezTest/"
-    numOfSamples = 3
+    numOfSamples = 15
+    
+    # # # Binary Kompilieren
+    compileBinary()
+    
+    
     
     # # # Algorithmus ausführen
     timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
@@ -45,9 +50,28 @@ def main():
 
     return
 
+
+# # # Kompiliert die Binary über das Makefile # # #
+def compileBinary():
+    print("Compiling Binary")
+    
+    # Subprozess bauen
+    process = bash_command("make -C .. build")
+    # Prozess starten
+    process.communicate()
+    
+    print("Finished compiling")
+    
+    return
+
+
+
+
+
 # # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
-def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
+def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20, algorithm = "g"):
     algoTimer = []
+    
     for i in range(0, numOfSamples):
         # # Bankdaten
         # Pfade algorithmisch zusammensetzen
@@ -55,13 +79,18 @@ def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20):
         outputfolder = f"Data/OutputData/AutoanalyzerTest/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Shellcommand zusammensetzen
-        command = f"cd .. && ./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster}"
+        directoryChange = "cd .."
+        feederCommand = f"./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster} -a {algorithm}"
+        command = directoryChange + " && " + feederCommand
+        
         # Prozess erzeugen
         process = bash_command(command)
         # Zeitmessung Starten
         startTime = time.process_time_ns();
         # Prozess starten
         process.communicate()
+        #outputString = process.communicate()[0]
+        #print(outputString)
         # Zeitmessung stoppen
         algoTimer.append(time.process_time_ns() - startTime)
         print(f"Cluster made for Sample: {inputfile}")
