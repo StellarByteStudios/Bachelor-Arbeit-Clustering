@@ -3,26 +3,25 @@
 
 #include "ColoredPoint.h"
 #include "Gonzalez.h"
+#include "GraphFlow.h"
 
-
-#include <lemon/lgf_writer.h>
-#include <lemon/list_graph.h>
-#include <lemon/preflow.h>
-
-using namespace std;
-using namespace lemon;
-
-typedef ListDigraph Graph;
-typedef Graph::Node Node;
-typedef Graph::Arc Arc;
-typedef ListDigraph::ArcMap<int> CapacityMap;
-typedef Preflow<Graph, CapacityMap> Flow;
+typedef graphFlow::GraphData GraphData;
 
 namespace fairlettFinder{
     
     // ==== Calculating the Fairlets ==== //
     // calclulates the fairletts of some Points and updates the vector
-    void markFairletts(vector<ColoredPoint>*); // * * TO-DO * * //
+    // returns the biggest distance of a fairlett
+    double markFairletts(vector<ColoredPoint>*);
+
+    // Goes though all main arcs and marks the Fairletts if there is Flow
+    // returns the Number of Fairletts made
+    int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*);
+
+    // Goes though all target arcs and marks all outliers which havent been
+    // submittet to a Fairlett
+    // returns the amount of outliers
+    int markOutliers(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*);
 
     // Change Kritical feature that 0 has less member than 1 for simpler calculation
     void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
@@ -41,68 +40,13 @@ namespace fairlettFinder{
     
 
 
-    
-    // ==== Building the Graph and let it Flow ==== //
-    // struct of an build-up graph to pass-through functions
-    struct GraphData{
-        // Key-Nodes (source and target)
-        Node s;
-        Node t;
-
-        // Nodes of the Points which should be matched
-        std::vector<Node> redNodes;
-        std::vector<Node> blueNodes;
-
-        // Base-structure arcs (everything using source and target)
-        std::vector<Arc> targetArcs;
-        // Maybe not used in future
-        std::vector<Arc> sourceArcs;
-
-        // Arcs between the main-nodes of the graph
-        std::vector<Arc> mainArcs;
-
-        // Quantities of Nodes
-        int nRed;
-        int nBlue;
-    };
-
-    // Adding all red and blue Nodes and s and t to the graph
-    void addNodesToGraph(Graph&, GraphData&, vector<ColoredPoint>*);
-    
-    // Adding all needed arcs to Graph
-    // source --> redNodes
-    // blueNodes --> target
-    // redNodes --> blueNodes (potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*);
-
-    // sets the capacity of all arcs to one
-    void addCapacitiesToGraph(CapacityMap&, GraphData&);
-
-    // calculates the Flow of the build-up graph
-    Flow* calculateFlow(const Graph&, const CapacityMap&, const GraphData&);
-
-    // Returns the Max-Flow Value of an given Graph
-    int getMaxFlow(const Graph&, const CapacityMap&, const GraphData&);
-
-    // gets the Flow on a single Arc
-    int getFlowOfArc(const Flow&, const Arc);
-
-    
-
 
     // ==== Utility ==== //
-    // goes though vector of points and returns a new vector with just one color
-    vector<ColoredPoint>* getPointsOfColor(vector<ColoredPoint>*, Pointcolor);
+    // maps the ID of a Node in a Graph to the Index in the filtered Points list
+    int mapIDtoIndexByColor(int, Pointcolor, int);
+
+    // Marks the Point in the base List with the new Fairlett ID
+    void markSinglePointWithFairlett(int, int, Pointcolor, int, vector<ColoredPoint>*);
 
 
-
-    // ==== Debugging ==== //
-    // Print Data from Graph
-    void printGraph(const Graph&, const GraphData&);
-    
-    // Print Data from Graph
-    void printGraphCapacity(const Graph&, const CapacityMap&, const GraphData&);
-
-    // Print all Data with Flow
-    void printFlow(const Flow&, const Graph&, const CapacityMap&, const GraphData&);
 }
