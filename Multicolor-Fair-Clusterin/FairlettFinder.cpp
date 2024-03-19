@@ -1,5 +1,9 @@
 #include "FairlettFinder.h"
 
+#include <chrono>
+
+using namespace std::chrono;
+
 // * * * =========== Calculating the Fairlets =========== * * * //
 double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     // Farben richtig Sortieren
@@ -180,7 +184,7 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
             return trueRadius;
         }
 
-        printf("Check: %d\n", checkedNumbers);
+        printf("Check: %d---------------------------------------------------\n\n", checkedNumbers);
         // Progressbar
         if (checkedNumbers > (int) potRadii->size()/100){
             printf("-c%%-");
@@ -229,23 +233,42 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
 
 bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
-    //printf("Checking Radius %f\n", potRad);
+    
+    time_point startTime = high_resolution_clock::now();
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
 	GraphData gData;
 	CapacityMap capacity(g);
 
+    time_point timeAfterGraphVar = high_resolution_clock::now();
+    printf("Zeit für Variablen anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterGraphVar - startTime).count());
+
+
+
     // Graph Initialisieren
     graphFlow::buildupGraphFromRadius(g, gData, capacity, potRad, points);
+
+    time_point timeAfterGraphBuildup = high_resolution_clock::now();
+    printf("Zeit für Graph aufbauen: %ld µSec\n", duration_cast<microseconds>(timeAfterGraphBuildup - timeAfterGraphVar).count());
+
 
 
     // Fluss berechnen
     int maxFlowValue = graphFlow::getMaxFlow(g, capacity, gData);
-    
+
+    time_point timeAfterFlow = high_resolution_clock::now();
+    printf("Zeit für Fluss Berechnen: %ld µSec\n", duration_cast<microseconds>(timeAfterFlow - timeAfterGraphBuildup).count());
+
+
     // Vergleichwert holen
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
     int nRed = (int) redPoints->size();
+
+    time_point timeAfterPointfilter = high_resolution_clock::now();
+    printf("Zeit für Rot Filtern: %ld µSec\n", duration_cast<microseconds>(timeAfterPointfilter - timeAfterFlow).count());
+
+
 
     // Aufräumen
     delete(redPoints);
