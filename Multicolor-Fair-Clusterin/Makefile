@@ -6,7 +6,7 @@ TESTNAME = Clustering-Test
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
 OUTPUTFILENAME = ClusterOut.csv
-CLUSTERNUM = 5
+CLUSTERNUM = 10
 
 TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 

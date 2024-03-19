@@ -20,6 +20,7 @@ void testCalculationOfAllRadii(vector<ColoredPoint>*);
 void testMarkingFairlets(vector<ColoredPoint>*);
 void testColorFiltering(vector<ColoredPoint>*);
 void testOnlyRedClustering(vector<ColoredPoint>*, int);
+void testFairRedClustering(vector<ColoredPoint>*, int);
 
 
 void printAllpoints(vector<ColoredPoint>*);
@@ -69,10 +70,10 @@ int main(int argc, char *argv[]) {
 	
 	
 	// ==== Testing of Gonzalez ==== //
-	vector<ColoredPoint>* clusteredPoints = testGonzalez(unfairPoints, numberOfCluster);
+	vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
-    //cout << "Alle Punkte direkt nach Gonzalez" << endl;
-    //printAllpoints(clusteredPoints);
+    cout << "Alle Punkte direkt nach Gonzalez" << endl;
+    printAllpoints(clusteredPoints);
 	
 
 
@@ -82,7 +83,7 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing graph Buildup ==== //
-    //testGraphBuildup(unfairPoints);
+    //testGraphBuildup(points);
 
 
 
@@ -92,7 +93,7 @@ int main(int argc, char *argv[]) {
 	
 
 	// ==== Calculate all possible Radii ==== //
-    //testCalculationOfAllRadii(unfairPoints);
+    //testCalculationOfAllRadii(points);
 
 
 
@@ -107,8 +108,11 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Clustering only with red points ==== //
-	testOnlyRedClustering(unfairPoints, numberOfCluster);
-	
+	//testOnlyRedClustering(unfairPoints, numberOfCluster);
+
+
+	// ==== Testing Fair-Red-Clustering ==== ///
+	testFairRedClustering(points, numberOfCluster);
 
 
     // ==== Write Clusterdata into File ==== //
@@ -382,6 +386,38 @@ void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 
 	redclustering::deleteFairFlowReturns(fairValues);
 }
+
+
+
+
+
+
+
+
+
+
+
+void testFairRedClustering(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Fair-Clustering with Red-Clustering =====\n" << endl;
+
+	//printf("Erstmal alle Punkte vor dem Clustern\n");
+	//printAllpoints(points);
+
+
+	redclustering::FairFlowReturnValues* fairValues = redclustering::makeFairRedClustering(points, k);
+
+	printf("\n\nAlle Punkte nach dem Clustern:\n");
+    printAllpoints(fairValues->clusteredPoints);
+
+	printf("\n\nJetzt nur die Zentren:\n");
+    printAllpoints(fairValues->centers);
+
+	printf("Maximaler Fairlettradius: %f \t Maximaler Clusterradius: %f\n", 
+		fairValues->maxFairlettRadius, fairValues->maxClusterRadius);
+
+	redclustering::deleteFairFlowReturns(fairValues);
+}
+
 
 
 

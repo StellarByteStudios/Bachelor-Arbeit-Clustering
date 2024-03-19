@@ -6,6 +6,7 @@
 #include <lemon/lgf_writer.h>
 #include <lemon/list_graph.h>
 #include <lemon/preflow.h>
+//#include <lemon/edmonds_karp.h>
 
 using namespace lemon;
 
@@ -14,6 +15,7 @@ typedef Graph::Node Node;
 typedef Graph::Arc Arc;
 typedef ListDigraph::ArcMap<int> CapacityMap;
 typedef Preflow<Graph, CapacityMap> Flow;
+//typedef EdmondsKarp<Graph, CapacityMap> Flow;
 
 namespace graphFlow{
 

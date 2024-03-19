@@ -3,6 +3,7 @@
 
 #include "ColoredPoint.h"
 #include "Gonzalez.h"
+#include "FairlettFinder.h"
 
 
 using namespace std;
@@ -11,17 +12,18 @@ namespace redclustering{
     struct FairFlowReturnValues{
 		vector<ColoredPoint>* clusteredPoints;
 		vector<ColoredPoint>* centers;
-		double maxRadius;
+		double maxClusterRadius;
+        double maxFairlettRadius;
 	};
 
     // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
     FairFlowReturnValues* makeFairRedClustering(vector<ColoredPoint>*, int);  // * * TO-DO * * //
 
     // Creating an empty Struct for Max-Flow-Clustering
-	FairFlowReturnValues* createFairFlowReturns(vector<ColoredPoint>*);  // * * TO-DO * * //
+	FairFlowReturnValues* createFairFlowReturns(vector<ColoredPoint>*);
 
 	// Clean-Up for Max-Flow-Clustering Returnvalues
-	void deleteFairFlowReturns(FairFlowReturnValues*);  // * * TO-DO * * //
+	void deleteFairFlowReturns(FairFlowReturnValues*);
 
 
 
@@ -30,7 +32,7 @@ namespace redclustering{
     // ==== Clustering with Fairlets ==== //
     
     // clusters points with krit-feature = 0 with Gonzalez algorithm
-    void clusterRedPoints(FairFlowReturnValues*, int);  // * * TO-DO * * //
+    void clusterRedPoints(FairFlowReturnValues*, int);
 
     // walks though all points, filter by their cluster and calculates the biggest cluster
     double calculateMaxRadius(vector<ColoredPoint>, int);
@@ -41,6 +43,10 @@ namespace redclustering{
     // Using the clustered red points and their fairlettID to asign 
     // the clusters to blue points. Includes outlier
     void updateClusterOfBluePoints(vector<ColoredPoint>*);  // * * TO-DO * * //
+
+    // Gets the FairlettID of a blue Point and searches for his red Partner
+    // returns the index of the red partner
+    int getRedFairlettPartnerIndex(vector<ColoredPoint>*, int);
 }
 
 

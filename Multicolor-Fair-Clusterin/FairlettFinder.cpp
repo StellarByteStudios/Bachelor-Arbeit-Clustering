@@ -4,9 +4,11 @@
 double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     // Farben richtig Sortieren
     makeCritFeatureSmalestFirst(points);
+    printf("--smallFeature-- ");
 
     // Optimalen Radius Finden
     double optRad = findPotentionalRadius(points);
+    printf("--found potRad-- ");
 
     // Graph mit Optimalem Radius Aufbauen
     // Variablen erzeugen
@@ -16,22 +18,25 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 
     // Graph Initialisieren
     graphFlow::buildupGraphFromRadius(g, gData, capacity, optRad, points);
+    printf("--build Graph-- ");
 
     // Fluss berechnen
     Flow* preflow = graphFlow::calculateFlow(g, capacity, gData);
+    printf("--Made Flow-- ");
 
     // Main-Kanten durchgehen und Partner markieren
     // Punkte Filtern
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
     int nRed = (int) redPoints->size();
-	//vector<ColoredPoint>* bluePoints = getPointsOfColor(points, BLUE);
+
 
     // Main Fairletts bilden
-    int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points);    
+    int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points);
+    printf("--marked Fairlets-- ");    
 
     // Ausreißer markieren
-    
     int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
+    printf("--marked outlier-- ");
 
     // Debug
     printf("Anzahl an Fairletts: %d;\tAnzahl an Outlier: %d\n", fairlettCounter, numOfOutlier);
@@ -109,6 +114,7 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
     int nOther = 0;
 
     for (int i = 0; i < (int) points->size(); i++){
+        printf("test CritFeature at %d\n", i);
         switch (points->at(i).getColor()){
         case RED:
             nRed++;
@@ -130,12 +136,15 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
     }
 
     // Muss denn getauscht werden?
+    printf("Muss denn Getauscht werden?\n");
     if (nBlue > nRed){
+        printf("Es muss nicht getauscht werden\n");
         return;
     }
 
     // Zahlen Tauschen
     for (int i = 0; i < (int) points->size(); i++){
+        printf("flip CritFeature at %d\n", i);
         switch (points->at(i).getColor()){
         case RED:
             points->at(i).setColor(BLUE);
@@ -158,6 +167,8 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
 double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points);
+    printf("Checking %d potentional Radii\n", (int) potRadii->size());
+    int checkedNumbers = 0;
 
     // Solange durchprobieren, bis ein Radius erfolgreich ist
     for (int i = 0; i < (int) potRadii->size(); i++){
@@ -167,10 +178,22 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
             double trueRadius = potRadii->at(i);
             // Aufräumen
             delete(potRadii);
+
+            printf("\n");
+
             // Zurückgeben
             return trueRadius;
         }
+
+        printf("Check: %d\n", checkedNumbers);
+        // Progressbar
+        if (checkedNumbers > (int) potRadii->size()/100){
+            printf("-c%%-");
+            checkedNumbers = 0;
+        }
         
+
+        checkedNumbers++;        
     }
     // Fehlerfall
     printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
@@ -191,6 +214,7 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     // Alle roten Punkte durchgehen
     for (int redIndex = 0; redIndex < (int) redPoints->size(); redIndex++){
+        //printf("Test Potentional Radii with Index %d\n", redIndex);
         // Alle blauen Punkte durchgehen
         for (int blueIndex = 0; blueIndex < (int) bluePoints->size(); blueIndex++){
             // Radius hinzufügen
@@ -200,16 +224,19 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
     // Radien Sortieren
     std::sort(potentalRadii->begin(), potentalRadii->end());
+    printf("Sorted\n");
 
     delete redPoints;
     delete bluePoints;
 
+    printf("Aufgeräumt\n");
     return potentalRadii;
 }
 
 
 
 bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
+    //printf("Checking Radius %f\n", potRad);
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
@@ -229,7 +256,7 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 
     // Aufräumen
     delete(redPoints);
-
+    //printf("Finished checking Radius %f\n", potRad);
     // Zurückgeben ob Fluss groß genug ist
     return maxFlowValue >= nRed;
 }

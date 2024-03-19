@@ -2,14 +2,33 @@
 
 #include <iostream> // std::cout; std::endl
 
-void printAllpointsHere(vector<ColoredPoint>* points);
+//void printAllpointsHere(vector<ColoredPoint>* points);
 
 
 // * * * =========== Using the Algorithm =========== * * * //
 redclustering::FairFlowReturnValues* redclustering::makeFairRedClustering(vector<ColoredPoint>* points, int k){
-   
-    return nullptr;
+    // Rückgabestruct erzeugen
+    redclustering::FairFlowReturnValues* fairValues = redclustering::createFairFlowReturns(points);
+    
+    // Fairletts markieren
+    double fairlettRadius = fairlettFinder::markFairletts(fairValues->clusteredPoints);
+    fairValues->maxFairlettRadius = fairlettRadius;
+
+    // Clustern nur mit roten Punkten
+	clusterRedPoints(fairValues, k);
+    printf("--clustered only red Points-- ");
+
+    // Blaue Punkte über Fairletts zuweißen
+    updateClusterOfBluePoints(fairValues->clusteredPoints);
+    printf("--updated all Clusters with Fairlett-- \n");
+
+    // maximalen Radius der Cluster berechnen
+    fairValues->maxClusterRadius = calculateMaxRadius(*fairValues->clusteredPoints, k); 
+
+
+    return fairValues;
 }
+
 
 redclustering::FairFlowReturnValues* redclustering::createFairFlowReturns(vector<ColoredPoint>* originalPoints){
     FairFlowReturnValues* values = new FairFlowReturnValues();
@@ -17,10 +36,12 @@ redclustering::FairFlowReturnValues* redclustering::createFairFlowReturns(vector
     // Deep-Copy der Punkte
     values->clusteredPoints = new vector<ColoredPoint>(*originalPoints);
     values->centers = new vector<ColoredPoint>();
-	values->maxRadius = -1.0;    
+	values->maxClusterRadius = -1.0;  
+    values->maxFairlettRadius = -1.0;   
     
     return values;
 }
+
 
 void redclustering::deleteFairFlowReturns(FairFlowReturnValues* values){
     delete values->clusteredPoints;
@@ -72,6 +93,7 @@ double redclustering::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, i
             if (clusteredPoints.at(i).getCluster() == cluster 
             && clusteredPoints.at(i).getIsCenter()){
                 center = clusteredPoints.at(i);
+                break;
             } 
         }
         
@@ -103,11 +125,12 @@ double redclustering::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, i
         if (allMaxRadii.at(i) > trueMaxRadius){
             trueMaxRadius = allMaxRadii.at(i);
         }
-    }
-    
+    }  
 
     return trueMaxRadius;
 }
+
+
 
 void redclustering::updateClusterOfMainRedPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
     // Index, wievielter Punkt zugeteilt wurde
@@ -139,10 +162,46 @@ void redclustering::updateClusterOfMainRedPoints(vector<ColoredPoint>* realPoint
 
 }
 
-void redclustering::updateClusterOfBluePoints(vector<ColoredPoint> *){
+
+
+void redclustering::updateClusterOfBluePoints(vector<ColoredPoint>* points){
+
+    // Alle Punkte durchgehen
+    for (int i = 0; i < (int) points->size(); i++){
+        // Wenn ein Blauer Punkt gefunden wurde
+        if (points->at(i).getColor() == BLUE){
+            // FairlettID == -2 -> Überspringen (Ausreißer)
+            if (points->at(i).getFairlettID() == -2){
+                continue;
+            }
+            // Suche seinen Partner (Index)
+            int partnerIndex = getRedFairlettPartnerIndex(points, points->at(i).getFairlettID());
+            
+            // hole Cluster-Nummer von diesem
+            int clusterID = points->at(partnerIndex).getCluster();
+
+            // Aktuallisiere blauen Punkt
+            points->at(i).setCluster(clusterID);
+        }
+    }  
 }
 
 
+
+int redclustering::getRedFairlettPartnerIndex(vector<ColoredPoint>* points, int searchID){
+    // Alle Punkte durchgehen
+    for (int i = 0; i < (int) points->size(); i++){
+        // Ist es ein roter Punkt und passt die FairlettID zusammen
+        if (points->at(i).getColor() == RED && points->at(i).getFairlettID() == searchID){
+            // Index des Roten Punktes zurückgeben
+            return i;
+        }
+    }
+    // Fehlerfall
+    return -1;
+}
+
+/*
 
 void printAllpointsHere(vector<ColoredPoint>* points){
     cout << "\n\n===== Printing all given Points =====\n" << endl;
@@ -151,3 +210,4 @@ void printAllpointsHere(vector<ColoredPoint>* points){
         cout << i << ": " << points->at(i).toString() << endl;
     }
 }
+*/
