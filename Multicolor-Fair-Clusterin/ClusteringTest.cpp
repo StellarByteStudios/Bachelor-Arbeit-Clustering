@@ -71,8 +71,8 @@ int main(int argc, char *argv[]) {
 	// ==== Testing of Gonzalez ==== //
 	vector<ColoredPoint>* clusteredPoints = testGonzalez(unfairPoints, numberOfCluster);
     
-    cout << "Alle Punkte direkt nach Gonzalez" << endl;
-    printAllpoints(clusteredPoints);
+    //cout << "Alle Punkte direkt nach Gonzalez" << endl;
+    //printAllpoints(clusteredPoints);
 	
 
 
@@ -377,10 +377,10 @@ void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 	printf("Alle Punkte nach dem Clustern nur mit den roten Punkten\n");
     printAllpoints(fairValues->clusteredPoints);
 
-	//printf("Jetzt nur die Zentren\n");
-    //printAllpoints(fairValues->centers);
+	printf("Jetzt nur die Zentren\n");
+    printAllpoints(fairValues->centers);
 
-	delete fairValues;
+	redclustering::deleteFairFlowReturns(fairValues);
 }
 
 
@@ -397,7 +397,7 @@ void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 
 
 void printAllpoints(vector<ColoredPoint>* points){
-    cout << "\n\n===== Printing all given Points =====\n" << endl;
+    //cout << "\n\n===== Printing all given Points =====\n" << endl;
 
     for (size_t i = 0; i < points->size(); i++){
         cout << std::setw(3) << i << ": " << points->at(i).toString() << endl;

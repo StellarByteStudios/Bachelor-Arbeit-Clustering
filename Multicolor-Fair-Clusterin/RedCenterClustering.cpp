@@ -46,30 +46,15 @@ void redclustering::clusterRedPoints(FairFlowReturnValues* returnValues, int k){
     // Gonzalez mit Roten Punkten
     Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeGonzalez(redPoints, k);
 
-    //printAllpointsHere(gonzalezValues->clusteredPoints);
-
-    // Zentren Abspeichern
-    returnValues->centers = gonzalezValues->centers;
-
-    //printAllpointsHere(returnValues->centers);
-
     // Punkte in Clustered Points aktuallisieren
-    updateClusterOfMainRedPoints(returnValues->clusteredPoints, gonzalezValues->clusteredPoints);
-
-    //printf("Punte nach dem Update draußen\n");
-    //printAllpointsHere(returnValues->clusteredPoints);
+    updateClusterOfMainRedPoints(returnValues->clusteredPoints, returnValues->centers, gonzalezValues->clusteredPoints);
 
     // Speicher wieder Freigeben
     delete redPoints;
     Gonzalez::deleteGonzalezReturns(gonzalezValues);
 }
 
-/*
-vector<ColoredPoint> *redclustering::filterRedPoints(vector<ColoredPoint>* points){
-    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
-    return redPoints;
-}
-*/
+
 
 double redclustering::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, int k){
     // Liste für die Radii aller Cluster anlegen
@@ -124,7 +109,7 @@ double redclustering::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, i
     return trueMaxRadius;
 }
 
-void redclustering::updateClusterOfMainRedPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* filteredPoints){
+void redclustering::updateClusterOfMainRedPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
     // Index, wievielter Punkt zugeteilt wurde
     int filterIndex = 0;
     
@@ -132,30 +117,20 @@ void redclustering::updateClusterOfMainRedPoints(vector<ColoredPoint>* realPoint
     for (int i = 0; i < (int) realPoints->size(); i++){
         // Falls das ein roter Punkt ist must dieser Aktuallisiert werden
         if (realPoints->at(i).getColor() == RED){
-            //printf("Roten Punkt gefunden\n");
-
             // Überschreiben des Clusters mit der Nummer die der Gefilterte Punkt hatte
             realPoints->at(i).setCluster(filteredPoints->at(filterIndex).getCluster());
 
             // Noch überprüfen ob der Punkt vielleicht ein Zentrum ist
             if (filteredPoints->at(filterIndex).getIsCenter()){
                 realPoints->at(i).setToCenter();
+                centers->push_back(realPoints->at(i));
             }
-            
-
-            //printf("Welches Cluster soll es den werden? %d\n", filteredPoints->at(filterIndex).getCluster());
-
-            //printf("Wurde das Cluster geändert?  ");
-            //std::cout << realPoints->at(i).toString() << std::endl;
 
             // einen Punkt bei den Gefilterten weiter gehen
             filterIndex++;
         }
         
     }
-
-    //printf("Punkte nach dem Update drinnen\n");
-    //printAllpointsHere(realPoints);
     
     // Sanity-Check
     if(filterIndex < (int) filteredPoints->size()){

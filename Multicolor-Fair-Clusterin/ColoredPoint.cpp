@@ -129,7 +129,6 @@ int ColoredPoint::getCluster(){
 }
 
 void ColoredPoint::setCluster(int cluster){
-	//printf("Cluster Set\n");
 	this->cluster = cluster;
 }
 
