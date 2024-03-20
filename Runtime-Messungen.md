@@ -51,7 +51,47 @@ Die Analyse zeigt, das tatsächlich die meiste Zeit verloren geht bei der Berech
 Die meiste Zeit geht wirklich beim ausrechen, ob eine Kante hinzugefügt werden soll drauf.  
 **Idee:** man könnte die Distanzen ein mal berechnen und in einer n x n Matrix speichern
 
+---
 
 ### Nachschlagen statt ausrechnen
 #### Setup
+Jetzt wird vor der for-Schleife, welche alle Radien ausprobiert (vor `checkRadius(points, potRadii->at(i), distMatrix)`) alle Distanzen ausgerechnet und statt die Distanzen immer neu zu berechnen werden sie einfach nachgeschlagen
+
+
 #### Zeiten
+##### 100 Punkte
+* Execution Time getestet mit `time make runTest` (Gonzalez ist mit einbegriffen): user = 0m6,840s;   sys = 0m0,036s
+* Checks pro Minute: 
+    * Gemessene Zeit fürs Checken: 2.045161 Sec
+    * Das sind 942 µSec pro check
+    * 63694.267516 Checks pro minute
+* Verbesserungsfaktor (Gesammtzeit für Checks): **3,4**
+
+
+
+
+##### 200 Punkte
+* Execution Time getestet mit `time make runTest` (Gonzalez ist mit einbegriffen): 
+* Checks pro Minute:
+    * Gemessene Zeit fürs Checken: 12.969745 Sec
+    * Das sind 2331 µSec pro check
+    * 25740.025740 Checks pro minute
+* Verbesserungsfaktor (Gesammtzeit für Checks): **4,2**
+
+
+
+##### 300 Punkte
+* Execution Time getestet mit `time make runTest` (Gonzalez ist mit einbegriffen): 
+* Checks pro Minute:
+    * Gemessene Zeit fürs Checken: 72.843255 Sec
+    * Das sind 5561 µSec pro check
+    * 10789.426362 Checks pro minute
+* Verbesserungsfaktor (Gesammtzeit für Checks): **3,9**
+
+##### Extra Test mit 500 Punkten
+* Checks pro Minute:
+    * Gemessene Zeit fürs Checken: 472.218463 Sec
+    * Das sind 14839 µSec pro check
+    * 4043.399151 Checks pro minute
+
+![Screenshot-Perf 200 optimized](<Screenshots/Report-optimized (200 Punkte) mit allem ohne Prints.png>)

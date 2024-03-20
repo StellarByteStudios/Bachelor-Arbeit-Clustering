@@ -34,7 +34,7 @@ namespace fairlettFinder{
 
     // Checks if given radius is building all Fairletts
     // Needs first to have nRed <= nBlue
-    bool checkRadius(vector<ColoredPoint>*, double);
+    bool checkRadius(vector<ColoredPoint>*, double, vector<vector<double>>&);
     
 
     
@@ -47,6 +47,13 @@ namespace fairlettFinder{
 
     // Marks the Point in the base List with the new Fairlett ID
     void markSinglePointWithFairlett(int, int, Pointcolor, int, vector<ColoredPoint>*);
+
+
+    // Fills the given Matrix with the Values of all Distances
+    void fillDistanceMatrix(vector<ColoredPoint>*, vector<vector<double>>& );
+
+    // prints out the Matrix
+    void printMatrix(const std::vector<std::vector<double>>& );
 
 
 }

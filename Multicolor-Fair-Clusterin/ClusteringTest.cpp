@@ -21,6 +21,7 @@ void testMarkingFairlets(vector<ColoredPoint>*);
 void testColorFiltering(vector<ColoredPoint>*);
 void testOnlyRedClustering(vector<ColoredPoint>*, int);
 void testFairRedClustering(vector<ColoredPoint>*, int);
+void testMatrixOfDistances(vector<ColoredPoint>*);
 
 
 void printAllpoints(vector<ColoredPoint>*);
@@ -70,10 +71,10 @@ int main(int argc, char *argv[]) {
 	
 	
 	// ==== Testing of Gonzalez ==== //
-	vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
+	//vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
-    cout << "Alle Punkte direkt nach Gonzalez" << endl;
-    printAllpoints(clusteredPoints);
+    //cout << "Alle Punkte direkt nach Gonzalez" << endl;
+    //printAllpoints(clusteredPoints);
 	
 
 
@@ -115,6 +116,12 @@ int main(int argc, char *argv[]) {
 	testFairRedClustering(points, numberOfCluster);
 
 
+	// ==== Testing the Use of the Distance-Matrix ==== ///
+	//testMatrixOfDistances(points);
+
+
+
+
     // ==== Write Clusterdata into File ==== //
     //savePointsToFile(outputFileName, clusteredPoints);
 
@@ -122,7 +129,7 @@ int main(int argc, char *argv[]) {
 	// vector für Punkte wieder Freigeben
 	delete points;
 	delete unfairPoints;
-    delete clusteredPoints;
+    //delete clusteredPoints;
 
 	
 
@@ -193,7 +200,7 @@ void testMaximumRadiusFunction(vector<ColoredPoint>* clusteredPoints, int number
 
 
 
-
+/* Kompiliert nicht in der Runtime-Improv variante
 void testGraphBuildup(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing of Graphlogic =====\n" << endl;
 
@@ -230,6 +237,7 @@ void testGraphBuildup(vector<ColoredPoint>* points){
 
     return;
 }
+*/
 
 
 
@@ -241,8 +249,7 @@ void testGraphBuildup(vector<ColoredPoint>* points){
 
 
 
-
-
+/* Komiliert nicht in der Runtime-Improv Variante
 void testRadiusChecker(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing Radius checker =====\n" << endl;
 
@@ -267,7 +274,7 @@ void testRadiusChecker(vector<ColoredPoint>* points){
 	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
 
 }
-
+*/
 
 
 
@@ -417,6 +424,39 @@ void testFairRedClustering(vector<ColoredPoint>* points, int k){
 
 	redclustering::deleteFairFlowReturns(fairValues);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void testMatrixOfDistances(vector<ColoredPoint>* points){
+
+	// Leere Matrix erstellen
+	vector<vector<double>> matrix;
+
+	// Matrix mit Werten befüllen
+	fairlettFinder::fillDistanceMatrix(points, matrix);
+
+	// Matrix Ausgeben
+	fairlettFinder::printMatrix(matrix);
+}
+
+
+
+
+
 
 
 

@@ -29,7 +29,7 @@ def main():
     # Dimensionierung der Subsamples
     numOfSamples = 20
     subsampleSizeCensus = 100 #600
-    subsampleSizeBank = 300 #1000
+    subsampleSizeBank = 200 #1000
     subsampleSizeDiabetes = 100 #1000
     
     

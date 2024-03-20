@@ -44,7 +44,7 @@ namespace graphFlow{
     };
 
     // uses an Radius and builds up finished Graph
-    void buildupGraphFromRadius(Graph&, GraphData&, CapacityMap&, double, vector<ColoredPoint>*);
+    void buildupGraphFromRadius(Graph&, GraphData&, CapacityMap&, double, vector<ColoredPoint>*, vector<vector<double>>&);
 
     // Adding all red and blue Nodes and s and t to the graph
     void addNodesToGraph(Graph&, GraphData&, vector<ColoredPoint>*);
@@ -53,7 +53,7 @@ namespace graphFlow{
     // source --> redNodes
     // blueNodes --> target
     // redNodes --> blueNodes (potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*);
+    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*, vector<vector<double>>&);
 
     // sets the capacity of all arcs to one
     void addCapacitiesToGraph(CapacityMap&, GraphData&);

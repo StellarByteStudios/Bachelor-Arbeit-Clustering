@@ -4,7 +4,8 @@
 using namespace std::chrono;
 
 // * * * =========== Building the Graph and let it Flow =========== * * * //
-void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityMap& capacity, double potRad, vector<ColoredPoint>* points){
+void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityMap& capacity, 
+                                    double potRad, vector<ColoredPoint>* points, vector<vector<double>>& distMatrix){
     
     //time_point startTime = high_resolution_clock::now();
     // Knoten hinzufügen
@@ -15,7 +16,7 @@ void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityM
 
 
 	// Kanten hinzufügen
-	addArcsToGraph(graph, gData, potRad, points);
+	addArcsToGraph(graph, gData, potRad, points, distMatrix);
 
     //time_point timeAfterArcs = high_resolution_clock::now();
     //printf("\tZeit für Arcs anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterArcs - timeAfterNodes).count());
@@ -61,7 +62,7 @@ void graphFlow::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPo
 
 
 
-void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
+void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points, vector<vector<double>>& distMatrix){
 
     //time_point startTime = high_resolution_clock::now();
 
@@ -129,10 +130,17 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         // Alle blauen Punkte durchgehen
         for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
             // Schauen ob das eine Passende Kante ist
+            // Neue Variante
+            if(distMatrix[redIndex][blueIndex] < potRad){
+                gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
+            }
+
+
+            /* Alte Variante
             if (redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)) < potRad){
                 // Kante Hinzufügen
                 gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
-            } 
+            } */
         }
 
         //time_point afterForTimer = high_resolution_clock::now();

@@ -20,8 +20,12 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 	GraphData gData;
 	CapacityMap capacity(g);
 
+    // Alle Paarweiße Distanzen Berechnen
+    vector<vector<double>> distMatrix;
+    fillDistanceMatrix(points, distMatrix);
+
     // Graph Initialisieren
-    graphFlow::buildupGraphFromRadius(g, gData, capacity, optRad, points);
+    graphFlow::buildupGraphFromRadius(g, gData, capacity, optRad, points, distMatrix);
     printf("--build Graph-- ");
 
     // Fluss berechnen
@@ -169,11 +173,16 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
+    // Alle Paarweiße Distanzen Berechnen
+    vector<vector<double>> distMatrix;
+    fillDistanceMatrix(points, distMatrix);
+
+
     time_point startTime = high_resolution_clock::now();
     // Solange durchprobieren, bis ein Radius erfolgreich ist
     for (int i = 0; i < (int) potRadii->size(); i++){
         // Ist der Radius Groß genug
-        if (checkRadius(points, potRadii->at(i))){            
+        if (checkRadius(points, potRadii->at(i), distMatrix)){            
 
             // Timer
             time_point endTime = high_resolution_clock::now();
@@ -250,7 +259,7 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
 
 
-bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
+bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad, vector<vector<double>>& distMatrix){    
     
     //time_point startTime = high_resolution_clock::now();
     // Graphenstruktur aufbauen
@@ -265,7 +274,7 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 
 
     // Graph Initialisieren
-    graphFlow::buildupGraphFromRadius(g, gData, capacity, potRad, points);
+    graphFlow::buildupGraphFromRadius(g, gData, capacity, potRad, points, distMatrix);
 
     //time_point timeAfterGraphBuildup = high_resolution_clock::now();
     //printf("Zeit für Graph aufbauen: %ld µSec\n", duration_cast<microseconds>(timeAfterGraphBuildup - timeAfterGraphVar).count());
@@ -358,4 +367,47 @@ void fairlettFinder::markSinglePointWithFairlett(int fairlettID, int nodeID, Poi
     points->at(trueIndex).setFairlettID(fairlettID);
 
     return;
+}
+
+
+void fairlettFinder::fillDistanceMatrix(vector<ColoredPoint>* points, vector<vector<double>>& matrix){
+    // Erstmal nach Blau und Rot filtern
+    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
+
+    // Größen bestimmen
+    int nRed = (int) redPoints->size();
+    int nBlue = (int) bluePoints->size();
+
+    // Größe auf Matrix bringen
+    matrix.resize(nRed);
+    for (int i = 0; i < nRed; ++i) {
+        matrix[i].resize(nBlue);
+    }
+
+    // Alle roten Punkte durchgehen
+    for (int redIndex = 0; redIndex < nRed; redIndex++){
+        // Für alle Blaue Punkte den Vektor berechnen
+        //vector<double>* blueDistancesOfSingleRedPoint = new vector<double>;
+        for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
+            // Distanz ausrechnen
+            double distance = redPoints->at(redIndex).distTo(bluePoints->at(blueIndex));
+
+            // in Matrix stecken
+            matrix[redIndex][blueIndex] = distance;    
+        }        
+    }
+
+    delete redPoints;
+    delete bluePoints;
+}
+
+
+void fairlettFinder::printMatrix(const std::vector<std::vector<double>>& matrix) {
+    for (const auto& row : matrix) {
+        for (double element : row) {
+            std::cout << element << " ";
+        }
+        std::cout << std::endl;
+    }
 }
