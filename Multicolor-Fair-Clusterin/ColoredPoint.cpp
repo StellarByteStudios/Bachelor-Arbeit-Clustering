@@ -2,6 +2,10 @@
 #include <sstream>  // stringstream (String builder)
 #include <math.h>   // sqrt, pow
 
+#include <chrono>
+
+using namespace std::chrono;
+
 ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Dimensionen übertragen
 	this->dim = dimensions;
@@ -28,8 +32,13 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 ColoredPoint::~ColoredPoint(){}
 
 double ColoredPoint::distTo(ColoredPoint other){
+	//time_point startTime = high_resolution_clock::now();
 	// Rückgabevariable
 	double dist = 0;
+
+	//time_point timeAfterVar = high_resolution_clock::now();
+    //printf("\tZeit für Variable anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterVar - startTime).count());
+
 
 	//Euklidische Distanz. Erst quadrate aufsummieren
 	for (int i = 0; i < dim; i++){
@@ -39,8 +48,15 @@ double ColoredPoint::distTo(ColoredPoint other){
 		dist += pow(simpleDist, 2);
 	}
 
+	//time_point timeAfterSum = high_resolution_clock::now();
+    //printf("\tZeit für Quadratsumme bilden: %ld µSec\n", duration_cast<microseconds>(timeAfterSum - timeAfterVar).count());
+
 	// Wurzel ziehen
 	dist = sqrt(dist);
+
+	//time_point timeAfterRoot = high_resolution_clock::now();
+    //printf("\tZeit für Wurzel: %ld µSec\n", duration_cast<microseconds>(timeAfterRoot - timeAfterSum).count());
+	//printf("\t-->Ganze Zeit für die distTo Methode: %ld µSec\n", duration_cast<microseconds>(timeAfterRoot - startTime).count());
 
 	return dist;
 }

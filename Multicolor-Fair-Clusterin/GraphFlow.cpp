@@ -6,25 +6,25 @@ using namespace std::chrono;
 // * * * =========== Building the Graph and let it Flow =========== * * * //
 void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityMap& capacity, double potRad, vector<ColoredPoint>* points){
     
-    time_point startTime = high_resolution_clock::now();
+    //time_point startTime = high_resolution_clock::now();
     // Knoten hinzufügen
 	addNodesToGraph(graph, gData, points);
 
-    time_point timeAfterNodes = high_resolution_clock::now();
-    printf("\tZeit für Nodes anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterNodes - startTime).count());
+    //time_point timeAfterNodes = high_resolution_clock::now();
+    //printf("\tZeit für Nodes anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterNodes - startTime).count());
 
 
 	// Kanten hinzufügen
 	addArcsToGraph(graph, gData, potRad, points);
 
-    time_point timeAfterArcs = high_resolution_clock::now();
-    printf("\tZeit für Arcs anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterArcs - timeAfterNodes).count());
+    //time_point timeAfterArcs = high_resolution_clock::now();
+    //printf("\tZeit für Arcs anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterArcs - timeAfterNodes).count());
 
 	// Kapazitäten hinzufügen
 	addCapacitiesToGraph(capacity, gData);
 
-    time_point timeAfterCap = high_resolution_clock::now();
-    printf("\tZeit für Capaz anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterCap - timeAfterArcs).count());
+    //time_point timeAfterCap = high_resolution_clock::now();
+    //printf("\tZeit für Capaz anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterCap - timeAfterArcs).count());
 
 }
 
@@ -63,15 +63,15 @@ void graphFlow::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPo
 
 void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
 
-    time_point startTime = high_resolution_clock::now();
+    //time_point startTime = high_resolution_clock::now();
 
     // Anzahl an Knoten herausfinden
     //int n = (int) points->size();
     int nRed = (int) gData.redNodes.size();
     int nBlue = (int) gData.blueNodes.size();
 
-    time_point timeAfterCount = high_resolution_clock::now();
-    printf("\t\tZeit für Anzahl holen: %ld µSec\n", duration_cast<microseconds>(timeAfterCount - startTime).count());
+    //time_point timeAfterCount = high_resolution_clock::now();
+    //printf("\t\tZeit für Anzahl holen: %ld µSec\n", duration_cast<microseconds>(timeAfterCount - startTime).count());
 
 
     // Kanten von s zu allen Roten Knoten
@@ -79,8 +79,8 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         gData.sourceArcs.push_back(graph.addArc(gData.s, gData.redNodes.at(i)));
     }
 
-    time_point timeAfterSource = high_resolution_clock::now();
-    printf("\t\tZeit für Source-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterSource - timeAfterCount).count());
+    //time_point timeAfterSource = high_resolution_clock::now();
+    //printf("\t\tZeit für Source-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterSource - timeAfterCount).count());
 
 
 
@@ -89,8 +89,8 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         gData.targetArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
     }
 
-    time_point timeAfterTarget = high_resolution_clock::now();
-    printf("\t\tZeit für Target-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterTarget - timeAfterSource).count());
+    //time_point timeAfterTarget = high_resolution_clock::now();
+    //printf("\t\tZeit für Target-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterTarget - timeAfterSource).count());
 
 
 
@@ -101,8 +101,8 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
 	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
 
-    time_point timeAfterFilter = high_resolution_clock::now();
-    printf("\t\tZeit für Colorfilter: %ld µSec\n", duration_cast<microseconds>(timeAfterFilter - timeAfterTarget).count());
+    //time_point timeAfterFilter = high_resolution_clock::now();
+    //printf("\t\tZeit für Colorfilter: %ld µSec\n", duration_cast<microseconds>(timeAfterFilter - timeAfterTarget).count());
 
 
 
@@ -114,8 +114,8 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
     }
     
 
-    time_point timeAfterSanaty = high_resolution_clock::now();
-    printf("\t\tZeit für Sanaty-Check: %ld µSec\n", duration_cast<microseconds>(timeAfterSanaty - timeAfterFilter).count());
+    //time_point timeAfterSanaty = high_resolution_clock::now();
+    //printf("\t\tZeit für Sanaty-Check: %ld µSec\n", duration_cast<microseconds>(timeAfterSanaty - timeAfterFilter).count());
 
 
     //time_point timeAfterTillMain = high_resolution_clock::now();
@@ -138,10 +138,10 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         //time_point afterForTimer = high_resolution_clock::now();
         //printf("Zeit Äußere-Forschleife: %ld µSec\n", duration_cast<microseconds>(afterForTimer - forTimer).count());    
     }
-    time_point timeAfterMainArcs = high_resolution_clock::now();
-    printf("\t\tZeit für nach Main-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterMainArcs - timeAfterSanaty).count());
-    printf("\t\t --> Zeit für nach Main-Arcs pro Roter Punkt: %ld µSec\n", 
-    duration_cast<microseconds>(timeAfterMainArcs - timeAfterSanaty).count() / nRed);
+    //time_point timeAfterMainArcs = high_resolution_clock::now();
+    //printf("\t\tZeit für nach Main-Arcs: %ld µSec\n", duration_cast<microseconds>(timeAfterMainArcs - timeAfterSanaty).count());
+    //printf("\t\t --> Zeit für nach Main-Arcs pro Roter Punkt: %ld µSec\n", 
+    //duration_cast<microseconds>(timeAfterMainArcs - timeAfterSanaty).count() / nRed);
 
 
     //time_point timeAfterMainArcs = high_resolution_clock::now();
