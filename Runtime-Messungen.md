@@ -95,3 +95,6 @@ Jetzt wird vor der for-Schleife, welche alle Radien ausprobiert (vor `checkRadiu
     * 4043.399151 Checks pro minute
 
 ![Screenshot-Perf 200 optimized](<Screenshots/Report-optimized (200 Punkte) mit allem ohne Prints.png>)
+
+## Weitere Notizen
+Auf meinem Hauptrechner (Tower-PC) ist das alles etwa doppelt so schnell
