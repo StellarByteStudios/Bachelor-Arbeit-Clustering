@@ -1,48 +1,47 @@
 CC = g++
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g #-std=c++14
 BINNAME = Fair-Clustering
+TESTNAME = Clustering-Test
 
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
 OUTPUTFILENAME = ClusterOut.csv
-CLUSTERNUM = 5
-ARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
+CLUSTERNUM = 10
+
+TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
 
-HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h
-CPPDATEIEN = ClusteringMain.cpp ColoredPoint.cpp PointParser.cpp Gonzalez.cpp
+HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
+CPPSOURCE = ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
+CPPMAIN = ClusteringMain.cpp $(CPPSOURCE)
+CPPTEST = ClusteringTest.cpp $(CPPSOURCE)
 
-LINKLIB = -LLemon-Libary/lemon-1.3.1-build/ -llemon
+LINKLIB = -lemon -L/home/stellarbyte/Installationen/Lemon-Lib/lib
+HEADERS = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
+
+VALFLAGS = --leak-check=full
 
 
 
+#run: $(BINNAME)
+#	mkdir -p $(OUTPUTFOLDER)
+#	./$(BINNAME) $(ARGS)
 
-all: $(BINNAME)
-	mkdir -p $(OUTPUTFOLDER)
-	./$(BINNAME) $(ARGS)
-
-$(BINNAME): $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN)
+#$(BINNAME): $(HDATEIEN) $(CPPDATEIEN)
+#	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN) $(LINKLIB) $(HEADERS)
 	
-build: $(HDATEIEN) $(CPPDATEIEN)
-	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN)
+build: $(HDATEIEN) $(CPPMAIN)
+	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS)
 
+runTest: $(TESTNAME)
+	./$(TESTNAME) $(TESTARGS)
 
-val: $(BINNAME)
-	valgrind ./$(BINNAME) $(ARGS)
+$(TESTNAME): $(HDATEIEN) $(CPPTEST)
+	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS)
 
+val: $(TESTNAME)
+	valgrind $(VALFLAGS) ./$(TESTNAME) $(TESTARGS) 
 
-libtest: Lemon-Libary/lemon-1.3.1-build/liblemon.a LemonLibTest.cpp
-	$(CC) $(CFLAGS) -o LibTest LemonLibTest.cpp $(LINKLIB)
-	./LibTest
-
-maxFlowTest: Lemon-Libary/lemon-1.3.1-build/liblemon.a MaxFlowTest.cpp
-	$(CC) $(CFLAGS) -o MaxFlowTest MaxFlowTest.cpp $(LINKLIB)
-	./MaxFlowTest
-	
-fairlettTest: Lemon-Libary/lemon-1.3.1-build/liblemon.a FairlettBuildupTest.cpp FairlettBuildupTest.h
-	$(CC) $(CFLAGS) -o FairlettBuildupTest FairlettBuildupTest.cpp $(LINKLIB)
-	./FairlettBuildupTest
 
 
 

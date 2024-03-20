@@ -82,9 +82,6 @@ Gonzalez::GonzalezReturnValues* Gonzalez::makeGonzalez(vector<ColoredPoint>* poi
 }
 
 Gonzalez::GonzalezReturnValues* Gonzalez::createGonzalezReturns(vector<ColoredPoint>* originalPoints){
-	// Durch fällt das Gonzalez Weg vor jeder Typbeschreibung
-	using namespace Gonzalez;
-	
 	GonzalezReturnValues* values = new GonzalezReturnValues();
 	
 	// Vielleicht hier schon Deep-Copy
@@ -96,10 +93,6 @@ Gonzalez::GonzalezReturnValues* Gonzalez::createGonzalezReturns(vector<ColoredPo
 }
 
 void Gonzalez::deleteGonzalezReturns(GonzalezReturnValues* values){
-	// Weiß noch nicht ob ich die Brauche
-	// Durch fällt das Gonzalez Weg vor jeder Typbeschreibung
-	//using namespace Gonzalez;
-
 	delete values->clusteredPoints;
 	delete values->centers;
 	delete values;

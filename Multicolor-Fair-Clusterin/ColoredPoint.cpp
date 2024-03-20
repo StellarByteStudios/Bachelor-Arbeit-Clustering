@@ -2,16 +2,15 @@
 #include <sstream>  // stringstream (String builder)
 #include <math.h>   // sqrt, pow
 
-ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
-{
-	// Dimensionen �bertragen
+ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
+	// Dimensionen übertragen
 	this->dim = dimensions;
 
-	// Farbe �bertragen
+	// Farbe übertragen
 	this->color = color;
 
 
-	// Daten �bertragen
+	// Daten übertragen
 	for (int i = 0; i < this->dim; i++){
 		this->coordinates.push_back(coords[i]);
 	}
@@ -29,7 +28,7 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[])
 ColoredPoint::~ColoredPoint(){}
 
 double ColoredPoint::distTo(ColoredPoint other){
-	// R�ckgabevariable
+	// Rückgabevariable
 	double dist = 0;
 
 	//Euklidische Distanz. Erst quadrate aufsummieren
@@ -67,26 +66,26 @@ string ColoredPoint::toString(){
 
 	stringStream << "; FairlettID: ";
 	if(this->fairlettID == -1){
-		stringStream << "--";
+		stringStream << "--;\t\t";
 	} else if (this->fairlettID == -2){
-		stringStream << "Ausreißer";
+		stringStream << "Ausreißer;\t";
 	} else {
-		stringStream << this->cluster;
+		stringStream << this->fairlettID << ";\t\t";
 	}
 
-	stringStream << "; Color: ";
+	stringStream << " Color: ";
 	switch (this->color){
 	case(RED):
-		stringStream << "Red; ";
+		stringStream << "Red;   ";
 		break;
 	case(BLUE):
-		stringStream << "Blue; ";
+		stringStream << "Blue;  ";
 		break;
 	case(GREEN):
 		stringStream << "Green; ";
 		break;
 	default:
-		stringStream << "---; ";
+		stringStream << "---;   ";
 		break;
 	}
 	stringStream << "Coords [";
@@ -121,12 +120,20 @@ Pointcolor ColoredPoint::getColor(){
 	return this->color;
 }
 
+void ColoredPoint::setColor(Pointcolor color){
+	this->color = color;
+}
+
 int ColoredPoint::getCluster(){
-	return this->cluster;
+    return this->cluster;
 }
 
 void ColoredPoint::setCluster(int cluster){
 	this->cluster = cluster;
+}
+
+bool ColoredPoint::getIsCenter(){
+    return this->isCenter;
 }
 
 void ColoredPoint::setToCenter(){
@@ -139,5 +146,27 @@ int ColoredPoint::getFairlettID(){
 
 void ColoredPoint::setFairlettID(int fairlettID){
 	this->fairlettID = fairlettID;
+}
+
+
+
+
+// ==== Utility ==== //
+vector<ColoredPoint>* ColoredPoint::getPointsOfColor(vector<ColoredPoint>* points, Pointcolor color){
+    // Neuer Vector anlegen
+    vector<ColoredPoint>* filteredPoints = new vector<ColoredPoint>;
+
+    // Wie viele Punkte muss ich durchgehen
+    int n = (int) points->size();
+
+    for (int i = 0; i < n; i++){
+        // Falls der Punkt die richtige Farbe hat, hinzufügen
+        if(points->at(i).getColor() == color){
+            filteredPoints->push_back(points->at(i));
+        }
+    }
+    
+    // den neuen, einfarbigen vector zurückgeben
+    return filteredPoints;
 }
 
