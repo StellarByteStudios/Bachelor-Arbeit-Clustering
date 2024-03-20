@@ -169,22 +169,38 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
+    time_point startTime = high_resolution_clock::now();
     // Solange durchprobieren, bis ein Radius erfolgreich ist
     for (int i = 0; i < (int) potRadii->size(); i++){
         // Ist der Radius Groß genug
-        if (checkRadius(points, potRadii->at(i))){
+        if (checkRadius(points, potRadii->at(i))){            
+
+            // Timer
+            time_point endTime = high_resolution_clock::now();
+            printf("Gemessene Zeit fürs Checken: %f Sec\n", duration_cast<microseconds>(endTime - startTime).count()/1000000.0);
+            
+            int64_t timePerCheck = duration_cast<microseconds>(endTime - startTime).count()/checkedNumbers;
+            printf("Das sind %ld µSec pro check\n", timePerCheck);
+
+            int myhSecPerMin = 1000*1000*60;
+            printf("%f Checks pro minute\n",myhSecPerMin / (double) timePerCheck);
+
+
             // Funktionierenden Radius abspeichern
             double trueRadius = potRadii->at(i);
+
             // Aufräumen
             delete(potRadii);
-
-            printf("\n");
 
             // Zurückgeben
             return trueRadius;
         }
 
-        printf("Check: %d---------------------------------------------------\n\n", checkedNumbers);
+        if (checkedNumbers % 100 == 0){
+            printf("Check: %d------------------\n", checkedNumbers);
+        }
+        
+        
         /*
         // Progressbar
         if (checkedNumbers > (int) potRadii->size()/100){
@@ -195,6 +211,7 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
 
         checkedNumbers++;        
     }
+
     // Fehlerfall
     printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
     delete potRadii;
