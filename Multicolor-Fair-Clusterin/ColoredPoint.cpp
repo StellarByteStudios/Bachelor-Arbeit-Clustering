@@ -45,7 +45,7 @@ double ColoredPoint::distTo(ColoredPoint other){
 		// p_i - q_i
 		double simpleDist = (this->coordinates[i] - other.coordinates[i]);
 		//(...)^2
-		dist += pow(simpleDist, 2);
+		dist += simpleDist * simpleDist;
 	}
 
 	//time_point timeAfterSum = high_resolution_clock::now();

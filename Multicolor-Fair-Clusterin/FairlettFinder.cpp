@@ -169,14 +169,14 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
-    time_point startTime = high_resolution_clock::now();
+    time_point<system_clock> startTime = high_resolution_clock::now();
     // Solange durchprobieren, bis ein Radius erfolgreich ist
     for (int i = 0; i < (int) potRadii->size(); i++){
         // Ist der Radius Groß genug
         if (checkRadius(points, potRadii->at(i))){            
 
             // Timer
-            time_point endTime = high_resolution_clock::now();
+            time_point<system_clock> endTime = high_resolution_clock::now();
             printf("Gemessene Zeit fürs Checken: %f Sec\n", duration_cast<microseconds>(endTime - startTime).count()/1000000.0);
             
             int64_t timePerCheck = duration_cast<microseconds>(endTime - startTime).count()/checkedNumbers;

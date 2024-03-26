@@ -108,22 +108,6 @@ Die `Math.Pow()` hat sehr viel Prozessorzeit gebraucht. Da ich aber nur  $x * x$
 
 
 #### Zeiten
-##### 100 Punkte
-* Execution Time getestet mit `time make runTest` (Gonzalez ist mit einbegriffen): user = 0m6,840s;   sys = 0m0,036s
-* Checks pro Minute: 
-    * 
-    * 
-    * 
-* Verbesserungsfaktor (Gesammtzeit für Checks): **0**
-
-
-
-
-##### 200 Punkte
-* Execution Time getestet mit `time make runTest` (Gonzalez ist mit einbegriffen): 
-* Checks pro Minute:
-    * 
-* Verbesserungsfaktor (Gesammtzeit für Checks): **0**
 
 
 
@@ -134,3 +118,32 @@ Die `Math.Pow()` hat sehr viel Prozessorzeit gebraucht. Da ich aber nur  $x * x$
 * Verbesserungsfaktor (Gesammtzeit für Checks): **0**
 
 ##### Extra Test mit 500 Punkten
+
+
+
+
+</br></br></br></br></br>
+---
+
+## Randnotizen
+
+### Timings mit Amydia
+#### 300 Punkte
+**Alt**
+Gemessene Zeit fürs Checken: 88.421600 Sec
+Das sind 6751 µSec pro check
+8887.572212 Checks pro minute
+
+Gemessene Zeit fürs Checken: 89.176249 Sec
+Das sind 6808 µSec pro check
+8813.160987 Checks pro minute
+
+real	1m29,264s
+user	1m28,597s
+sys	0m0,580s
+
+**Mit Ohne Pow**
+Gemessene Zeit fürs Checken: 45.255587 Sec
+Das sind 3455 µSec pro check
+17366.136035 Checks pro minute
+
