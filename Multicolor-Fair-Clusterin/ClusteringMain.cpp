@@ -56,21 +56,36 @@ int main(int argc, char *argv[]) {
 		// ==== Doing Gonzalez ==== //
 		Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, numberOfCluster);
 
-		// Dateiheader zusammenbauen:
+		// Build Headder of File:
 		stringstream header;
 		header << "maxRadius," << returnValues->maxRadius; 
 
-		// Ergebniss Abspeichern
+		// Save Clustering to File
 		savePointsToFile(outputFileName, returnValues->clusteredPoints, header.str());
 
-		// Struct für Gonzaleswerte wieder freigeben
+		// Free struct space of returnvalues
 		Gonzalez::deleteGonzalezReturns(returnValues);
 
-		cout << "Gonzalez ohne Probleme" << endl;
+		cout << "Gonzalez without problems" << endl;
 		break;
 	}
 	case 'r':{
-		cout << "ERROR: Red-Clustering is not implemented yet" << endl;
+
+		// ==== Red-Clustering Gonzalez ==== //
+		redclustering::FairFlowReturnValues* returnValues = redclustering::makeFairRedClustering(points, numberOfCluster);
+
+		// Build Headder of File:
+		stringstream header;
+		header << "maxClusterRadius," << returnValues->maxClusterRadius << ",";
+		header << "maxFairletRadius," << returnValues->maxFairlettRadius;
+
+		// Save Clustering to File
+		savePointsToFile(outputFileName, returnValues->clusteredPoints, header.str());
+
+		// Free struct space of returnvalues
+		redclustering::deleteFairFlowReturns(returnValues);
+
+		cout << "Red-Clustering without problems" << endl;
 		break;
 	}
 	case 'f':{
@@ -81,35 +96,6 @@ int main(int argc, char *argv[]) {
 		cout << "ERROR: wrong case" << endl;
 		break;
 	}
-
-
-
-
-
-	
-
-
-
-
-	// ==== Write Clusterdata into File ==== //
-
-	/*
-	cout << "\n-----------------\nWrite Data into File:\n";
-
-	ofstream outputFile = ofstream(outputFileName, ios::out);
-
-	if(!outputFile.good()){
-		cout << "Error opening Outputfile" << endl;
-	} else{
-		// max Radius an den Anfang packen
-		outputFile << "maxRadius," << returnValues->maxRadius << endl;
-
-		// Punte abspeichern
-		for (int i = 0; i < (int) returnValues->clusteredPoints->size(); i++){
-			outputFile << returnValues->clusteredPoints->at(i).toCSV() << endl;
-		}
-	}
-	*/
 
 
 	// ==== Clear-Up ==== //
