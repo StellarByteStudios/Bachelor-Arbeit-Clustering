@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Skript which checks with handmade Points if Algorithms are working correctly
@@ -18,17 +17,31 @@ def main():
     #dataFileName = "Data/Subsamples/diabetes/diabetesSample-0.csv"
     outputFileName = "Data/OutputData/FairlettTests/RedCluteringTest.csv"
     #outputFileName = "Data/OutputData/FairlettTests/BigRedCluteringTest.csv"
+    plotTitle = "RedClustering"
+    pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     numberOfClusters = 2
     
-    
+    # Punkte einlesen
     cleanPoints = get_raw_points(dataFileName)
     
-    show_clean_points(cleanPoints)
+    # Nur die Punkte selbst mit Farbe ausgeben
+    show_clean_points(cleanPoints, plotTitle+" - Unclustered")
     
+    # Algorithmus über Shell ausführen
     do_algorithm(dataFileName, outputFileName, maxCluster=numberOfClusters)
     
-    print_clustered_points(outputFileName, cluster=numberOfClusters)
+    # Punkte einlesen
+    clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileName)
+    
+    # Punkte mit Clustern zeigen
+    show_clustered_points(clusterdPoints, plotTitle+" - Clustered", k=numberOfClusters)
+    
+    # Beides Als Bild abspeichern
+    save_clean_plot("../" + pictureFolder + f"{plotTitle} (Unclustered).jpg", 
+                    cleanPoints, plotTitle + " - Unclustered")
+    save_clustered_plot("../" + pictureFolder + f"{plotTitle} (Clustered).jpg", 
+                    clusterdPoints, plotTitle + " - Clustered")
     
     
     return
@@ -69,114 +82,14 @@ def get_raw_points(fileName, dim=2):
 
 
 
-# # # =========== Plots =========== # # #
+
+
+
+# # # =========== Algorithmus ausführen =========== # # #
 # # # Plot für die Punkte ohne das Clustering # # #
-def show_clean_points(listOfPoints):
-    construct_clean_points_plot(listOfPoints).show()
-    return
-
-def save_clean_plot(fileName, listOfPoints):
-    construct_clean_points_plot(listOfPoints).savefig(fileName)
-    return
-
-
-def construct_clean_points_plot(listOfPoints):
-    fig, ax = plt.subplots(figsize=(5,5))
-    
-    # Ersten zwei Coordinaten
-    firstCoordinate = [point.coordinates[0] for point in listOfPoints]
-    secondCoordinate = [point.coordinates[1] for point in listOfPoints]
-    
-    # Einfärben
-    colors = [point.color for point in listOfPoints]
-
- 
-    ax.scatter(firstCoordinate, secondCoordinate, alpha=0.5, c=colors)
-    
-    # Zentren Markieren
-    for i in range(0, len(listOfPoints)):
-        if(listOfPoints[i].isCenter):
-            ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
-            
-    return plt
-
-
-
-
-# # # Plot für die Punkte welche geclusterd wurden # # #
-def show_clustered_points(listOfPoints, k=2):
-    construct_clustered_points_plot(listOfPoints, k).show()
-    return
-
-def save_clustered_plot(fileName, listOfPoints, k=2):
-    construct_clustered_points_plot(listOfPoints, k).savefig(fileName)
-    return
-
-
-def construct_clustered_points_plot(listOfPoints, k):
-    fig, ax = plt.subplots(figsize=(5,5))
-    
-    # Ersten zwei Coordinaten
-    firstCoordinate = [point.coordinates[0] for point in listOfPoints]
-    secondCoordinate = [point.coordinates[1] for point in listOfPoints]
-    
-    # Einfärben nach Cluster
-    colors = [point.cluster for point in listOfPoints]
-    
-    # Radien Holen
-    radii = get_radii_of_clustering(listOfPoints, k)
-    print(radii)
-
- 
-    # Punkte zeichen
-    ax.scatter(firstCoordinate, secondCoordinate, alpha=0.5, c=colors)
-    
-    # Zentren Markieren
-    for i in range(0, len(listOfPoints)):
-        if(listOfPoints[i].isCenter):
-            ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
-            circle = plt.Circle((listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1]),
-                                    color="black", fill=False)
-            circle.set_radius(radii[listOfPoints[i].cluster])
-            ax.add_artist(circle)
-            
-    # Linien zwischen Fairlett ziehen
-    for fairID in range(0, math.ceil(len(listOfPoints)/2)):
-        # Durch Liste durch gehen und Punkte suchen
-        fairlettPartners = []
-        for i in range(0, len(listOfPoints)):
-            if(listOfPoints[i].fairlettID == fairID):
-                fairlettPartners.append(listOfPoints[i])
-        
-        # Nun Linie zwischend diesen beiden ziehen
-        if(len(fairlettPartners) > 1):
-            
-            plt.plot([fairlettPartners[0].coordinates[0],fairlettPartners[1].coordinates[0]], 
-                     [fairlettPartners[0].coordinates[1],fairlettPartners[1].coordinates[1]])
-            print(f"Linie gezogen Nr {fairID}")
-        else:
-            print(f"fairlettID {fairID} existiert nicht")
-            
-    return plt
-
-
-
-
-
-
-
-
-
-def do_algorithm(inputFileName, outputFileName, maxCluster=2):
-    
-    # # Bankdaten
-    # Pfade algorithmisch zusammensetzen
-    #outputfolder = "Data/OutputData/FairlettTests/"
-    #outputfile = "RedCluteringTest.csv"
-    #maxCluster = 2
-    
+def do_algorithm(inputFileName, outputFileName, maxCluster=2):   
     # Programm kompilieren
-    # bash_command("cd .. && make build").communicate();
+    bash_command("cd .. && make build", ignoreStdout=False).communicate();
     
     
     # Shellcommand zusammensetzen
@@ -208,24 +121,101 @@ def bash_command(cmd, ignoreStdout = True):
 
 
 
-def print_clustered_points(filename, cluster=2):
-    
-    # Punkte einlesen
-    points, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + filename)
-    
-    #for i in range(0, len(points)):
-    #    print(i, points[i].toStringLong())
-    
-    show_clustered_points(points, k=cluster)
-    
-    
-    
-    
-    
+
+
+# # # =========== Plots =========== # # #
+# # # Plot für die Punkte ohne das Clustering # # #
+def show_clean_points(listOfPoints, title):
+    construct_clean_points_plot(listOfPoints, title).show()
+    return
+
+def save_clean_plot(fileName, listOfPoints, title):
+    construct_clean_points_plot(listOfPoints, title).savefig(fileName)
     return
 
 
+def construct_clean_points_plot(listOfPoints, title):
+    fig, ax = plt.subplots(figsize=(5,5))
+    
+    # Ersten zwei Coordinaten
+    firstCoordinate = [point.coordinates[0] for point in listOfPoints]
+    secondCoordinate = [point.coordinates[1] for point in listOfPoints]
+    
+    # Einfärben
+    colors = [point.color for point in listOfPoints]
 
+    # Punkte Plotten
+    ax.scatter(firstCoordinate, secondCoordinate, alpha=0.5, c=colors)
+    
+    ax.set_title(title)   
+    
+    # Zentren Markieren
+    for i in range(0, len(listOfPoints)):
+        if(listOfPoints[i].isCenter):
+            ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
+            
+    return plt
+
+
+
+
+# # # Plot für die Punkte welche geclusterd wurden # # #
+def show_clustered_points(listOfPoints, title, k=2):
+    construct_clustered_points_plot(listOfPoints, title, k).show()
+    return
+
+def save_clustered_plot(fileName, listOfPoints, title, k=2):
+    construct_clustered_points_plot(listOfPoints, title, k).savefig(fileName)
+    return
+
+
+def construct_clustered_points_plot(listOfPoints, title, k):
+    fig, ax = plt.subplots(figsize=(5,5))
+    
+    # Ersten zwei Coordinaten
+    firstCoordinate = [point.coordinates[0] for point in listOfPoints]
+    secondCoordinate = [point.coordinates[1] for point in listOfPoints]
+    
+    # Einfärben nach Cluster
+    colors = [point.cluster for point in listOfPoints]
+    
+    # Radien Holen
+    radii = get_radii_of_clustering(listOfPoints, k)
+    print(radii)
+
+ 
+    # Punkte zeichen
+    ax.scatter(firstCoordinate, secondCoordinate, alpha=0.5, c=colors)
+    
+    ax.set_title(title)   
+    
+    # Zentren Markieren
+    for i in range(0, len(listOfPoints)):
+        if(listOfPoints[i].isCenter):
+            ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
+            circle = plt.Circle((listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1]),
+                                    color="black", fill=False)
+            circle.set_radius(radii[listOfPoints[i].cluster])
+            ax.add_artist(circle)
+            
+    # Linien zwischen Fairlett ziehen
+    for fairID in range(0, math.ceil(len(listOfPoints)/2)):
+        # Durch Liste durch gehen und Punkte suchen
+        fairlettPartners = []
+        for i in range(0, len(listOfPoints)):
+            if(listOfPoints[i].fairlettID == fairID):
+                fairlettPartners.append(listOfPoints[i])
+        
+        # Nun Linie zwischend diesen beiden ziehen
+        if(len(fairlettPartners) > 1):
+            
+            plt.plot([fairlettPartners[0].coordinates[0],fairlettPartners[1].coordinates[0]], 
+                     [fairlettPartners[0].coordinates[1],fairlettPartners[1].coordinates[1]])
+            print(f"Linie gezogen Nr {fairID}")
+        else:
+            print(f"fairlettID {fairID} existiert nicht")
+            
+    return plt
 
 
 
