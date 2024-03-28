@@ -17,9 +17,16 @@ def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 5
-    pictureFolder = "../Data/OutputData/Pictures/RedClusteringTest"
     numOfSamples = 15
     alg = "r"
+    
+    algPathAdd = "Gonzalez"
+    if(alg == "r"):
+        algPathAdd = "RedClustering"
+    if(alg == "f"):
+        algPathAdd = "FastClustering"
+        
+    pictureFolder = "../Data/OutputData/Pictures/{algPathAdd}Test"
     
     # # # Binary Kompilieren
     compileBinary()
