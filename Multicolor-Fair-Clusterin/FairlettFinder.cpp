@@ -163,85 +163,11 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
 }
 
 
-double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
-    // Alle möglichen Radien berechnen
-    vector<double>* potRadii = calculateAllRadii(points);
-    printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
-    int checkedNumbers = 0;
-
-    time_point<system_clock> startTime = high_resolution_clock::now();
-    // Solange durchprobieren, bis ein Radius erfolgreich ist
-    for (int i = 0; i < (int) potRadii->size(); i++){
-        // Ist der Radius Groß genug
-        if (checkRadius(points, potRadii->at(i))){            
-
-            // Timer
-            time_point<system_clock> endTime = high_resolution_clock::now();
-            printf("Gemessene Zeit fürs Checken: %f Sec\n", duration_cast<microseconds>(endTime - startTime).count()/1000000.0);
-            
-            int64_t timePerCheck = duration_cast<microseconds>(endTime - startTime).count()/checkedNumbers;
-            printf("Das sind %ld µSec pro check\n", timePerCheck);
-
-            int myhSecPerMin = 1000*1000*60;
-            printf("%f Checks pro minute\n",myhSecPerMin / (double) timePerCheck);
-
-
-            // Funktionierenden Radius abspeichern
-            double trueRadius = potRadii->at(i);
-
-            // Aufräumen
-            delete(potRadii);
-
-            //printf("\n");
-
-            // Zurückgeben
-            return trueRadius;
-        }
-
-        
-        printf("Check: %d\n", checkedNumbers);
-        // Progressbar
-        if (checkedNumbers % 1000 == 0){
-            printf("\nCheck: %d ", checkedNumbers);
-            fflush(stdout);
-        }else if (checkedNumbers % 100 == 0){
-            printf(" * ");
-            fflush(stdout);
-        }
-        else if (checkedNumbers % 25 == 0){
-            printf("-");
-            fflush(stdout);
-        }
-        
-        
-        /*
-        if (checkedNumbers > (int) potRadii->size()/100){
-            printf("-c%%-");
-            checkedNumbers = 0;
-        }*/
-        
-
-        checkedNumbers++;      
-    }
-
-    // Fehlerfall
-    printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
-    
-    delete potRadii;
-    return -1.0;
-}
-
-
 double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points); // Kommen sortiert zurück
     printf("\nChecking %d potentional Radii with Binary-Search\n", (int) potRadii->size());
     int checkedNumbers = 0;
-
-
-    // Zeitmessung starten
-    time_point<system_clock> startTime = high_resolution_clock::now();
-
 
     // Startgrenzen für die Binäre-Suche
     int left = 0;
@@ -255,14 +181,6 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
         // --> der kleinst mögliche Radius liegt bei right
         if (left + 1 == right){
             // Timer
-            time_point<system_clock> endTime = high_resolution_clock::now();
-            printf("Gemessene Zeit fürs Checken: %f Sec\n", duration_cast<microseconds>(endTime - startTime).count()/1000000.0);
-            
-            int64_t timePerCheck = duration_cast<microseconds>(endTime - startTime).count()/checkedNumbers;
-            printf("Das sind %ld µSec pro check\n", timePerCheck);
-
-            int myhSecPerMin = 1000*1000*60;
-            printf("%f Checks pro minute\n",myhSecPerMin / (double) timePerCheck);
 
 
             // Rückgabe mit aufräumen
@@ -344,46 +262,29 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
 
 bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
-    
-    //time_point startTime = high_resolution_clock::now();
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
 	GraphData gData;
 	CapacityMap capacity(g);
 
-    //time_point timeAfterGraphVar = high_resolution_clock::now();
-    //printf("Zeit für Variablen anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterGraphVar - startTime).count());
-
-
 
     // Graph Initialisieren
     graphFlow::buildupGraphFromRadius(g, gData, capacity, potRad, points);
 
-    //time_point timeAfterGraphBuildup = high_resolution_clock::now();
-    //printf("Zeit für Graph aufbauen: %ld µSec\n", duration_cast<microseconds>(timeAfterGraphBuildup - timeAfterGraphVar).count());
-
-
 
     // Fluss berechnen
     int maxFlowValue = graphFlow::getMaxFlow(g, capacity, gData);
-
-    //time_point timeAfterFlow = high_resolution_clock::now();
-    //printf("Zeit für Fluss Berechnen: %ld µSec\n", duration_cast<microseconds>(timeAfterFlow - timeAfterGraphBuildup).count());
 
 
     // Vergleichwert holen
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
     int nRed = (int) redPoints->size();
 
-    //time_point timeAfterPointfilter = high_resolution_clock::now();
-    //printf("Zeit für Rot Filtern: %ld µSec\n", duration_cast<microseconds>(timeAfterPointfilter - timeAfterFlow).count());
-
-
 
     // Aufräumen
     delete(redPoints);
-    //printf("Finished checking Radius %f\n", potRad);
+    
     // Zurückgeben ob Fluss groß genug ist
     return maxFlowValue >= nRed;
 }

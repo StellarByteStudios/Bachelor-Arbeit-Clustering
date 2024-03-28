@@ -200,14 +200,3 @@ int redclustering::getRedFairlettPartnerIndex(vector<ColoredPoint>* points, int 
     // Fehlerfall
     return -1;
 }
-
-/*
-
-void printAllpointsHere(vector<ColoredPoint>* points){
-    cout << "\n\n===== Printing all given Points =====\n" << endl;
-
-    for (size_t i = 0; i < points->size(); i++){
-        cout << i << ": " << points->at(i).toString() << endl;
-    }
-}
-*/

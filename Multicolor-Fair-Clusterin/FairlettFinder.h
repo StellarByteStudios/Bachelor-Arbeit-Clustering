@@ -26,9 +26,6 @@ namespace fairlettFinder{
     // Change Kritical feature that 0 has less member than 1 for simpler calculation
     void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
 
-    // Calculate all possible radii and find the lowest working radius
-    double findPotentionalRadius(vector<ColoredPoint>*);
-
     // Calculate all possible radii and find the lowest working radius with binary search
     double findBinaryPotentionalRadius(vector<ColoredPoint>*);
 
