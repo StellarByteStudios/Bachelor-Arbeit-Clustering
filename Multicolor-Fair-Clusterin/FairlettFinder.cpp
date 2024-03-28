@@ -11,7 +11,7 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     printf("--smallFeature-- ");
 
     // Optimalen Radius Finden
-    double optRad = findPotentionalRadius(points);
+    double optRad = findBinaryPotentionalRadius(points);
     printf("--found potRad-- ");
 
     // Graph mit Optimalem Radius Aufbauen
@@ -227,6 +227,84 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     return -1.0;
 }
 
+
+double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
+    // Alle möglichen Radien berechnen
+    vector<double>* potRadii = calculateAllRadii(points); // Kommen sortiert zurück
+    printf("\nChecking %d potentional Radii with Binary-Search\n", (int) potRadii->size());
+    int checkedNumbers = 0;
+
+
+    // Zeitmessung starten
+    time_point<system_clock> startTime = high_resolution_clock::now();
+
+
+    // Startgrenzen für die Binäre-Suche
+    int left = 0;
+    int right = (int) potRadii->size() - 1;
+
+    // Binäre-Suche machen
+    while (left < right) {
+        // Sind wir schon am richtigen Index?
+        // Radius bei left zu klein, Radius bei rechts gibt validen Fluss und 
+        // die zwei sind nur noch um Eins verschieden
+        // --> der kleinst mögliche Radius liegt bei right
+        if (left + 1 == right){
+            // Timer
+            time_point<system_clock> endTime = high_resolution_clock::now();
+            printf("Gemessene Zeit fürs Checken: %f Sec\n", duration_cast<microseconds>(endTime - startTime).count()/1000000.0);
+            
+            int64_t timePerCheck = duration_cast<microseconds>(endTime - startTime).count()/checkedNumbers;
+            printf("Das sind %ld µSec pro check\n", timePerCheck);
+
+            int myhSecPerMin = 1000*1000*60;
+            printf("%f Checks pro minute\n",myhSecPerMin / (double) timePerCheck);
+
+
+            // Rückgabe mit aufräumen
+            // Funktionierenden Radius abspeichern
+            double trueRadius = potRadii->at(right);
+
+            // Aufräumen
+            delete(potRadii);
+
+            // Zurückgeben
+            return trueRadius;
+        }
+        
+        // Mitte ausrechnen
+        int mid = left + (right - left) / 2;
+
+        // checken des Radius an der Stelle mid
+        bool workingRadius = checkRadius(points, potRadii->at(mid));
+
+        // Wenn der Radius funktioniert funktionieren auch alle darüber
+        // --> verschiebe Rechts auf mid
+        if (workingRadius) 
+            right = mid;
+
+        // Wenn der Radius nicht funktioniert sind auch alle darunter zu klein
+        // --> verschiebe Links auf mid
+        if (!workingRadius)
+            left = mid;
+
+        // Progressbar
+        if (checkedNumbers % 10 == 0){
+            printf("\nCheck: %d ", checkedNumbers);
+            fflush(stdout);
+        }else{
+            printf(" * ");
+            fflush(stdout);
+        }        
+        checkedNumbers++;  
+    }
+
+
+    // Fehlerfall
+    printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
+    delete potRadii;
+    return -1.0;
+}
 
 
 
