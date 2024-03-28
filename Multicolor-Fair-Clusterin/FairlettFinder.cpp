@@ -196,13 +196,22 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
             return trueRadius;
         }
 
-        if (checkedNumbers % 100 == 0){
-            printf("Check: %d------------------\n", checkedNumbers);
+        // Progressbar
+        if (checkedNumbers % 1000 == 0){
+            printf("\nCheck: %d ", checkedNumbers);
+            fflush(stdout);
+        }else if (checkedNumbers % 100 == 0){
+            printf(" * ");
+            fflush(stdout);
+        }
+        else if (checkedNumbers % 25 == 0){
+            printf("-");
+            fflush(stdout);
         }
         
         
+        
         /*
-        // Progressbar
         if (checkedNumbers > (int) potRadii->size()/100){
             printf("-c%%-");
             checkedNumbers = 0;
@@ -217,6 +226,8 @@ double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
     delete potRadii;
     return -1.0;
 }
+
+
 
 
 
