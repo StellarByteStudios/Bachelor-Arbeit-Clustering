@@ -13,12 +13,14 @@ import math
 def main():
     
     # Testdaten
-    dataFileName = "Data/RandomGenerated/HandmadeFairlettPoints.csv"
-    #dataFileName = "Data/Subsamples/diabetes/diabetesSample-0.csv"
-    outputFileName = "Data/OutputData/FairlettTests/RedCluteringTest.csv"
-    #outputFileName = "Data/OutputData/FairlettTests/BigRedCluteringTest.csv"
-    plotTitle = "RedClustering"
+    #dataFileName = "Data/RandomGenerated/HandmadeFairlettPoints.csv"
+    dataFileName = "Data/Subsamples/diabetes/diabetesSample-3.csv"
+    #outputFileName = "Data/OutputData/FairlettTests/RedCluteringTest.csv"
+    outputFileName = "Data/OutputData/FairlettTests/BigRedCluteringTest.csv"
+    #plotTitle = "RedClustering"
+    plotTitle = "RedClusteringBig"
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
+    #pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     numberOfClusters = 2
     
@@ -87,9 +89,10 @@ def get_raw_points(fileName, dim=2):
 
 # # # =========== Algorithmus ausführen =========== # # #
 # # # Plot für die Punkte ohne das Clustering # # #
-def do_algorithm(inputFileName, outputFileName, maxCluster=2):   
+def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2):   
     # Programm kompilieren
-    bash_command("cd .. && make build", ignoreStdout=False).communicate();
+    if(doCompiling):
+        bash_command("cd .. && make build", ignoreStdout=False).communicate();
     
     
     # Shellcommand zusammensetzen
