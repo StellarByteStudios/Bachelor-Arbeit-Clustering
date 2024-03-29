@@ -17,8 +17,20 @@ def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 30
-    pictureFolder = "../Data/OutputData/Pictures/GonzalezTest/"
-    numOfSamples = 3
+    numOfSamples = 15
+    alg = "r"
+    
+    algPathAdd = "Gonzalez"
+    if(alg == "r"):
+        algPathAdd = "RedClustering"
+    if(alg == "f"):
+        algPathAdd = "FastClustering"
+        
+    pictureFolder = "../Data/OutputData/Pictures/{algPathAdd}Test"
+    
+    # # # Binary Kompilieren
+    compileBinary()
+
     
     # # # Algorithmus ausführen
     timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster)
