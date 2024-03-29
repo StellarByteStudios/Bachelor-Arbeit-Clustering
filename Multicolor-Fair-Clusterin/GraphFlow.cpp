@@ -1,4 +1,7 @@
 #include "GraphFlow.h"
+#include <chrono>
+
+using namespace std::chrono;
 
 // * * * =========== Building the Graph and let it Flow =========== * * * //
 void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityMap& capacity, double potRad, vector<ColoredPoint>* points){
@@ -10,7 +13,6 @@ void graphFlow::buildupGraphFromRadius(Graph& graph, GraphData& gData, CapacityM
 
 	// Kapazitäten hinzufügen
 	addCapacitiesToGraph(capacity, gData);
-
 }
 
 
@@ -26,7 +28,6 @@ void graphFlow::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPo
             gData.redNodes.push_back(graph.addNode());
         }
     }
-    //printf("Rote Knoten hinzugefügt\n");
 
     // Blaue Knoten hinzufügen (Krit Feature = 1)
     for (int i = 0; i < n; i++){
@@ -34,12 +35,10 @@ void graphFlow::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPo
             gData.blueNodes.push_back(graph.addNode());
         }
     }
-    //printf("Blaue Knoten hinzugefügt\n");
 
     // Quelle und Senke hinzufügen
     gData.s = graph.addNode();
     gData.t = graph.addNode();
-    //printf("Quelle und Senke hinzugefügt\n");
 
     return; 
 }
@@ -47,12 +46,9 @@ void graphFlow::addNodesToGraph(Graph& graph, GraphData& gData, vector<ColoredPo
 
 
 void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, vector<ColoredPoint>* points){
-
     // Anzahl an Knoten herausfinden
-    //int n = (int) points->size();
     int nRed = (int) gData.redNodes.size();
     int nBlue = (int) gData.blueNodes.size();
-
 
     // Kanten von s zu allen Roten Knoten
     for (int i = 0; i < nRed; i++){
@@ -64,11 +60,11 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         gData.targetArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
     }
 
-
     // Kanten von Rot nach Blau, abhänging von ihrem Abstand (potRad)
     // Punkte in Farben Aufteilen
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
 	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
+
 
     // Kurzer Sanity Check
     if (nRed != (int) redPoints->size() || nBlue != (int) bluePoints->size()){
@@ -86,9 +82,9 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
                 // Kante Hinzufügen
                 gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
             } 
-        } 
+        }
     }
-    
+
     // Gefilterte Punkte wieder frei geben
     delete redPoints;
     delete bluePoints;

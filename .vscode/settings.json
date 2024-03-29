@@ -53,6 +53,7 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "*.in": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "chrono": "cpp"
     }
 }
