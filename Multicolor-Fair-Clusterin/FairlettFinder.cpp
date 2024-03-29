@@ -1,5 +1,9 @@
 #include "FairlettFinder.h"
 
+#include <chrono>
+
+using namespace std::chrono;
+
 // * * * =========== Calculating the Fairlets =========== * * * //
 double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     // Farben richtig Sortieren
@@ -7,7 +11,7 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     printf("--smallFeature-- ");
 
     // Optimalen Radius Finden
-    double optRad = findPotentionalRadius(points);
+    double optRad = findBinaryPotentionalRadius(points);
     printf("--found potRad-- ");
 
     // Graph mit Optimalem Radius Aufbauen
@@ -159,42 +163,71 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
 }
 
 
-double fairlettFinder::findPotentionalRadius(vector<ColoredPoint>* points){
+double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
-    vector<double>* potRadii = calculateAllRadii(points);
-    printf("\nChecking %d potentional Radii\n", (int) potRadii->size());
+    vector<double>* potRadii = calculateAllRadii(points); // Kommen sortiert zurück
+    printf("\nChecking %d potentional Radii with Binary-Search\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
-    // Solange durchprobieren, bis ein Radius erfolgreich ist
-    for (int i = 0; i < (int) potRadii->size(); i++){
-        // Ist der Radius Groß genug
-        if (checkRadius(points, potRadii->at(i))){
+    // Startgrenzen für die Binäre-Suche
+    int left = 0;
+    int right = (int) potRadii->size() - 1;
+
+    // Binäre-Suche machen
+    while (left < right) {
+        // Sind wir schon am richtigen Index?
+        // Radius bei left zu klein, Radius bei rechts gibt validen Fluss und 
+        // die zwei sind nur noch um Eins verschieden
+        // --> der kleinst mögliche Radius liegt bei right
+        if (left + 1 == right){
+            // Timer
+
+
+            // Rückgabe mit aufräumen
             // Funktionierenden Radius abspeichern
-            double trueRadius = potRadii->at(i);
+            double trueRadius = potRadii->at(right);
+
             // Aufräumen
             delete(potRadii);
-
-            printf("\n");
 
             // Zurückgeben
             return trueRadius;
         }
-
-        printf("Check: %d\n", checkedNumbers);
-        // Progressbar
-        if (checkedNumbers > (int) potRadii->size()/100){
-            printf("-c%%-");
-            checkedNumbers = 0;
-        }
         
+        // Mitte ausrechnen
+        int mid = left + (right - left) / 2;
 
-        checkedNumbers++;        
+        // checken des Radius an der Stelle mid
+        bool workingRadius = checkRadius(points, potRadii->at(mid));
+
+        // Wenn der Radius funktioniert funktionieren auch alle darüber
+        // --> verschiebe Rechts auf mid
+        if (workingRadius) 
+            right = mid;
+
+        // Wenn der Radius nicht funktioniert sind auch alle darunter zu klein
+        // --> verschiebe Links auf mid
+        if (!workingRadius)
+            left = mid;
+
+        // Progressbar
+        if (checkedNumbers % 10 == 0){
+            printf("\nCheck: %d ", checkedNumbers);
+            fflush(stdout);
+        }else{
+            printf(" * ");
+            fflush(stdout);
+        }        
+        checkedNumbers++;  
     }
+
+
     // Fehlerfall
     printf("ERROR: Es können keine Fairlets gebildet werden. Größter Radius %f ist nicht groß genung\n", potRadii->back());
     delete potRadii;
     return -1.0;
 }
+
 
 
 
@@ -229,12 +262,12 @@ vector<double>* fairlettFinder::calculateAllRadii(vector<ColoredPoint>* points){
 
 
 bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){    
-    //printf("Checking Radius %f\n", potRad);
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
 	GraphData gData;
 	CapacityMap capacity(g);
+
 
     // Graph Initialisieren
     graphFlow::buildupGraphFromRadius(g, gData, capacity, potRad, points);
@@ -242,14 +275,16 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 
     // Fluss berechnen
     int maxFlowValue = graphFlow::getMaxFlow(g, capacity, gData);
-    
+
+
     // Vergleichwert holen
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
     int nRed = (int) redPoints->size();
 
+
     // Aufräumen
     delete(redPoints);
-    //printf("Finished checking Radius %f\n", potRad);
+    
     // Zurückgeben ob Fluss groß genug ist
     return maxFlowValue >= nRed;
 }

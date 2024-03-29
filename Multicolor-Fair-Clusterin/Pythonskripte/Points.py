@@ -5,9 +5,10 @@ Own Module for Pointclass
 
 import csv
 import matplotlib.pyplot as plt
+import math
 
 class Colorpoint:
-    def __init__(self, dim, isCenter, clusterAffiliation, color, coords):
+    def __init__(self, dim, isCenter, clusterAffiliation, color, coords, fairlettID=-1):
         # Dimensionalität
         self.dim = dim
         
@@ -23,12 +24,16 @@ class Colorpoint:
         # Clusterzugehörigkeit
         self.cluster = clusterAffiliation
         
+        # Fairlettpartner
+        self.fairlettID = fairlettID
+        
         
     # To-String-Methode für schönes anschauen
     def toStringLong(self):
         stringRep = "Dim: " + str(self.dim)
         stringRep +=";\t Center: " + str(self.isCenter)
         stringRep +=";\t Cluster: "  + str(self.cluster)
+        stringRep +=";\t FairlettID: "  + str(self.fairlettID)
         stringRep += ";\tColor: " + str(self.color) + ";\tCoords: ["
         for i in range(0, self.dim - 1):
             stringRep += str(self.coordinates[i]) + ", "
@@ -43,6 +48,30 @@ class Colorpoint:
             stringRep += str(self.coordinates[i]) + ","
         stringRep += str(self.coordinates[self.dim - 1])
         return stringRep
+    
+    
+    # =========== Bisher nur gebraucht fürs Testen und darstellen =========== # 
+    # Euclidische Distanz zwischen zwei Punkten
+    def dist_to(self, other):
+        
+        # Sanaty check: Dimensionen Stimmen
+        if(len(self.coordinates) != len(other.coordinates)):
+            print(f"Dimensions not matching: {len(self.coordinates)} != {len(other.coordinates)}")
+            # Fehlercode
+            return -1
+        
+        # Initialize distance to zero
+        distance = 0
+        
+        # Loop through each coordinate in the point2
+        for coord1, coord2 in zip(self.coordinates, other.coordinates):
+            # Add the square of the difference of coordinates to the distance
+            distance += (coord2 - coord1) ** 2
+        
+        # Take the square root of the sum to get the Euclidean distance
+        distance = math.sqrt(distance)
+        
+        return distance
 
 
 
@@ -78,6 +107,11 @@ def show_points(listOfPoints, colorByCluster = True, maxRadius = -1):
     return
 
 
+
+
+
+# # # =========== Reading of Points =========== # # #
+# # # Einlesen von einfach geclusterten Punkten # # #
 def read_points(fileName):
     csvFile = open(fileName, "r")
     rawDataList = list(csv.reader(csvFile, delimiter=","))
@@ -121,3 +155,59 @@ def parse_points_from_list(rawDataList):
     
     
     return listOfPoints, maxRadius
+
+
+
+
+
+# # # Einlesen von punkten mit Fairletts # # #
+def read_fair_points(fileName):
+    csvFile = open(fileName, "r")
+    rawDataList = list(csv.reader(csvFile, delimiter=","))
+    
+    pointsData = parse_fair_points_from_list(rawDataList)
+    
+    return pointsData
+
+
+def parse_fair_points_from_list(rawDataList):
+    
+    numberOfPoints = len(rawDataList)
+    firstPoint = 0
+    maxClusterRadius = -1
+    maxFairlettRadius = -1
+    
+    
+    # abfangen, dass erste Zeile der MaxRadius ist
+    if(rawDataList[0][0] == "maxClusterRadius"):
+        firstPoint = 1
+        maxClusterRadius = float(rawDataList[0][1])
+        maxFairlettRadius = float(rawDataList[0][3])
+        
+    
+    listOfPoints = []
+    
+    for i in range(firstPoint, numberOfPoints):
+        # Metadata
+        dim = int(rawDataList[i][0])
+        center = bool(int(rawDataList[i][1]))
+        cluster = int(rawDataList[i][2])
+        fairlett = int(rawDataList[i][3])
+        color = int(rawDataList[i][4])
+        
+        #print(dim, center, cluster, color)
+        #print(center)
+        
+        # Coordinates
+        coords = []
+        for k in range(5, 5+dim):
+            coords.append(float(rawDataList[i][k]))
+            
+        # Point via Constructor
+        newPoint = Colorpoint(dim, center, cluster, color, coords, fairlettID=fairlett)
+        
+        # add Point to list
+        listOfPoints.append(newPoint)
+    
+    
+    return listOfPoints, maxClusterRadius, maxFairlettRadius
