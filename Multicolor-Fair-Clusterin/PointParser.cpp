@@ -26,7 +26,7 @@ vector<ColoredPoint>* PointParser::parseFile(){
         return nullptr;
     }
 
-    // Punktez�hler
+    // Punktezähler
     int numberOfPoints = 0;
 
     // Dimensionen bestimmen
@@ -35,7 +35,7 @@ vector<ColoredPoint>* PointParser::parseFile(){
     std::getline(file, firstLine);
     int dim = this->countDim(firstLine);
 
-    // St�ck f�r St�ck durch das File gehen und einlesen
+    // Stück für Stück durch das File gehen und einlesen
     while (!file.eof() && numberOfPoints < MAXPOINTS){
         // Zeile als String holen
         string line;
@@ -57,7 +57,7 @@ vector<ColoredPoint>* PointParser::parseFile(){
             break;
         }
 
-        // Array f�r Punkte anlegen
+        // Array für Punkte anlegen
         double coords[dim];
 
         // Einzelne Koordinaten parsen
@@ -75,7 +75,7 @@ vector<ColoredPoint>* PointParser::parseFile(){
         points->push_back(temp);
 
 
-        // Z�hler erh�hen
+        // Zähler erhöhen
         numberOfPoints++;
     }
 

@@ -4,6 +4,7 @@ OUTPUT=Output/
 CLUSTER=5
 HELP=False
 DATANAME=GenericData
+ALGORITHMUS=g
 
 
 # # Kommando-optionen holen # #
@@ -16,6 +17,7 @@ while true; do
     -o | --output ) OUTPUT="$2"; shift 2;;
     -c | --maxCluster ) CLUSTER="$2"; shift 2 ;;
     -n | --dataName ) DATANAME="$2"; shift 2 ;;
+    -a | --algorithm ) ALGORITHMUS="$2"; shift 2 ;;
     -h | --help ) HELP=True; shift ;;
 #    -- ) shift; break ;;
     * ) break ;;
@@ -37,6 +39,7 @@ if [ $HELP = "True" ]; then
     -o | --output [OUTPUT-FOLDER]\tFolder, where the Outputdata is saved. If it isn't existing it will be created (Standard: $OUTPUT)\n
     -c | --maxCluster [MAXCLUSTER]\tWhat is the maximum of Clusters to be generated (Standard: $CLUSTER)\n
     -n | --dataName [NAME]\t\tThe Outputfiles are Named \"Clusterdata[NAME]Cluster[i].csv\" (Standard: $DATANAME)\n
+    -a | --algorithm [NAME]\t\tAlgorithm which shall be used (g)onzalez, (r)ed-clustering, (f)ast-anchor-Clustering (Standard: $ALGORITHMUS)\n
     -h | --help \t\t\tgenerates this Help-Output
     "
     # Abbruch, dass programm nicht merh weiter geht
@@ -56,14 +59,14 @@ fi
 
 # # Für Jede Clusteranzahl Algorithmus aufrufen # #
 # sicherheitshalber erst nochmal kompilieren
-make build
+#make build
 for (( i=1; i<=$CLUSTER; i++ ))
 do  
     # Ausgabe, was gemacht wird
     echo "Berechne Daten mit $i Cluster"
     # Ordner erstellen, da bei Fehlendem Ordner das Clusterprogramm nicht mitmacht
     mkdir -p "$OUTPUT"
-    ARGS="$INPUT ""$OUTPUT"Clusterdata"$DATANAME"Cluster"$i".csv" $i"
+    ARGS="$INPUT ""$OUTPUT"Clusterdata"$DATANAME"Cluster"$i".csv" $i $ALGORITHMUS"
     #echo $ARGS
     # Programm aufrufen
     ./Fair-Clustering $ARGS

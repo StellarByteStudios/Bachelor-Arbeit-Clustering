@@ -39,14 +39,6 @@ int main(int argc, char *argv[]) {
 	*	3) number of Clusters
 	*	[4) later: kind of Algorithm]
 	*/
-
-	/*
-	cout << "Number of Arguments: " << argc-1 << endl;
-	cout << "Name of Programm: " << argv[0] << endl;;
-	cout << "Now the Arguments: " << endl;
-	for(int i = 1; i < argc; i++){
-		cout << "\t- " << argv[i] << endl;
-	}*/
  
 	if (argc < 4)
 	{
@@ -262,7 +254,7 @@ void testRadiusChecker(vector<ColoredPoint>* points){
 	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fairlettFinder::checkRadius(points, radBig));
 
 	// Optimalen Radius finden
-	double optRad = fairlettFinder::findPotentionalRadius(points);
+	double optRad = fairlettFinder::findBinaryPotentionalRadius(points);
 
 	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
 

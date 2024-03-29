@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Depricated
 """
 Skript for reading, analysing and Showing ColoredPoints to test the Algorithm
 """
