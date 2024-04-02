@@ -54,18 +54,18 @@
         \begin{table}[htbp]
             \centering
             \caption{Datenformat}
-            \begin{tabular}{|p{2.3cm}||p{1.3cm}|p{4cm}|p{4cm}|p{2.5cm}|} % Adjust the number of "c" to match the number of columns, and adjust alignment as needed (e.g., l, c, r)
+            \begin{tabular}{|>{\raggedright}p{2.4cm}||>{\raggedright}p{3.5cm}|>{\raggedright}p{3.9cm}|>{\raggedright}p{3cm}|p{1.4cm}|} % Letzte Spalte lässt sich nicht Linksbündig schreiben
                 \toprule % Top horizontal rule
-                Datensatz & Sub-sample-größe & Citical-Feature & Verhältniss des Critical-Feature & Verwendete nummerische Feature \\ % Table header row
-                \midrule % Mid horizontal rule
-                Zensusdaten \cite{misc_adult_2}                 & 600   & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek \\
-                \midrule % Mid horizontal rule
-                Bankdaten \cite{misc_bank_marketing_222}        & 1000  & bin-martial (selbsterzeugt aus Spalte "marital") (single = 0; divorced = 0; married = 1) & es gibt single, married und divorced. \newline Zähle single und divorced zusammen \newline Verhältniss: 27214 married / 17997 not-married $\approx$ 1.51 & age, balance, duration of call \\
-                \midrule % Mid horizontal rule
-                Diabetesdaten \cite{misc_diabetes_130_richtig}  & 1000  & sex (male = 0; female = 1) & Verhältniss Male 47055 / Female 54708 $\approx$ 0.86 & age, fnlwgt, education-num, capital-gain, hours-perweek \\
-                \bottomrule % Bottom horizontal rule
+                Datensatz & Critical-Feature & Verhältnis des Critical-Feature & Verwendete numerische Feature & Sub-sample-Größe\\
+                \hline
+                Zensusdaten \cite{misc_adult_2} & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek & 600 \\
+                \hline
+                Bankdaten \cite{misc_bank_marketing_222} & bin-martial (selbsterzeugt aus Spalte "marital") (single = 0; divorced = 0; married = 1) & es gibt single, married und divorced. Zähle single und divorced zusammen. Verhältnis: 27214 married / 17997 not-married $\approx$ 1.51 & age, balance, duration of call & 1000\\
+                \hline
+                Diabetesdaten \cite{misc_diabetes_130_richtig} & sex (male = 0; female = 1) & Verhältnis Male 47055 / Female 54708 $\approx$ 0.86 & age, fnlwgt, education-num, capital-gain, hours-perweek & 1000 \\
+                \hline
             \end{tabular}
-            \label{tab:newTable} % Label for referencing the table
+            \label{tab:dataset_table}
         \end{table}
         
         
