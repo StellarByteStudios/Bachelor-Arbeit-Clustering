@@ -78,7 +78,7 @@ void graphFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRad, ve
         // Alle blauen Punkte durchgehen
         for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
             // Schauen ob das eine Passende Kante ist
-            if (redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)) < potRad){
+            if (redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)) <= potRad){
                 // Kante Hinzufügen
                 gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
             } 

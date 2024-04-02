@@ -13,37 +13,43 @@ import math
 def main():
     
     # Testdaten
-    #dataFileName = "Data/RandomGenerated/HandmadeFairlettPoints.csv"
-    dataFileName = "Data/Subsamples/diabetes/diabetesSample-3.csv"
-    #outputFileName = "Data/OutputData/FairlettTests/RedCluteringTest.csv"
-    outputFileName = "Data/OutputData/FairlettTests/BigRedCluteringTest.csv"
-    #plotTitle = "RedClustering"
-    plotTitle = "RedClusteringBig"
+    dataFileNames = ["Data/RandomGenerated/HandmadeFairlettPoints.csv", 
+                     "Data/Subsamples/diabetes/diabetesSample-3.csv", 
+                     "Data/RandomGenerated/HandmadeFairlettPoints2.csv"]
+    
+    outputFileNames = ["Data/OutputData/FairlettTests/RedCluteringTest.csv", 
+                       "Data/OutputData/FairlettTests/BigRedCluteringTest.csv", 
+                       "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv"]
+    
+    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second"]
+    
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
-    #pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
+    
+    # Welches Dataset wird benutzt?
+    dSetID = 2
     
     numberOfClusters = 2
     
     # Punkte einlesen
-    cleanPoints = get_raw_points(dataFileName)
+    cleanPoints = get_raw_points(dataFileNames[dSetID])
     
     # Nur die Punkte selbst mit Farbe ausgeben
-    show_clean_points(cleanPoints, plotTitle+" - Unclustered")
+    show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
     # Algorithmus über Shell ausführen
-    do_algorithm(dataFileName, outputFileName, maxCluster=numberOfClusters)
+    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters)
     
     # Punkte einlesen
-    clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileName)
+    clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
     
     # Punkte mit Clustern zeigen
-    show_clustered_points(clusterdPoints, plotTitle+" - Clustered", k=numberOfClusters)
+    show_clustered_points(clusterdPoints, plotTitles[dSetID]+" - Clustered", k=numberOfClusters)
     
     # Beides Als Bild abspeichern
-    save_clean_plot("../" + pictureFolder + f"{plotTitle} (Unclustered).jpg", 
-                    cleanPoints, plotTitle + " - Unclustered")
-    save_clustered_plot("../" + pictureFolder + f"{plotTitle} (Clustered).jpg", 
-                    clusterdPoints, plotTitle + " - Clustered")
+    save_clean_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Unclustered).jpg", 
+                    cleanPoints, plotTitles[dSetID] + " - Unclustered")
+    save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered).jpg", 
+                    clusterdPoints, plotTitles[dSetID] + " - Clustered")
     
     
     return
@@ -99,7 +105,7 @@ def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2)
     command = f"cd .. && ./Fair-Clustering ./{inputFileName} ./{outputFileName} {maxCluster} r"
     print(command)
     # Prozess erzeugen
-    process = bash_command(command)
+    process = bash_command(command, ignoreStdout=False)
 
     # Prozess starten
     process.communicate()

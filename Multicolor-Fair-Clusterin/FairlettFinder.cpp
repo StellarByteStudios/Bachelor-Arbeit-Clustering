@@ -169,23 +169,38 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
     printf("\nChecking %d potentional Radii with Binary-Search\n", (int) potRadii->size());
     int checkedNumbers = 0;
 
+    printf("Die Potentiellen Radien sind: ");
+    for (int i = 0; i < (int) potRadii->size(); i++){
+        printf("%f, ", potRadii->at(i));
+    }
+    printf("\n");
+    
+    
+
     // Startgrenzen für die Binäre-Suche
     int left = 0;
     int right = (int) potRadii->size() - 1;
+    bool workingRadius = false;
+    
 
     // Binäre-Suche machen
-    while (left < right) {
+    while (left <= right) {
         // Sind wir schon am richtigen Index?
         // Radius bei left zu klein, Radius bei rechts gibt validen Fluss und 
         // die zwei sind nur noch um Eins verschieden
         // --> der kleinst mögliche Radius liegt bei right
-        if (left + 1 == right){
-            // Timer
-
-
-            // Rückgabe mit aufräumen
+        if (left >= right){  
             // Funktionierenden Radius abspeichern
             double trueRadius = potRadii->at(right);
+
+            // Off by one Error überprüfen
+            // Fall Links wurde verschoben aber noch nicht überprüft
+            if (!workingRadius){
+                printf("Off By one Error. Benutze jetzt Index %d\n", left);
+                trueRadius = potRadii->at(left);
+            }
+
+            printf("Der beste Radius ist %f, Right ist auf Index %d\n", trueRadius, right);
 
             // Aufräumen
             delete(potRadii);
@@ -198,18 +213,25 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
         int mid = left + (right - left) / 2;
 
         // checken des Radius an der Stelle mid
-        bool workingRadius = checkRadius(points, potRadii->at(mid));
+        workingRadius = checkRadius(points, potRadii->at(mid));
+
+        // Debug
+        printf("Der Radius %f am Index %d wurde gecheckt. Er ist: %d\t\t",potRadii->at(mid), mid, workingRadius);
 
         // Wenn der Radius funktioniert funktionieren auch alle darüber
         // --> verschiebe Rechts auf mid
-        if (workingRadius) 
+        if (workingRadius){
+            printf("right %d wird jetzt auf %d gesetzt\n", right, mid); 
             right = mid;
+        }
 
         // Wenn der Radius nicht funktioniert sind auch alle darunter zu klein
         // --> verschiebe Links auf mid
-        if (!workingRadius)
-            left = mid;
-
+        if (!workingRadius){
+            printf("left %d wird jetzt auf %d gesetzt\n", left, mid+1);
+            left = mid+1;
+        }
+        /*
         // Progressbar
         if (checkedNumbers % 10 == 0){
             printf("\nCheck: %d ", checkedNumbers);
@@ -217,7 +239,7 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
         }else{
             printf(" * ");
             fflush(stdout);
-        }        
+        }        */
         checkedNumbers++;  
     }
 
