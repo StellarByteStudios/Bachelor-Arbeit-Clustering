@@ -8,6 +8,12 @@
 #include "FairlettFinder.h"
 #include "RedCenterClustering.h"
 
+#ifdef PROCESS_BAR
+    #define printProcess(process) std::cout << process << endl;
+#else
+    #define printProcess(process)
+#endif
+
 void savePointsToFile(string, vector<ColoredPoint>*, string);
 
 
@@ -66,7 +72,7 @@ int main(int argc, char *argv[]) {
 		// Free struct space of returnvalues
 		Gonzalez::deleteGonzalezReturns(returnValues);
 
-		cout << "Gonzalez without problems" << endl;
+		printProcess("Gonzalez without problems");
 		break;
 	}
 	case 'r':{
@@ -85,7 +91,7 @@ int main(int argc, char *argv[]) {
 		// Free struct space of returnvalues
 		redclustering::deleteFairFlowReturns(returnValues);
 
-		cout << "Red-Clustering without problems" << endl;
+		printProcess("Red-Clustering without problems");
 		break;
 	}
 	case 'f':{
@@ -101,14 +107,12 @@ int main(int argc, char *argv[]) {
 	// ==== Clear-Up ==== //
 	// vector für Punkte wieder Freigeben
 	delete points;
-
-	//cout << "\n-----------------\nEnd Program" << endl;
 }
 
 
 
 void savePointsToFile(string outputFileName, vector<ColoredPoint>* clusteredPoints, string header){
-    cout << "\n\n===== Write Data into File =====\n" << endl;
+    printProcess("\n===== Write Data into File =====\n");
 
 	ofstream outputFile = ofstream(outputFileName, ios::out);
 

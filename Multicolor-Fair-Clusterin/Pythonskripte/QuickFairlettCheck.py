@@ -26,7 +26,7 @@ def main():
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     # Welches Dataset wird benutzt?
-    dSetID = 2
+    dSetID = 1
     
     numberOfClusters = 2
     
@@ -37,7 +37,7 @@ def main():
     show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
     # Algorithmus über Shell ausführen
-    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters)
+    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=True)
     
     # Punkte einlesen
     clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
@@ -98,7 +98,7 @@ def get_raw_points(fileName, dim=2):
 def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2):   
     # Programm kompilieren
     if(doCompiling):
-        bash_command("cd .. && make build", ignoreStdout=False).communicate();
+        bash_command("cd .. && make buildProcessBar", ignoreStdout=False).communicate();
     
     
     # Shellcommand zusammensetzen
@@ -220,9 +220,9 @@ def construct_clustered_points_plot(listOfPoints, title, k):
             
             plt.plot([fairlettPartners[0].coordinates[0],fairlettPartners[1].coordinates[0]], 
                      [fairlettPartners[0].coordinates[1],fairlettPartners[1].coordinates[1]])
-            print(f"Linie gezogen Nr {fairID}")
-        else:
-            print(f"fairlettID {fairID} existiert nicht")
+            #print(f"Linie gezogen Nr {fairID}")
+        #else:
+            #print(f"fairlettID {fairID} existiert nicht")
             
     return plt
 

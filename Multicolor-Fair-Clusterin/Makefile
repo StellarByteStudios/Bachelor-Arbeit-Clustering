@@ -21,6 +21,9 @@ HEADERS = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
 
 VALFLAGS = --leak-check=full
 
+# Preprocessor-Flags
+PROCESSBAR = -DPROCESS_BAR
+
 
 
 #run: $(BINNAME)
@@ -33,6 +36,9 @@ VALFLAGS = --leak-check=full
 build: $(HDATEIEN) $(CPPMAIN)
 	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS)
 
+buildProcessBar: $(HDATEIEN) $(CPPMAIN)
+	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
+
 runTest: $(TESTNAME)
 	./$(TESTNAME) $(TESTARGS)
 
@@ -41,6 +47,11 @@ $(TESTNAME): $(HDATEIEN) $(CPPTEST)
 
 val: $(TESTNAME)
 	valgrind $(VALFLAGS) ./$(TESTNAME) $(TESTARGS) 
+
+
+runTestProcess: $(HDATEIEN) $(CPPTEST)
+	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
+	./$(TESTNAME) $(TESTARGS) 
 
 
 

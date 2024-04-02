@@ -1,18 +1,20 @@
 #include "FairlettFinder.h"
 
-#include <chrono>
-
-using namespace std::chrono;
+#ifdef PROCESS_BAR
+    #define printProcess(process) std::cout << process << endl;
+#else
+    #define printProcess(process)
+#endif
 
 // * * * =========== Calculating the Fairlets =========== * * * //
 double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
     // Farben richtig Sortieren
     makeCritFeatureSmalestFirst(points);
-    printf("--smallFeature-- ");
+    printProcess("--smallFeature-- ");
 
     // Optimalen Radius Finden
     double optRad = findBinaryPotentionalRadius(points);
-    printf("--found potRad-- ");
+    printProcess("--found potRad-- ");
 
     // Graph mit Optimalem Radius Aufbauen
     // Variablen erzeugen
@@ -22,11 +24,11 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 
     // Graph Initialisieren
     graphFlow::buildupGraphFromRadius(g, gData, capacity, optRad, points);
-    printf("--build Graph-- ");
+    printProcess("--build Graph-- ");
 
     // Fluss berechnen
     Flow* preflow = graphFlow::calculateFlow(g, capacity, gData);
-    printf("--Made Flow-- ");
+    printProcess("--made Flow-- ");
 
     // Main-Kanten durchgehen und Partner markieren
     // Punkte Filtern
@@ -36,16 +38,14 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 
     // Main Fairletts bilden
     int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points);
-    printf("--marked Fairlets-- ");    
+    printProcess("--marked Fairlets-- ");    
 
     // Ausreißer markieren
     int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
-    printf("--marked outlier-- ");
+    printProcess("--marked outlier-- ");
+    printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
 
-    // Debug
-    printf("Anzahl an Fairletts: %d;\tAnzahl an Outlier: %d\n", fairlettCounter, numOfOutlier);
-
-    // Aufräumen
+    // Aufräumen 
     delete redPoints;
     delete preflow;
 
@@ -56,7 +56,6 @@ double fairlettFinder::markFairletts(vector<ColoredPoint>* points){
 int fairlettFinder::markMainNodes(const Graph& g, const Flow& preflow, 
                                     vector<Arc> mainArcs, int nRed, 
                                     vector<ColoredPoint>* points){
-    //int nRed = (int) redPoints->size();
 
     int fairlettCounter = 0;
 
@@ -166,15 +165,10 @@ void fairlettFinder::makeCritFeatureSmalestFirst(vector<ColoredPoint> *points){
 double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points); // Kommen sortiert zurück
-    printf("\nChecking %d potentional Radii with Binary-Search\n", (int) potRadii->size());
-    int checkedNumbers = 0;
-
-    printf("Die Potentiellen Radien sind: ");
-    for (int i = 0; i < (int) potRadii->size(); i++){
-        printf("%f, ", potRadii->at(i));
-    }
-    printf("\n");
-    
+    printProcess("\nChecking " << (int) potRadii->size() <<" potentional Radii with Binary-Search\n");
+    #ifdef PROCESS_BAR
+        int checkedNumbers = 0;
+    #endif  
     
 
     // Startgrenzen für die Binäre-Suche
@@ -192,15 +186,16 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
         if (left >= right){  
             // Funktionierenden Radius abspeichern
             double trueRadius = potRadii->at(right);
+            printProcess("\n----radius found after " << checkedNumbers << " Checks");
+            printProcess("----using radius at index " << right);
 
             // Off by one Error überprüfen
             // Fall Links wurde verschoben aber noch nicht überprüft
             if (!workingRadius){
-                printf("Off By one Error. Benutze jetzt Index %d\n", left);
+                printProcess("------off by one error correction; " << right << " to " << left);
+                printProcess("------change radius from " << trueRadius << " to " << potRadii->at(left));
                 trueRadius = potRadii->at(left);
             }
-
-            printf("Der beste Radius ist %f, Right ist auf Index %d\n", trueRadius, right);
 
             // Aufräumen
             delete(potRadii);
@@ -215,32 +210,28 @@ double fairlettFinder::findBinaryPotentionalRadius(vector<ColoredPoint>* points)
         // checken des Radius an der Stelle mid
         workingRadius = checkRadius(points, potRadii->at(mid));
 
-        // Debug
-        printf("Der Radius %f am Index %d wurde gecheckt. Er ist: %d\t\t",potRadii->at(mid), mid, workingRadius);
-
         // Wenn der Radius funktioniert funktionieren auch alle darüber
         // --> verschiebe Rechts auf mid
         if (workingRadius){
-            printf("right %d wird jetzt auf %d gesetzt\n", right, mid); 
             right = mid;
         }
 
         // Wenn der Radius nicht funktioniert sind auch alle darunter zu klein
         // --> verschiebe Links auf mid
         if (!workingRadius){
-            printf("left %d wird jetzt auf %d gesetzt\n", left, mid+1);
             left = mid+1;
         }
-        /*
-        // Progressbar
+        #ifdef PROCESS_BAR
+            // Progressbar
         if (checkedNumbers % 10 == 0){
             printf("\nCheck: %d ", checkedNumbers);
             fflush(stdout);
         }else{
             printf(" * ");
             fflush(stdout);
-        }        */
-        checkedNumbers++;  
+        }
+        checkedNumbers++; 
+        #endif   
     }
 
 

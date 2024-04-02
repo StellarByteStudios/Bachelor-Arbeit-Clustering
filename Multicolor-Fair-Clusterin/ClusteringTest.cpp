@@ -62,10 +62,10 @@ int main(int argc, char *argv[]) {
 	
 	
 	// ==== Testing of Gonzalez ==== //
-	vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
+	// vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
-    cout << "Alle Punkte direkt nach Gonzalez" << endl;
-    printAllpoints(clusteredPoints);
+    //cout << "Alle Punkte direkt nach Gonzalez" << endl;
+    //printAllpoints(clusteredPoints);
 	
 
 
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 	// vector für Punkte wieder Freigeben
 	delete points;
 	delete unfairPoints;
-    delete clusteredPoints;
+    //delete clusteredPoints;
 
 	
 

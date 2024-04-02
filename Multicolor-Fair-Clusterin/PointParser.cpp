@@ -9,7 +9,6 @@ PointParser::PointParser(string path){
 }
 
 PointParser::~PointParser(){
-	cout << "PointParser is deleted" << endl;
 }
 
 vector<ColoredPoint>* PointParser::parseFile(){
