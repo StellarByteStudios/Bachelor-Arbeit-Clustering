@@ -2,8 +2,6 @@
 
 #include <iostream> // std::cout; std::endl
 
-//void printAllpointsHere(vector<ColoredPoint>* points);
-
 
 // * * * =========== Using the Algorithm =========== * * * //
 redclustering::FairFlowReturnValues* redclustering::makeFairRedClustering(vector<ColoredPoint>* points, int k){
