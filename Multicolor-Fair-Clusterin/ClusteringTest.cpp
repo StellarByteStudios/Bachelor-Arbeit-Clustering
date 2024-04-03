@@ -21,7 +21,7 @@ void testMarkingFairlets(vector<ColoredPoint>*);
 void testColorFiltering(vector<ColoredPoint>*);
 void testOnlyRedClustering(vector<ColoredPoint>*, int);
 void testFairRedClustering(vector<ColoredPoint>*, int);
-
+void testFairlettFlitering(vector<ColoredPoint>*);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 	vector<ColoredPoint>* unfairPoints = parser.parseFile();
 	
 	
-	
+	// ==== * ==== * ==== Gonzalez Testing ==== * ==== * ==== ///
 	// ==== Testing of Gonzalez ==== //
 	// vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
@@ -74,6 +74,9 @@ int main(int argc, char *argv[]) {
 
 
 
+
+
+	// ==== * ==== * ==== Red-Clustering Testing ==== * ==== * ==== ///
 	// ==== Testing graph Buildup ==== //
     //testGraphBuildup(points);
 
@@ -104,7 +107,21 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Fair-Red-Clustering ==== ///
-	testFairRedClustering(points, numberOfCluster);
+	//testFairRedClustering(points, numberOfCluster);
+
+
+
+
+
+
+
+
+	// ==== * ==== * ==== Fast-Anchor Testing ==== * ==== * ==== ///
+	// ==== Testing Fair-Red-Clustering ==== ///
+	testFairlettFlitering(unfairPoints);
+
+
+
 
 
     // ==== Write Clusterdata into File ==== //
@@ -409,6 +426,76 @@ void testFairRedClustering(vector<ColoredPoint>* points, int k){
 
 	redclustering::deleteFairFlowReturns(fairValues);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+void testFairlettFlitering(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing Filter of Fairlets =====\n" << endl;
+	// Fairletts in Punkten markieren
+	fairlettFinder::markFairletts(points);
+
+	// Punkte rausfiltern
+	vector<ColoredPoint>* onlyFairlets = ColoredPoint::getPointsOfFairletts(points);
+
+	// Punkte ungefiltert ausgeben
+	cout << "=== Alle Punkte ungefiltert ===" << endl;
+	printAllpoints(points);
+
+	// Puntke gefiltert ausgeben
+	cout << "=== Alle Punkte ungefiltert ===" << endl;
+	printAllpoints(onlyFairlets);
+
+
+	// Aufräumen
+	delete(onlyFairlets);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

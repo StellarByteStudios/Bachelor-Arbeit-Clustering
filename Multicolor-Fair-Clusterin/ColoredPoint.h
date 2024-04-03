@@ -171,6 +171,6 @@ public:
 	/* Utility-Method
 	* Filterst Points if they belong to a Fairlett
 	*/
-    static vector<ColoredPoint>* getPointsOfFairletts(vector<ColoredPoint>*); // === TO-DO ===
+    static vector<ColoredPoint>* getPointsOfFairletts(vector<ColoredPoint>*);
 };
 
