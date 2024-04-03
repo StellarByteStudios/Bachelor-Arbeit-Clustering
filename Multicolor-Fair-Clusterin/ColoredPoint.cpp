@@ -148,6 +148,14 @@ void ColoredPoint::setFairlettID(int fairlettID){
 	this->fairlettID = fairlettID;
 }
 
+int ColoredPoint::getAnchorID(){
+	return this->anchorID;
+}
+
+void ColoredPoint::setAnchorID(int anchorID){
+	this->anchorID = anchorID;
+}
+
 
 
 

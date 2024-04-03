@@ -25,6 +25,9 @@ private:
 	// Which Fairlett the Point is part of
 	int fairlettID;
 
+	// Index of the point, which is this points anchor
+	int anchorID;
+
 	// Is the Point a Center
 	bool isCenter;
 
@@ -142,11 +145,32 @@ public:
 	void setFairlettID(int);
 
 
+	/* Info-Method
+	* Simply returns the anchorID the Point belongs to
+	*
+	* @return anchorID
+	*/
+	int getAnchorID();
+
+	/* Cluster-Method
+	* Sets the fairlettID of Point to given Value
+	*
+	* @param cluster: Value to set anchorID to
+	*/
+	void setAnchorID(int);
+
+
 
 
 	/* Utility-Method
 	* Filters a list of Points in a certain color
 	*/
 	static vector<ColoredPoint>* getPointsOfColor(vector<ColoredPoint>*, Pointcolor);
+
+
+	/* Utility-Method
+	* Filterst Points if they belong to a Fairlett
+	*/
+    static vector<ColoredPoint>* getPointsOfFairletts(vector<ColoredPoint>*); // === TO-DO ===
 };
 
