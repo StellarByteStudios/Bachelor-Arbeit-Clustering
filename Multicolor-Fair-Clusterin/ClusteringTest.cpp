@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Calculation of Anchormatrix ==== ///
-	testAnchorMatrixFill(unfairPoints);
+	testAnchorMatrixFill(points);
 
 
 

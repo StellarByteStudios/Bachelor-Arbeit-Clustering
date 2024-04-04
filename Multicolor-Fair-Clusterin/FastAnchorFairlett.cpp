@@ -164,57 +164,6 @@ void fastAnchorFairlett::makeCritFeatureSmalestFirst(vector<ColoredPoint> *point
 
 
 
-void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
-    // Erstmal nach Blau und Rot filtern
-    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
-	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
-
-    // Größen bestimmen
-    int nRed = (int) redPoints->size();
-    int nBlue = (int) bluePoints->size();
-
-    // Größe auf Matrix bringen
-    anchorMatrix.resize(nRed);
-    for (int i = 0; i < nRed; ++i) {
-        anchorMatrix[i].resize(nBlue);
-    }
-
-    // Alle roten Punkte durchgehen
-    for (int redIndex = 0; redIndex < nRed; redIndex++){
-        // Für alle Blaue Punkte den Vektor berechnen
-        for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
-            // Startwerte (Wähle einfach den Roten Punkt als Anker)
-            // Wert ist auf jedenfall möglich aber potentiell nicht der beste
-            anchorMatrix[redIndex][blueIndex].distToPartners = redPoints->at(redIndex).distTo(bluePoints->at(blueIndex));
-            anchorMatrix[redIndex][blueIndex].trueAnchorID = getTrueIndexOfPoint(redIndex, RED, nRed, points);
-
-            // Alle möglichen Anker ausprobieren
-            for (int anchorIndex = 0; anchorIndex < (int) points->size(); anchorIndex++) {
-                // Distanz zu potenziellemn Anker Ausrechnen
-                double rDist = points->at(anchorIndex).distTo(redPoints->at(redIndex));
-                double bDist = points->at(anchorIndex).distTo(bluePoints->at(blueIndex));
-
-                // Maximum bestimmen
-                double newMax = rDist;
-                if (bDist > newMax)
-                    newMax = bDist;
-
-                // ist der neu gefundene Anker besser?
-                if (newMax < anchorMatrix[redIndex][blueIndex].distToPartners) {
-                    // Alten Anker durch neuen ersetzen
-                    anchorMatrix[redIndex][blueIndex].distToPartners = newMax;
-                    anchorMatrix[redIndex][blueIndex].trueAnchorID = anchorIndex;
-                }
-            }
-        }        
-    }
-
-    delete redPoints;
-    delete bluePoints;    
-}
-
-
-
 
 double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
     // Alle möglichen Radien berechnen
@@ -365,6 +314,137 @@ bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, double potRad
 
 
 
+
+
+// ==== Matrix Calculation ==== //
+void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
+    // Erstmal nach Blau und Rot filtern
+    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
+
+    // Distanzmatrix als Look-Up berechnen
+    vector<vector<double>> distLookMatrix;
+    fillDistanceMatrix(points, distLookMatrix);
+
+    // Größen bestimmen
+    int nRed = (int) redPoints->size();
+    int nBlue = (int) bluePoints->size();
+    int n = (int) points->size();
+
+    // Größe auf Matrix bringen
+    anchorMatrix.resize(nRed);
+    for (int i = 0; i < nRed; ++i) {
+        anchorMatrix[i].resize(nBlue);
+    }
+    
+    // Indizes für in die Anker-Matric
+    int redAnchorIndex = 0;
+    int blueAnchorIndex = 0;
+
+    // Alle Punkte durchgehen (rotseitig)
+    for (int redSideIndex = 0; redSideIndex < n; redSideIndex++){
+        // Wenn Paar nicht matched, einfach direkt weitermachen
+        if (points->at(redSideIndex).getColor() != RED ){
+            continue;
+        }
+
+        // Alle Punkte durchgenen (blauseitig)
+        for (int blueSideIndex = 0; blueSideIndex < n; blueSideIndex++){
+            // Wenn Paar nicht matched, einfach direkt weitermachen
+            if (points->at(blueSideIndex).getColor() != BLUE ){
+                continue;
+            }
+            // Startwerte (Wähle einfach den Roten Punkt als Anker)
+            // Wert ist auf jedenfall möglich aber potentiell nicht der beste
+            anchorMatrix[redAnchorIndex][blueAnchorIndex].distToPartners = distLookMatrix[redSideIndex][blueSideIndex];
+            anchorMatrix[redAnchorIndex][blueAnchorIndex].trueAnchorID = redSideIndex;
+
+            // Alle möglichen Anker ausprobieren
+            for (int anchorIndex = 0; anchorIndex < n; anchorIndex++) {
+                // Distanz zu potenziellemn Anker Ausrechnen
+                double rDist = distLookMatrix[redSideIndex][anchorIndex];
+                double bDist = distLookMatrix[blueSideIndex][anchorIndex];;
+
+                // Maximum bestimmen
+                double newMax = rDist;
+                if (bDist > newMax)
+                    newMax = bDist;
+
+                // ist der neu gefundene Anker besser?
+                if (newMax < anchorMatrix[redAnchorIndex][blueAnchorIndex].distToPartners) {
+                    // Alten Anker durch neuen ersetzen
+                    anchorMatrix[redAnchorIndex][blueAnchorIndex].distToPartners = newMax;
+                    anchorMatrix[redAnchorIndex][blueAnchorIndex].trueAnchorID = anchorIndex;
+                }
+            }
+            blueAnchorIndex++;
+        }
+
+        #ifdef PROCESS_BAR
+        // Progressbar
+        if (redAnchorIndex % 100 == 0){
+            printProcess("--- Calculatet Anchors for " << redAnchorIndex << " red points")
+        }
+        #endif   
+        blueAnchorIndex = 0;
+        redAnchorIndex++;
+    }
+
+    delete redPoints;
+    delete bluePoints;    
+}
+
+
+
+
+void fastAnchorFairlett::fillDistanceMatrix(vector<ColoredPoint>* points, vector<vector<double>>& matrix){
+
+    // Größen bestimmen
+    int n= (int) points->size();
+
+    // Größe auf Matrix bringen
+    matrix.resize(n);
+    for (int i = 0; i < n; ++i) {
+        matrix[i].resize(n);
+    }
+
+    // Alle roten Punkte durchgehen
+    for (int firstIndex = 0; firstIndex < n; firstIndex++){
+        // Für alle Blaue Punkte den Vektor berechnen
+        //vector<double>* blueDistancesOfSingleRedPoint = new vector<double>;
+        for (int secondIndex = 0; secondIndex < n; secondIndex++){
+            // Distanz ausrechnen
+            double distance = points->at(firstIndex).distTo(points->at(secondIndex));
+
+            // in Matrix stecken
+            matrix[firstIndex][secondIndex] = distance;    
+        }        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ==== Utility ==== //
 int fastAnchorFairlett::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
     // Farben-Fallunterscheidung
@@ -417,10 +497,28 @@ int fastAnchorFairlett::getTrueIndexOfPoint(int colorOnlyIndex, Pointcolor color
 
 
 
+
+
+
+
+
+// ==== Debugging ==== //
 void fastAnchorFairlett::printAnchorMatrix(const std::vector<std::vector<Anchor>>& matrix) {
     for (const auto& row : matrix) {
         for (Anchor element : row) {
             std::cout << "(" << element.trueAnchorID << ", " << element.distToPartners << ")   ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+
+
+
+void fastAnchorFairlett::printDistMatrix(const std::vector<std::vector<double>>& matrix) {
+    for (const auto& row : matrix) {
+        for (double element : row) {
+            std::cout << element << " ";
         }
         std::cout << std::endl;
     }

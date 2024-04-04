@@ -37,7 +37,7 @@ def main():
     show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
     # Algorithmus über Shell ausführen
-    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=True)
+    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=False)
     
     # Punkte einlesen
     clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])

@@ -28,9 +28,6 @@ namespace fastAnchorFairlett{
     // Change Kritical feature that 0 has less member than 1 for simpler calculation
     void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
 
-    // Calculates the Anchors for all possible pairs
-    void calculateAnchors(vector<ColoredPoint>*, vector<vector<Anchor>>&); // === TO-DO ===
-
     // Calculate all possible radii and find the lowest working radius with binary search
     double findBinaryPotentionalRadius(vector<ColoredPoint>*); // === TO-DO ===
 
@@ -41,6 +38,17 @@ namespace fastAnchorFairlett{
     // Needs first to have nRed <= nBlue
     bool checkRadius(vector<ColoredPoint>*, double); // === TO-DO ===
     
+
+
+
+
+    // ==== Matrix Calculation ==== //
+    // Calculates the Anchors for all possible pairs
+    void calculateAnchors(vector<ColoredPoint>*, vector<vector<Anchor>>&);
+
+    // Calculates a n x n Matrix containing all pairwise distances
+    void fillDistanceMatrix(vector<ColoredPoint>*, vector<vector<double>>&);
+
 
     
 
@@ -63,4 +71,6 @@ namespace fastAnchorFairlett{
 
     // ==== Debugging ==== //
     void printAnchorMatrix(const vector<vector<Anchor>>&); 
+
+    void printDistMatrix(const vector<vector<double>>&);
 }
