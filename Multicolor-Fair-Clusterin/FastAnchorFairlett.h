@@ -7,6 +7,7 @@
 
 typedef fastAnchorFlow::GraphData FGraphData;
 typedef fastAnchorFlow::Anchor Anchor;
+typedef vector<vector<fastAnchorFlow::Anchor>> AnchorMatrix;
 
 namespace fastAnchorFairlett{
     
@@ -18,7 +19,7 @@ namespace fastAnchorFairlett{
     // Goes though all main arcs and marks the Fairletts if there is Flow
     // Also saves the AnchorsID
     // returns the Number of Fairletts made
-    int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*, vector<vector<Anchor>>&); // === TO-DO ===
+    int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*, AnchorMatrix&); // === TO-DO ===
 
     // Goes though all target arcs and marks all outliers which havent been
     // submittet to a Fairlett
@@ -44,7 +45,7 @@ namespace fastAnchorFairlett{
 
     // ==== Matrix Calculation ==== //
     // Calculates the Anchors for all possible pairs
-    void calculateAnchors(vector<ColoredPoint>*, vector<vector<Anchor>>&);
+    void calculateAnchors(vector<ColoredPoint>*, AnchorMatrix&);
 
     // Calculates a n x n Matrix containing all pairwise distances
     void fillDistanceMatrix(vector<ColoredPoint>*, vector<vector<double>>&);
@@ -70,7 +71,7 @@ namespace fastAnchorFairlett{
 
 
     // ==== Debugging ==== //
-    void printAnchorMatrix(const vector<vector<Anchor>>&); 
+    void printAnchorMatrix(const AnchorMatrix&); 
 
     void printDistMatrix(const vector<vector<double>>&);
 }

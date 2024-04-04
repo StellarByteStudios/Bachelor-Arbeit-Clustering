@@ -174,6 +174,7 @@ double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* poi
     #endif  
     
 
+
     // Startgrenzen für die Binäre-Suche
     int left = 0;
     int right = (int) potRadii->size() - 1;
@@ -317,7 +318,7 @@ bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, double potRad
 
 
 // ==== Matrix Calculation ==== //
-void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
+void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix){
     // Erstmal nach Blau und Rot filtern
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
 	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
