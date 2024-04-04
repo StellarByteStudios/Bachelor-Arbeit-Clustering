@@ -75,11 +75,7 @@ void fastAnchorFlow::addArcsToGraph(Graph& graph, GraphData& gData, double potRa
         // Alle blauen Punkte durchgehen
         for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
             // Schauen ob das eine Passende Kante ist
-            // 
-            // ===================== HIER NEUES DISTANZMAß =========================
-            //
-            //
-            if (redPoints->at(redIndex).distTo(bluePoints->at(blueIndex)) <= potRad){
+            if (gData.anchorDistance[redIndex][blueIndex].distToPartners <= potRad){
                 // Kante Hinzufügen
                 gData.mainArcs.push_back(graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex)));
             } 

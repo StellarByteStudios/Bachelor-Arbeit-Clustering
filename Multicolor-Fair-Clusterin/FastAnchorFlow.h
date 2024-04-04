@@ -47,12 +47,12 @@ namespace fastAnchorFlow{
         // Arcs between the main-nodes of the graph
         std::vector<Arc> mainArcs;
 
-        // Anchor-Distances of each pair of points (is a pointer)
-        std::vector<std::vector<Anchor>>* anchorDistance;
+        // Anchor-Distances of each pair of points
+        std::vector<std::vector<Anchor>> anchorDistance;
     };
 
     // uses an Radius and builds up finished Graph
-    void buildupGraphFromAnchorDist(Graph&, GraphData&, CapacityMap&, double, vector<ColoredPoint>*); // === TO-DO ===
+    void buildupGraphFromAnchorDist(Graph&, GraphData&, CapacityMap&, double, vector<ColoredPoint>*);
 
     // Adding all red and blue Nodes and s and t to the graph
     void addNodesToGraph(Graph&, GraphData&, vector<ColoredPoint>*);
@@ -60,8 +60,8 @@ namespace fastAnchorFlow{
     // Adding all needed arcs to Graph
     // source --> redNodes
     // blueNodes --> target
-    // redNodes --> blueNodes (if AnchorDist < potRadius)
-    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*); // === TO-DO ===
+    // redNodes --> blueNodes (if AnchorDist <= potRadius)
+    void addArcsToGraph(Graph&, GraphData&, double, vector<ColoredPoint>*); 
 
     // sets the capacity of all arcs to one
     void addCapacitiesToGraph(CapacityMap&, GraphData&);

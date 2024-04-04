@@ -27,6 +27,7 @@ void testOnlyRedClustering(vector<ColoredPoint>*, int);
 void testFairRedClustering(vector<ColoredPoint>*, int);
 void testFairlettFlitering(vector<ColoredPoint>*);
 void testAnchorMatrixFill(vector<ColoredPoint>*);
+void testAnchorRadiusChecker(vector<ColoredPoint>*);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -129,7 +130,10 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Calculation of Anchormatrix ==== ///
-	testAnchorMatrixFill(points);
+	//testAnchorMatrixFill(points);
+
+	// ==== Testing Searching Opt Rad with Anchors ==== ///
+	testAnchorRadiusChecker(unfairPoints);
 
 
 
@@ -500,6 +504,53 @@ void testAnchorMatrixFill(vector<ColoredPoint>* points){
 	// Matrix der Anker ausgeben
 	cout << "=== AnkerMatrix ===" << endl;
 	fastAnchorFairlett::printAnchorMatrix(anchorMatrix);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void testAnchorRadiusChecker(vector<ColoredPoint>* points){
+    cout << "\n\n===== Testing Searching Opt Rad with Anchors =====\n" << endl;
+
+	// Farben richtig rum haben
+	fastAnchorFairlett::makeCritFeatureSmalestFirst(points);
+
+	// Anker berechnen
+	AnchorMatrix aMatrix;
+	fastAnchorFairlett::calculateAnchors(points, aMatrix);
+
+	// Ankermatrix ausgeben
+	fastAnchorFairlett::printAnchorMatrix(aMatrix);
+
+	// Kleine Radius Testen
+	double radSmall = 5;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radSmall, fastAnchorFairlett::checkRadius(points, aMatrix, radSmall));
+
+	// Mittleren Radius Testen
+	double radMedium = 20;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radMedium, fastAnchorFairlett::checkRadius(points, aMatrix, radMedium));
+
+	// Großen Radius Testen
+	double radBig = 50;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fastAnchorFairlett::checkRadius(points, aMatrix, radBig));
+
+	// Optimalen Radius finden
+	double optRad = fastAnchorFairlett::findBinaryPotentionalRadius(points, aMatrix);
+
+	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
+
 }
 
 

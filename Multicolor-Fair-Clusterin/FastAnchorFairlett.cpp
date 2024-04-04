@@ -12,8 +12,12 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
     makeCritFeatureSmalestFirst(points);
     printProcess("--smallFeature-- ");
 
+    // Anker berechnen
+    AnchorMatrix anchorMatrix;
+    calculateAnchors(points, anchorMatrix);
+
     // Optimalen Radius Finden
-    double optRad = findBinaryPotentionalRadius(points);
+    double optRad = findBinaryPotentionalRadius(points, anchorMatrix);
     printProcess("--found potRad-- ");
 
     // Graph mit Optimalem Radius Aufbauen
@@ -165,7 +169,7 @@ void fastAnchorFairlett::makeCritFeatureSmalestFirst(vector<ColoredPoint> *point
 
 
 
-double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
+double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix){
     // Alle möglichen Radien berechnen
     vector<double>* potRadii = calculateAllRadii(points); // Kommen sortiert zurück
     printProcess("\nChecking " << (int) potRadii->size() <<" potentional Radii with Binary-Search\n");
@@ -212,7 +216,7 @@ double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* poi
         int mid = left + (right - left) / 2;
 
         // checken des Radius an der Stelle mid
-        workingRadius = checkRadius(points, potRadii->at(mid));
+        workingRadius = checkRadius(points, anchorMatrix, potRadii->at(mid));
 
         // Wenn der Radius funktioniert funktionieren auch alle darüber
         // --> verschiebe Rechts auf mid
@@ -278,12 +282,15 @@ vector<double>* fastAnchorFairlett::calculateAllRadii(vector<ColoredPoint>* poin
 
 
 
-bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, double potRad){    
+bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix, double potRad){    
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
 	FGraphData gData;
 	CapacityMap capacity(g);
+
+    // AnkerMatrixadresse übertragen
+    gData.anchorDistance = anchorMatrix;
 
 
     // Graph Initialisieren
@@ -379,16 +386,16 @@ void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, AnchorMa
                 }
             }
             blueAnchorIndex++;
-        }
-
+        } 
+        blueAnchorIndex = 0;
+        redAnchorIndex++;
+        
         #ifdef PROCESS_BAR
         // Progressbar
         if (redAnchorIndex % 100 == 0){
             printProcess("--- Calculatet Anchors for " << redAnchorIndex << " red points")
         }
-        #endif   
-        blueAnchorIndex = 0;
-        redAnchorIndex++;
+        #endif  
     }
 
     delete redPoints;
