@@ -5,7 +5,7 @@
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzalez.h"
-#include "FairlettFinder.h"
+//#include "FairlettFinder.h"
 #include "RedCenterClustering.h"
 
 #ifdef PROCESS_BAR

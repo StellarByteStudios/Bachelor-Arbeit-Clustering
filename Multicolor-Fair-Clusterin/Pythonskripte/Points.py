@@ -193,14 +193,15 @@ def parse_fair_points_from_list(rawDataList):
         center = bool(int(rawDataList[i][1]))
         cluster = int(rawDataList[i][2])
         fairlett = int(rawDataList[i][3])
-        color = int(rawDataList[i][4])
+        anchor = int(rawDataList[i][4])
+        color = int(rawDataList[i][5])
         
         #print(dim, center, cluster, color)
         #print(center)
         
         # Coordinates
         coords = []
-        for k in range(5, 5+dim):
+        for k in range(6, 6+dim):
             coords.append(float(rawDataList[i][k]))
             
         # Point via Constructor

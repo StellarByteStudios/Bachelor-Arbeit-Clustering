@@ -5,7 +5,7 @@
 #include "Gonzalez.h"
 #include "FastAnchorFlow.h"
 
-typedef fastAnchorFlow::GraphData GraphData;
+typedef fastAnchorFlow::GraphData FGraphData;
 typedef fastAnchorFlow::Anchor Anchor;
 
 namespace fastAnchorFairlett{
@@ -53,5 +53,14 @@ namespace fastAnchorFairlett{
     // Marks the Point in the base List with the new Fairlett ID
     void markSinglePointWithFairlett(int, int, Pointcolor, int, vector<ColoredPoint>*);
 
+    // Gets the Index of the nth Point of a certain color
+    int getTrueIndexOfPoint(int, Pointcolor, int, vector<ColoredPoint>*);
 
+
+
+
+
+
+    // ==== Debugging ==== //
+    void printAnchorMatrix(const vector<vector<Anchor>>&); 
 }

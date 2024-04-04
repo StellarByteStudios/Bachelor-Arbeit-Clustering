@@ -26,7 +26,7 @@ def main():
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     # Welches Dataset wird benutzt?
-    dSetID = 1
+    dSetID = 0
     
     numberOfClusters = 2
     

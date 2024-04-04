@@ -10,6 +10,10 @@
 #include "RedCenterClustering.h"
 #include "GraphFlow.h"
 
+#include "FastAnchorClustering.h"
+#include "FastAnchorFairlett.h"
+#include "FastAnchorFlow.h"
+
 
 // Declaration of Test functions
 vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>*, int);
@@ -22,8 +26,11 @@ void testColorFiltering(vector<ColoredPoint>*);
 void testOnlyRedClustering(vector<ColoredPoint>*, int);
 void testFairRedClustering(vector<ColoredPoint>*, int);
 void testFairlettFlitering(vector<ColoredPoint>*);
+void testAnchorMatrixFill(vector<ColoredPoint>*);
 
 void printAllpoints(vector<ColoredPoint>*);
+
+void localPrintAnchorMatrix(const vector<vector<Anchor>>&);
 
 void savePointsToFile(string, vector<ColoredPoint>*);
 
@@ -55,7 +62,7 @@ int main(int argc, char *argv[]) {
 	vector<ColoredPoint>* points = parser.parseFile();
     
     // Get new Points
-	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
+	string unfairHandpointsFile = "Data/RandomGenerated/HandmadeFairlettPoints.csv"; //"Data/RandomGenerated/Unfair-Twocolor-2D.txt";
 	parser =  PointParser(unfairHandpointsFile);
 	vector<ColoredPoint>* unfairPoints = parser.parseFile();
 	
@@ -118,7 +125,11 @@ int main(int argc, char *argv[]) {
 
 	// ==== * ==== * ==== Fast-Anchor Testing ==== * ==== * ==== ///
 	// ==== Testing Fair-Red-Clustering ==== ///
-	testFairlettFlitering(unfairPoints);
+	//testFairlettFlitering(unfairPoints);
+
+
+	// ==== Testing Calculation of Anchormatrix ==== ///
+	testAnchorMatrixFill(unfairPoints);
 
 
 
@@ -467,6 +478,29 @@ void testFairlettFlitering(vector<ColoredPoint>* points){
 
 
 
+
+
+
+
+
+void testAnchorMatrixFill(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing the calculating of Anchors =====\n" << endl;
+
+	// Matrix Anlegen
+	vector<vector<fastAnchorFlow::Anchor>> anchorMatrix;
+
+	// Anker berechnen
+	fastAnchorFairlett::calculateAnchors(points, anchorMatrix);
+	
+
+	// Punkte alle ausgeben
+	cout << "=== Alle Punkte ===" << endl;
+	printAllpoints(points);
+
+	// Matrix der Anker ausgeben
+	cout << "=== AnkerMatrix ===" << endl;
+	fastAnchorFairlett::printAnchorMatrix(anchorMatrix);
+}
 
 
 

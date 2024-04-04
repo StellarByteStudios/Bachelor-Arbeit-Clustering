@@ -19,7 +19,7 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
     // Graph mit Optimalem Radius Aufbauen
     // Variablen erzeugen
 	Graph g;
-	GraphData gData;
+	FGraphData gData;
 	CapacityMap capacity(g);
 
     // Graph Initialisieren
@@ -37,13 +37,13 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
 
 
     // Main Fairletts bilden
-    int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points);
+    //int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points, );
     printProcess("--marked Fairlets-- ");    
 
     // Ausreißer markieren
     int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
     printProcess("--marked outlier-- ");
-    printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
+    //printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
 
     // Aufräumen 
     delete redPoints;
@@ -55,7 +55,7 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
 
 int fastAnchorFairlett::markMainNodes(const Graph& g, const Flow& preflow, 
                                     vector<Arc> mainArcs, int nRed, 
-                                    vector<ColoredPoint>* points){
+                                    vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
 
     int fairlettCounter = 0;
 
@@ -160,6 +160,60 @@ void fastAnchorFairlett::makeCritFeatureSmalestFirst(vector<ColoredPoint> *point
     
     return;
 }
+
+
+
+
+void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
+    // Erstmal nach Blau und Rot filtern
+    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
+
+    // Größen bestimmen
+    int nRed = (int) redPoints->size();
+    int nBlue = (int) bluePoints->size();
+
+    // Größe auf Matrix bringen
+    anchorMatrix.resize(nRed);
+    for (int i = 0; i < nRed; ++i) {
+        anchorMatrix[i].resize(nBlue);
+    }
+
+    // Alle roten Punkte durchgehen
+    for (int redIndex = 0; redIndex < nRed; redIndex++){
+        // Für alle Blaue Punkte den Vektor berechnen
+        for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
+            // Startwerte (Wähle einfach den Roten Punkt als Anker)
+            // Wert ist auf jedenfall möglich aber potentiell nicht der beste
+            anchorMatrix[redIndex][blueIndex].distToPartners = redPoints->at(redIndex).distTo(bluePoints->at(blueIndex));
+            anchorMatrix[redIndex][blueIndex].trueAnchorID = getTrueIndexOfPoint(redIndex, RED, nRed, points);
+
+            // Alle möglichen Anker ausprobieren
+            for (int anchorIndex = 0; anchorIndex < (int) points->size(); anchorIndex++) {
+                // Distanz zu potenziellemn Anker Ausrechnen
+                double rDist = points->at(anchorIndex).distTo(redPoints->at(redIndex));
+                double bDist = points->at(anchorIndex).distTo(bluePoints->at(blueIndex));
+
+                // Maximum bestimmen
+                double newMax = rDist;
+                if (bDist > newMax)
+                    newMax = bDist;
+
+                // ist der neu gefundene Anker besser?
+                if (newMax < anchorMatrix[redIndex][blueIndex].distToPartners) {
+                    // Alten Anker durch neuen ersetzen
+                    anchorMatrix[redIndex][blueIndex].distToPartners = newMax;
+                    anchorMatrix[redIndex][blueIndex].trueAnchorID = anchorIndex;
+                }
+            }
+        }        
+    }
+
+    delete redPoints;
+    delete bluePoints;    
+}
+
+
 
 
 double fastAnchorFairlett::findBinaryPotentionalRadius(vector<ColoredPoint>* points){
@@ -278,7 +332,7 @@ bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, double potRad
     // Graphenstruktur aufbauen
     // Variablen erzeugen
 	Graph g;
-	GraphData gData;
+	FGraphData gData;
 	CapacityMap capacity(g);
 
 
@@ -324,8 +378,20 @@ int fastAnchorFairlett::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
 
 
 void fastAnchorFairlett::markSinglePointWithFairlett(int fairlettID, int nodeID, Pointcolor color, int nRed, vector<ColoredPoint>* points){
-    // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
-    int colorIndex = mapIDtoIndexByColor(nodeID, color, nRed);
+    // Stelle finden an welcher der Punkt in der echten Liste ist
+    int trueIndex = getTrueIndexOfPoint(nodeID, color, nRed, points);
+
+    // FairlettID an dieser Stelle abändern
+    points->at(trueIndex).setFairlettID(fairlettID);
+
+    return;
+}
+
+
+
+int fastAnchorFairlett::getTrueIndexOfPoint(int colorOnlyIndex, Pointcolor color, int nRed, vector<ColoredPoint>* points){
+        // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
+    int colorIndex = mapIDtoIndexByColor(colorOnlyIndex, color, nRed);
 
     ///*
     // Index des entsprechenden Punktes suchen
@@ -345,23 +411,17 @@ void fastAnchorFairlett::markSinglePointWithFairlett(int fairlettID, int nodeID,
             break;
         }
         
-    }//*/
+    }
+    return trueIndex;
+}
 
-    // Noch unklar welche Variante ich benutze
-    /*
-    // Index des entsprechenden Punktes suchen
-    int trueIndex = -1;
-    // So lange durchgehen bis ich den richtigen Index gefunden
-    while (colorIndex >= 0) {
-        trueIndex++;
 
-        // Hat der Knoten die richtige Farbe?
-        if (points->at(trueIndex).getColor() == color){
-                colorIndex--;
+
+void fastAnchorFairlett::printAnchorMatrix(const std::vector<std::vector<Anchor>>& matrix) {
+    for (const auto& row : matrix) {
+        for (Anchor element : row) {
+            std::cout << "(" << element.trueAnchorID << ", " << element.distToPartners << ")   ";
         }
-    }*/
-
-    points->at(trueIndex).setFairlettID(fairlettID);
-
-    return;
+        std::cout << std::endl;
+    }
 }
