@@ -5,8 +5,9 @@
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzalez.h"
-//#include "FairlettFinder.h"
+
 #include "RedCenterClustering.h"
+#include "FastAnchorClustering.h"
 
 #ifdef PROCESS_BAR
     #define printProcess(process) std::cout << process << endl;
@@ -95,11 +96,25 @@ int main(int argc, char *argv[]) {
 		break;
 	}
 	case 'f':{
-		cout << "ERROR: Fast-Anchor-Clustering is not implemented yet" << endl;
+		// ==== Fast-Anchor-Clustering Gonzalez ==== //
+		fastAnchorClustering::FastAnchorReturnValues * returnValues = fastAnchorClustering::makeFastAnchorClustering(points, numberOfCluster);
+
+		// Build Headder of File:
+		stringstream header;
+		header << "maxClusterRadius," << returnValues->maxClusterRadius << ",";
+		header << "maxFairletRadius," << returnValues->maxFairlettRadius;
+
+		// Save Clustering to File
+		savePointsToFile(outputFileName, returnValues->clusteredPoints, header.str());
+
+		// Free struct space of returnvalues
+		fastAnchorClustering::deleteFastAnchorReturns(returnValues);
+
+		printProcess("Fast-Anchor Clustering without problems");
 		break;
 	}
 	default:
-		cout << "ERROR: wrong case" << endl;
+		cout << "ERROR: Algorithm not Found!" << endl;
 		break;
 	}
 

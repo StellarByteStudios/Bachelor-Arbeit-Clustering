@@ -15,18 +15,22 @@ def main():
     # Testdaten
     dataFileNames = ["Data/RandomGenerated/HandmadeFairlettPoints.csv", 
                      "Data/Subsamples/diabetes/diabetesSample-3.csv", 
-                     "Data/RandomGenerated/HandmadeFairlettPoints2.csv"]
+                     "Data/RandomGenerated/HandmadeFairlettPoints2.csv",
+                     "Data/RandomGenerated/HandmadeFairlettPoints.csv"]
     
     outputFileNames = ["Data/OutputData/FairlettTests/RedCluteringTest.csv", 
                        "Data/OutputData/FairlettTests/BigRedCluteringTest.csv", 
-                       "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv"]
+                       "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv",
+                       "Data/OutputData/FairlettTests/FastAnchorCluteringTest.csv"]
     
-    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second"]
+    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second", "Fast-Anchor Clustering"]
+    
+    algs = ["r", "r", "r", "f"]
     
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     # Welches Dataset wird benutzt?
-    dSetID = 0
+    dSetID = 3
     
     numberOfClusters = 2
     
@@ -37,7 +41,7 @@ def main():
     show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
     # Algorithmus über Shell ausführen
-    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=False)
+    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=False, alg=algs[dSetID])
     
     # Punkte einlesen
     clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
@@ -95,14 +99,14 @@ def get_raw_points(fileName, dim=2):
 
 # # # =========== Algorithmus ausführen =========== # # #
 # # # Plot für die Punkte ohne das Clustering # # #
-def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2):   
+def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2, alg="r"):   
     # Programm kompilieren
     if(doCompiling):
         bash_command("cd .. && make buildProcessBar", ignoreStdout=False).communicate();
     
     
     # Shellcommand zusammensetzen
-    command = f"cd .. && ./Fair-Clustering ./{inputFileName} ./{outputFileName} {maxCluster} r"
+    command = f"cd .. && ./Fair-Clustering ./{inputFileName} ./{outputFileName} {maxCluster} {alg}"
     print(command)
     # Prozess erzeugen
     process = bash_command(command, ignoreStdout=False)
