@@ -30,6 +30,7 @@ void testAnchorMatrixFill(vector<ColoredPoint>*);
 void testAnchorRadiusChecker(vector<ColoredPoint>*);
 void testAnchorMarkingFairlets(vector<ColoredPoint>*);
 void testCalculatingNearestCenter(vector<ColoredPoint>*);
+void testFastAnchorClustering(vector<ColoredPoint>*, int);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -142,8 +143,13 @@ int main(int argc, char *argv[]) {
 	// ==== Mark the Fairletts ==== //
     //testAnchorMarkingFairlets(unfairPoints);
 	
+
 	// ==== Test getting the nearest Centers ==== //
-    testCalculatingNearestCenter(unfairPoints);
+    //testCalculatingNearestCenter(unfairPoints);
+
+
+	// ==== Testing Fast-Anchor-Clustering ==== ///
+	testFastAnchorClustering(points, numberOfCluster);
 
 
 
@@ -549,7 +555,25 @@ void testCalculatingNearestCenter(vector<ColoredPoint>* points){
 
 
 
+void testFastAnchorClustering(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Fair-Clustering with Fast-Anchor-Clustering =====\n" << endl;
 
+	// Algorithmus machen
+	fastAnchorClustering::FastAnchorReturnValues* clusteringValues = fastAnchorClustering::makeFastAnchorClustering(points, k);
+
+	// Ergebnisse ausgeben
+	printf("\n\nAlle Punkte nach dem Clustern:\n");
+    printAllpoints(clusteringValues->clusteredPoints);
+
+	printf("\n\nJetzt nur die Zentren:\n");
+    printAllpoints(clusteringValues->centers);
+
+	printf("Maximaler Fairlettradius: %f \t Maximaler Clusterradius: %f\n", 
+		clusteringValues->maxFairlettRadius, clusteringValues->maxClusterRadius);
+
+	// Aufräumen
+	fastAnchorClustering::deleteFastAnchorReturns(clusteringValues);
+}
 
 
 

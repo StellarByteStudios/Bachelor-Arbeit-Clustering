@@ -8,7 +8,7 @@ Gonzalez::GonzalezReturnValues* Gonzalez::makeGonzalez(vector<ColoredPoint>* poi
 	int n = (int) points->size();
 
 	if(n < clusters){
-		cout << "No valid ClusterCount" << endl;
+		cout << "ERROR: No valid ClusterCount of Gonzalez-Algorithm" << endl;
 		return nullptr;
 	}
 

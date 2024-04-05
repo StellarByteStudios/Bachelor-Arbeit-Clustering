@@ -50,7 +50,7 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
     // Ausreißer markieren
     int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
     printProcess("--marked outlier-- ");
-    printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
+    printProcess("----number of fairletts: " << fairlettCounter << ";\tnumber of outlier: " << numOfOutlier <<" --");
 
     // Aufräumen 
     delete redPoints;

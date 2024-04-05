@@ -18,15 +18,16 @@ fastAnchorClustering::FastAnchorReturnValues* fastAnchorClustering::makeFastAnch
     // Fairletts markieren
     double fairlettRadius = fastAnchorFairlett::markFairletts(fairValues->clusteredPoints);
     fairValues->maxFairlettRadius = fairlettRadius;
-
+    printProcess("-finished marking of fairlets");
  
     // ==== Clustering berechnen ====
-
+    clusterFairlettPoints(fairValues, k);
+    printProcess("-finished clustering");
 
 
     // maximalen Radius der Cluster berechnen
     fairValues->maxClusterRadius = calculateMaxRadius(*fairValues->clusteredPoints, k); 
-
+    printProcess("-finished maxRadius Calc");
 
     return fairValues;
 }
@@ -65,20 +66,26 @@ void fastAnchorClustering::deleteFastAnchorReturns(FastAnchorReturnValues* value
 void fastAnchorClustering::clusterFairlettPoints(FastAnchorReturnValues* returnValues, int k){
     // Nur Punkten welche zu einem Fairlett gehören holen
     vector<ColoredPoint>* fairlettPoints = ColoredPoint::getPointsOfFairletts(returnValues->clusteredPoints);
+    //printProcess("========== before Gonzalez");
+    //printf("Wie viele Punke gibt es, welche in fairletts sind?: %d\n", (int) fairlettPoints->size());
 
     // Gonzalez mit Punkten welche zu einem Fairlett gehören
     Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeGonzalez(fairlettPoints, k);
-
-    // ============================
+    printProcess("----made Gonzalez with only Fairlett-points");
 
     // Punkte in Clustered Points aktuallisieren
     // erstmal Zentren aktuallisieren
+    updateCentersOfMainPoints(returnValues->clusteredPoints, returnValues->centers, gonzalezValues->clusteredPoints);
+    printProcess("----updated the centers");
 
     // Partner der Zentren zuweißen
+    updateCenterPartners(returnValues->clusteredPoints, returnValues->centers);
+    printProcess("----updated Partner of centers");
 
     // Alle anderen Punkte welche keine Ausreißer sind ihr Cluster zuweißen
+    updateClusterOfMainPoints(returnValues->clusteredPoints, returnValues->centers, gonzalezValues->clusteredPoints);
+    printProcess("----updated the rest of the points");
 
-    // ============================
     // Speicher wieder Freigeben
     delete fairlettPoints;
     Gonzalez::deleteGonzalezReturns(gonzalezValues);
@@ -87,30 +94,32 @@ void fastAnchorClustering::clusterFairlettPoints(FastAnchorReturnValues* returnV
 
 
 
-void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
+void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* markedPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
     // Nearest Center berechnen
-    
-    
-    
+    vector<int>* nearestCenterst = getNearesCenters(markedPoints, centers);
+
     // Index, wievielter Punkt zugeteilt wurde
     int filterIndex = 0;
     
     // Durch alle Punkte (Alle Farben) durchgehen
-    for (int i = 0; i < (int) realPoints->size(); i++){
-        // Falls das ein roter Punkt ist must dieser Aktuallisiert werden
-        if (realPoints->at(i).getColor() == RED){
-            // Überschreiben des Clusters mit der Nummer die der Gefilterte Punkt hatte
-            realPoints->at(i).setCluster(filteredPoints->at(filterIndex).getCluster());
-
-            // Noch überprüfen ob der Punkt vielleicht ein Zentrum ist
-            if (filteredPoints->at(filterIndex).getIsCenter()){
-                realPoints->at(i).setToCenter();
-                centers->push_back(realPoints->at(i));
-            }
-
+    for (int i = 0; i < (int) markedPoints->size(); i++){
+        // Falls das ein Ausreißer-Punkt ist muss dieser nicht Aktuallisiert werden
+        if (markedPoints->at(i).getFairlettID() < 0){
+            continue;
+        }
+        
+        // wenn er schon hinzugefügt wurde überspringen (Zentren und ihre Partner)
+        if (markedPoints->at(i).getCluster() >= 0){
             // einen Punkt bei den Gefilterten weiter gehen
             filterIndex++;
+            continue;
         }
+
+        // Überschreiben des Clusters mit der Nummer die der Gefilterte Punkt hatte
+        markedPoints->at(i).setCluster(filteredPoints->at(filterIndex).getCluster());
+
+        // einen Punkt bei den Gefilterten weiter gehen
+        filterIndex++;
         
     }
     
@@ -120,8 +129,79 @@ void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* realP
     }
 
     // Nearest Center wieder freigeben
-
+    delete(nearestCenterst);
 }
+
+
+
+void fastAnchorClustering::updateCentersOfMainPoints(vector<ColoredPoint>* markedPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* clusteredPoints){
+    // Index, wievielter Punkt zugeteilt wurde
+    int filterIndex = 0;
+    
+    // Durch alle Punkte (Alle Farben) durchgehen
+    for (int i = 0; i < (int) markedPoints->size(); i++){
+        // Falls das kein Ausreißer ist, muss er aktuallisiert werden
+        if (markedPoints->at(i).getFairlettID() >= 0){
+            // Wenn es ein Zentrum ist, sich selbst zuweisen
+            if (clusteredPoints->at(filterIndex).getIsCenter()){
+                // Punkt in Rückgabeliste zum Zentrum machen
+                markedPoints->at(i).setToCenter();
+                // Punkt in Rückgabeliste zum Cluster zuweißen, welches die gefilterten Punkte von Gonzalez bekommen haben
+                markedPoints->at(i).setCluster(clusteredPoints->at(filterIndex).getCluster());
+                // Punkt noch der Zentrenliste zuweißen
+                centers->push_back(markedPoints->at(i));
+            }
+            // einen Punkt bei den Gefilterten weiter gehen
+            filterIndex++;
+        }
+        
+    }
+    
+    // Sanity-Check
+    if(filterIndex < (int) clusteredPoints->size()){
+        printf("ERROR: von den %d an roten Punkten wurden nicht alle benutzt zum Aktuallisieren sondern nur %d\n", (int) clusteredPoints->size(), filterIndex);
+    }
+}
+
+
+void fastAnchorClustering::updateCenterPartners(vector<ColoredPoint>* markedPoints, vector<ColoredPoint>* centers){
+    int pointUpdates = 0;
+    // Durch alle Punkte (Alle Farben) durchgehen
+    for (int i = 0; i < (int) markedPoints->size(); i++){
+        // Falls das ein Ausreißer ist, muss er nicht aktuallisiert werden
+        if (markedPoints->at(i).getFairlettID() >= 0){
+            continue;
+        }
+        
+        // Default wert --> Partner ist kein Zentrum
+        int partnerCenter = -1;
+
+        // Alle Zentren durchgehen, ob eines davon der Partner vom Punkt i ist
+        for (int centerIndex = 0; centerIndex < (int) centers->size(); centerIndex++){
+            // Tatsächlich Partner gefunden
+            if (centers->at(centerIndex).getFairlettID() == markedPoints->at(i).getFairlettID()){
+                partnerCenter = centerIndex;
+                // Schleife kann abgebrochen werden
+                break;
+            }
+            
+        }
+        
+        // Wenn es ein Zentrum-Partner ist, muss er aktualisiert werden
+        if (partnerCenter >= 0){
+            // Punkt aktuallisieren und zum Cluster seinen Partners hinzufügen
+            markedPoints->at(i).setCluster(partnerCenter);
+            pointUpdates++;
+        }
+        
+    }
+    
+    // Sanity-Check
+    if(pointUpdates < (int) centers->size()){
+        printf("ERROR: von den %d an roten Punkten wurden nicht alle benutzt zum Aktuallisieren sondern nur %d\n", (int) centers->size(), pointUpdates);
+    }
+}
+
 
 
 
