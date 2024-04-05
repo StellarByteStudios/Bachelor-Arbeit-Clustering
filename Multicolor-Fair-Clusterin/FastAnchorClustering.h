@@ -34,15 +34,30 @@ namespace fastAnchorClustering{
     // clusters points who are in a fairlett with Gonzalez algorithm
     void clusterFairlettPoints(FastAnchorReturnValues*, int);  // === TO-DO ===
 
+    // Updates the centers from Gonzalez Returns to FastAnchorReturns
+    void updateCentersOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+
+    // Updates the Cluster of all Points which partners are Centers
+    void updateCenterPartners(vector<ColoredPoint>*, vector<ColoredPoint>*); // === TO-DO ===
+
+    // Updates the rest of the Points which are not Outliers
+    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+
+
+
+
+
+    // ==== Utility ==== //
+
     // walks though all points, filter by their cluster and calculates the biggest cluster
     double calculateMaxRadius(vector<ColoredPoint>, int);  // === TO-DO ===
 
-    // Updates the red points in the real of the clustering points from the filtered List of points
-    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
 
-    // Using the clustered red points and their fairlettID to asign 
-    // the clusters to blue points. Includes outlier
-    void updateClusterOfOutliers(vector<ColoredPoint>*);  // === TO-DO ===
+    // Returns a Array in which every Point save the Clusternum of the neares Center
+    vector<int>* getNearesCenters(vector<ColoredPoint>*, vector<ColoredPoint>*); // === TO-DO ===
+
+    // Goes through all Centers and returns the Clusternumber of the nearest one
+    int getNextCenterOfPoint(ColoredPoint, vector<ColoredPoint>*); // === TO-DO ===
 }
 
 

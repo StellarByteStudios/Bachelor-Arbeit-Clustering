@@ -29,6 +29,7 @@ void testFairlettFlitering(vector<ColoredPoint>*);
 void testAnchorMatrixFill(vector<ColoredPoint>*);
 void testAnchorRadiusChecker(vector<ColoredPoint>*);
 void testAnchorMarkingFairlets(vector<ColoredPoint>*);
+void testCalculatingNearestCenter(vector<ColoredPoint>*);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -139,8 +140,10 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Mark the Fairletts ==== //
-    testAnchorMarkingFairlets(unfairPoints);
-
+    //testAnchorMarkingFairlets(unfairPoints);
+	
+	// ==== Test getting the nearest Centers ==== //
+    testCalculatingNearestCenter(unfairPoints);
 
 
 
@@ -201,9 +204,6 @@ vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>* points, int numberOfClu
 
 
 
-
-
-
 void testMaximumRadiusFunction(vector<ColoredPoint>* clusteredPoints, int numberOfCluster){
     cout << "\n\n===== Testing Radius checker =====\n" << endl;
     double maxRadiusViaFunction = redclustering::calculateMaxRadius(*clusteredPoints, numberOfCluster);
@@ -211,13 +211,6 @@ void testMaximumRadiusFunction(vector<ColoredPoint>* clusteredPoints, int number
 	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
     return;
 }
-
-
-
-
-
-
-
 
 
 
@@ -266,13 +259,6 @@ void testGraphBuildup(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
 void testRadiusChecker(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing Radius checker =====\n" << endl;
 
@@ -303,11 +289,6 @@ void testRadiusChecker(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
 void testCalculationOfAllRadii(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing to Calculate all Radii =====\n" << endl;
     vector<double>* potRadii = fairlettFinder::calculateAllRadii(points);
@@ -326,12 +307,6 @@ void testCalculationOfAllRadii(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
 void testMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     cout << "\n\n===== Testing Marking of the Fairletts =====\n" << endl;
 
@@ -343,13 +318,6 @@ void testMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     printAllpoints(clusteredPoints);
 
 }
-
-
-
-
-
-
-
 
 
 
@@ -388,13 +356,6 @@ void testColorFiltering(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
 void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 	cout << "\n\n===== Testing Clustering of only red points =====\n" << endl;
 
@@ -416,11 +377,6 @@ void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 
 	redclustering::deleteFairFlowReturns(fairValues);
 }
-
-
-
-
-
 
 
 
@@ -453,12 +409,6 @@ void testFairRedClustering(vector<ColoredPoint>* points, int k){
 
 
 
-
-
-
-
-
-
 void testFairlettFlitering(vector<ColoredPoint>* points){
 	cout << "\n\n===== Testing Filter of Fairlets =====\n" << endl;
 	// Fairletts in Punkten markieren
@@ -485,14 +435,6 @@ void testFairlettFlitering(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
-
 void testAnchorMatrixFill(vector<ColoredPoint>* points){
 	cout << "\n\n===== Testing the calculating of Anchors =====\n" << endl;
 
@@ -511,16 +453,6 @@ void testAnchorMatrixFill(vector<ColoredPoint>* points){
 	cout << "=== AnkerMatrix ===" << endl;
 	fastAnchorFairlett::printAnchorMatrix(anchorMatrix);
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -564,18 +496,6 @@ void testAnchorRadiusChecker(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 void testAnchorMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     cout << "\n\n===== Testing Marking of the Fairletts With Anchors =====\n" << endl;
 
@@ -585,6 +505,42 @@ void testAnchorMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     
     printf("Alle Punkte direkt nach dem Markieren:\n");
     printAllpoints(clusteredPoints);
+
+}
+
+
+
+
+
+
+void testCalculatingNearestCenter(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing Calculating the Nearest Centers of Points =====\n" << endl;
+
+	// Ganz normal Gonzalez machen
+	Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, 2);
+	cout << "MaxRadius (PlainGonzalez): " << returnValues->maxRadius << endl;
+
+	// Punkte und Zentren zum visuellen Vergleich ausgeben
+	cout << "Points: " << endl;
+	printAllpoints(returnValues->clusteredPoints);
+	cout << "\nCenters: " << endl;
+	printAllpoints(returnValues->centers);
+
+	// Berechen des Array
+	vector<int>* nearestCenters = fastAnchorClustering::getNearesCenters(returnValues->clusteredPoints, returnValues->centers);
+
+	// Array ausgeben
+	cout << "\nNearestCenter Array: " << endl;
+	for (int i = 0; i < (int) nearestCenters->size(); i++){
+		cout << std::setw(3) << i << ": " << "\t- Center: " << nearestCenters->at(i) << endl;
+	}
+
+	// Nearest Center wieder freigeben
+	delete(nearestCenters);
+
+
+    // Struct für Gonzaleswerte wieder freigeben
+	Gonzalez::deleteGonzalezReturns(returnValues);
 
 }
 

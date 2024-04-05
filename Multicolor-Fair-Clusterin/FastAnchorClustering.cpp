@@ -63,22 +63,73 @@ void fastAnchorClustering::deleteFastAnchorReturns(FastAnchorReturnValues* value
 
 // * * * =========== Clustering with Fairlets =========== * * * //
 void fastAnchorClustering::clusterFairlettPoints(FastAnchorReturnValues* returnValues, int k){
-    // Nur Rote Punkte holen
-    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(returnValues->clusteredPoints, RED);
+    // Nur Punkten welche zu einem Fairlett gehören holen
+    vector<ColoredPoint>* fairlettPoints = ColoredPoint::getPointsOfFairletts(returnValues->clusteredPoints);
 
-    // Gonzalez mit Roten Punkten
-    Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeGonzalez(redPoints, k);
+    // Gonzalez mit Punkten welche zu einem Fairlett gehören
+    Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeGonzalez(fairlettPoints, k);
+
+    // ============================
 
     // Punkte in Clustered Points aktuallisieren
-    // ============= TO-DO ============== //
+    // erstmal Zentren aktuallisieren
 
+    // Partner der Zentren zuweißen
+
+    // Alle anderen Punkte welche keine Ausreißer sind ihr Cluster zuweißen
+
+    // ============================
     // Speicher wieder Freigeben
-    delete redPoints;
+    delete fairlettPoints;
     Gonzalez::deleteGonzalezReturns(gonzalezValues);
 }
 
 
 
+
+void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
+    // Nearest Center berechnen
+    
+    
+    
+    // Index, wievielter Punkt zugeteilt wurde
+    int filterIndex = 0;
+    
+    // Durch alle Punkte (Alle Farben) durchgehen
+    for (int i = 0; i < (int) realPoints->size(); i++){
+        // Falls das ein roter Punkt ist must dieser Aktuallisiert werden
+        if (realPoints->at(i).getColor() == RED){
+            // Überschreiben des Clusters mit der Nummer die der Gefilterte Punkt hatte
+            realPoints->at(i).setCluster(filteredPoints->at(filterIndex).getCluster());
+
+            // Noch überprüfen ob der Punkt vielleicht ein Zentrum ist
+            if (filteredPoints->at(filterIndex).getIsCenter()){
+                realPoints->at(i).setToCenter();
+                centers->push_back(realPoints->at(i));
+            }
+
+            // einen Punkt bei den Gefilterten weiter gehen
+            filterIndex++;
+        }
+        
+    }
+    
+    // Sanity-Check
+    if(filterIndex < (int) filteredPoints->size()){
+        printf("ERROR: von den %d an roten Punkten wurden nicht alle benutzt zum Aktuallisieren sondern nur %d\n", (int) filteredPoints->size(), filterIndex);
+    }
+
+    // Nearest Center wieder freigeben
+
+}
+
+
+
+
+
+
+
+// * * * =========== Utility =========== * * * //
 double fastAnchorClustering::calculateMaxRadius(vector<ColoredPoint> clusteredPoints, int k){
     // Liste für die Radii aller Cluster anlegen
     vector<double> allMaxRadii;
@@ -134,39 +185,40 @@ double fastAnchorClustering::calculateMaxRadius(vector<ColoredPoint> clusteredPo
 
 
 
-void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* realPoints, vector<ColoredPoint>* centers, vector<ColoredPoint>* filteredPoints){
-    // Index, wievielter Punkt zugeteilt wurde
-    int filterIndex = 0;
-    
-    // Durch alle Punkte (Alle Farben) durchgehen
-    for (int i = 0; i < (int) realPoints->size(); i++){
-        // Falls das ein roter Punkt ist must dieser Aktuallisiert werden
-        if (realPoints->at(i).getColor() == RED){
-            // Überschreiben des Clusters mit der Nummer die der Gefilterte Punkt hatte
-            realPoints->at(i).setCluster(filteredPoints->at(filterIndex).getCluster());
 
-            // Noch überprüfen ob der Punkt vielleicht ein Zentrum ist
-            if (filteredPoints->at(filterIndex).getIsCenter()){
-                realPoints->at(i).setToCenter();
-                centers->push_back(realPoints->at(i));
-            }
 
-            // einen Punkt bei den Gefilterten weiter gehen
-            filterIndex++;
-        }
-        
+
+vector<int>* fastAnchorClustering::getNearesCenters(vector<ColoredPoint>* points, vector<ColoredPoint>* centers){
+    // Neues Array erstellen
+    vector<int>* nearestCenters = new vector<int>();
+    nearestCenters->resize(points->size());
+
+    // Für jeden Punkt sein nächstes Cluster suchen
+    for (int i = 0; i < (int) points->size(); i++){
+        nearestCenters->at(i) = getNextCenterOfPoint(points->at(i), centers);
     }
     
-    // Sanity-Check
-    if(filterIndex < (int) filteredPoints->size()){
-        printf("ERROR: von den %d an roten Punkten wurden nicht alle benutzt zum Aktuallisieren sondern nur %d\n", (int) filteredPoints->size(), filterIndex);
-    }
-
+    return nearestCenters;
 }
 
 
+int fastAnchorClustering::getNextCenterOfPoint(ColoredPoint singlePoint, vector<ColoredPoint>* centers){
+    // Als Startwert mal das erste Zentrum wählen
+    int nearestCluster = 0;
+    double closestDistance = singlePoint.distTo(centers->at(0));
 
-void fastAnchorClustering::updateClusterOfOutliers(vector<ColoredPoint>* points){
+    // Durch alle anderen Zentren durchgehen und schauen ob es näher dran ist
+    for (int i = 1; i < (int) centers->size(); i++){
+        // Neue Distanz berechnen
+        double newDistance = singlePoint.distTo(centers->at(i));
 
+        // Ist dieses Zentrum besser?
+        if (newDistance < closestDistance){
+            // Neue Daten abspeichern
+            nearestCluster = i;
+            closestDistance = newDistance;
+        }
+    }
 
+    return nearestCluster;
 }
