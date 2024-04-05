@@ -28,6 +28,7 @@ void testFairRedClustering(vector<ColoredPoint>*, int);
 void testFairlettFlitering(vector<ColoredPoint>*);
 void testAnchorMatrixFill(vector<ColoredPoint>*);
 void testAnchorRadiusChecker(vector<ColoredPoint>*);
+void testAnchorMarkingFairlets(vector<ColoredPoint>*);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -132,8 +133,13 @@ int main(int argc, char *argv[]) {
 	// ==== Testing Calculation of Anchormatrix ==== ///
 	//testAnchorMatrixFill(points);
 
+
 	// ==== Testing Searching Opt Rad with Anchors ==== ///
-	testAnchorRadiusChecker(unfairPoints);
+	//testAnchorRadiusChecker(unfairPoints);
+
+
+	// ==== Mark the Fairletts ==== //
+    testAnchorMarkingFairlets(unfairPoints);
 
 
 
@@ -556,6 +562,31 @@ void testAnchorRadiusChecker(vector<ColoredPoint>* points){
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void testAnchorMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
+    cout << "\n\n===== Testing Marking of the Fairletts With Anchors =====\n" << endl;
+
+    double fairlettDistance = fastAnchorFairlett::markFairletts(clusteredPoints);
+
+    printf("Der größte Abstand in einem Fairlett ist %f\n", fairlettDistance);
+    
+    printf("Alle Punkte direkt nach dem Markieren:\n");
+    printAllpoints(clusteredPoints);
+
+}
 
 
 

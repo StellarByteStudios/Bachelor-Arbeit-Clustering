@@ -60,7 +60,7 @@ namespace fastAnchorFairlett{
     int mapIDtoIndexByColor(int, Pointcolor, int);
 
     // Marks the Point in the base List with the new Fairlett ID
-    void markSinglePointWithFairlett(int, int, Pointcolor, int, vector<ColoredPoint>*);
+    void markFairlettWithAnchor(int, int, int, Pointcolor, int, vector<ColoredPoint>*); // === TO-DO ===
 
     // Gets the Index of the nth Point of a certain color
     int getTrueIndexOfPoint(int, Pointcolor, int, vector<ColoredPoint>*);

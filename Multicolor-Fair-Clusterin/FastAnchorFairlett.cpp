@@ -26,6 +26,9 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
 	FGraphData gData;
 	CapacityMap capacity(g);
 
+    // Ankermatrix hinzufügen
+    gData.anchorDistance = anchorMatrix;
+
     // Graph Initialisieren
     fastAnchorFlow::buildupGraphFromAnchorDist(g, gData, capacity, optRad, points);
     printProcess("--build Graph-- ");
@@ -41,13 +44,13 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
 
 
     // Main Fairletts bilden
-    //int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points, );
+    int fairlettCounter = markMainNodes(g, *preflow, gData.mainArcs, nRed, points, anchorMatrix);
     printProcess("--marked Fairlets-- ");    
 
     // Ausreißer markieren
     int numOfOutlier = markOutliers(g, *preflow, gData.targetArcs, nRed, points);
     printProcess("--marked outlier-- ");
-    //printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
+    printProcess("----number of fairletts: " << fairlettCounter << ";\tnuber of outlier: " << numOfOutlier <<" --");
 
     // Aufräumen 
     delete redPoints;
@@ -59,7 +62,7 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
 
 int fastAnchorFairlett::markMainNodes(const Graph& g, const Flow& preflow, 
                                     vector<Arc> mainArcs, int nRed, 
-                                    vector<ColoredPoint>* points, vector<vector<Anchor>>& anchorMatrix){
+                                    vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix){
 
     int fairlettCounter = 0;
 
@@ -74,9 +77,17 @@ int fastAnchorFairlett::markMainNodes(const Graph& g, const Flow& preflow,
         Node redNode = g.source(mainArcs.at(i));
         Node blueNode = g.target(mainArcs.at(i));
 
+        // FarbIndex herausfinden
+        int redIndex = mapIDtoIndexByColor(g.id(redNode), RED, nRed);
+        int blueIndex = mapIDtoIndexByColor(g.id(blueNode), BLUE, nRed);
+
+        // Ankerknoten bestimmen
+        int anchorID = anchorMatrix[redIndex][blueIndex].trueAnchorID;
+
         // Echte Punkte mit fairlettID markieren
-        markSinglePointWithFairlett(fairlettCounter, g.id(redNode), RED, nRed, points);
-        markSinglePointWithFairlett(fairlettCounter, g.id(blueNode), BLUE, nRed, points);
+        markFairlettWithAnchor(fairlettCounter, anchorID, g.id(redNode), RED, nRed, points);
+        markFairlettWithAnchor(fairlettCounter, anchorID, g.id(blueNode), BLUE, nRed, points);
+
 
         // IDs hochzählen
         fairlettCounter++;
@@ -103,7 +114,7 @@ int fastAnchorFairlett::markOutliers(const Graph& g, const Flow& preflow,
         Node blueNode = g.source(targetArcs.at(i));
 
         // Echte Punkte mit fairlettID markieren
-        markSinglePointWithFairlett(-2, g.id(blueNode), BLUE, nRed, points);
+        markFairlettWithAnchor(-2, -2, g.id(blueNode), BLUE, nRed, points);
 
         // Anzahl hochzählen
         outlier++;
@@ -465,12 +476,15 @@ int fastAnchorFairlett::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
 
 
 
-void fastAnchorFairlett::markSinglePointWithFairlett(int fairlettID, int nodeID, Pointcolor color, int nRed, vector<ColoredPoint>* points){
+void fastAnchorFairlett::markFairlettWithAnchor(int fairlettID, int anchorID, int nodeID, Pointcolor color, int nRed, vector<ColoredPoint>* points){
     // Stelle finden an welcher der Punkt in der echten Liste ist
     int trueIndex = getTrueIndexOfPoint(nodeID, color, nRed, points);
 
     // FairlettID an dieser Stelle abändern
     points->at(trueIndex).setFairlettID(fairlettID);
+
+    // AnkerID an dieser Stelle abändern
+    points->at(trueIndex).setAnchorID(anchorID);
 
     return;
 }
@@ -478,10 +492,9 @@ void fastAnchorFairlett::markSinglePointWithFairlett(int fairlettID, int nodeID,
 
 
 int fastAnchorFairlett::getTrueIndexOfPoint(int colorOnlyIndex, Pointcolor color, int nRed, vector<ColoredPoint>* points){
-        // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
+    // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
     int colorIndex = mapIDtoIndexByColor(colorOnlyIndex, color, nRed);
 
-    ///*
     // Index des entsprechenden Punktes suchen
     int trueIndex = -1;
     // So lange durchgehen bis ich den richtigen Index gefunden habe oder am Ende der Liste bin
