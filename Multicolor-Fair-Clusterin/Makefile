@@ -5,8 +5,8 @@ TESTNAME = Clustering-Test
 
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
-OUTPUTFILENAME = ClusterOut.csv
-CLUSTERNUM = 10
+OUTPUTFILENAME = ClusterOut2.csv
+CLUSTERNUM = 15
 
 TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
@@ -57,7 +57,8 @@ runTestProcess: $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
 	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
 	./$(TESTNAME) $(TESTARGS) 
 
-
+testAutofeeder: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
+	/bin/bash ./AlgFeeder.sh -i $(INPUTFILE) -o $(OUTPUTFOLDER) -n $(OUTPUTFILENAME) -c $(CLUSTERNUM) -a r
 
 
 printVar: Makefile
