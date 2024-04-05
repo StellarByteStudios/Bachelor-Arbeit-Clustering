@@ -34,14 +34,16 @@ namespace fastAnchorClustering{
     // clusters points who are in a fairlett with Gonzalez algorithm
     void clusterFairlettPoints(FastAnchorReturnValues*, int);  // === TO-DO ===
 
+    // Updates the rest of the Points which are not Outliers
+    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+
     // Updates the centers from Gonzalez Returns to FastAnchorReturns
     void updateCentersOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
 
     // Updates the Cluster of all Points which partners are Centers
     void updateCenterPartners(vector<ColoredPoint>*, vector<ColoredPoint>*); // === TO-DO ===
 
-    // Updates the rest of the Points which are not Outliers
-    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+
 
 
 
