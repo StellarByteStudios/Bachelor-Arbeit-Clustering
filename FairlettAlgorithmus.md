@@ -147,8 +147,9 @@ CapacityMap capacity(graph);
   * Falls ja:
     * Rechne Targetindex dieser Kante um, welcher blaue Knoten das ist
     * Entsprechende Knoten in den Main Daten die Fairlett-ID mit -2 Überschreiben
-> Definiere für Fairlett-ID:  
->   ID >= 0: Fairlettzugehörigkeit
+    * Gleiches vorgehen mit der Anker-ID
+> Definiere für Fairlett/Anchor-ID:  
+>   ID >= 0: Fairlettzugehörigkeit/Anker
 >   ID = -1: Fehler/Defaultwert
 >   ID = -2: Ausreißer
 
