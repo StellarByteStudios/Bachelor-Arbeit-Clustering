@@ -52,6 +52,9 @@ double fastAnchorFairlett::markFairletts(vector<ColoredPoint>* points){
     printProcess("--marked outlier-- ");
     printProcess("----number of fairletts: " << fairlettCounter << ";\tnumber of outlier: " << numOfOutlier <<" --");
 
+    // Sanaty-Check
+    fairlettPartnerSanaty(points);
+
     // Aufräumen 
     delete redPoints;
     delete preflow;
@@ -542,5 +545,35 @@ void fastAnchorFairlett::printDistMatrix(const std::vector<std::vector<double>>&
             std::cout << element << " ";
         }
         std::cout << std::endl;
+    }
+}
+
+void fastAnchorFairlett::fairlettPartnerSanaty(vector<ColoredPoint>* markedPoints){
+
+    // Neue liste an FairlettIDs erstellen
+    vector<int> fairlettMembers;
+    fairlettMembers.resize(markedPoints->size());
+
+
+    // für jede mögliche ID durchgehen
+    for (int fairlettID = 0; fairlettID < (int) markedPoints->size(); fairlettID++){
+        //printf("=============== Sanatycheck: Checke Fairlett %d\n", fairlettID);
+        // Alle Punkte durchgehen
+        int members = 0;
+        for (int pointIndex = 0; pointIndex < (int) markedPoints->size(); pointIndex++){
+            // Falls ein Member dieses Fairletts gefunden wird hochzälen
+            if (markedPoints->at(pointIndex).getFairlettID() == fairlettID){
+                members++;
+            }
+        }
+        // Membercout übertragen
+        fairlettMembers.at(fairlettID) = members;
+    }
+
+    // Durch die Member durchgehen, ob da was komisch ist
+    for (int i = 0; i < (int) fairlettMembers.size(); i++){
+        if (fairlettMembers.at(i) > 2){
+            printf("ERROR: Sanaty-Check \"FairlettMemberSize\"failed\nFairlett %d has %d members\n", i, fairlettMembers.at(i));
+        }
     }
 }

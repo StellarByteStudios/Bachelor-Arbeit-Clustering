@@ -70,7 +70,7 @@ void fastAnchorClustering::clusterFairlettPoints(FastAnchorReturnValues* returnV
     //printf("Wie viele Punke gibt es, welche in fairletts sind?: %d\n", (int) fairlettPoints->size());
 
     // Gonzalez mit Punkten welche zu einem Fairlett gehören
-    Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeGonzalez(fairlettPoints, k);
+    Gonzalez::GonzalezReturnValues* gonzalezValues = Gonzalez::makeAwareGonzalez(fairlettPoints, k);
     printProcess("----made Gonzalez with only Fairlett-points");
 
     // Punkte in Clustered Points aktuallisieren

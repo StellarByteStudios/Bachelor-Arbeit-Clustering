@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import math
 
 class Colorpoint:
-    def __init__(self, dim, isCenter, clusterAffiliation, color, coords, fairlettID=-1):
+    def __init__(self, dim, isCenter, clusterAffiliation, color, coords, fairlettID=-1, anchorID=-1):
         # Dimensionalität
         self.dim = dim
         
@@ -26,6 +26,9 @@ class Colorpoint:
         
         # Fairlettpartner
         self.fairlettID = fairlettID
+        
+        # Anker des Punktes
+        self.anchorID = anchorID
         
         
     # To-String-Methode für schönes anschauen
@@ -205,7 +208,7 @@ def parse_fair_points_from_list(rawDataList):
             coords.append(float(rawDataList[i][k]))
             
         # Point via Constructor
-        newPoint = Colorpoint(dim, center, cluster, color, coords, fairlettID=fairlett)
+        newPoint = Colorpoint(dim, center, cluster, color, coords, fairlettID=fairlett, anchorID=anchor)
         
         # add Point to list
         listOfPoints.append(newPoint)

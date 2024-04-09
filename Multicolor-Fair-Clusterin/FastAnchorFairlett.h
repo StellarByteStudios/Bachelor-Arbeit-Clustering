@@ -74,4 +74,6 @@ namespace fastAnchorFairlett{
     void printAnchorMatrix(const AnchorMatrix&); 
 
     void printDistMatrix(const vector<vector<double>>&);
+
+    void fairlettPartnerSanaty(vector<ColoredPoint>*);
 }

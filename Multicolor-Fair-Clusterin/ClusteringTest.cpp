@@ -31,6 +31,7 @@ void testAnchorRadiusChecker(vector<ColoredPoint>*);
 void testAnchorMarkingFairlets(vector<ColoredPoint>*);
 void testCalculatingNearestCenter(vector<ColoredPoint>*);
 void testFastAnchorClustering(vector<ColoredPoint>*, int);
+void testCenterAwareGonzalez(vector<ColoredPoint>*, int);
 
 void printAllpoints(vector<ColoredPoint>*);
 
@@ -73,7 +74,7 @@ int main(int argc, char *argv[]) {
 	
 	// ==== * ==== * ==== Gonzalez Testing ==== * ==== * ==== ///
 	// ==== Testing of Gonzalez ==== //
-	// vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
+	//vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
     //cout << "Alle Punkte direkt nach Gonzalez" << endl;
     //printAllpoints(clusteredPoints);
@@ -141,7 +142,7 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Mark the Fairletts ==== //
-    //testAnchorMarkingFairlets(unfairPoints);
+    //testAnchorMarkingFairlets(points);
 	
 
 	// ==== Test getting the nearest Centers ==== //
@@ -149,7 +150,11 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Fast-Anchor-Clustering ==== ///
-	testFastAnchorClustering(points, numberOfCluster);
+	//testFastAnchorClustering(points, numberOfCluster);
+
+
+	// ==== Testing Center-Aware Gonzalez ==== ///
+	testCenterAwareGonzalez(points, numberOfCluster);
 
 
 
@@ -191,6 +196,11 @@ vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>* points, int numberOfClu
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
 	}*/
+	// Geclusterte Puntke ausgeben
+	printAllpoints(returnValues->clusteredPoints);
+
+	// Zentren ausgeben
+	printAllpoints(returnValues->centers);
 
     // Punkte zum zurückgeben vorbereiten
     vector<ColoredPoint>* returnPoints = new vector<ColoredPoint>;
@@ -565,6 +575,9 @@ void testFastAnchorClustering(vector<ColoredPoint>* points, int k){
 	printf("\n\nAlle Punkte nach dem Clustern:\n");
     printAllpoints(clusteringValues->clusteredPoints);
 
+	//printf("\n\nAlle Punkte welche in Fairletts sind:\n");
+    //printAllpoints(ColoredPoint::getPointsOfFairletts(clusteringValues->clusteredPoints));
+
 	printf("\n\nJetzt nur die Zentren:\n");
     printAllpoints(clusteringValues->centers);
 
@@ -577,6 +590,43 @@ void testFastAnchorClustering(vector<ColoredPoint>* points, int k){
 
 
 
+
+
+
+
+
+
+
+
+
+void testCenterAwareGonzalez(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Center-Aware Gonzalez =====\n" << endl;
+
+	// Fairletts machen
+	double maxFairlettRadius = fastAnchorFairlett::markFairletts(points);
+
+	// Nur Punkten welche zu einem Fairlett gehören holen
+    vector<ColoredPoint>* fairlettPoints = ColoredPoint::getPointsOfFairletts(points);
+
+	// Algorithmus machen
+	Gonzalez::GonzalezReturnValues* clusteringValues = Gonzalez::makeAwareGonzalez(fairlettPoints, k);
+
+	// Ergebnisse ausgeben
+	printf("\n\nAlle Punkte nach dem Clustern:\n");
+    printAllpoints(clusteringValues->clusteredPoints);
+
+	//printf("\n\nAlle Punkte welche in Fairletts sind:\n");
+    //printAllpoints(ColoredPoint::getPointsOfFairletts(clusteringValues->clusteredPoints));
+
+	printf("\n\nJetzt nur die Zentren:\n");
+    printAllpoints(clusteringValues->centers);
+
+	printf("Maximaler Fairlettradius: %f \t Maximaler Clusterradius: %f\n", 
+		maxFairlettRadius, clusteringValues->maxRadius);
+
+	// Aufräumen
+	Gonzalez::deleteGonzalezReturns(clusteringValues);
+}
 
 
 

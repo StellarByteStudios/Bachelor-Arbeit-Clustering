@@ -39,4 +39,14 @@ namespace Gonzalez{
 	* @return max radius
 	*/
 	GonzalezReturnValues* makeGonzalez(vector<ColoredPoint>*, int);
-};
+
+
+	/* Gonzalez-Algorithm
+	* makes Gonzalez, but with fairlettpoints, where two partners can`t be
+	* both Centers
+	*/
+	GonzalezReturnValues* makeAwareGonzalez(vector<ColoredPoint>*, int);
+
+	// Finds the Index of the Fairlettpartner of Given Point
+	int getIndexOfPartner(ColoredPoint, int, vector<ColoredPoint>*);
+}
