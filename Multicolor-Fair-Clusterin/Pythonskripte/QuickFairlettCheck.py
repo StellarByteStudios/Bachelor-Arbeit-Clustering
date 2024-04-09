@@ -43,20 +43,21 @@ def main():
     # Nur die Punkte selbst mit Farbe ausgeben
     show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
-    # Algorithmus über Shell ausführen
-    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=False, alg=algs[dSetID])
-    
-    # Punkte einlesen
-    clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
-    
-    # Punkte mit Clustern zeigen
-    show_clustered_points(clusterdPoints, plotTitles[dSetID]+" - Clustered", k=numberOfClusters)
+    for i in range(1, 15):
+        # Algorithmus über Shell ausführen
+        do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=i, doCompiling=False, alg=algs[dSetID])
+        
+        # Punkte einlesen
+        clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
+        
+        # Punkte mit Clustern zeigen
+        show_clustered_points(clusterdPoints, plotTitles[dSetID]+f" - Clustered {i}", k=i)
     
     # Beides Als Bild abspeichern
-    save_clean_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Unclustered).jpg", 
-                    cleanPoints, plotTitles[dSetID] + " - Unclustered")
-    save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered).jpg", 
-                    clusterdPoints, plotTitles[dSetID] + " - Clustered")
+    #save_clean_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Unclustered).jpg", 
+    #                cleanPoints, plotTitles[dSetID] + " - Unclustered")
+    #save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered).jpg", 
+    #                clusterdPoints, plotTitles[dSetID] + " - Clustered")
     
     
     return

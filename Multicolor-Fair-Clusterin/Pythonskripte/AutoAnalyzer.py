@@ -18,7 +18,7 @@ def main():
     # Parameter (Später noch über schleifen)
     maxCluster = 15
     numOfSamples = 3
-    alg = "r"
+    alg = "f"
     processBar = False
     
     algPathAdd = "Gonzalez"
@@ -33,9 +33,6 @@ def main():
     compileBinary(withProcessBar=processBar)
     
     # # # Algorithmus ausführen
-    timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
  
     timestamps = [timeBank, timeCensus, timeDiabetes]
     
@@ -53,7 +50,7 @@ def main():
     
     
     # ====== Große Bilder zusammensetzen ====== #
-    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, algorithm=alg)    
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=alg)    
 
     return
 
@@ -263,7 +260,7 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     return
 
 
-def clue_pictures_together(samplename, pictureFolder, maxCluster, algorithm="g"):
+def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples = 20, algorithm="g"):
     print("\n# --------- Cluing Pictures together --------- #\n")
     
     # Zusammensetzen des Pfades
@@ -273,9 +270,9 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, algorithm="g")
     if(algorithm == "f"):
         algPathAdd = "FastClustering"
     
-    images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Cluster-{maxCluster}).jpg"]]
+    images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg"]]
     widths, heights = zip(*(i.size for i in images))
     
     total_width = sum(widths)
