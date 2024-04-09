@@ -33,6 +33,9 @@ def main():
     compileBinary(withProcessBar=processBar)
     
     # # # Algorithmus ausführen
+    timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
  
     timestamps = [timeBank, timeCensus, timeDiabetes]
     

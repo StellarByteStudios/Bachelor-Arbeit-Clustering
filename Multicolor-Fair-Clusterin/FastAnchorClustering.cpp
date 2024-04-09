@@ -272,7 +272,7 @@ vector<int>* fastAnchorClustering::getNearesCenters(vector<ColoredPoint>* points
 
 int fastAnchorClustering::getNextCenterOfPoint(ColoredPoint singlePoint, vector<ColoredPoint>* centers){
     // Als Startwert mal das erste Zentrum wählen
-    int nearestCluster = 0;
+    int nearestCluster = centers->at(0).getCluster();
     double closestDistance = singlePoint.distTo(centers->at(0));
 
     // Durch alle anderen Zentren durchgehen und schauen ob es näher dran ist
@@ -283,7 +283,7 @@ int fastAnchorClustering::getNextCenterOfPoint(ColoredPoint singlePoint, vector<
         // Ist dieses Zentrum besser?
         if (newDistance < closestDistance){
             // Neue Daten abspeichern
-            nearestCluster = i;
+            nearestCluster = centers->at(i).getCluster();
             closestDistance = newDistance;
         }
     }
