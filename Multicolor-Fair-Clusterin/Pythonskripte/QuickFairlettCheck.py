@@ -16,21 +16,24 @@ def main():
     dataFileNames = ["Data/RandomGenerated/HandmadeFairlettPoints.csv", 
                      "Data/Subsamples/diabetes/diabetesSample-3.csv", 
                      "Data/RandomGenerated/HandmadeFairlettPoints2.csv",
-                     "Data/RandomGenerated/HandmadeFairlettPoints.csv"]
+                     "Data/RandomGenerated/HandmadeFairlettPoints.csv",
+                     "Data/Subsamples/diabetes/diabetesSample-3.csv"]
     
     outputFileNames = ["Data/OutputData/FairlettTests/RedCluteringTest.csv", 
                        "Data/OutputData/FairlettTests/BigRedCluteringTest.csv", 
                        "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv",
-                       "Data/OutputData/FairlettTests/FastAnchorCluteringTest.csv"]
+                       "Data/OutputData/FairlettTests/FastAnchorCluteringTest.csv",
+                       "Data/OutputData/FairlettTests/BigFastAnchorCluteringTest.csv"]
     
-    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second", "Fast-Anchor Clustering"]
+    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second", 
+                  "Fast-Anchor Clustering", "Fast-Anchor Clustering Big"]
     
-    algs = ["r", "r", "r", "f"]
+    algs = ["r", "r", "r", "f", "f"]
     
     pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
     
     # Welches Dataset wird benutzt?
-    dSetID = 3
+    dSetID = 4
     
     numberOfClusters = 2
     
