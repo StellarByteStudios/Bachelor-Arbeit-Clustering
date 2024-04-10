@@ -56,15 +56,15 @@ def main():
             Points.read_fair_points("../" + outputFileNames[dSetID])
         
         # Punkte mit Clustern zeigen
-        #show_clustered_points(clusterdPoints, 
-        #                      plotTitles[dSetID]+f" - Clustered {i}", 
-        #                      k=i, showRadius=True, 
-        #                      connectToAnchor=False)
-        save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered {i}).jpg", 
-                            clusterdPoints, 
-                            plotTitles[dSetID]+f" - Clustered {i}", 
-                            k=i, showRadius=True, 
-                            connectToAnchor=False)
+        show_clustered_points(clusterdPoints, 
+                              plotTitles[dSetID]+f" - Clustered {i}", 
+                              k=i, showRadius=True, 
+                              connectToAnchor=False)
+        #save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered {i}).jpg", 
+        #                    clusterdPoints, 
+        #                    plotTitles[dSetID]+f" - Clustered {i}", 
+        #                    k=i, showRadius=True, 
+        #                    connectToAnchor=False)
     #"""
     
     """
