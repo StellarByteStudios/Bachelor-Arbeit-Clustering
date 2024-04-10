@@ -10,6 +10,10 @@
 #include "RedCenterClustering.h"
 #include "GraphFlow.h"
 
+#include "FastAnchorClustering.h"
+#include "FastAnchorFairlett.h"
+#include "FastAnchorFlow.h"
+
 
 // Declaration of Test functions
 vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>*, int);
@@ -21,9 +25,17 @@ void testMarkingFairlets(vector<ColoredPoint>*);
 void testColorFiltering(vector<ColoredPoint>*);
 void testOnlyRedClustering(vector<ColoredPoint>*, int);
 void testFairRedClustering(vector<ColoredPoint>*, int);
-
+void testFairlettFlitering(vector<ColoredPoint>*);
+void testAnchorMatrixFill(vector<ColoredPoint>*);
+void testAnchorRadiusChecker(vector<ColoredPoint>*);
+void testAnchorMarkingFairlets(vector<ColoredPoint>*);
+void testCalculatingNearestCenter(vector<ColoredPoint>*);
+void testFastAnchorClustering(vector<ColoredPoint>*, int);
+void testCenterAwareGonzalez(vector<ColoredPoint>*, int);
 
 void printAllpoints(vector<ColoredPoint>*);
+
+void localPrintAnchorMatrix(const vector<vector<Anchor>>&);
 
 void savePointsToFile(string, vector<ColoredPoint>*);
 
@@ -55,14 +67,14 @@ int main(int argc, char *argv[]) {
 	vector<ColoredPoint>* points = parser.parseFile();
     
     // Get new Points
-	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt";
+	string unfairHandpointsFile = "Data/RandomGenerated/HandmadeFairlettPoints.csv"; //"Data/RandomGenerated/Unfair-Twocolor-2D.txt";
 	parser =  PointParser(unfairHandpointsFile);
 	vector<ColoredPoint>* unfairPoints = parser.parseFile();
 	
 	
-	
+	// ==== * ==== * ==== Gonzalez Testing ==== * ==== * ==== ///
 	// ==== Testing of Gonzalez ==== //
-	// vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
+	//vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
     
     //cout << "Alle Punkte direkt nach Gonzalez" << endl;
     //printAllpoints(clusteredPoints);
@@ -74,6 +86,9 @@ int main(int argc, char *argv[]) {
 
 
 
+
+
+	// ==== * ==== * ==== Red-Clustering Testing ==== * ==== * ==== ///
 	// ==== Testing graph Buildup ==== //
     //testGraphBuildup(points);
 
@@ -104,7 +119,44 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Fair-Red-Clustering ==== ///
-	testFairRedClustering(points, numberOfCluster);
+	//testFairRedClustering(points, numberOfCluster);
+
+
+
+
+
+
+
+
+	// ==== * ==== * ==== Fast-Anchor Testing ==== * ==== * ==== ///
+	// ==== Testing Fair-Red-Clustering ==== ///
+	//testFairlettFlitering(unfairPoints);
+
+
+	// ==== Testing Calculation of Anchormatrix ==== ///
+	//testAnchorMatrixFill(points);
+
+
+	// ==== Testing Searching Opt Rad with Anchors ==== ///
+	//testAnchorRadiusChecker(unfairPoints);
+
+
+	// ==== Mark the Fairletts ==== //
+    //testAnchorMarkingFairlets(points);
+	
+
+	// ==== Test getting the nearest Centers ==== //
+    //testCalculatingNearestCenter(unfairPoints);
+
+
+	// ==== Testing Fast-Anchor-Clustering ==== ///
+	//testFastAnchorClustering(points, numberOfCluster);
+
+
+	// ==== Testing Center-Aware Gonzalez ==== ///
+	testCenterAwareGonzalez(points, numberOfCluster);
+
+
 
 
     // ==== Write Clusterdata into File ==== //
@@ -144,6 +196,11 @@ vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>* points, int numberOfClu
 	for (int i = 0; i < (int) returnValues->centers->size(); i++){
 		cout << "\t- " << returnValues->centers->at(i).toString() << endl;
 	}*/
+	// Geclusterte Puntke ausgeben
+	printAllpoints(returnValues->clusteredPoints);
+
+	// Zentren ausgeben
+	printAllpoints(returnValues->centers);
 
     // Punkte zum zurückgeben vorbereiten
     vector<ColoredPoint>* returnPoints = new vector<ColoredPoint>;
@@ -163,9 +220,6 @@ vector<ColoredPoint>* testGonzalez(vector<ColoredPoint>* points, int numberOfClu
 
 
 
-
-
-
 void testMaximumRadiusFunction(vector<ColoredPoint>* clusteredPoints, int numberOfCluster){
     cout << "\n\n===== Testing Radius checker =====\n" << endl;
     double maxRadiusViaFunction = redclustering::calculateMaxRadius(*clusteredPoints, numberOfCluster);
@@ -173,13 +227,6 @@ void testMaximumRadiusFunction(vector<ColoredPoint>* clusteredPoints, int number
 	cout << "MaxRadius (Funktion): " << maxRadiusViaFunction << endl;
     return;
 }
-
-
-
-
-
-
-
 
 
 
@@ -228,13 +275,6 @@ void testGraphBuildup(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
 void testRadiusChecker(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing Radius checker =====\n" << endl;
 
@@ -265,11 +305,6 @@ void testRadiusChecker(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
 void testCalculationOfAllRadii(vector<ColoredPoint>* points){
     cout << "\n\n===== Testing to Calculate all Radii =====\n" << endl;
     vector<double>* potRadii = fairlettFinder::calculateAllRadii(points);
@@ -288,12 +323,6 @@ void testCalculationOfAllRadii(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
 void testMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     cout << "\n\n===== Testing Marking of the Fairletts =====\n" << endl;
 
@@ -305,13 +334,6 @@ void testMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
     printAllpoints(clusteredPoints);
 
 }
-
-
-
-
-
-
-
 
 
 
@@ -350,13 +372,6 @@ void testColorFiltering(vector<ColoredPoint>* points){
 
 
 
-
-
-
-
-
-
-
 void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 	cout << "\n\n===== Testing Clustering of only red points =====\n" << endl;
 
@@ -384,11 +399,6 @@ void testOnlyRedClustering(vector<ColoredPoint>* points, int k){
 
 
 
-
-
-
-
-
 void testFairRedClustering(vector<ColoredPoint>* points, int k){
 	cout << "\n\n===== Testing Fair-Clustering with Red-Clustering =====\n" << endl;
 
@@ -409,6 +419,229 @@ void testFairRedClustering(vector<ColoredPoint>* points, int k){
 
 	redclustering::deleteFairFlowReturns(fairValues);
 }
+
+
+
+
+
+
+void testFairlettFlitering(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing Filter of Fairlets =====\n" << endl;
+	// Fairletts in Punkten markieren
+	fairlettFinder::markFairletts(points);
+
+	// Punkte rausfiltern
+	vector<ColoredPoint>* onlyFairlets = ColoredPoint::getPointsOfFairletts(points);
+
+	// Punkte ungefiltert ausgeben
+	cout << "=== Alle Punkte ungefiltert ===" << endl;
+	printAllpoints(points);
+
+	// Puntke gefiltert ausgeben
+	cout << "=== Alle Punkte ungefiltert ===" << endl;
+	printAllpoints(onlyFairlets);
+
+
+	// Aufräumen
+	delete(onlyFairlets);
+}
+
+
+
+
+
+
+void testAnchorMatrixFill(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing the calculating of Anchors =====\n" << endl;
+
+	// Matrix Anlegen
+	vector<vector<fastAnchorFlow::Anchor>> anchorMatrix;
+
+	// Anker berechnen
+	fastAnchorFairlett::calculateAnchors(points, anchorMatrix);
+	
+
+	// Punkte alle ausgeben
+	cout << "=== Alle Punkte ===" << endl;
+	printAllpoints(points);
+
+	// Matrix der Anker ausgeben
+	cout << "=== AnkerMatrix ===" << endl;
+	fastAnchorFairlett::printAnchorMatrix(anchorMatrix);
+}
+
+
+
+
+
+
+void testAnchorRadiusChecker(vector<ColoredPoint>* points){
+    cout << "\n\n===== Testing Searching Opt Rad with Anchors =====\n" << endl;
+
+	// Farben richtig rum haben
+	fastAnchorFairlett::makeCritFeatureSmalestFirst(points);
+
+	// Anker berechnen
+	AnchorMatrix aMatrix;
+	fastAnchorFairlett::calculateAnchors(points, aMatrix);
+
+	// Ankermatrix ausgeben
+	fastAnchorFairlett::printAnchorMatrix(aMatrix);
+
+	// Kleine Radius Testen
+	double radSmall = 5;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radSmall, fastAnchorFairlett::checkRadius(points, aMatrix, radSmall));
+
+	// Mittleren Radius Testen
+	double radMedium = 20;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radMedium, fastAnchorFairlett::checkRadius(points, aMatrix, radMedium));
+
+	// Großen Radius Testen
+	double radBig = 50;
+	printf("Gibt es ein erfolgreiches Matching bei r = %f? \t%d\n", radBig, fastAnchorFairlett::checkRadius(points, aMatrix, radBig));
+
+	// Optimalen Radius finden
+	double optRad = fastAnchorFairlett::findBinaryPotentionalRadius(points, aMatrix);
+
+	printf("Der Optimale Radius, bei dem Fairlets gebildet werden können ist %f\n", optRad);
+
+}
+
+
+
+
+
+
+void testAnchorMarkingFairlets(vector<ColoredPoint>* clusteredPoints){
+    cout << "\n\n===== Testing Marking of the Fairletts With Anchors =====\n" << endl;
+
+    double fairlettDistance = fastAnchorFairlett::markFairletts(clusteredPoints);
+
+    printf("Der größte Abstand in einem Fairlett ist %f\n", fairlettDistance);
+    
+    printf("Alle Punkte direkt nach dem Markieren:\n");
+    printAllpoints(clusteredPoints);
+
+}
+
+
+
+
+
+
+void testCalculatingNearestCenter(vector<ColoredPoint>* points){
+	cout << "\n\n===== Testing Calculating the Nearest Centers of Points =====\n" << endl;
+
+	// Ganz normal Gonzalez machen
+	Gonzalez::GonzalezReturnValues* returnValues = Gonzalez::makeGonzalez(points, 2);
+	cout << "MaxRadius (PlainGonzalez): " << returnValues->maxRadius << endl;
+
+	// Punkte und Zentren zum visuellen Vergleich ausgeben
+	cout << "Points: " << endl;
+	printAllpoints(returnValues->clusteredPoints);
+	cout << "\nCenters: " << endl;
+	printAllpoints(returnValues->centers);
+
+	// Berechen des Array
+	vector<int>* nearestCenters = fastAnchorClustering::getNearesCenters(returnValues->clusteredPoints, returnValues->centers);
+
+	// Array ausgeben
+	cout << "\nNearestCenter Array: " << endl;
+	for (int i = 0; i < (int) nearestCenters->size(); i++){
+		cout << std::setw(3) << i << ": " << "\t- Center: " << nearestCenters->at(i) << endl;
+	}
+
+	// Nearest Center wieder freigeben
+	delete(nearestCenters);
+
+
+    // Struct für Gonzaleswerte wieder freigeben
+	Gonzalez::deleteGonzalezReturns(returnValues);
+
+}
+
+
+
+
+
+
+void testFastAnchorClustering(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Fair-Clustering with Fast-Anchor-Clustering =====\n" << endl;
+
+	// Algorithmus machen
+	fastAnchorClustering::FastAnchorReturnValues* clusteringValues = fastAnchorClustering::makeFastAnchorClustering(points, k);
+
+	// Ergebnisse ausgeben
+	printf("\n\nAlle Punkte nach dem Clustern:\n");
+    printAllpoints(clusteringValues->clusteredPoints);
+
+	//printf("\n\nAlle Punkte welche in Fairletts sind:\n");
+    //printAllpoints(ColoredPoint::getPointsOfFairletts(clusteringValues->clusteredPoints));
+
+	printf("\n\nJetzt nur die Zentren:\n");
+    printAllpoints(clusteringValues->centers);
+
+	printf("Maximaler Fairlettradius: %f \t Maximaler Clusterradius: %f\n", 
+		clusteringValues->maxFairlettRadius, clusteringValues->maxClusterRadius);
+
+	// Aufräumen
+	fastAnchorClustering::deleteFastAnchorReturns(clusteringValues);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+void testCenterAwareGonzalez(vector<ColoredPoint>* points, int k){
+	cout << "\n\n===== Testing Center-Aware Gonzalez =====\n" << endl;
+
+	// Fairletts machen
+	double maxFairlettRadius = fastAnchorFairlett::markFairletts(points);
+
+	// Nur Punkten welche zu einem Fairlett gehören holen
+    vector<ColoredPoint>* fairlettPoints = ColoredPoint::getPointsOfFairletts(points);
+
+	// Algorithmus machen
+	Gonzalez::GonzalezReturnValues* clusteringValues = Gonzalez::makeAwareGonzalez(fairlettPoints, k);
+
+	// Ergebnisse ausgeben
+	printf("\n\nAlle Punkte nach dem Clustern:\n");
+    printAllpoints(clusteringValues->clusteredPoints);
+
+	//printf("\n\nAlle Punkte welche in Fairletts sind:\n");
+    //printAllpoints(ColoredPoint::getPointsOfFairletts(clusteringValues->clusteredPoints));
+
+	printf("\n\nJetzt nur die Zentren:\n");
+    printAllpoints(clusteringValues->centers);
+
+	printf("Maximaler Fairlettradius: %f \t Maximaler Clusterradius: %f\n", 
+		maxFairlettRadius, clusteringValues->maxRadius);
+
+	// Aufräumen
+	Gonzalez::deleteGonzalezReturns(clusteringValues);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

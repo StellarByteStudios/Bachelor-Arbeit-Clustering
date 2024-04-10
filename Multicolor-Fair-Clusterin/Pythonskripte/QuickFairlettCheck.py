@@ -15,18 +15,25 @@ def main():
     # Testdaten
     dataFileNames = ["Data/RandomGenerated/HandmadeFairlettPoints.csv", 
                      "Data/Subsamples/diabetes/diabetesSample-3.csv", 
-                     "Data/RandomGenerated/HandmadeFairlettPoints2.csv"]
+                     "Data/RandomGenerated/HandmadeFairlettPoints2.csv",
+                     "Data/RandomGenerated/HandmadeFairlettPoints.csv",
+                     "Data/Subsamples/diabetes/diabetesSample-3.csv"]
     
     outputFileNames = ["Data/OutputData/FairlettTests/RedCluteringTest.csv", 
                        "Data/OutputData/FairlettTests/BigRedCluteringTest.csv", 
-                       "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv"]
+                       "Data/OutputData/FairlettTests/SecondRedCluteringTest.csv",
+                       "Data/OutputData/FairlettTests/FastAnchorCluteringTest.csv",
+                       "Data/OutputData/FairlettTests/BigFastAnchorCluteringTest.csv"]
     
-    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second"]
+    plotTitles = ["Red Clustering", "Red Clustering Big", "Red-Clustering Second", 
+                  "Fast-Anchor Clustering", "Fast-Anchor Clustering Big"]
     
-    pictureFolder = "Data/OutputData/Pictures/FairlettTests/"
+    algs = ["r", "r", "r", "f", "f"]
+    
+    pictureFolder = "Data/OutputData/Pictures/FairlettTests/MultipleRadii1"
     
     # Welches Dataset wird benutzt?
-    dSetID = 1
+    dSetID = 4
     
     numberOfClusters = 2
     
@@ -36,20 +43,52 @@ def main():
     # Nur die Punkte selbst mit Farbe ausgeben
     show_clean_points(cleanPoints, plotTitles[dSetID] +" - Unclustered")
     
+    #"""
+    for i in range(1, 15):
+        # Algorithmus über Shell ausführen
+        do_algorithm(dataFileNames[dSetID], 
+                     outputFileNames[dSetID], 
+                     maxCluster=i, 
+                     doCompiling=False, alg=algs[dSetID])
+        
+        # Punkte einlesen
+        clusterdPoints, maxClusterRadius, maxFairlettRadius = \
+            Points.read_fair_points("../" + outputFileNames[dSetID])
+        
+        # Punkte mit Clustern zeigen
+        #show_clustered_points(clusterdPoints, 
+        #                      plotTitles[dSetID]+f" - Clustered {i}", 
+        #                      k=i, showRadius=True, 
+        #                      connectToAnchor=False)
+        save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered {i}).jpg", 
+                            clusterdPoints, 
+                            plotTitles[dSetID]+f" - Clustered {i}", 
+                            k=i, showRadius=True, 
+                            connectToAnchor=False)
+    #"""
+    
+    """
     # Algorithmus über Shell ausführen
-    do_algorithm(dataFileNames[dSetID], outputFileNames[dSetID], maxCluster=numberOfClusters, doCompiling=True)
+    do_algorithm(dataFileNames[dSetID], 
+                 outputFileNames[dSetID], 
+                 maxCluster=numberOfClusters, 
+                 doCompiling=False, alg=algs[dSetID])
     
     # Punkte einlesen
-    clusterdPoints, maxClusterRadius, maxFairlettRadius = Points.read_fair_points("../" + outputFileNames[dSetID])
+    clusterdPoints, maxClusterRadius, maxFairlettRadius = \
+        Points.read_fair_points("../" + outputFileNames[dSetID])
     
     # Punkte mit Clustern zeigen
-    show_clustered_points(clusterdPoints, plotTitles[dSetID]+" - Clustered", k=numberOfClusters)
+    show_clustered_points(clusterdPoints, 
+                          plotTitles[dSetID]+f" - Clustered {numberOfClusters}", 
+                          k=numberOfClusters, connectToAnchor=True)
     
+    """
     # Beides Als Bild abspeichern
     save_clean_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Unclustered).jpg", 
                     cleanPoints, plotTitles[dSetID] + " - Unclustered")
-    save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered).jpg", 
-                    clusterdPoints, plotTitles[dSetID] + " - Clustered")
+    #save_clustered_plot("../" + pictureFolder + f"{plotTitles[dSetID]} (Clustered).jpg", 
+    #                clusterdPoints, plotTitles[dSetID] + " - Clustered")
     
     
     return
@@ -95,21 +134,21 @@ def get_raw_points(fileName, dim=2):
 
 # # # =========== Algorithmus ausführen =========== # # #
 # # # Plot für die Punkte ohne das Clustering # # #
-def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2):   
+def do_algorithm(inputFileName, outputFileName, doCompiling=False, maxCluster=2, alg="r"):   
     # Programm kompilieren
     if(doCompiling):
         bash_command("cd .. && make buildProcessBar", ignoreStdout=False).communicate();
     
     
     # Shellcommand zusammensetzen
-    command = f"cd .. && ./Fair-Clustering ./{inputFileName} ./{outputFileName} {maxCluster} r"
-    print(command)
+    command = f"cd .. && ./Fair-Clustering ./{inputFileName} ./{outputFileName} {maxCluster} {alg}"
+    #print(command)
     # Prozess erzeugen
     process = bash_command(command, ignoreStdout=False)
 
     # Prozess starten
     process.communicate()
-    print(f"Cluster made for Sample: {inputFileName}")
+    #print(f"Cluster made for Sample: {inputFileName}")
     
     return
 
@@ -169,16 +208,16 @@ def construct_clean_points_plot(listOfPoints, title):
 
 
 # # # Plot für die Punkte welche geclusterd wurden # # #
-def show_clustered_points(listOfPoints, title, k=2):
-    construct_clustered_points_plot(listOfPoints, title, k).show()
+def show_clustered_points(listOfPoints, title, k=2, showRadius=True, connectToAnchor=False):
+    construct_clustered_points_plot(listOfPoints, title, k, showRadius, connectToAnchor).show()
     return
 
-def save_clustered_plot(fileName, listOfPoints, title, k=2):
-    construct_clustered_points_plot(listOfPoints, title, k).savefig(fileName)
+def save_clustered_plot(fileName, listOfPoints, title, k=2, showRadius=True, connectToAnchor=False):
+    construct_clustered_points_plot(listOfPoints, title, k, showRadius, connectToAnchor).savefig(fileName)
     return
 
 
-def construct_clustered_points_plot(listOfPoints, title, k):
+def construct_clustered_points_plot(listOfPoints, title, k, showRadius, connectToAnchor):
     fig, ax = plt.subplots(figsize=(5,5))
     
     # Ersten zwei Coordinaten
@@ -202,27 +241,47 @@ def construct_clustered_points_plot(listOfPoints, title, k):
     for i in range(0, len(listOfPoints)):
         if(listOfPoints[i].isCenter):
             ax.scatter(listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1], marker="+", s=250, c="black")
-            circle = plt.Circle((listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1]),
-                                    color="black", fill=False)
-            circle.set_radius(radii[listOfPoints[i].cluster])
-            ax.add_artist(circle)
+            if(showRadius):
+                circle = plt.Circle((listOfPoints[i].coordinates[0], listOfPoints[i].coordinates[1]),
+                                        color="black", fill=False)
+                circle.set_radius(radii[listOfPoints[i].cluster])
+                ax.add_artist(circle)
             
     # Linien zwischen Fairlett ziehen
-    for fairID in range(0, math.ceil(len(listOfPoints)/2)):
-        # Durch Liste durch gehen und Punkte suchen
-        fairlettPartners = []
-        for i in range(0, len(listOfPoints)):
-            if(listOfPoints[i].fairlettID == fairID):
-                fairlettPartners.append(listOfPoints[i])
-        
-        # Nun Linie zwischend diesen beiden ziehen
-        if(len(fairlettPartners) > 1):
+    if not (connectToAnchor):
+        for fairID in range(0, math.ceil(len(listOfPoints)/2)):
+            # Durch Liste durch gehen und Punkte suchen
+            fairlettPartners = []
+            for i in range(0, len(listOfPoints)):
+                if(listOfPoints[i].fairlettID == fairID):
+                    fairlettPartners.append(listOfPoints[i])
             
-            plt.plot([fairlettPartners[0].coordinates[0],fairlettPartners[1].coordinates[0]], 
-                     [fairlettPartners[0].coordinates[1],fairlettPartners[1].coordinates[1]])
-            #print(f"Linie gezogen Nr {fairID}")
-        #else:
-            #print(f"fairlettID {fairID} existiert nicht")
+            # Nun Linie zwischend diesen beiden ziehen
+            if(len(fairlettPartners) > 1):
+                
+                plt.plot([fairlettPartners[0].coordinates[0],fairlettPartners[1].coordinates[0]], 
+                         [fairlettPartners[0].coordinates[1],fairlettPartners[1].coordinates[1]])
+                #print(f"Linie gezogen Nr {fairID}")
+            #else:
+                #print(f"fairlettID {fairID} existiert nicht")
+    if (connectToAnchor):#
+        print("Anker werden markiert")
+        for anchorID in range(0, len(listOfPoints)):
+            # Durch Liste durch gehen und Punkte suchen
+            anchorUsers = []
+            for i in range(0, len(listOfPoints)):
+                if(listOfPoints[i].anchorID == anchorID):
+                    anchorUsers.append(listOfPoints[i])
+            
+            # Nun Linie zwischend diesen beiden ziehen
+            if(len(anchorUsers) > 0):
+                for i in range(len(anchorUsers)):
+                    
+                    plt.plot([anchorUsers[i].coordinates[0],listOfPoints[anchorID].coordinates[0]], 
+                             [anchorUsers[i].coordinates[1],listOfPoints[anchorID].coordinates[1]])
+            #        print(f"Linie gezogen Nr {anchorID}")
+            #else:
+            #    print(f"Anker {anchorID} wird nicht benutzt")
             
     return plt
 
@@ -254,7 +313,7 @@ def get_radius_of_cluster(clusterID, clustered_points):
     
     # Fehlerfall kein Zentrum gefunden
     if (center == -1):
-        print(f"Das Cluster {clusterID} besitz kein Zentrum")
+        #print(f"Das Cluster {clusterID} besitz kein Zentrum")
         return -1
     
     # Abstand zu allen Clustermitgliedern messen
@@ -274,6 +333,7 @@ def get_radii_of_clustering(clustered_points, k):
     # Liste für die Radien
     radii = []
     
+    """
     # Laufvariablen
     clu = 0
     highes_cluster = k
@@ -291,6 +351,15 @@ def get_radii_of_clustering(clustered_points, k):
             highes_cluster += 1
         
         clu += 1
+    """
+    
+    for clu in range(k):
+        # Radius eines Clusters mit der ID clu berechnen
+        radius_of_cluster = get_radius_of_cluster(clu, clustered_points)
+        # Diesen Radius der Liste hinzufügen
+        radii.append(radius_of_cluster)
+        
+    
     
     return radii
 

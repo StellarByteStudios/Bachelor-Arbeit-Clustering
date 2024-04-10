@@ -5,16 +5,20 @@ TESTNAME = Clustering-Test
 
 INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
 OUTPUTFOLDER = Data/OutputData/MakefileTest/
-OUTPUTFILENAME = ClusterOut.csv
-CLUSTERNUM = 10
+OUTPUTFILENAME = ClusterOut2.csv
+CLUSTERNUM = 15
 
 TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
 
 HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
 CPPSOURCE = ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
-CPPMAIN = ClusteringMain.cpp $(CPPSOURCE)
-CPPTEST = ClusteringTest.cpp $(CPPSOURCE)
+
+FASTHDATEIEN = FastAnchorClustering.h FastAnchorFairlett.h FastAnchorFlow.h
+FASTSOURCE = FastAnchorClustering.cpp FastAnchorFairlett.cpp FastAnchorFlow.cpp
+
+CPPMAIN = ClusteringMain.cpp $(CPPSOURCE) $(FASTSOURCE)
+CPPTEST = ClusteringTest.cpp $(CPPSOURCE) $(FASTSOURCE)
 
 LINKLIB = -lemon -L/home/stellarbyte/Installationen/Lemon-Lib/lib
 HEADERS = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
@@ -33,27 +37,28 @@ PROCESSBAR = -DPROCESS_BAR
 #$(BINNAME): $(HDATEIEN) $(CPPDATEIEN)
 #	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN) $(LINKLIB) $(HEADERS)
 	
-build: $(HDATEIEN) $(CPPMAIN)
+build: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
 	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS)
 
-buildProcessBar: $(HDATEIEN) $(CPPMAIN)
+buildProcessBar: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
 	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
 
 runTest: $(TESTNAME)
 	./$(TESTNAME) $(TESTARGS)
 
-$(TESTNAME): $(HDATEIEN) $(CPPTEST)
+$(TESTNAME): $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
 	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS)
 
 val: $(TESTNAME)
 	valgrind $(VALFLAGS) ./$(TESTNAME) $(TESTARGS) 
 
 
-runTestProcess: $(HDATEIEN) $(CPPTEST)
+runTestProcess: $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
 	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
 	./$(TESTNAME) $(TESTARGS) 
 
-
+testAutofeeder: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
+	/bin/bash ./AlgFeeder.sh -i $(INPUTFILE) -o $(OUTPUTFOLDER) -n $(OUTPUTFILENAME) -c $(CLUSTERNUM) -a r
 
 
 printVar: Makefile
