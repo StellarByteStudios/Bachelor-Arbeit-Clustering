@@ -1,8 +1,13 @@
 #include "RedCenterClustering.h"
-
 #include <iostream> // std::cout; std::endl
 
-//void printAllpointsHere(vector<ColoredPoint>* points);
+#ifdef PROCESS_BAR
+    #define printProcess(process) std::cout << process << endl;
+#else
+    #define printProcess(process)
+#endif
+
+
 
 
 // * * * =========== Using the Algorithm =========== * * * //
@@ -16,11 +21,13 @@ redclustering::FairFlowReturnValues* redclustering::makeFairRedClustering(vector
 
     // Clustern nur mit roten Punkten
 	clusterRedPoints(fairValues, k);
-    printf("--clustered only red Points-- ");
+    //printf("--clustered only red Points-- ");
+    printProcess("--clustered only red Points-- ")
 
     // Blaue Punkte über Fairletts zuweißen
     updateClusterOfBluePoints(fairValues->clusteredPoints);
-    printf("--updated all Clusters with Fairlett-- \n");
+    //printf("--updated all Clusters with Fairlett-- \n");
+    printProcess("--updated all Clusters with Fairlett-- ")
 
     // maximalen Radius der Cluster berechnen
     fairValues->maxClusterRadius = calculateMaxRadius(*fairValues->clusteredPoints, k); 

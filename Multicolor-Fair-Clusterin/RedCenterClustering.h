@@ -17,7 +17,7 @@ namespace redclustering{
 	};
 
     // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
-    FairFlowReturnValues* makeFairRedClustering(vector<ColoredPoint>*, int);  // * * TO-DO * * //
+    FairFlowReturnValues* makeFairRedClustering(vector<ColoredPoint>*, int);
 
     // Creating an empty Struct for Max-Flow-Clustering
 	FairFlowReturnValues* createFairFlowReturns(vector<ColoredPoint>*);
@@ -42,7 +42,7 @@ namespace redclustering{
 
     // Using the clustered red points and their fairlettID to asign 
     // the clusters to blue points. Includes outlier
-    void updateClusterOfBluePoints(vector<ColoredPoint>*);  // * * TO-DO * * //
+    void updateClusterOfBluePoints(vector<ColoredPoint>*);
 
     // Gets the FairlettID of a blue Point and searches for his red Partner
     // returns the index of the red partner

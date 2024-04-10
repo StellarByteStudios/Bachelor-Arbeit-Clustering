@@ -2,10 +2,6 @@
 #include <sstream>  // stringstream (String builder)
 #include <math.h>   // sqrt, pow
 
-#include <chrono>
-
-using namespace std::chrono;
-
 ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Dimensionen übertragen
 	this->dim = dimensions;
@@ -25,6 +21,9 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Keinem Fairlett zuweisen
 	this->fairlettID = -1;
 
+	// Keinem Anker zuweisen
+	this->anchorID = -1;
+
 	// Punkt ist erstmal kein Zentrum
 	this->isCenter = false;
 }
@@ -32,13 +31,8 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 ColoredPoint::~ColoredPoint(){}
 
 double ColoredPoint::distTo(ColoredPoint other){
-	//time_point startTime = high_resolution_clock::now();
 	// Rückgabevariable
 	double dist = 0;
-
-	//time_point timeAfterVar = high_resolution_clock::now();
-    //printf("\tZeit für Variable anlegen: %ld µSec\n", duration_cast<microseconds>(timeAfterVar - startTime).count());
-
 
 	//Euklidische Distanz. Erst quadrate aufsummieren
 	for (int i = 0; i < dim; i++){
@@ -48,16 +42,9 @@ double ColoredPoint::distTo(ColoredPoint other){
 		dist += simpleDist * simpleDist;
 	}
 
-	//time_point timeAfterSum = high_resolution_clock::now();
-    //printf("\tZeit für Quadratsumme bilden: %ld µSec\n", duration_cast<microseconds>(timeAfterSum - timeAfterVar).count());
-
 	// Wurzel ziehen
 	dist = sqrt(dist);
-
-	//time_point timeAfterRoot = high_resolution_clock::now();
-    //printf("\tZeit für Wurzel: %ld µSec\n", duration_cast<microseconds>(timeAfterRoot - timeAfterSum).count());
-	//printf("\t-->Ganze Zeit für die distTo Methode: %ld µSec\n", duration_cast<microseconds>(timeAfterRoot - startTime).count());
-
+	
 	return dist;
 }
 
@@ -88,6 +75,7 @@ string ColoredPoint::toString(){
 	} else {
 		stringStream << this->fairlettID << ";\t\t";
 	}
+	stringStream << "; AnchorID: " << this->anchorID;
 
 	stringStream << " Color: ";
 	switch (this->color){
@@ -119,6 +107,7 @@ string ColoredPoint::toCSV(){
 	stringStream << this->isCenter <<",";
 	stringStream << this->cluster <<",";
 	stringStream << this->fairlettID <<",";
+	stringStream << this->anchorID <<",";
 	stringStream << this->color <<",";
 	for (int i = 0; i < this->dim -1; i++){
 		stringStream << this->coordinates[i] << ",";
@@ -164,6 +153,14 @@ void ColoredPoint::setFairlettID(int fairlettID){
 	this->fairlettID = fairlettID;
 }
 
+int ColoredPoint::getAnchorID(){
+	return this->anchorID;
+}
+
+void ColoredPoint::setAnchorID(int anchorID){
+	this->anchorID = anchorID;
+}
+
 
 
 
@@ -186,3 +183,21 @@ vector<ColoredPoint>* ColoredPoint::getPointsOfColor(vector<ColoredPoint>* point
     return filteredPoints;
 }
 
+
+vector<ColoredPoint>* ColoredPoint::getPointsOfFairletts(vector<ColoredPoint>* points){
+	// Neuer Vector anlegen
+    vector<ColoredPoint>* filteredPoints = new vector<ColoredPoint>;
+
+    // Wie viele Punkte muss ich durchgehen
+    int n = (int) points->size();
+
+    for (int i = 0; i < n; i++){
+        // Falls der Punkt die richtige Farbe hat, hinzufügen
+        if(points->at(i).getFairlettID() >= 0){
+            filteredPoints->push_back(points->at(i));
+        }
+    }
+    
+    // den neuen, einfarbigen vector zurückgeben
+    return filteredPoints;
+}

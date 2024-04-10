@@ -5,8 +5,15 @@
 #include "ColoredPoint.h"
 #include "PointParser.h"
 #include "Gonzalez.h"
-#include "FairlettFinder.h"
+
 #include "RedCenterClustering.h"
+#include "FastAnchorClustering.h"
+
+#ifdef PROCESS_BAR
+    #define printProcess(process) std::cout << process << endl;
+#else
+    #define printProcess(process)
+#endif
 
 void savePointsToFile(string, vector<ColoredPoint>*, string);
 
@@ -66,7 +73,7 @@ int main(int argc, char *argv[]) {
 		// Free struct space of returnvalues
 		Gonzalez::deleteGonzalezReturns(returnValues);
 
-		cout << "Gonzalez without problems" << endl;
+		printProcess("Gonzalez without problems");
 		break;
 	}
 	case 'r':{
@@ -85,15 +92,29 @@ int main(int argc, char *argv[]) {
 		// Free struct space of returnvalues
 		redclustering::deleteFairFlowReturns(returnValues);
 
-		cout << "Red-Clustering without problems" << endl;
+		printProcess("Red-Clustering without problems");
 		break;
 	}
 	case 'f':{
-		cout << "ERROR: Fast-Anchor-Clustering is not implemented yet" << endl;
+		// ==== Fast-Anchor-Clustering Gonzalez ==== //
+		fastAnchorClustering::FastAnchorReturnValues * returnValues = fastAnchorClustering::makeFastAnchorClustering(points, numberOfCluster);
+
+		// Build Headder of File:
+		stringstream header;
+		header << "maxClusterRadius," << returnValues->maxClusterRadius << ",";
+		header << "maxFairletRadius," << returnValues->maxFairlettRadius;
+
+		// Save Clustering to File
+		savePointsToFile(outputFileName, returnValues->clusteredPoints, header.str());
+
+		// Free struct space of returnvalues
+		fastAnchorClustering::deleteFastAnchorReturns(returnValues);
+
+		printProcess("Fast-Anchor Clustering without problems");
 		break;
 	}
 	default:
-		cout << "ERROR: wrong case" << endl;
+		cout << "ERROR: Algorithm not Found!" << endl;
 		break;
 	}
 
@@ -101,14 +122,12 @@ int main(int argc, char *argv[]) {
 	// ==== Clear-Up ==== //
 	// vector für Punkte wieder Freigeben
 	delete points;
-
-	//cout << "\n-----------------\nEnd Program" << endl;
 }
 
 
 
 void savePointsToFile(string outputFileName, vector<ColoredPoint>* clusteredPoints, string header){
-    cout << "\n\n===== Write Data into File =====\n" << endl;
+    printProcess("\n===== Write Data into File =====\n");
 
 	ofstream outputFile = ofstream(outputFileName, ios::out);
 

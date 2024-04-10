@@ -16,9 +16,10 @@ from PIL import Image
 def main():
     
     # Parameter (Später noch über schleifen)
-    maxCluster = 30
-    numOfSamples = 15
-    alg = "r"
+    maxCluster = 15
+    numOfSamples = 3
+    alg = "f"
+    processBar = False
     
     algPathAdd = "Gonzalez"
     if(alg == "r"):
@@ -26,10 +27,10 @@ def main():
     if(alg == "f"):
         algPathAdd = "FastClustering"
         
-    pictureFolder = "../Data/OutputData/Pictures/{algPathAdd}Test"
+    pictureFolder = f"../Data/OutputData/Pictures/{algPathAdd}Test"
     
     # # # Binary Kompilieren
-    compileBinary()
+    compileBinary(withProcessBar=processBar)
     
     # # # Algorithmus ausführen
     timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
@@ -52,17 +53,22 @@ def main():
     
     
     # ====== Große Bilder zusammensetzen ====== #
-    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, algorithm=alg)    
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=alg)    
 
     return
 
 
 # # # Kompiliert die Binary über das Makefile # # #
-def compileBinary():
+def compileBinary(withProcessBar=False):
     print("Compiling Binary")
     
+    command = "make -C .. build"
+    if(withProcessBar):
+        command = command + "ProcessBar"
+        
+    print("Command:", command)
     # Subprozess bauen
-    process = bash_command("make -C .. build")
+    process = bash_command(command, ignoreStdout=False)
     # Prozess starten
     process.communicate()
     
@@ -99,14 +105,14 @@ def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20, algorithm = "g"
         #print(f"Der Bashbefehl wurde zusammengesetzt: {command}")
         
         # Prozess erzeugen
-        process = bash_command(command, ignoreStdout=True)
+        process = bash_command(command, ignoreStdout=False)
         # Zeitmessung Starten
         startTime = time.process_time_ns();
         # Prozess starten
         process.communicate()
         # Zeitmessung stoppen
         algoTimer.append(time.process_time_ns() - startTime)
-        print(f"Cluster made for Sample: {inputfile}")
+        print(f"# = # = # = Cluster made for Sample: {inputfile} = # = # = #")
     
     return algoTimer
 
@@ -156,7 +162,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     os.makedirs(pictureFolder, exist_ok=True) 
     print(f"picture Path: {pictureFolder}/{algPathAdd}-{samplename}(Cluster-{maxCluster}).jpg")
     print_radii(dfImportantValues, 
-                f"{pictureFolder}/{algPathAdd}-{samplename}(Cluster-{maxCluster}).jpg", 
+                f"{pictureFolder}/{algPathAdd}-{samplename}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
                 f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
 
     return
@@ -251,13 +257,13 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     ax.set_xlabel("Sample")
     ax.set_ylabel("time in ms")
     ax.legend()
-    plt.savefig(picturePath + f"/Timinganalysis{algorithmName}.jpg")
+    plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg")
     plt.show()   
     
     return
 
 
-def clue_pictures_together(samplename, pictureFolder, maxCluster, algorithm="g"):
+def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples = 20, algorithm="g"):
     print("\n# --------- Cluing Pictures together --------- #\n")
     
     # Zusammensetzen des Pfades
@@ -267,9 +273,9 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, algorithm="g")
     if(algorithm == "f"):
         algPathAdd = "FastClustering"
     
-    images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Cluster-{maxCluster}).jpg"]]
+    images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+                                      f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg"]]
     widths, heights = zip(*(i.size for i in images))
     
     total_width = sum(widths)

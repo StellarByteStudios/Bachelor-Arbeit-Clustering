@@ -18,7 +18,6 @@ public:
 	PointParser(string);
 
 	/* Destruktor
-	* Prints death Message
 	*/
 	~PointParser();
 
