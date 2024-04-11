@@ -20,14 +20,14 @@
             \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten
         \end{enumerate}
     Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle s und der Senke t, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt um Knoten verschiedener Farbe in einem Bipatiten Graphen zu Matchen.
-    Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
+    Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
 \section{Gonzalez}
-    Der Algorithmus von Gonzalez berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmusses hier verwendet.
+    Der Algorithmus von Gonzalez berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
     Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik und ein k welches die Anzahl an gewünschten Clustern angibt.
-    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der minimale Abstand zu einem der Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der minimale Abstand zu anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewießen zu welchem er den geringsten Abstand hat. 
-    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und der maximale Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
+    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximale Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
 \section{Fairletts}
     \begin{itemize}
@@ -38,6 +38,27 @@
 
 \section{Fair-Clustering mit Ausreißern}
     \begin{itemize}
-        \item was bringen die Fairletts
-        \item wie werden sie zu Zentren zugewießen
+        \item was bringen die Fairletts?
+        \item Was ist die bedeutung von Ausreißern
+        \item Wie wird die Anzahl an Ausreißern bestimmt
     \end{itemize}
+    
+    \subsection{Red-Clustering}
+        \begin{itemize}
+            \item was bringen die Fairletts
+            \item wie werden sie zu Zentren zugewießen
+            \item Erst Rot Clustern
+            \item Anschließend Blau zuweisen
+        \end{itemize}
+    
+
+    \subsection{Fast-Anchor-Clustering}
+        \begin{itemize}
+            \item wie sind die Fairletts hier anders?
+                \subitem Abstand zu Anker und nicht zu Partner
+            \item Clustern mit allen Punkten
+            \item Center-Aware Zuweisung
+                \subitem Zentrum zu eigenem Cluster
+                \subitem Zuweißen des Partners des Zentrums
+            \item Zuweißung über Anker
+        \end{itemize}
