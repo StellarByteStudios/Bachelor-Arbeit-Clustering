@@ -4,33 +4,33 @@
 \chapter{Aufbereiten der Daten}
 
     %Was waren die Ursprungsdaten, und wie habe ich diese Aufgebereitet (Subsampling und so)
-    Um vergleichbare Werte zu erhalten, haben wir uns an einem Paper orientiert, welches ebenfalls probiert hat Fair-k-Center zu lösen \cite{chierichetti2018fair}. Für die Vergleichbarkeit verwenden wir auch die selben Daten.
+    Um vergleichbare Werte zu erhalten, haben wir uns an einem Paper orientiert, welches ebenfalls probiert hat Fair-k-Center zu lösen \cite{chierichetti2018fair}. Für die Vergleichbarkeit haben wir auch die gleichen Daten verwendet.
 
 \section{Ursprungsdaten}
     In dem Chierichetti-Paper \cite{chierichetti2018fair} wurden 3 Unterschiedliche Datensätze verwendet. Diese sind:
     \begin{itemize}
         \item Daten eines US-Zensus \cite{misc_adult_2}
         \item Daten von Telefongesprächen einer Bank \cite{misc_bank_marketing_222}
-        \item Einen Diabetes-Datensatz, wobei der im Paper \cite{chierichetti2018fair} verlinkte Datensatz \cite{misc_diabetes_34_falsch} nicht der Richtige Datensatz sein kann (Er enthält andere Felder als die genannten). Nachforschungen haben herausgestellt, dass sie in Wirklichkeit einen anderen Diabetes-Datensatz \cite{misc_diabetes_130_richtig} benutzt haben.
+        \item Einen Diabetes-Datensatz, wobei der im Paper \cite{chierichetti2018fair} verlinkte Datensatz \cite{misc_diabetes_34_falsch} nicht der richtige Datensatz sein kann (Er enthält andere Felder als die im Paper genannten). Nachforschungen haben herausgestellt, dass sie in Wirklichkeit einen anderen Diabetes-Datensatz \cite{misc_diabetes_130_richtig} benutzt haben.
     \end{itemize}
 
     \subsection{Problem der Datendokumentation}
-        Ein Problem der Daten ist, dass sie einerseits nicht in einem normalisierten \textit{CSV} Format vorhanden sind und andererseits im Paper \cite{chierichetti2018fair} Subsamples benutzt, jedoch nicht explizit gesagt wurde, welche Datenpunke genommen wurden und welche Features der Daten. Bei Letzterem wurden für jeden Datensatz ein paar Features genannt. Genau diese haben wir dann auch verwendet. Das Problem der Normalisierung und des Subsamplings sind wir dann selbst angegangen.
+        Ein Problem der Daten war, dass sie einerseits nicht in einem normalisierten \textit{CSV} Format vorhanden waren und andererseits im Paper \cite{chierichetti2018fair} Subsamples benutzt, jedoch nicht explizit gesagt, welche Datenpunke genommen und welche Features der Daten verwendet wurden. Bei Letzterem wurden für jeden Datensatz ein paar Features genannt. Genau diese habe ich dann auch verwendet. Das Problem der Normalisierung und des Subsamplings sind wir dann selbst angegangen.
 
 \section{Cleaning-Pipeline}
-    Um die Daten verwendbar zu machen brauchen wir einige Schritte. Dazu verwenden wir ein Python-Skript, welches einerseits vollautomatisch, andererseits aber auch deterministisch und konfigurierbar die Daten aufbereitet. Auch werden die Daten nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert damit man ggf. mit diesen Daten auch weiterarbeiten kann ohne sie nochmal neu zu erzeugen.
+    Um die Daten verwendbar zu machen brauchen wir einige Schritte. Dafür habe ich ein Python-Skript geschrieben, welches einerseits vollautomatisch, andererseits aber auch deterministisch und konfigurierbar die Daten aufgebereitet. Auch werden die Daten nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert damit man ggf. mit diesen Daten auch weiterarbeiten kann ohne sie nochmal neu erzeugen zu müssen.
     
     \subsection{Normalisierung}
-        Als erstes müssen die Daten in ein einheitliches CSV-Format übertragen werden. Das ist zwar bei dem Diabetes-Datensatz \cite{misc_diabetes_130_richtig} nicht notwendig, bei den anderen Zwei \cite{misc_adult_2} \cite{misc_bank_marketing_222} müssen ein paar Zeichen ersetzt werden und die Zensus-Daten brauchen Überschrifften
+        Als erstes mussten die Daten in ein einheitliches CSV-Format übertragen werden. Das war zwar bei dem Diabetes-Datensatz \cite{misc_diabetes_130_richtig} nicht notwendig, bei den anderen Zwei \cite{misc_adult_2} \cite{misc_bank_marketing_222} mussten ein paar Zeichen ersetzt werden und die Zensus-Daten brauchten Überschrifften.
 
     \subsection{Reinigen und Filtern}
-        Anschliesend werden die Daten für unser Clustering weiterverarbeitet. Dazu werden alle Spalten weggeschmissen, die wir nicht brauchen, sodass jeder Datensatz aus einigen nummerischen Werten und dem Critical-Feature bestehen. Gleichzeitig führen wir auch eine Grundanalyse der Critical-Features (Verhältnisse und mergen von Kategorien die das gleiche bedeuten) durch. Das Critical-Feature steht immer in der ersten Spalte. Ganz zum Schluss werden alle Daten auf ein Intervall von [-1, 1] gemappt. So haben Daten mit unterschiedlichen Skallierungen nicht unterschiedlichen große Auswirkung auf das Clustering bzw. die berechneten Distanzen.
+        Anschliesend werden die Daten für unser Clustering weiterverarbeitet. Dazu werden alle Spalten weggeschmissen, die wir nicht brauchen, sodass jeder Datensatz nur aus einigen nummerischen Werten und dem Critical-Feature besteht. Gleichzeitig wird auch eine Grundanalyse der Critical-Features (Verhältnisse und mergen von Kategorien die das gleiche bedeuten) durchgeführt. Das Critical-Feature steht immer in der ersten Spalte. Ganz zum Schluss werden alle Daten auf ein Intervall von [-1, 1] gemappt. So haben Daten mit unterschiedlichen Skallierungen nicht unterschiedlichen große Auswirkung auf das Clustering bzw. die berechneten Distanzen.
 
     \subsection{Subsampeling}
-        Da es um Faires-Clustering geht, sind die Versuche stark abhängig von der Verteilung der Ursprungsdaten. Um zu vermeiden ein sehr ungünstiges Batch zu bekommen werden alle Daten in 20 disjunkte Subsampels zerteilt, welche die selbe Größe haben wie sie im Paper \cite{chierichetti2018fair} genannt werden. In der Analyse werden dann alle Subsampels getestet und dann der Durchschnitt der Performance gebildet.
+        Da es um Faires-Clustering geht, sind die Versuche stark abhängig von der Verteilung der Ursprungsdaten. Um zu vermeiden ein sehr ungünstiges Batch zu bekommen werden alle Daten in 20 disjunkte Subsampels zerteilt, welche die selbe Größe haben wie sie im Paper \cite{chierichetti2018fair} genannt werden. In der Analyse werden dann alle Subsampels getestet und dann der Durchschnitt über die Performance gebildet.
 
     \subsection{Format der Datensätze}
-        Hier sind jetzt nochmal klar die Datensätze dokumentiert. Von jedem Datensatz wurden jeweils 20 Disjukte Subsampels erzeugt.
+        Hier sollen jetzt nochmal klar die Datensätze dokumentiert werden. Von jedem Datensatz wurden jeweils 20 Disjukte Subsampels erzeugt.
         
         
         
@@ -58,11 +58,12 @@
                 \toprule % Top horizontal rule
                 Datensatz & Critical-Feature & Verhältnis des Critical-Feature & Verwendete numerische Feature & Sub-sample-Größe\\
                 \hline
+                \hline
                 Zensusdaten \cite{misc_adult_2} & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek & 600 \\
                 \hline
                 Bankdaten \cite{misc_bank_marketing_222} & bin-martial (selbsterzeugt aus Spalte "marital") (single = 0; divorced = 0; married = 1) & es gibt single, married und divorced. Zähle single und divorced zusammen. Verhältnis: 27214 married / 17997 not-married $\approx$ 1.51 & age, balance, duration of call & 1000\\
                 \hline
-                Diabetesdaten \cite{misc_diabetes_130_richtig} & sex (male = 0; female = 1) & Verhältnis Male 47055 / Female 54708 $\approx$ 0.86 & age, fnlwgt, education-num, capital-gain, hours-perweek & 1000 \\
+                Diabetesdaten \cite{misc_diabetes_130_richtig} & sex (male = 0; female = 1) & Verhältnis Male 47055 / Female 54708 $\approx$ 0.86 & age, time-in-hostpial & 1000 \\
                 \hline
             \end{tabular}
             \label{tab:dataset_table}
