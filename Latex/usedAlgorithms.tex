@@ -23,7 +23,7 @@
     Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
 \section{Gonzalez}
-    Der Algorithmus von Gonzalez berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
+    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
     Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k welches die Anzahl an gewünschten Clustern angibt.
     Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewießen zu welchem er den geringsten Abstand hat. 

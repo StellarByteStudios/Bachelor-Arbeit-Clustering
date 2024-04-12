@@ -83,6 +83,7 @@ Latex/master.pdf
 *.idx
 *.ind 
 *.ilg 
+*.loa
 
 
 
