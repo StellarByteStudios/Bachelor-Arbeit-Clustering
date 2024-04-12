@@ -49,12 +49,14 @@ runTest: $(TESTNAME)
 $(TESTNAME): $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
 	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS)
 
-val: $(TESTNAME)
+val: buildTestProcess
 	valgrind $(VALFLAGS) ./$(TESTNAME) $(TESTARGS) 
 
 
-runTestProcess: $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
+buildTestProcess: $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
 	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
+
+runTestProcess: buildTestProcess
 	./$(TESTNAME) $(TESTARGS) 
 
 testAutofeeder: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)

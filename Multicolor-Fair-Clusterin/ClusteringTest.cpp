@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Fast-Anchor-Clustering ==== ///
-	//testFastAnchorClustering(points, numberOfCluster);
+	testFastAnchorClustering(points, numberOfCluster);
 
 
 	// ==== Testing Center-Aware Gonzalez ==== ///
@@ -626,6 +626,7 @@ void testCenterAwareGonzalez(vector<ColoredPoint>* points, int k){
 
 	// Aufräumen
 	Gonzalez::deleteGonzalezReturns(clusteringValues);
+	delete(fairlettPoints);
 }
 
 
