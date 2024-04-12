@@ -118,8 +118,10 @@ bibliography=totoc]{scrbook}
 \usepackage{scrhack}
 
 % Darstellung von Pseudocode
-%\usepackage{algorithm}
-%\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
+% Musste nachinstallieren:  sudo apt-get install texlive-science
+
 
 %\bibliographystyle{abbrv}
 %\bibliography{bib/erferences}
@@ -147,6 +149,8 @@ bibliography=totoc]{scrbook}
 
 \pdfbookmark[0]{\contentsname}{content}
 \tableofcontents
+
+%\listofalgorithms % Liste aller Algorithmen
 
 %\listoffigures % Abbildungsverzeichniss - entfernen, wenn leer
 

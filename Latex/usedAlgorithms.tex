@@ -24,10 +24,46 @@
 
 \section{Gonzalez}
     Der Algorithmus von Gonzalez berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
-    Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik und ein k welches die Anzahl an gewünschten Clustern angibt.
-    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der minimale Abstand zu anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k welches die Anzahl an gewünschten Clustern angibt.
+    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewießen zu welchem er den geringsten Abstand hat. 
     Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximale Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
+
+    \begin{algorithm}
+        \caption{Gonzalez-Algorithmus}\label{alg:plain_gonzalez}
+        \begin{algorithmic}[1]
+            \Function{Gonzalez}{P, dist, k}
+                % Anfangsbedingungen
+                \State $Z := $ leere Zentrenmenge
+                \State $d_{min} := $ Distanz zu nächstem Zentrum 
+                \State $z_0$ beliebig aus P
+                \State $z_0.cluster = 0$
+
+                % Daten für erstes Zentrum aktuallisieren
+                \ForAll{$x \in P$}
+                    \State $d_{min} = dist(z_0, x)$
+                    \State $x.cluster = 0$
+                \EndFor
+                
+                % Für Jedes K durchgen
+                \For{$i \in 2,..,k$}
+                    % bestes Zentum suchen
+                    \State $z_i = argmax(d_{min})$
+                    \State $z_i.cluster = 1$
+
+                    % Alle Punkte aktuallisieren
+                    \For{$x \in P \setminus Z$}
+                        % Dieser Punkt muss aktuallisiert werden
+                        \If{$dist(z_i, x) < d_{min}[x]$}
+                            \State $d_{min}[x] = dist(z_i, x)$
+                            \State $x.cluster = i$
+                        \EndIf
+                    \EndFor
+                \EndFor
+                \State return $(Z, P)$ \Comment{in P wurden Punkte aktuallisiert}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
 \section{Fairletts}
     \begin{itemize}
