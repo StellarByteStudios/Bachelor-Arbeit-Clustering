@@ -31,6 +31,11 @@ Multicolor-Fair-Clusterin/Pythonskripte/.spyproject
 
 # Output von Latex
 ### LaTeX ###
+# Das main Render soll nicht bei jeder Verbesserung komplett
+# neu hochgeladen werden
+Latex/master.pdf
+
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -485,3 +490,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+# Automatische Adds
