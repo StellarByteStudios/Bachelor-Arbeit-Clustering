@@ -66,18 +66,31 @@
     \end{algorithm}
 
 \section{Fairletts}
+    In dieser Arbeit soll faires-Clustering analysiert werden, jedoch kann der Algorithmus von Gonzalez \ref{alg:plain_gonzalez} eine solche Nebenbediungung nicht erfüllen. Wir benutzen hier sogenannte Fairletts.
+    Fairletts sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbediungung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairletts die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer wenn wir einen Punkt zu einem Cluster zuweisen auch sein Fairlett-Partner dem selben Zentrum zugewießen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}.
+
+
+
+    \iffalse
     \begin{itemize}
         \item How to Flussnetzwerk
         \item Fairletts verbinden
         \item Art der Rückgabe
     \end{itemize}
+    \fi
 
 \section{Fair-Clustering mit Ausreißern}
+    \subsection{Outlier-Punkte}
+    In reellen Daten ist das Feature, welches man fair auf die Cluster verteilen will meist nicht perfekt $1:1$ verteilt. Damit man trotzdem ein faires Clustering durchführen kann, ist es möglich einige Punkte als Outlier zu bestimmen. Diese Outlier werden dann nicht mehr beim Clustering berücksichtigt und werden dementsprechend auch nicht einem Cluster zugewießen. \newline
+    In einem Verhältniss von $n:n+x$ Punkten werden $n\;\; 1:1$ Fairletts gebildet und $x$ Outlier definiert.
+
+    \iffalse
     \begin{itemize}
         \item was bringen die Fairletts?
         \item Was ist die bedeutung von Ausreißern
         \item Wie wird die Anzahl an Ausreißern bestimmt
     \end{itemize}
+    \fi
     
     \subsection{Red-Clustering}
         \begin{itemize}
