@@ -3,31 +3,31 @@
 
 \chapter{Algorithmen}
 
-    In der Arbeit wurden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erleutert werden
+    In der Arbeit wurden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erläutert werden
 
 \section{Matching}
-    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare, wobei gilt dass alle Punkte in einem Paar sind, die Paare sich nicht überschneiden und die Knoten eines Paares über eine Kante verbunden sind.
+    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare, wobei gilt, dass alle Punkte in einem Paar sind, die Paare sich nicht überschneiden und die Knoten eines Paares über eine Kante verbunden sind.
     \subsection{Bipatites Matching}
         Wird ein Matching in einem Bipatiten Graphen, also einem Graphen welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren, gesucht, dann ist das ein Bipatites Matching.
 
 \section{Max-Flow Algorithmus}
-    Das bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann.
+    Das Bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann.
     \subsection{Flusseigenschaften}
-        Für einen Fluss, welcher durch ein Flussnetzwerk fließt müssen immer folgende 3 Eigenschaften gelten:
+        Für einen Fluss, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
         \begin{enumerate}
-            \item Jede Kante im Netzwerk muss eine nicht negative Kapazität und Fluss haben 
+            \item Jede Kante im Netzwerk muss eine nicht negative Kapazität und Fluss haben. 
             \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle s und Senke t immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv.
-            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten
+            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten.
         \end{enumerate}
-    Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle s und der Senke t, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt um Knoten verschiedener Farbe in einem Bipatiten Graphen zu Matchen.
+    Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle s und der Senke t, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
     Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
 \section{Gonzalez}
-    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
+    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
     Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k welches die Anzahl an gewünschten Clustern angibt.
-    Er begint damit, das man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt der am weitesten weg von diesem ersten Zentrum ist als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
-    Zum Schluss wird jeder Punkt dem Zentrum zugewießen zu welchem er den geringsten Abstand hat. 
-    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximale Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
+    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg von diesem ersten Zentrum ist, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Zum Schluss wird jeder Punkt dem Zentrum zugewiesen, zu welchem er den geringsten Abstand hat. 
+    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximalen Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
     \begin{algorithm}
         \caption{Gonzalez-Algorithmus}\label{alg:plain_gonzalez}
@@ -60,14 +60,14 @@
                         \EndIf
                     \EndFor
                 \EndFor
-                \State return $(Z, P)$ \Comment{in P wurden Punkte aktuallisiert}
+                \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
             \EndFunction
         \end{algorithmic}
     \end{algorithm}
 
 \section{Fairletts}
-    In dieser Arbeit soll faires-Clustering analysiert werden, jedoch kann der Algorithmus von Gonzalez \ref{alg:plain_gonzalez} eine solche Nebenbediungung nicht erfüllen. Wir benutzen hier sogenannte Fairletts.
-    Fairletts sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbediungung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairletts die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer wenn wir einen Punkt zu einem Cluster zuweisen auch sein Fairlett-Partner dem selben Zentrum zugewießen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}.
+    In dieser Arbeit soll faires-Clustering analysiert werden, jedoch kann der Algorithmus von Gonzalez \ref{alg:plain_gonzalez} eine solche Nebenbedingung nicht erfüllen. Wir benutzen hier sogenannte Fairletts.
+    Fairletts sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbedingung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairletts die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer, wenn wir einen Punkt zu einem Cluster zuweisen, auch sein Fairlett-Partner dem selben Zentrum zugewiesen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}.
 
 
 
