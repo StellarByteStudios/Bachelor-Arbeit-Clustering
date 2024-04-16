@@ -95,21 +95,21 @@
     In einem Verhältniss von $n:n+x$ Punkten werden $n\;\; 1:1$ Fairletts gebildet und $x$ Outlier definiert.
 
     
-    \subsection{Red-Clustering}
+    \subsection{Red-Clustering} \label{sec:Red-Clustering}
         Als erste Art des Clusterings betrachten wir das Red-Clustering. \textbf{Referenz fehlt noch, in Skript steht nur für 1/t}
 
         \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
             Ansschliesend bauen wir einen bipatiten Graphen auf in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap P = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
-            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten dazu \glqq{}raten\grqq{} \ wir ein $r_{test}$ und fügen alle Kannten zwischen $a \in R$ und $b \in B$ für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
+            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten dazu \glqq{}raten\grqq{} \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
             In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $f$ gleich der Anzahl an roten Punkten ist $f = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in \{dist(a, b)\}$ bis wir das kleinste $r_{test}$ gefunden haben für die das Matching erfolgreich war ($f = |R|$). Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. \newline
             Um jetzt die Fairletts zueinander zu zuweisen erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e$ fliest, weisen wir $a$ und $b$ mit $e = (a, b)$ die selbe FairlettID zu, was sie zu einem Fairlett macht. 
         
-        \subsubsection{Finden der Outlier}
-            Um die Ausreißer zu finden müssen wir noch alle blauen Punte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde gilt dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $e_{t_{i}}$ 0 ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweißung zu den Zentren ausgelassen
+        \subsubsection{Finden der Outlier} \label{sec:find-Outlier-red}
+            Um die Ausreißer zu finden müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde gilt, dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $e_{t_{i}}$ 0 ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweißung zu den Zentren ausgelassen
 
         \begin{algorithm}
-            \caption{Farilett-Finder Red Clustering}\label{alg:red-clustering}
+            \caption{Farilett-Finder Red Clustering}\label{alg:fairlett-red}
             \begin{algorithmic}[1]
                 \Function{red-cluster-fairlett}{P, dist}
                     % Punkte Partitionieren
@@ -169,7 +169,7 @@
 
 
     \begin{algorithm}
-        \caption{Farilett-Finder Red Clustering}\label{alg:fairlett-red}
+        \caption{Red Clustering Algorihtmus}\label{alg:red-clustering}
         \begin{algorithmic}[1]
             \Function{red-clustering}{P, dist, k}
                 % Fairletts Markieren
@@ -203,7 +203,83 @@
 
 
 
-    \subsection{Fast-Anchor-Clustering}
+    \subsection{Fast-Anchor-Clustering} \label{sec:Fast-Anchor-Clustering}
+        Als zweiten Clustering-Algorithmus betrachten wir den Fast-Anchor-Algorihtmus \cite{BA_Clustering_Irina}. Dieser Arbeitet ähnlich wie der Red-Clustering Algorithmus \ref{sec:Red-Clustering} bildet aber nach einer grundlegend anderen Bedingung die Fairletts
+
+        \subsubsection{Bilden der Anchor-Fairletts \ref{alg:fairlett-fast-anchor}} 
+            Auch wie im Red-Clustering Algorithmus \ref{sec:Red-Clustering} bauen wir ein Flussnetzwerk zum finden der Fairletts auf. Unterschiedlich ist nur die Bedingung für das hinzufügen der Kanten zwischen $a \in R$ und $b \in B$. Man testet für alle Paare $(a, b) \in \{a \in R | b \in B\}$ jeden Punkt $\alpha \in P$ ob $\alpha$ als Anker in Frage kommt. Dabei wird der Anker so gewählt, das $\max(dist(\alpha, a),\ dist(\alpha, b))$ minimal ist. \newline
+            Beim hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$, sondern betrachten den Anker also $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$ und fügen dementsprechend Kanten mit Kapazität 1 ein. \newline
+            Die Ausreißer werden genau so wie beim Red-Clustering bestimmt \ref{sec:find-Outlier-red}
+
+
+            \begin{algorithm}
+                \caption{Farilett-Finder Fast-Anchor Clustering}\label{alg:fairlett-fast-anchor}
+                \begin{algorithmic}[1]
+                    \Function{fast-anchor-fairlett}{P, dist}
+                        % Punkte Partitionieren
+                        \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                        \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                        % Alle Paarweise distanzen
+                        \State $R_{pot} = \{r = dist(a, b) | a \in R | b \in B\}$
+                        \State $G := $ Graph für Flussnetzwerk
+                        \State $A := $ Ankermatrix $|R| \times |B|$
+                        \State 
+                        % Ankerberechnung
+                        % Alle Paare durchgehen
+                        \ForAll{$(a, b) | a \in R | b \in B$} \Comment{Ankerberechnung}
+                            % Alle Anker testen
+                            \ForAll{$\alpha \in P$}
+                                % Besserer Anker gefunden
+                                \If {$\max(dist(\alpha, a),\ dist(\alpha, b)) \leq A[a, b]$}
+                                    \State $A[a, b] = \max(dist(\alpha, a),\ dist(\alpha, b))$
+                                \EndIf 
+                            \EndFor
+                        \EndFor
+                        \State
+                    
+                        % Alle Radien Ausprobieren
+                        \ForAll{$r \in R_{pot}$} \Comment{verwende Binäre Suche}
+                            % Graph aufbauen
+                            \State Füge in $G$ alle Punkte aus $R$ ein
+                            \State Füge in $G$ alle Punkte aus $B$ ein
+                            \State Füge in $G$ Quelle $s$ und Senke $t$ ein
+                            \State Alle Kanten $(s, a)$ und $(b, t)$ mit Kapazität 1 einfügen
+                            % Main-Kanten einfügen
+                            \ForAll{\{$(a, b) | a \in R | b \in B\}$}
+                                % Kante einfügen
+                                \If{$\max(dist(A[a,b], a),\ dist(A[a,b], b)) \leq r$}
+                                    \State Füge Kante $(a, b)$ in $G$ mit Kapazität 1 ein
+                                \EndIf
+                            \EndFor
+                            \State Berechne Maximalen Fluss $f$ von $G$
+                            \State Vergleiche mit $f \geq |R|$ für Binäre-Suche
+                        \EndFor
+                        % Fluss mit optimalem r bilden
+                        \State Baue $G$ neu auf mit $r_{opt}$ wie in der oberen Schleife auf
+                        \State Berechne den maximalen Fluss $f$ auf $G$
+                        % Fairletts bestimmen
+                        \ForAll{$e_{main_{i}} \in \{(a, b) | a \in R | b \in B\}$}
+                            % Fairlett wurde gematched
+                            \If{$f(e_{main_{i}}) = 1}$
+                                \State Weise $e.a$ und $e.b$ dem gleichen Fairlett zu
+                            \EndIf
+                        \EndFor
+                        % Ausreißer markieren
+                        \ForAll{$e_{t} \in \{(b, t) | b \in B\}$}
+                            % Ausreißer feststellen
+                            \If{$f(e_{t}) = 0}$
+                                \State Markiere $b$ als Ausreißer
+                            \EndIf
+                        \EndFor
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm}
+
+
+
+
+
+        \iffalse
         \begin{itemize}
             \item wie sind die Fairletts hier anders?
                 \subitem Abstand zu Anker und nicht zu Partner
@@ -213,5 +289,5 @@
                 \subitem Zuweißen des Partners des Zentrums
             \item Zuweißung über Anker
         \end{itemize}
-    
-    \subsubsection{Center-Aware Problem}
+        \fi
+        \subsubsection{Center-Aware Problem}
