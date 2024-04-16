@@ -96,7 +96,82 @@
         
         \subsubsection{Zuweisen der blauen Partner}
             Zum Schluss gehen wir durch alle blauen Punkte durch und weisen sie dem selben Cluster zu, zu welchem auch ihr roter Fairlett-Partner zugewiesen wurde oder überspringen sie, falls sie Ausreißer sind.
+    
+    \begin{algorithm}
+        \caption{Farilett-Finder Red Clustering}\label{alg:fairlett-red}
+        \begin{algorithmic}[1]
+            \Function{red-cluster-fairlett}{P, dist}
+                % Punkte Partitionieren
+                \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                % Alle Paarweise distanzen
+                \State $R_{pot} = \{r = dist(a, b) | a \in R | b \in B\}$
+                \State $G := $ Graph für Flussnetzwerk
 
+                % Alle Radien Ausprobieren
+                \ForAll{$r \in R_{pot}$} \Comment{verwende Binäre Suche}
+                    % Graph aufbauen
+                    \State Füge in $G$ alle Punkte aus $R$ ein
+                    \State Füge in $G$ alle Punkte aus $B$ ein
+                    \State Füge in $G$ Quelle $s$ und Senke $t$ ein
+                    \State Alle Kanten $(s, a)$ und $(b, t)$ mit Kapazität 1 einfügen
+                    % Main-Kanten einfügen
+                    \ForAll{\{$(a, b) | a \in R | b \in B\}$}
+                        % Kante einfügen
+                        \If{$dist(a, b) \leq r$}
+                            \State Füge Kante $(a, b)$ in $G$ mit Kapazität 1 ein
+                        \EndIf
+                    \EndFor
+                    \State Berechne Maximalen Fluss $f$ von $G$
+                    \State Vergleiche mit $f \geq |R|$ für Binäre-Suche
+                \EndFor
+                % Fluss mit optimalem r bilden
+                \State Baue $G$ neu auf mit $r_{opt}$ wie in der oberen Schleife auf
+                \State Berechne den maximalen Fluss $f$ auf $G$
+                % Fairletts bestimmen
+                \ForAll{$e_{main_{i}} \in \{(a, b) | a \in R | b \in B\}$}
+                    % Fairlett wurde gematched
+                    \If{$f(e_{main_{i}}) = 1}$
+                        \State Weise $e.a$ und $e.b$ dem gleichen Fairlett zu
+                    \EndIf
+                \EndFor
+                % Ausreißer markieren
+                \ForAll{$e_{t} \in \{(b, t) | b \in B\}$}
+                    % Ausreißer feststellen
+                    \If{$f(e_{t}) = 0}$
+                        \State Markiere $b$ als Ausreißer
+                    \EndIf
+                \EndFor
+
+
+
+                \iffalse
+                % Daten für erstes Zentrum aktuallisieren
+                \ForAll{$x \in P$}
+                    \State $d_{min} = dist(z_0, x)$
+                    \State $x.cluster = 0$
+                \EndFor
+                
+                % Für Jedes K durchgen
+                \For{$i \in 2,..,k$}
+                    % bestes Zentum suchen
+                    \State $z_i = argmax(d_{min})$
+                    \State $z_i.cluster = 1$
+
+                    % Alle Punkte aktuallisieren
+                    \For{$x \in P \setminus Z$}
+                        % Dieser Punkt muss aktuallisiert werden
+                        \If{$dist(z_i, x) < d_{min}[x]$}
+                            \State $d_{min}[x] = dist(z_i, x)$
+                            \State $x.cluster = i$
+                        \EndIf
+                    \EndFor
+                \EndFor
+                \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+                \fi
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
     \subsection{Fast-Anchor-Clustering}
         \begin{itemize}
