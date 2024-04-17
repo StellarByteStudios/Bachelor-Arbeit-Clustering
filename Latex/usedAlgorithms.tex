@@ -6,7 +6,7 @@
     In der Arbeit wurden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erläutert werden
 
 \section{Matching}
-    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare, wobei gilt, dass alle Punkte in einem Paar sind, die Paare sich nicht überschneiden und die Knoten eines Paares über eine Kante verbunden sind.
+    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare.Die Paare sollen sich dabei nicht überschneiden und die Knoten eines Paares sind immer über eine Kante verbunden sind. Sind alle Punkte in einem Paar spricht man von einem vollständigen Matching
     \subsection{Bipatites Matching}
         Wird ein Matching in einem Bipatiten Graphen, also einem Graphen welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren, gesucht, dann ist das ein Bipatites Matching.
 
@@ -14,8 +14,8 @@
 
 
 
-\section{Max-Flow Algorithmus}
-    Das Bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann.
+\section{Flussnetzwerke}
+    Das Bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei extra Knoten die Quelle $s$ und die Senke $t$.
     \subsection{Flusseigenschaften}
         Für einen Fluss, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
         \begin{enumerate}
@@ -23,8 +23,10 @@
             \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle $s$ und Senke $t$ immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv.
             \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten.
         \end{enumerate}
-    Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
-    Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
+
+    \subsection{Max-Flow Algorithmus}
+        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
+        Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
 
 
@@ -32,9 +34,9 @@
 
 
 \section{Gonzalez}
-    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
+    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering mit dem k-center Problem als Zielfunktion. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
     Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k welches die Anzahl an gewünschten Clustern angibt.
-    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg von diesem ersten Zentrum ist, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg ist von diesem ersten Zentrum, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewiesen, zu welchem er den geringsten Abstand hat. 
     Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximalen Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
@@ -57,8 +59,8 @@
                 % Für Jedes K durchgen
                 \For{$i \in 2,..,k$}
                     % bestes Zentum suchen
-                    \State $z_i = argmax(d_{min})$
-                    \State $z_i.cluster = 1$
+                    \State $z_i = P(argmax(d_{min}))$
+                    \State $z_i.cluster = i$
 
                     % Alle Punkte aktuallisieren
                     \For{$x \in P \setminus Z$}
@@ -101,7 +103,7 @@
         \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
             Ansschliesend bauen wir einen bipatiten Graphen auf in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap P = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
-            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten dazu \glqq{}raten\grqq{} \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
+            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten dazu "raten" \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
             In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $f$ gleich der Anzahl an roten Punkten ist $f = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in \{dist(a, b)\}$ bis wir das kleinste $r_{test}$ gefunden haben für die das Matching erfolgreich war ($f = |R|$). Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. \newline
             Um jetzt die Fairletts zueinander zu zuweisen erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e$ fliest, weisen wir $a$ und $b$ mit $e = (a, b)$ die selbe FairlettID zu, was sie zu einem Fairlett macht. 
         
@@ -168,25 +170,25 @@
 
 
 
-    \begin{algorithm}
-        \caption{Red Clustering Algorihtmus}\label{alg:red-clustering}
-        \begin{algorithmic}[1]
-            \Function{red-clustering}{P, dist, k}
-                % Fairletts Markieren
-                \State Berechne und markiere Fairletts mit \Call{red-cluster-fairlett}{P, dist}
+        \begin{algorithm}
+            \caption{Red Clustering Algorihtmus}\label{alg:red-clustering}
+            \begin{algorithmic}[1]
+                \Function{red-clustering}{P, dist, k}
+                    % Fairletts Markieren
+                    \State Berechne und markiere Fairletts mit \Call{red-cluster-fairlett}{P, dist}
 
-                % Rote Punkte Clustern mit Gonzalez
-                \State $R := \{x | x \in P \wedge x.color = RED\}$ 
-                \State Berechne Clustering von $R$ mit \Call{Gonzalez}{R, dist, k}
+                    % Rote Punkte Clustern mit Gonzalez
+                    \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                    \State Berechne Clustering von $R$ mit \Call{Gonzalez}{R, dist, k}
 
-                % Zuweisung der blauen Punkte
-                \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
-                \ForAll{$b \in B$}
-                    \State weise $b$ dem Selben Cluster zu wie sein Fairlett Partner
-                \EndFor
-            \EndFunction
-        \end{algorithmic}
-    \end{algorithm} 
+                    % Zuweisung der blauen Punkte
+                    \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                    \ForAll{$b \in B$}
+                        \State weise $b$ dem Selben Cluster zu wie sein Fairlett Partner
+                    \EndFor
+                \EndFunction
+            \end{algorithmic}
+        \end{algorithm} 
 
 
 
@@ -277,6 +279,14 @@
 
 
 
+        \subsubsection{Berechnen der Zentren}
+            \textbf{Irgendwas mit Rechnen ohne Outlier}
+
+        \subsubsection{Zuweisen der Zentren}
+            \textbf{Irgendwas mit Anker und nächsten Zentren}
+
+
+        \subsubsection{Center-Aware Problem}
 
 
         \iffalse
@@ -290,4 +300,4 @@
             \item Zuweißung über Anker
         \end{itemize}
         \fi
-        \subsubsection{Center-Aware Problem}
+        
