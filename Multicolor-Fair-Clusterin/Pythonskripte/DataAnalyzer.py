@@ -1,123 +1,48 @@
 # -*- coding: utf-8 -*-
 """
-Skript for automate feeding of the algorithms and analyzing their data
+Splitting Test-Pipeline into pieces
+
+In This file. The Data written in CSV files is read and graphs are made
 """
 
 import Points
-import subprocess
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
-import time
 
 from PIL import Image
 
-
-def main():
-    
-    # Parameter (Später noch über schleifen)
-    maxCluster = 15
-    numOfSamples = 5
-    alg = "f"
-    processBar = False
-    
-    algPathAdd = "Gonzalez"
-    if(alg == "r"):
-        algPathAdd = "RedClustering"
-    if(alg == "f"):
-        algPathAdd = "FastClustering"
+def analyzeDatasetzs(pictureFolder = "Data/OutputData/Final/Pictures/", 
+                     dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/", 
+                     maxCluster = 15, 
+                   numOfSamples = 5, algs = ["g", "r", "f"]):
         
-    pictureFolder = f"../Data/OutputData/Pictures/FinalAnalysis/{algPathAdd}"
-    
-    # # # Binary Kompilieren
-    #compileBinary(withProcessBar=processBar)
-    
-    # # # Algorithmus ausführen
-    timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
- 
-    timestamps = [timeBank, timeCensus, timeDiabetes]
-    
-    analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
+    # Großen Gemeinsamen leeren Plot bauen
 
-    # ====== Verarbeitung Bank ====== #
-    do_analysis_of_sampleset("bank", pictureFolder, 
-                             numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    # ====== Verarbeitung Zensus ====== #
-    do_analysis_of_sampleset("census", pictureFolder, 
-                             numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    # ====== Verarbeitung Diabetes ====== #
-    do_analysis_of_sampleset("diabetes", pictureFolder, 
-                             numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    # Für jede Algorithmusart einmal durchgehen
+    for i in range(0, 3):
+        
+        # # # Daten einlesen
+        #analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
+        
+        # ====== Verarbeitung Bank ====== #
+        do_analysis_of_sampleset("bank", pictureFolder, dataFolder, 
+                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
+        # ====== Verarbeitung Zensus ====== #
+        do_analysis_of_sampleset("census", pictureFolder, dataFolder, 
+                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
+        # ====== Verarbeitung Diabetes ====== #
+        do_analysis_of_sampleset("diabetes", pictureFolder, dataFolder, 
+                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
     
     
     # ====== Große Bilder zusammensetzen ====== #
-    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=alg)    
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=algs[0])    
 
     return
-
-
-# # # Kompiliert die Binary über das Makefile # # #
-def compileBinary(withProcessBar=False):
-    print("Compiling Binary")
-    
-    command = "make -C .. build"
-    if(withProcessBar):
-        command = command + "ProcessBar"
-        
-    print("Command:", command)
-    # Subprozess bauen
-    process = bash_command(command, ignoreStdout=False)
-    # Prozess starten
-    process.communicate()
-    
-    print("Finished compiling")
-    
-    return
-
-
-
-
-
-# # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
-def do_algorithm(samplename, numOfSamples = 20, maxCluster = 20, algorithm = "g"):
-    algoTimer = []
-    
-    for i in range(0, numOfSamples):
-        # # Bankdaten
-        # Pfade algorithmisch zusammensetzen
-        # Welcher Algorithmus?
-        algPathAdd = "GonzalezClustering"
-        if(algorithm == "r"):
-            algPathAdd = "RedClustering"
-        if(algorithm == "f"):
-            algPathAdd = "FastClustering"
-        
-        inputfile = f"Data/Subsamples/{samplename}/{samplename}Sample-{i}.csv"
-        outputfolder = f"Data/OutputData/AutoanalyzerTest/{algPathAdd}/{samplename}/Sample{i}/"
-        outputfile = f"{samplename}{i}"
-        # Shellcommand zusammensetzen
-        directoryChange = "cd .."
-        feederCommand = f"./AlgFeeder.sh -i {inputfile} -o {outputfolder} -n {outputfile} -c {maxCluster} -a {algorithm}"
-        command = directoryChange + " && " + feederCommand
-        
-        #print(f"Der Bashbefehl wurde zusammengesetzt: {command}")
-        
-        # Prozess erzeugen
-        process = bash_command(command, ignoreStdout=False)
-        # Zeitmessung Starten
-        startTime = time.process_time_ns();
-        # Prozess starten
-        process.communicate()
-        # Zeitmessung stoppen
-        algoTimer.append(time.process_time_ns() - startTime)
-        print(f"# = # = # = Cluster made for Sample: {inputfile} = # = # = #")
-    
-    return algoTimer
 
 # # # Analysiert die geclusterten Daten und gibt ein Diagramm dazu aus # # #
-def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCluster = 20, algorithm="g"):
+def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples = 20, maxCluster = 20, algorithm="g"):
     print(f"\n# --------- Working with {samplename} Data --------- # \n")
     
     # Zusammensetzen des Pfades
@@ -132,7 +57,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
         #inputfile = f"Data/Subsamples/{bank}/{bank}Sample-{i}.csv"
-        outputfolder = f"Data/OutputData/AutoanalyzerTest/{algPathAdd}/{samplename}/Sample{i}/"
+        outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
         radiiList = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)
@@ -168,29 +93,12 @@ def do_analysis_of_sampleset(samplename, pictureFolder, numOfSamples = 20, maxCl
     return
 
 
-
-
-
-
-# Kapselung des Bashcommands, der das mit der Shell regelt
-def bash_command(cmd, ignoreStdout = True):
-    # stdout wird weggeworfen
-    if ignoreStdout:    
-        return subprocess.Popen(cmd, shell=True, executable='/bin/bash', stdout=subprocess.DEVNULL)
-    # Stdout vom Skript in Pythonkonsole
-    return subprocess.Popen(cmd, shell=True, executable='/bin/bash')
-
-
-
 def print_radii(dfRadius, picturePath, title, algorithm="g"):
     # Wie weit ist der Abstand der x-Beschriftung
     intervalls = max(int(len(dfRadius)/10),1)
 
     
     fig, ax = plt.subplots(figsize=(9,6))
-    # Einfach eine Linie plotten wenn radii einfache Liste
-    #ax.plot(list(range(1, len(radii)+1)), radii, # range in x Values um auf 1 zu shiften
-    #        color = "brown", label = "Unfair")
     
     if(algorithm == "g"):
         # Unfaire Beschriftung
@@ -205,8 +113,6 @@ def print_radii(dfRadius, picturePath, title, algorithm="g"):
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
                 color = "orange", linestyle = "dashed", alpha = 0.5, label = "Fair (max/min)")
     
-    #ax.boxplot(dfRadius, meanline = True)
-    #ax.boxplot(dfRadius[["mean", "maxValue", "minValue","upperQuantile", "lowerQuantile"]])
     ax.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
     ax.set_title(title)
     ax.set_xlabel("Cluster")
@@ -294,5 +200,3 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
         new_im.save(f"{pictureFolder}/{algPathAdd}-FairClued(Cluster-{maxCluster}).jpg")
     
     return
-
-main()
