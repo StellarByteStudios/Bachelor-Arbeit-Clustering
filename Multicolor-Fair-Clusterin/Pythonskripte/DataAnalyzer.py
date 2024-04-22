@@ -18,7 +18,6 @@ def analyzeDatasetzs(pictureFolder = "Data/OutputData/Final/Pictures/",
                    numOfSamples = 5, algs = ["g", "r", "f"]):
         
     # Großen Gemeinsamen leeren Plot bauen
-
     # Für jede Algorithmusart einmal durchgehen
     for i in range(0, 3):
         
@@ -86,14 +85,14 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(pictureFolder, exist_ok=True) 
     print(f"picture Path: {pictureFolder}/{algPathAdd}-{samplename}(Cluster-{maxCluster}).jpg")
-    print_radii(dfImportantValues, 
+    build_plot_axis(dfImportantValues, 
                 f"{pictureFolder}/{algPathAdd}-{samplename}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
                 f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
 
     return
 
 
-def print_radii(dfRadius, picturePath, title, algorithm="g"):
+def build_plot_axis(dfRadius, picturePath, title, algorithm="g"):
     # Wie weit ist der Abstand der x-Beschriftung
     intervalls = max(int(len(dfRadius)/10),1)
 
@@ -122,6 +121,8 @@ def print_radii(dfRadius, picturePath, title, algorithm="g"):
     plt.show()
     
 
+
+# # # Holt aus den geklusterten Daten die maximalen Radien raus# # #
 def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
     # Liste für die berechneten Maximalen Radien
     radiiList = []
@@ -141,6 +142,9 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
     return radiiList
 
 
+
+
+# # # Erstellt einen Graphen für die Prozessorzeiten # # #
 def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     # Zusammensetzen des Pfades
     algorithmName = "Gonzalez-Algorithm"
@@ -169,6 +173,9 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     return
 
 
+
+
+# # # Packt die Bilder der Verschiedenen Datensätzen zu einem Bild dazu # # #
 def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples = 20, algorithm="g"):
     print("\n# --------- Cluing Pictures together --------- #\n")
     
