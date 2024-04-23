@@ -6,17 +6,18 @@ In This file. The Algorithms are Executed and the Test-Data is written into file
 """
 import subprocess
 import time
+import os
 
 
+# # # Hauptmethode um Algorithmen auszuführen # # #
+# # # Triggert das Autofeeder-Skript mit allen 3 Datensätzen # # #
 def makeAlgorithms(outputFolder = "Data/OutputData/Final/AnalyzedSubsamples/", maxCluster = 15, 
-                   numOfSamples = 5, algs = ["g", "r", "f"], 
+                   numOfSamples = 5, algs = ["g", "r", "f"], makeCompiling = False,
                    processBar = False):
     
-    # Parameter (Später noch über schleifen)
-    
-    
     # # # Binary Kompilieren
-    compileBinary(withProcessBar=processBar)
+    if makeAlgorithms:
+        compileBinary(withProcessBar=processBar)
     
     for i in range(0, len(algs)):          
         
@@ -30,7 +31,7 @@ def makeAlgorithms(outputFolder = "Data/OutputData/Final/AnalyzedSubsamples/", m
          
         # Muss noch abgespeichert werden
         timestamps = [timeBank, timeCensus, timeDiabetes]
-        safeTimestampData(timestamps);
+        safeTimestampData(timestamps, outputFolder="../" + outputFolder, algorithm=algs[i]);
     return
 
 
@@ -65,6 +66,7 @@ def bash_command(cmd, ignoreStdout = True):
 
 # # # Algorithmus sukzessive auf den einzelnen Sampels ausführen und abspeichern # # #
 def do_algorithm(samplename, folderPath, numOfSamples = 20, maxCluster = 20, algorithm = "g"):
+    # Liste um die Ausführzeiten zu speichern
     algoTimer = []
     
     for i in range(0, numOfSamples):
@@ -95,10 +97,37 @@ def do_algorithm(samplename, folderPath, numOfSamples = 20, maxCluster = 20, alg
         process.communicate()
         # Zeitmessung stoppen
         algoTimer.append(time.process_time_ns() - startTime)
-        print(f"# = # = # = Cluster made for Sample: {inputfile} = # = # = #")
+        print(f"# = # = # = Cluster made for Sample: {inputfile} with {algPathAdd}= # = # = #")
     
     return algoTimer
 
-def safeTimestampData(timestamps):
-    # TO-DO
+
+# # # Methode um die Zeitstempel als CSV abzuspeichern # # #
+def safeTimestampData(timestamps, outputFolder, algorithm="g"):
+    # Kopf
+    csvToSave = "Sample,BankTime,CensusTime,diabetesTime"  + str('\n');
+    
+    # einzelne Zeitmessungen übertragen
+    for i in range(0, len(timestamps[0])):
+        csvToSave = csvToSave + f"{i},{timestamps[0][i]},{timestamps[1][i]},{timestamps[2][i]}" + str('\n')
+    
+    # Daten abspeichern
+    # Welcher Algorithmus?
+    algPathAdd = "GonzalezClustering"
+    if(algorithm == "r"):
+        algPathAdd = "RedClustering"
+    if(algorithm == "f"):
+        algPathAdd = "FastClustering"
+    # Abspeichern
+    saveToFile(path=outputFolder, filename=f"{algPathAdd}-TimeStamps.csv", content=csvToSave)
+    return
+
+
+
+# # # Methode speichert gegebenen String in Datei # # #
+def saveToFile(path, filename, content): 
+    os.makedirs(path, exist_ok=True) 
+    f = open(path + "/" + filename,'w')
+    f.write(content)
+    f.close()
     return

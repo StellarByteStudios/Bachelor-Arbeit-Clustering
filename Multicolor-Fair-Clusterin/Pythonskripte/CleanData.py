@@ -378,5 +378,5 @@ def mapFeaturesToIntervall(pData, listOfFeatures):
 
 
 
-
-main()
+if __name__ == "__main__":
+    main()

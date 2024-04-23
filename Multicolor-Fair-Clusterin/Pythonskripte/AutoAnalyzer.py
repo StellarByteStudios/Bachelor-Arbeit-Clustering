@@ -3,16 +3,43 @@
 Skript for automate feeding of the algorithms and analyzing their data
 """
 
-import Points
-import subprocess
-import matplotlib.pyplot as plt
-import os
-import pandas as pd
-import time
+import CleanData
+import AlgorithmDataCruncher
+import DataAnalyzer
 
-from PIL import Image
+def main():
+    # Programm-Parameter
+    dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
+    pictureFolder = "../Data/OutputData/Final/Pictures/"
+    clusters = 5
+    numOfSamples = 3
+    
+    
+    # Daten neu in Subsamples unterteilen
+    #CleanData.main()
+    
+    
+    # Algorithmen Ausführen
+    #AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
+    #                                     maxCluster = clusters, numOfSamples = numOfSamples)
+     
+    # Analyse und Bilderzeugung
+    DataAnalyzer.analyzeDatasetzs(pictureFolder = pictureFolder, 
+                                  dataFolder = "../" + dataFolder, 
+                                  maxCluster = clusters, numOfSamples = numOfSamples)
+    
+    
+    return
 
 
+
+
+
+
+
+
+
+"""
 def main():
     
     # Parameter (Später noch über schleifen)
@@ -294,5 +321,7 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
         new_im.save(f"{pictureFolder}/{algPathAdd}-FairClued(Cluster-{maxCluster}).jpg")
     
     return
+"""
 
-main()
+if __name__ == "__main__":
+    main()

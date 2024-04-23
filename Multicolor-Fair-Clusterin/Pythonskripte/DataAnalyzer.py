@@ -9,11 +9,12 @@ import Points
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+import csv
 
 from PIL import Image
 
-def analyzeDatasetzs(pictureFolder = "Data/OutputData/Final/Pictures/", 
-                     dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/", 
+def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/", 
+                     dataFolder = "../Data/OutputData/Final/AnalyzedSubsamples/", 
                      maxCluster = 15, 
                    numOfSamples = 5, algs = ["g", "r", "f"]):
         
@@ -22,7 +23,8 @@ def analyzeDatasetzs(pictureFolder = "Data/OutputData/Final/Pictures/",
     for i in range(0, 3):
         
         # # # Daten einlesen
-        #analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
+        timestamps = read_timestamps_from_csv(dataFolder, algorithm=algs[i])
+        analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=algs[i])
         
         # ====== Verarbeitung Bank ====== #
         do_analysis_of_sampleset("bank", pictureFolder, dataFolder, 
@@ -35,10 +37,16 @@ def analyzeDatasetzs(pictureFolder = "Data/OutputData/Final/Pictures/",
                                  numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
     
     
-    # ====== Große Bilder zusammensetzen ====== #
-    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=algs[0])    
+        # ====== Große Bilder zusammensetzen ====== #
+        clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=algs[i])    
 
     return
+
+
+
+
+
+
 
 # # # Analysiert die geclusterten Daten und gibt ein Diagramm dazu aus # # #
 def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples = 20, maxCluster = 20, algorithm="g"):
@@ -92,6 +100,8 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples
     return
 
 
+
+
 def build_plot_axis(dfRadius, picturePath, title, algorithm="g"):
     # Wie weit ist der Abstand der x-Beschriftung
     intervalls = max(int(len(dfRadius)/10),1)
@@ -122,6 +132,8 @@ def build_plot_axis(dfRadius, picturePath, title, algorithm="g"):
     
 
 
+
+
 # # # Holt aus den geklusterten Daten die maximalen Radien raus# # #
 def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
     # Liste für die berechneten Maximalen Radien
@@ -130,7 +142,7 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
     # Radien aus den Files holen
     for i in range(1, maxCluster + 1):
         # Dateipfad generieren
-        filename = f"../{outputfolder}/Clusterdata{outputfile}Cluster{i}.csv"
+        filename = f"{outputfolder}/Clusterdata{outputfile}Cluster{i}.csv"
         # nur die Radien auslesen mit Hilfsmethode
         if(algorithm == "g"):
             _, maxClusterRadius = Points.read_points(filename)
@@ -140,6 +152,41 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
         radiiList.append(maxClusterRadius)
 
     return radiiList
+
+
+
+# # # Liest die Zeitstempel von der CSV Datei ein # # #
+def read_timestamps_from_csv(dataFolder, algorithm="g"):
+    # Zusammensetzen des Pfades
+    # Welcher Algorithmus?
+    algPathAdd = "GonzalezClustering"
+    if(algorithm == "r"):
+        algPathAdd = "RedClustering"
+    if(algorithm == "f"):
+        algPathAdd = "FastClustering"
+        
+    pathOfFile = f"{dataFolder}{algPathAdd}-TimeStamps.csv"
+    
+    # Datei öffnen
+    csvFile = open(pathOfFile, "r")
+    
+    # Datei zu einer Liste konvertieren
+    stampsList = list(csv.reader(csvFile, delimiter=","))
+    
+    # Strings zu zahlen Umwandeln
+    numericList = []
+    for i in range(1, len(stampsList)):
+        timesOfSample = []
+        
+        for k in range(1, len(stampsList[0])):
+            timesOfSample.append(float(stampsList[i][k]))
+        
+        numericList.append(timesOfSample)
+            
+    
+    print(numericList)
+
+    return numericList
 
 
 
@@ -202,7 +249,7 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
       x_offset += im.size[0]
      
     if(algorithm == "g"): 
-        new_im.save(f"{pictureFolder}UnfairBig(Cluster-{maxCluster}).jpg")
+        new_im.save(f"{pictureFolder}Gonzalez-Unfair(Cluster-{maxCluster}).jpg")
     else:
         new_im.save(f"{pictureFolder}/{algPathAdd}-FairClued(Cluster-{maxCluster}).jpg")
     
