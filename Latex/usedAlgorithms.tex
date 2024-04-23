@@ -98,7 +98,7 @@
 
     
     \subsection{Red-Clustering} \label{sec:Red-Clustering}
-        Als erste Art des Clusterings betrachten wir das Red-Clustering. \textbf{Referenz fehlt noch, in Skript steht nur für 1/t}
+        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorihtmus welcher im Paper \cite{chierichetti2018fair} vorgestellt wurde für 1:1 Clustering. Hier wurde er erweitert um auch mit der Berücksichtigung von Ausreißern arbeiten zu können.
 
         \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
@@ -160,7 +160,7 @@
         \end{algorithm}
             
         
-        \subsubsection{Berechnen der Roten Zentren \ref{alg:red-clustering}} 
+        \subsubsection{Berechnen der roten Zentren \ref{alg:red-clustering}} 
             Jetzt Clustern wir lediglich die roten Punkten mithilfe des Algorithmus von Gonzalez \ref{alg:plain_gonzalez}. Dabei können wir sicher sein, dass dabei kein Ausreißer als Zentrum gewählt wird, da aufgrund der Bedingung am Anfang $|R| \leq |B|$ kein roter Punkt ein Ausreißer ist. \newline
             Nach diesem Schritt sind alle roten Punkten einem Cluster zugewiesen. 
         
@@ -210,6 +210,7 @@
 
         \subsubsection{Bilden der Anchor-Fairletts \ref{alg:fairlett-fast-anchor}} 
             Auch wie im Red-Clustering Algorithmus \ref{sec:Red-Clustering} bauen wir ein Flussnetzwerk zum finden der Fairletts auf. Unterschiedlich ist nur die Bedingung für das hinzufügen der Kanten zwischen $a \in R$ und $b \in B$. Man testet für alle Paare $(a, b) \in \{a \in R | b \in B\}$ jeden Punkt $\alpha \in P$ ob $\alpha$ als Anker in Frage kommt. Dabei wird der Anker so gewählt, das $\max(dist(\alpha, a),\ dist(\alpha, b))$ minimal ist. \newline
+            Diese Anker werden auch abgespeichert, denn durch sie bestimmen wir später welchem Cluster wir das Fairlett zuweisen. \newline
             Beim hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$, sondern betrachten den Anker also $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$ und fügen dementsprechend Kanten mit Kapazität 1 ein. \newline
             Die Ausreißer werden genau so wie beim Red-Clustering bestimmt \ref{sec:find-Outlier-red}
 
@@ -256,6 +257,8 @@
                             \State Berechne Maximalen Fluss $f$ von $G$
                             \State Vergleiche mit $f \geq |R|$ für Binäre-Suche
                         \EndFor
+                        \State 
+
                         % Fluss mit optimalem r bilden
                         \State Baue $G$ neu auf mit $r_{opt}$ wie in der oberen Schleife auf
                         \State Berechne den maximalen Fluss $f$ auf $G$
@@ -280,11 +283,80 @@
 
 
         \subsubsection{Berechnen der Zentren}
-            \textbf{Irgendwas mit Rechnen ohne Outlier}
+            Wie bereits beim Red-Clustering \ref{sec:Red-Clustering} verwenden wir hier wieder den Algorithmus von Gonzalez allerdings wird dieser noch um eine Kleinigkeit erweitert. Beim normalen Gonzalez könnte es vorkommen, das zwei Punkte eines Fairletts beide als Zentrum gewählt werden. Da sie aber ein Fairlett sind, müssen sie beide dem gleichen Cluster angehören. Daher muss man immer wenn man einen Punkt als Zentrum wählt, seinen Partner als potenzielles Zentrum entfernen. Wir benuzten hier also einen erweiterten Gonzalez-Algorithmus \ref{alg:extra_gonzalez} um das eigentliche Clustering vorzunehmen. Diesmal Clustern wir alle Punkte welche keine Ausreißer sind, insbesondere auch blaue Punkte.\newline
+            Die Zentren die in diesem Schritt berechnet werden sind auch immer gültig, da das Clustering ohne die Ausreißer berechnet wird.
 
-        \subsubsection{Zuweisen der Zentren}
-            \textbf{Irgendwas mit Anker und nächsten Zentren}
+        
+            \begin{algorithm}
+                \caption{Gonzalez-Algorithmus mit Fairletts}\label{alg:extra_gonzalez}
+                \begin{algorithmic}[1]
+                    \Function{Gonzalez-Fairlett-Aware}{P, dist, k}
+                        % Anfangsbedingungen
+                        \State $Z := $ leere Zentrenmenge
+                        \State $d_{min} := $ Distanz zu nächstem Zentrum 
+                        \State $z_0$ beliebig aus P
+                        \State $z_0.cluster = 0$
+                        \State $z_0.partner.cluster = 0$    \Comment{Fairlett-Awareness}
+                        \State Entferne $z_0.partner$ als potenzielles Zentrum aus P 
+                        \State
 
+                        % Daten für erstes Zentrum aktuallisieren
+                        \ForAll{$x \in P$}
+                            \State $d_{min} = dist(z_0, x)$
+                            \State $x.cluster = 0$
+                        \EndFor
+                        \State
+                        
+                        % Für Jedes K durchgen
+                        \For{$i \in 2,..,k$}
+                            % bestes Zentum suchen
+                            \State $z_i = P(argmax(d_{min}))$
+                            \State $z_i.cluster = i$
+                            \State $z_i.partner.cluster = i$    \Comment{Fairlett-Awareness}
+                        \State Entferne $z_i.partner$ als potenzielles Zentrum aus P 
+        
+                            % Alle Punkte aktuallisieren
+                            \For{$x \in P \setminus Z$}
+                                % Dieser Punkt muss aktuallisiert werden
+                                \If{$dist(z_i, x) < d_{min}[x]$}
+                                    \State $d_{min}[x] = dist(z_i, x)$
+                                    \State $x.cluster = i$
+                                \EndIf
+                            \EndFor
+                        \EndFor
+                        \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm}
+
+        \subsubsection{Zuweisen der Punkte zu den Clustern}
+            Zum Schluss müssen noch alle Punkte, welche keine Ausreißer sind einem Cluster hinzugefügt werden. Dazu geht man jetzt alle Punkte $p \in P$ durch und betrachtet ihren Anker $\alpha_p$. Man weißst dann jeden Punkt $p$ dem Zentrum $c \in Z$ zu, wobei $Z$ die Menge der von Gonzalez \ref{alg:extra_gonzalez} berechneten Zentren ist, wenn der Anker $\alpha_p$ diesem Zentrum am nächsten ist. Also $p.cluster = c.cluster $ wenn für $c$ gilt $min(dist(\alpha_p, c)) $ für alle $ c \in Z$
+
+        
+            \begin{algorithm}
+                \caption{Fast-Anchor Clustering Algorihtmus}\label{alg:fast-clustering}
+                \begin{algorithmic}[1]
+                    \Function{Fast-Anchor-clustering}{P, dist, k}
+                        % Fairletts Markieren
+                        \State Berechne und markiere Fairletts mit \Call{fast-anchor-fairlett}{P, dist}
+    
+                        % Alle Punkte die nicht Ausreißer sindClustern mit Gonzalez
+                        \State $F := \{x | x \in P \wedge x$ ist kein Ausreißer$\}$ 
+                        \State Berechne Clustering von $F$ mit \Call{Gonzalez-Fairlett-Aware}{R, dist, k}
+                        \State $\longrightarrow$ gibt Zentrenmenge $Z$ zurück
+    
+                        % Zuweisung der Punkte über Anker
+                        \State $U := \{x | x \in P \wedge x $ ist kein Zentrum und kein Ausreißer$\}$ 
+                        \ForAll{$p \in U$}
+                            \State $\alpha := p.anchor$
+                            \State suche $c \in Z$ sodass $dist(\alpha, c)$ minimal
+                            \State $p.cluster = c.cluster$
+                        \EndFor
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm} 
+        
+            
 
         \subsubsection{Center-Aware Problem}
 
