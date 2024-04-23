@@ -2,7 +2,7 @@
 
 ## Allgemeine Notizen
 ### Termine
-Abgabe der Arbeit: 07.06.2024
+**Abgabe der Arbeit: 07.06.2024**
 
 * [x] Treffen mit Melanie und Daniel am 7.11 um 10:30
 * [x] Treffen mit Daniel am 20.11 um 15:00
@@ -10,45 +10,37 @@ Abgabe der Arbeit: 07.06.2024
 * [x] Treffen mit Daniel ~~(Melanie?)~~ am 8.1 um 13:00
 * [x] Vortrag von Irina zu ihrer Bachelor-Arbeit am 17.1 um 10:30
 * [x] Treffen mit Daniel und Melanie am 18.1 um 12:00
-* [ ] Treffen mit Daniel am 12.3 um 11:00
+* [x] Treffen mit Daniel am 12.3 um 11:00
+* [x] Treffen mit Daniel am 26.3 um 10:30
+* [x] Treffen mit Daniel am 9.4 um 12:15
+* [x] Treffen mit Daniel am 22.4 um 15:00
+* [ ] Treffen mit Daniel am 6.5 um 15:00
 
 ### Fragen an Besprechung
-* [ ] Welche Art der Formulierung nutzt man eher? Persönliche oder außenstehender
-    * Ich habe ... gemacht, ich habe ... verwendet
-    * Es wurde ... druchgeführt, folgende ... wurden verwendet
-* [ ] Soll die Lemon Library bzw. der Verwendete Algorithmus zitiert werden? Wenn ja, wie?
 * [ ] Sollen die Einschübe wie zu Bipatitem Matching und Flusseigenschaften im Inhaltsverzeichniss auftauchen oder nicht?
-* [ ] Warnings von Pandas, aber noch keine Lösung gefunden
-    * Problem kommt von depricated Code
-* [ ] Warnings von der LemonLibrary. Wie soll ich damit umgehen?
-    * angeblich depricated
-    * Tritt jetzt erst mit dem neuen Compiler auf
-    * mit -std=c++14 kein Problem mehr
-* [ ] Welcher genau ist jetzt der erste Algorithmus
-    * **Red-Clustering**: Erklärung von Melanie (nur eine Farbe Clustern)
-    * **Anchor-Clusterning**: Irina (Ankerpunkt)
-* [ ] Sehr unschöne Art Die Graphen zu verwenden. Ist das Ok?
-    * Leere Initialisierung in Obermethode und weitergabe nur durch Adresse
-    * Andere Möglichkeit wäre als Objekt
 
 
+
+
+
+
+#### Alte Fragen
+* [x] Erste Augenscheinliche vergleiche lassen vermuten, Red-Clustering ist im Average besser
+    * [ ] Plane noch graphen zu einem Bild zusammen zu schmelzen
+    * [ ] Vielleicht mal mit Min-Cost-Flow probieren (Capacity Scaling)
+
+
+#### Nach der Besprechung
+* [ ] Regeln zum schreiben von Knuth durchlesen
+* [ ] Technisches Schreiben von Peter Rechenberg suchen (in)
+
+
+
+</br> 
 
 
 ---
 ### To-Dos
-* FairlettFinder fertig machen
-    * Suche nach Fairletts
-    * Gonzalez mit Roten Knoten
-    * Zuweißung der Cluster
-* Analyse
-    * Pythonskript modifizieren um den neuen Algorithmus zu testen
-    * Main c++ Datei so abändern, dass man den Algorithmus wählen kann
-    * Feeder Shell-Skript auf neuen Algorithmus anpassen
-* Schreiben
-    * Weiter an Latex-Text schreiben
-
-
-
 
 
 
@@ -61,6 +53,14 @@ Abgabe der Arbeit: 07.06.2024
 Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf8d6df66d3e7ab3e9a85af90
 
 !! Lemon Lib ist sehr einschränkend was auslagern in Funktionen betrifft !!
+
+
+#### Versionen von Sprachen und Libraries
+* MatPlotLib: 3.8.0
+* Numpy: 1.26.4
+* Pandas: 2.2.1
+* pip: 23.3.1
+* Python: 3.11.8
 
 
 
@@ -120,30 +120,28 @@ Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf
 * [x] Linken der Libary
 * [x] Daten reproduzierbar aus Paper? *so halb irgendwie*
 * [x] Gozalez soll auch Zentren zurückgeben
-* [ ] Danielgespräch Liste
+* [x] Danielgespräch Liste
     * [x] Zentrendistanz bei Wahl auf 0 setzten
     * [x] Liste um Zentren zurück zu geben
     * [x] Matching/Flussalgorithmen durchlesen `LibLemon`
         * Max Flow (PreFlow Alg)
         * Ins Repo mit rein packen
-    * [ ] Sanaty-Check (Distanzen zu Zentrum mit Max Radius Gegenchecken)
+    * [ ] ~~Sanaty-Check (Distanzen zu Zentrum mit Max Radius Gegenchecken)~~
 * [x] Diabetes Datensatz hinzufügen
 * [x] Samplesize an paper anpassen anpassen
 * [x] Laufzeitmessung
 * [x] Erste Zeilen für Bachelor-Arbeit verfassen
+* [x] Redclusring impementieren und Testen
+* [x] Fast-Anchor-Clustering
+    * [x] Fairlettfinder anpassen
+    * [x] Neue Clusteringklasse schreiben
+    * [x] Testen des Algorithmus
+    * [x] Vergleichen der verschiedenen Algorithmen
 
 
 
 --- 
 ### Als Nächstes
-* [ ] FairlettFinder fertig machen
-    * [ ] Suche nach Fairletts
-    * [ ] Gonzalez mit Roten Knoten
-    * [ ] Zuweißung der Cluster
-* [ ] Analyse
-    * [ ] Pythonskript modifizieren um den neuen Algorithmus zu testen
-    * [ ] Main c++ Datei so abändern, dass man den Algorithmus wählen kann
-    * [ ] Feeder Shell-Skript auf neuen Algorithmus anpassen
 * [ ] Schreiben
     * [ ] Weiter an Latex-Text schreiben
 
@@ -507,16 +505,16 @@ Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf
     * Antrag für Bachelor-Arbeit gestellt
     * Latex Algorithmenbeschreibung angefangen
     * Angefangen mit Methode zum hinzufügen der Kanten in den Graphen zum finden der Fairletts
-* Fr. 8.3
+* Fr. 8.3:
     * Repo auf Lenabuntu wieder geflickt
     * ColorFilter angefangen
-* Sa. 9.3
+* Sa. 9.3:
     * Laptop neu eingerichtet
         * Notwendige Sachen installiert
         * ssh Keys eingerichtet
         * git initialisiert
         * Latex aufgesetzt
-* Mo 11.3
+* Mo 11.3:
     * Python richtig eingerichtet
     * Plötzlich wirft der Kompiler Warnings, dass elemente aus der Lemon-Library depricated sind
     * Weitere Funktionen ausgeschrieben und getestet
@@ -525,7 +523,134 @@ Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf
         * Eine Methode checkt ob bei einem Radius ein Matching möglich ist
             * ggf wird Rot und Blau getauscht
         * Alle Radien werden durchprobiert um den optimalen zu finden
-
+* Di 12.3:
+    * [x] Besprechung mit Daniel
+    * Python-Enviroment festhalten
+* Mi 13.3:
+    * Library neu Installieren (Auf Laptop)
+        * Entpacken `unzip lemon-1.3.1.zip`
+        * in Ordner gehen `cd lemon-1.3.1/`
+        * neuen Build-Ordner erstellen `mkdir build`
+        * rein gehen `cd build/`
+        * mit cmake Dateien erstellen `cmake -DCMAKE_INSTALL_PREFIX=/home/stellarbyte/Installationen/Lemon-Lib ..` (hoffe mal das geht auf meinem Hauptrechner auch so einfach)
+        * installieren `make install`
+    * Headerfiles an die neuen Includes anpassen
+    * Const an alles wo es möglich ist kleben
+    * Lemon Lib in den Zitierungen hinzufügen
+    * Fairlett-Code in Main Mergen
+* Do 14.3:
+    * Lemon Lib auf Hauptrechner installieren
+    * Hauptskript in API und Testing getrennt
+        * In Testing-Skript alle Tests in einzelne Methoden ausgelagert für bessere Übersicht
+    * ~~Angefangen mit Methode~~ um Fairletts zu Markieren **Abgeschlossen!**
+        * Mapper geschrieben, welcher IDs auf Index in Liste berechnet
+        * Methode zum Aufbauen des Graphens ausgelagert
+        * Methode geschrieben, der den wahren Index eines Punktes berechnet und diesen dann als Fairlett Markiert
+            * Wahrscheinlich kann man das noch etwas besser strukturieren
+    * Fairlett-marks getestet
+* Mo 18.3:
+    * Graph und Maxflow aus Fairlettfinder getrennt
+        * Die Fairlett-Finder-Datei wurde sehr groß und ich habe jetzt die ganze Graphlogik in eine eigene Datei kopiert
+    * Angefangen mit Red Clustering
+        * Clustern aber nur mit Roten Punten
+            * Erst Rot filtern
+            * Gonzalez machen
+            * Echte Punkteliste aktuallisieren
+        * Rückgabe-Struct auf und abbau
+        * ACHTUNG: Zentren werden noch nicht richtig zurückgegeben
+* Di 19.3:
+    * Rückgabe der Zentren gefixt
+    * Fair-Red-Clustering Theoretisch abgeschlossen
+        * Problem: Ausprobieren der Fairlett-Radien braucht extrem Lange
+            * Der Maxflow checkt pro Sekunde knapp 20 potentielle Radien
+            * Bei 236.544 Radien dauert das etwa 11.830 sec = 197 min 3,29 h
+            * Mit Daniel darüber gesprochen
+                * Tests zur Laufzeit durchgeführt
+                * Meiste Zeit geht drauf beim Hinzufügen der Kanten -> noch keine Ahnung wie man das Efizienter machen kann
+    * Weiter an API gebastelt
+        * Main-Skript kann jetzt theoretisch mit verschiedenen Algorithmen umgehen
+        * AlgFeeder an neue Schnittstelle angepasst
+        * Kompilieren der Binary aus FeederSkript gelöscht
+            * braucht sehr viel Zeit bei jedem neuen Aufruf
+            * ist jetzt im Pythonskipt als eigene Methode für ganz am Anfang
+* Mi 20.3:
+    * Benchmarking Performance
+        * Weiteres rumprobieren mit neuen Tools (perf) was denn jetzt so lange immer dauert
+        * Einige Screenshots mit verschiedenen Punktemengen
+    * Improving Performance
+        * Test mit einer Look-Up-Matrix für die Distanzen
+        * Tests zeigen einen Speedboost von knapp 4
+* Di 26.3:
+    * Treffen mit Daniel
+* Do 28.3:
+    * Binäre Suche beim finden des Optimalen Fairlett-Radius implementiert
+        * Unglaubliche Algorithmenbeschleunigung
+    * Viel den Code aufgeräumt
+        * Unnötige Kommentare und Code entfernt
+    * Autoanalyzer auf neuen Algorithmus angepasst
+        * Man kann jetzt zusätzlich zu den Algorithmus als Input wählen
+* Fr 29.3:
+    * Mergen des neuen Algorithmus in Main
+    * AutoAnalyzer mal mit großen Daten starten lassen
+* Di 2.4:
+    * ofByOneError bei der Binären Suche gefixt
+    * Einige Debuging prints und imports von der Zeitmessung gelöscht
+    * Process-Bar erweitert
+        * Einige cleandere Ausgaben
+        * Lässt sich jetzt zur Compilezeit bestimmen ob man sie haben will, oder nicht
+    * Latex Datensatztabelle nicht mehr Blocksatz
+* Mi 3.4:
+    * Angefangen mit Fast-Anchor Clustering
+        * Markdowndatei mit Algorithmus gefüllt
+        * Dateien erstellt wie beim Red-Clustering
+        * Methodennamen angepasst, hinzugefügt und gelöscht
+        * Namespaces angepasst
+        * Methode in Colorpoint geschrieben zum Filtern von Fairlett-Members
+        * AnchorID in Colorpoint hinzugefügt
+* Do 4.4:
+    * Methode zur berechnung der Anker hinzugefügt und getestet
+        * Verbessert mit einer Lookup-Matrix für die Distanzen
+    * Berechnung des Max-Flows an Anker-Kriterium angepasst
+    * Radius-Checker an Anker-Kriterium angepasst
+    * Radius-Finder an Anker-Kriterium angepasst
+* Fr 5.4:
+    * Makefile-Rule erstellt um Algfeeder zu testen
+    * Makieren der Fairletts an Anker-Kriterium angepasst
+    * Methoden Zuweißen der Cluster anhand ihres Ankers 
+    * Main-Klasse angepasst das sie jetzt auch den Fast-Anchor Algorithmus benutzen kann
+    * Erste Tests mit QuickFairletChecker sehen gut aus
+* Di 9.4:
+    * [x] Gespräch mit Daniel
+    * Fast-Anchor weiter Testen
+    * Bugfix von Fast-Anchor
+        * Falsche Annahme über Sortierung der Zentren zur Clusternummer
+* Mi 10.4:
+    * Erste größere Sample-Tests mit Fast-Anchor-Clustering
+    * An einer Stelle Steigt der Radius Trotzdem trotz mehr Cluster
+        * Fairlettbildung macht Radius kaputt
+            * bank sample3 Punkte:
+                * 300
+                * 813
+    * Umforulierung des Data-Cleaner Kapitels angefangen
+* Fr 12.4:
+    * Latex - Gonzalezalgorithmus auschreiben
+    * Latex - Fairletts anfange
+* Sa 13.4:
+    * Korrekturen von Korrekturlesen zu verbessern
+* Di 16.4:
+    * Latex - Red Clustering ausformulieren
+    * Latex - Red Clustering Algorithmen schreiben
+    * Latex - Fast-Anchor Clustering anfangen
+* Mo 22.4:
+    * Angefangen den Autoanalyzer zu teilen in 
+        * Skript das Algorithmen ausführt und Ergebnisse speichert
+        * Skript das die ergebnisse einliest und Graphen daraus erzeugt 
+* Di 23.4:
+    * Analyzer-Pipeline noch verbessern
+        * Einen kompletten run hinbekommen
+        * Erste Versuche Vergleichsgraphen zu erzeugen
+    * Latex - Algorithmen Kapitel soweit fertig gemacht
+    * Latex - Angefangen in der Auswertung das Center-Aware Problem zu erklären
 
 
 
