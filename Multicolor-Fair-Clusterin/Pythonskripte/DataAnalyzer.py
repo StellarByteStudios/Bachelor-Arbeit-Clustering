@@ -310,6 +310,8 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
     
     widths, heights = zip(*(i.size for i in images))
     
+    # Horizontal zusammenfügen
+    """
     total_width = sum(widths)
     max_height = max(heights)
     
@@ -319,6 +321,19 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
     for im in images:
       new_im.paste(im, (x_offset,0))
       x_offset += im.size[0]
+    """
+    
+    # Vertikal zusammenfügen
+    max_width = max(widths)
+    total_height = sum(heights)
+    
+    new_im = Image.new('RGB', (max_width, total_height))
+    
+    y_offset = 0
+    for im in images:
+      new_im.paste(im, (0,y_offset))
+      y_offset += im.size[1]
+    
     # Alter Name
     #if(algorithm == "g"): 
     #    new_im.save(f"{pictureFolder}Gonzalez-UnfairNew(Cluster-{maxCluster}).jpg")
