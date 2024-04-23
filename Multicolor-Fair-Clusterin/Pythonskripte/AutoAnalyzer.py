@@ -17,7 +17,7 @@ def main():
     
     # Parameter (Später noch über schleifen)
     maxCluster = 15
-    numOfSamples = 3
+    numOfSamples = 5
     alg = "f"
     processBar = False
     
@@ -30,16 +30,16 @@ def main():
     pictureFolder = f"../Data/OutputData/Pictures/{algPathAdd}Test"
     
     # # # Binary Kompilieren
-    compileBinary(withProcessBar=processBar)
+    #compileBinary(withProcessBar=processBar)
     
     # # # Algorithmus ausführen
-    timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
-    timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    #timeBank = do_algorithm("bank", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    #timeCensus = do_algorithm("census", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
+    #timeDiabetes = do_algorithm("diabetes", numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=alg)
  
-    timestamps = [timeBank, timeCensus, timeDiabetes]
+    #timestamps = [timeBank, timeCensus, timeDiabetes]
     
-    analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
+    #analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
 
     # ====== Verarbeitung Bank ====== #
     do_analysis_of_sampleset("bank", pictureFolder, 
@@ -212,7 +212,7 @@ def print_radii(dfRadius, picturePath, title, algorithm="g"):
     ax.set_xlabel("Cluster")
     ax.set_ylabel("max Radius")
     ax.legend()
-    plt.savefig(picturePath)
+    plt.savefig(picturePath, dpi=400)
     plt.show()
     
 
@@ -257,7 +257,7 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     ax.set_xlabel("Sample")
     ax.set_ylabel("time in ms")
     ax.legend()
-    plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg")
+    plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg", dpi=400)
     plt.show()   
     
     return
