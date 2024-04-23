@@ -344,9 +344,19 @@
                         \State $F := \{x | x \in P \wedge x$ ist kein Ausreißer$\}$ 
                         \State Berechne Clustering von $F$ mit \Call{Gonzalez-Fairlett-Aware}{R, dist, k}
                         \State $\longrightarrow$ gibt Zentrenmenge $Z$ zurück
+                        \State
+                        
+                        % Zentren und ihre Partner sich selbst zuweißen
+                        \ForAll{$p \in P$ enumerate $i$} \Comment{Zentren und Partner werden sich selbst zugewiesen}
+                            \If{$p$ ist Zentum}
+                                \State $p.cluster = i$
+                                \State $p.partner.cluster = i$
+                            \EndIf 
+                        \EndFor
+                        \State
     
                         % Zuweisung der Punkte über Anker
-                        \State $U := \{x | x \in P \wedge x $ ist kein Zentrum und kein Ausreißer$\}$ 
+                        \State $U := \{x | x \in P \wedge x $ ist kein Zentrum, kein Ausreißer und kein Partner eines Zentrums$\}$ 
                         \ForAll{$p \in U$}
                             \State $\alpha := p.anchor$
                             \State suche $c \in Z$ sodass $dist(\alpha, c)$ minimal
@@ -358,18 +368,7 @@
         
             
 
-        \subsubsection{Center-Aware Problem}
-
-
-        \iffalse
-        \begin{itemize}
-            \item wie sind die Fairletts hier anders?
-                \subitem Abstand zu Anker und nicht zu Partner
-            \item Clustern mit allen Punkten
-            \item Center-Aware Zuweisung
-                \subitem Zentrum zu eigenem Cluster
-                \subitem Zuweißen des Partners des Zentrums
-            \item Zuweißung über Anker
-        \end{itemize}
-        \fi
+        \subsubsection{Center-Aware Zuweisung}
+            Aufgrund dessen, dass wir die Punkte dem Zentrum zuweißen welches am nächsten am Ankerpunkt $\alpha$ ist könnte es sein das ein Zentrum nicht Teil seines eigenen Clusters ist. Nehmen wir an, ein Punkt $c \in Z$ wird als Zentrum gewählt, dessen Anker $\alpha$ ist. Zusätzlich gibt es noch ein weiteres Zentrum $c_2 \in Z$ und es gilt $dist(c, \alpha) > dist(c_2, \alpha)$. Dann würde bei der Zuweisung in \ref{alg:fast-clustering} der Punkt $c$ dem Cluster von Punkt $c_2$ zugewiesen werden. Um das zu verhindern gehen wir durch alle Punkte durch und wenn sie ein Zentrum sind, sollen sie ihrem eigenen Cluster zugewiesen werden. Das gleiche machen machen wir mit den Fairlett-Partnern der Zentren.\newline
+            Dies kann in Sonderfällen aber zu einer verschlechterung des maximalen Radius führen, obwohl man mehr Cluster zulässt. Dazu mehr im Kapitel Auswertung \ref{sec:center-aware-auswertung}
         
