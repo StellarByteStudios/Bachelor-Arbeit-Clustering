@@ -3,24 +3,372 @@
 
 \chapter{Algorithmen}
 
-    Welche Algorithmen habe ich implementiert/genutzt und was habe ich mit ihnen gemacht.
-    Vielleicht technische Feinheiten wie geben die Algorithmen etwas zurück
+    In der Arbeit wurden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erläutert werden
+
+\section{Matching}
+    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare.Die Paare sollen sich dabei nicht überschneiden und die Knoten eines Paares sind immer über eine Kante verbunden sind. Sind alle Punkte in einem Paar spricht man von einem vollständigen Matching
+    \subsection{Bipatites Matching}
+        Wird ein Matching in einem Bipatiten Graphen, also einem Graphen welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren, gesucht, dann ist das ein Bipatites Matching.
+
+
+
+
+
+\section{Flussnetzwerke}
+    Das Bilden der Fairletts greift auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei extra Knoten die Quelle $s$ und die Senke $t$.
+    \subsection{Flusseigenschaften}
+        Für einen Fluss, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
+        \begin{enumerate}
+            \item Jede Kante im Netzwerk muss eine nicht negative Kapazität und Fluss haben. 
+            \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle $s$ und Senke $t$ immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv.
+            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten.
+        \end{enumerate}
+
+    \subsection{Max-Flow Algorithmus}
+        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
+        Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
+
+
+
+
+
 
 \section{Gonzalez}
-    \begin{itemize}
-        \item Wie funktioniert Gonzalez grob
-        \item vielleicht, was ist die Rückgabe (Zentren, Knoten mit Clusterzugehörigkeit, maxradius)
-    \end{itemize}
+    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering mit dem k-center Problem als Zielfunktion. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
+    Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k welches die Anzahl an gewünschten Clustern angibt.
+    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg ist von diesem ersten Zentrum, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Zum Schluss wird jeder Punkt dem Zentrum zugewiesen, zu welchem er den geringsten Abstand hat. 
+    Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximalen Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
+
+    \begin{algorithm}
+        \caption{Gonzalez-Algorithmus}\label{alg:plain_gonzalez}
+        \begin{algorithmic}[1]
+            \Function{Gonzalez}{P, dist, k}
+                % Anfangsbedingungen
+                \State $Z := $ leere Zentrenmenge
+                \State $d_{min} := $ Distanz zu nächstem Zentrum 
+                \State $z_0$ beliebig aus P
+                \State $z_0.cluster = 0$
+
+                % Daten für erstes Zentrum aktuallisieren
+                \ForAll{$x \in P$}
+                    \State $d_{min} = dist(z_0, x)$
+                    \State $x.cluster = 0$
+                \EndFor
+                
+                % Für Jedes K durchgen
+                \For{$i \in 2,..,k$}
+                    % bestes Zentum suchen
+                    \State $z_i = P(argmax(d_{min}))$
+                    \State $z_i.cluster = i$
+
+                    % Alle Punkte aktuallisieren
+                    \For{$x \in P \setminus Z$}
+                        % Dieser Punkt muss aktuallisiert werden
+                        \If{$dist(z_i, x) < d_{min}[x]$}
+                            \State $d_{min}[x] = dist(z_i, x)$
+                            \State $x.cluster = i$
+                        \EndIf
+                    \EndFor
+                \EndFor
+                \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
 \section{Fairletts}
-    \begin{itemize}
-        \item How to Flussnetzwerk
-        \item Fairletts verbinden
-        \item Art der Rückgabe
-    \end{itemize}
+    In dieser Arbeit soll faires-Clustering analysiert werden, jedoch kann der Algorithmus von Gonzalez \ref{alg:plain_gonzalez} eine solche Nebenbedingung nicht erfüllen. Wir benutzen hier sogenannte Fairletts.
+    Fairletts sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbedingung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairletts die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer, wenn wir einen Punkt zu einem Cluster zuweisen, auch sein Fairlett-Partner dem selben Zentrum zugewiesen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}. \newline
+    In dieser Arbeit werden zwei Arten der Fairlettbildung betrachtet und ihre Performance und Güte miteinander verglichen.
+
+
+
+
+
+
+
+
+
+
 
 \section{Fair-Clustering mit Ausreißern}
-    \begin{itemize}
-        \item was bringen die Fairletts
-        \item wie werden sie zu Zentren zugewießen
-    \end{itemize}
+    \subsection{Outlier-Punkte}
+    In reellen Daten ist das Feature, welches man fair auf die Cluster verteilen will meist nicht perfekt $1:1$ verteilt. Damit man trotzdem ein faires Clustering durchführen kann, ist es möglich einige Punkte als Outlier zu bestimmen. Diese Outlier werden dann nicht mehr beim Clustering berücksichtigt und werden dementsprechend auch nicht einem Cluster zugewiesen. \newline
+    In einem Verhältniss von $n:n+x$ Punkten werden $n\;\; 1:1$ Fairletts gebildet und $x$ Outlier definiert.
+
+    
+    \subsection{Red-Clustering} \label{sec:Red-Clustering}
+        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorihtmus welcher im Paper \cite{chierichetti2018fair} vorgestellt wurde für 1:1 Clustering. Hier wurde er erweitert um auch mit der Berücksichtigung von Ausreißern arbeiten zu können.
+
+        \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
+            Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
+            Ansschliesend bauen wir einen bipatiten Graphen auf in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap P = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
+            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten dazu "raten" \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
+            In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $f$ gleich der Anzahl an roten Punkten ist $f = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in \{dist(a, b)\}$ bis wir das kleinste $r_{test}$ gefunden haben für die das Matching erfolgreich war ($f = |R|$). Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. \newline
+            Um jetzt die Fairletts zueinander zu zuweisen erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e$ fliest, weisen wir $a$ und $b$ mit $e = (a, b)$ die selbe FairlettID zu, was sie zu einem Fairlett macht. 
+        
+        \subsubsection{Finden der Outlier} \label{sec:find-Outlier-red}
+            Um die Ausreißer zu finden müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde gilt, dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $e_{t_{i}}$ 0 ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweißung zu den Zentren ausgelassen
+
+        \begin{algorithm}
+            \caption{Farilett-Finder Red Clustering}\label{alg:fairlett-red}
+            \begin{algorithmic}[1]
+                \Function{red-cluster-fairlett}{P, dist}
+                    % Punkte Partitionieren
+                    \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                    \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                    % Alle Paarweise distanzen
+                    \State $R_{pot} = \{r = dist(a, b) | a \in R | b \in B\}$
+                    \State $G := $ Graph für Flussnetzwerk
+    
+                    % Alle Radien Ausprobieren
+                    \ForAll{$r \in R_{pot}$} \Comment{verwende Binäre Suche}
+                        % Graph aufbauen
+                        \State Füge in $G$ alle Punkte aus $R$ ein
+                        \State Füge in $G$ alle Punkte aus $B$ ein
+                        \State Füge in $G$ Quelle $s$ und Senke $t$ ein
+                        \State Alle Kanten $(s, a)$ und $(b, t)$ mit Kapazität 1 einfügen
+                        % Main-Kanten einfügen
+                        \ForAll{\{$(a, b) | a \in R | b \in B\}$}
+                            % Kante einfügen
+                            \If{$dist(a, b) \leq r$}
+                                \State Füge Kante $(a, b)$ in $G$ mit Kapazität 1 ein
+                            \EndIf
+                        \EndFor
+                        \State Berechne Maximalen Fluss $f$ von $G$
+                        \State Vergleiche mit $f \geq |R|$ für Binäre-Suche
+                    \EndFor
+                    % Fluss mit optimalem r bilden
+                    \State Baue $G$ neu auf mit $r_{opt}$ wie in der oberen Schleife auf
+                    \State Berechne den maximalen Fluss $f$ auf $G$
+                    % Fairletts bestimmen
+                    \ForAll{$e_{main_{i}} \in \{(a, b) | a \in R | b \in B\}$}
+                        % Fairlett wurde gematched
+                        \If{$f(e_{main_{i}}) = 1}$
+                            \State Weise $e.a$ und $e.b$ dem gleichen Fairlett zu
+                        \EndIf
+                    \EndFor
+                    % Ausreißer markieren
+                    \ForAll{$e_{t} \in \{(b, t) | b \in B\}$}
+                        % Ausreißer feststellen
+                        \If{$f(e_{t}) = 0}$
+                            \State Markiere $b$ als Ausreißer
+                        \EndIf
+                    \EndFor
+                \EndFunction
+            \end{algorithmic}
+        \end{algorithm}
+            
+        
+        \subsubsection{Berechnen der roten Zentren \ref{alg:red-clustering}} 
+            Jetzt Clustern wir lediglich die roten Punkten mithilfe des Algorithmus von Gonzalez \ref{alg:plain_gonzalez}. Dabei können wir sicher sein, dass dabei kein Ausreißer als Zentrum gewählt wird, da aufgrund der Bedingung am Anfang $|R| \leq |B|$ kein roter Punkt ein Ausreißer ist. \newline
+            Nach diesem Schritt sind alle roten Punkten einem Cluster zugewiesen. 
+        
+        \subsubsection{Zuweisen der blauen Partner}
+            Zum Schluss gehen wir durch alle blauen Punkte durch und weisen sie dem selben Cluster zu, zu welchem auch ihr roter Fairlett-Partner zugewiesen wurde oder überspringen sie, falls sie Ausreißer sind.
+    
+
+
+
+        \begin{algorithm}
+            \caption{Red Clustering Algorihtmus}\label{alg:red-clustering}
+            \begin{algorithmic}[1]
+                \Function{red-clustering}{P, dist, k}
+                    % Fairletts Markieren
+                    \State Berechne und markiere Fairletts mit \Call{red-cluster-fairlett}{P, dist}
+
+                    % Rote Punkte Clustern mit Gonzalez
+                    \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                    \State Berechne Clustering von $R$ mit \Call{Gonzalez}{R, dist, k}
+
+                    % Zuweisung der blauen Punkte
+                    \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                    \ForAll{$b \in B$}
+                        \State weise $b$ dem Selben Cluster zu wie sein Fairlett Partner
+                    \EndFor
+                \EndFunction
+            \end{algorithmic}
+        \end{algorithm} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    \subsection{Fast-Anchor-Clustering} \label{sec:Fast-Anchor-Clustering}
+        Als zweiten Clustering-Algorithmus betrachten wir den Fast-Anchor-Algorihtmus \cite{BA_Clustering_Irina}. Dieser Arbeitet ähnlich wie der Red-Clustering Algorithmus \ref{sec:Red-Clustering} bildet aber nach einer grundlegend anderen Bedingung die Fairletts
+
+        \subsubsection{Bilden der Anchor-Fairletts \ref{alg:fairlett-fast-anchor}} 
+            Auch wie im Red-Clustering Algorithmus \ref{sec:Red-Clustering} bauen wir ein Flussnetzwerk zum finden der Fairletts auf. Unterschiedlich ist nur die Bedingung für das hinzufügen der Kanten zwischen $a \in R$ und $b \in B$. Man testet für alle Paare $(a, b) \in \{a \in R | b \in B\}$ jeden Punkt $\alpha \in P$ ob $\alpha$ als Anker in Frage kommt. Dabei wird der Anker so gewählt, das $\max(dist(\alpha, a),\ dist(\alpha, b))$ minimal ist. \newline
+            Diese Anker werden auch abgespeichert, denn durch sie bestimmen wir später welchem Cluster wir das Fairlett zuweisen. \newline
+            Beim hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$, sondern betrachten den Anker also $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$ und fügen dementsprechend Kanten mit Kapazität 1 ein. \newline
+            Die Ausreißer werden genau so wie beim Red-Clustering bestimmt \ref{sec:find-Outlier-red}
+
+
+            \begin{algorithm}
+                \caption{Farilett-Finder Fast-Anchor Clustering}\label{alg:fairlett-fast-anchor}
+                \begin{algorithmic}[1]
+                    \Function{fast-anchor-fairlett}{P, dist}
+                        % Punkte Partitionieren
+                        \State $R := \{x | x \in P \wedge x.color = RED\}$ 
+                        \State $B := \{x | x \in P \wedge x.color = BLUE\}$ 
+                        % Alle Paarweise distanzen
+                        \State $R_{pot} = \{r = dist(a, b) | a \in R | b \in B\}$
+                        \State $G := $ Graph für Flussnetzwerk
+                        \State $A := $ Ankermatrix $|R| \times |B|$
+                        \State 
+                        % Ankerberechnung
+                        % Alle Paare durchgehen
+                        \ForAll{$(a, b) | a \in R | b \in B$} \Comment{Ankerberechnung}
+                            % Alle Anker testen
+                            \ForAll{$\alpha \in P$}
+                                % Besserer Anker gefunden
+                                \If {$\max(dist(\alpha, a),\ dist(\alpha, b)) \leq A[a, b]$}
+                                    \State $A[a, b] = \max(dist(\alpha, a),\ dist(\alpha, b))$
+                                \EndIf 
+                            \EndFor
+                        \EndFor
+                        \State
+                    
+                        % Alle Radien Ausprobieren
+                        \ForAll{$r \in R_{pot}$} \Comment{verwende Binäre Suche}
+                            % Graph aufbauen
+                            \State Füge in $G$ alle Punkte aus $R$ ein
+                            \State Füge in $G$ alle Punkte aus $B$ ein
+                            \State Füge in $G$ Quelle $s$ und Senke $t$ ein
+                            \State Alle Kanten $(s, a)$ und $(b, t)$ mit Kapazität 1 einfügen
+                            % Main-Kanten einfügen
+                            \ForAll{\{$(a, b) | a \in R | b \in B\}$}
+                                % Kante einfügen
+                                \If{$\max(dist(A[a,b], a),\ dist(A[a,b], b)) \leq r$}
+                                    \State Füge Kante $(a, b)$ in $G$ mit Kapazität 1 ein
+                                \EndIf
+                            \EndFor
+                            \State Berechne Maximalen Fluss $f$ von $G$
+                            \State Vergleiche mit $f \geq |R|$ für Binäre-Suche
+                        \EndFor
+                        \State 
+
+                        % Fluss mit optimalem r bilden
+                        \State Baue $G$ neu auf mit $r_{opt}$ wie in der oberen Schleife auf
+                        \State Berechne den maximalen Fluss $f$ auf $G$
+                        % Fairletts bestimmen
+                        \ForAll{$e_{main_{i}} \in \{(a, b) | a \in R | b \in B\}$}
+                            % Fairlett wurde gematched
+                            \If{$f(e_{main_{i}}) = 1}$
+                                \State Weise $e.a$ und $e.b$ dem gleichen Fairlett zu
+                            \EndIf
+                        \EndFor
+                        % Ausreißer markieren
+                        \ForAll{$e_{t} \in \{(b, t) | b \in B\}$}
+                            % Ausreißer feststellen
+                            \If{$f(e_{t}) = 0}$
+                                \State Markiere $b$ als Ausreißer
+                            \EndIf
+                        \EndFor
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm}
+
+
+
+        \subsubsection{Berechnen der Zentren}
+            Wie bereits beim Red-Clustering \ref{sec:Red-Clustering} verwenden wir hier wieder den Algorithmus von Gonzalez allerdings wird dieser noch um eine Kleinigkeit erweitert. Beim normalen Gonzalez könnte es vorkommen, das zwei Punkte eines Fairletts beide als Zentrum gewählt werden. Da sie aber ein Fairlett sind, müssen sie beide dem gleichen Cluster angehören. Daher muss man immer wenn man einen Punkt als Zentrum wählt, seinen Partner als potenzielles Zentrum entfernen. Wir benuzten hier also einen erweiterten Gonzalez-Algorithmus \ref{alg:extra_gonzalez} um das eigentliche Clustering vorzunehmen. Diesmal Clustern wir alle Punkte welche keine Ausreißer sind, insbesondere auch blaue Punkte.\newline
+            Die Zentren die in diesem Schritt berechnet werden sind auch immer gültig, da das Clustering ohne die Ausreißer berechnet wird.
+
+        
+            \begin{algorithm}
+                \caption{Gonzalez-Algorithmus mit Fairletts}\label{alg:extra_gonzalez}
+                \begin{algorithmic}[1]
+                    \Function{Gonzalez-Fairlett-Aware}{P, dist, k}
+                        % Anfangsbedingungen
+                        \State $Z := $ leere Zentrenmenge
+                        \State $d_{min} := $ Distanz zu nächstem Zentrum 
+                        \State $z_0$ beliebig aus P
+                        \State $z_0.cluster = 0$
+                        \State $z_0.partner.cluster = 0$    \Comment{Fairlett-Awareness}
+                        \State Entferne $z_0.partner$ als potenzielles Zentrum aus P 
+                        \State
+
+                        % Daten für erstes Zentrum aktuallisieren
+                        \ForAll{$x \in P$}
+                            \State $d_{min} = dist(z_0, x)$
+                            \State $x.cluster = 0$
+                        \EndFor
+                        \State
+                        
+                        % Für Jedes K durchgen
+                        \For{$i \in 2,..,k$}
+                            % bestes Zentum suchen
+                            \State $z_i = P(argmax(d_{min}))$
+                            \State $z_i.cluster = i$
+                            \State $z_i.partner.cluster = i$    \Comment{Fairlett-Awareness}
+                        \State Entferne $z_i.partner$ als potenzielles Zentrum aus P 
+        
+                            % Alle Punkte aktuallisieren
+                            \For{$x \in P \setminus Z$}
+                                % Dieser Punkt muss aktuallisiert werden
+                                \If{$dist(z_i, x) < d_{min}[x]$}
+                                    \State $d_{min}[x] = dist(z_i, x)$
+                                    \State $x.cluster = i$
+                                \EndIf
+                            \EndFor
+                        \EndFor
+                        \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm}
+
+        \subsubsection{Zuweisen der Punkte zu den Clustern}
+            Zum Schluss müssen noch alle Punkte, welche keine Ausreißer sind einem Cluster hinzugefügt werden. Dazu geht man jetzt alle Punkte $p \in P$ durch und betrachtet ihren Anker $\alpha_p$. Man weißst dann jeden Punkt $p$ dem Zentrum $c \in Z$ zu, wobei $Z$ die Menge der von Gonzalez \ref{alg:extra_gonzalez} berechneten Zentren ist, wenn der Anker $\alpha_p$ diesem Zentrum am nächsten ist. Also $p.cluster = c.cluster $ wenn für $c$ gilt $min(dist(\alpha_p, c)) $ für alle $ c \in Z$
+
+        
+            \begin{algorithm}
+                \caption{Fast-Anchor Clustering Algorihtmus}\label{alg:fast-clustering}
+                \begin{algorithmic}[1]
+                    \Function{Fast-Anchor-clustering}{P, dist, k}
+                        % Fairletts Markieren
+                        \State Berechne und markiere Fairletts mit \Call{fast-anchor-fairlett}{P, dist}
+    
+                        % Alle Punkte die nicht Ausreißer sindClustern mit Gonzalez
+                        \State $F := \{x | x \in P \wedge x$ ist kein Ausreißer$\}$ 
+                        \State Berechne Clustering von $F$ mit \Call{Gonzalez-Fairlett-Aware}{R, dist, k}
+                        \State $\longrightarrow$ gibt Zentrenmenge $Z$ zurück
+                        \State
+                        
+                        % Zentren und ihre Partner sich selbst zuweißen
+                        \ForAll{$p \in P$ enumerate $i$} \Comment{Zentren und Partner werden sich selbst zugewiesen}
+                            \If{$p$ ist Zentum}
+                                \State $p.cluster = i$
+                                \State $p.partner.cluster = i$
+                            \EndIf 
+                        \EndFor
+                        \State
+    
+                        % Zuweisung der Punkte über Anker
+                        \State $U := \{x | x \in P \wedge x $ ist kein Zentrum, kein Ausreißer und kein Partner eines Zentrums$\}$ 
+                        \ForAll{$p \in U$}
+                            \State $\alpha := p.anchor$
+                            \State suche $c \in Z$ sodass $dist(\alpha, c)$ minimal
+                            \State $p.cluster = c.cluster$
+                        \EndFor
+                    \EndFunction
+                \end{algorithmic}
+            \end{algorithm} 
+        
+            
+
+        \subsubsection{Center-Aware Zuweisung}
+            Aufgrund dessen, dass wir die Punkte dem Zentrum zuweißen welches am nächsten am Ankerpunkt $\alpha$ ist könnte es sein das ein Zentrum nicht Teil seines eigenen Clusters ist. Nehmen wir an, ein Punkt $c \in Z$ wird als Zentrum gewählt, dessen Anker $\alpha$ ist. Zusätzlich gibt es noch ein weiteres Zentrum $c_2 \in Z$ und es gilt $dist(c, \alpha) > dist(c_2, \alpha)$. Dann würde bei der Zuweisung in \ref{alg:fast-clustering} der Punkt $c$ dem Cluster von Punkt $c_2$ zugewiesen werden. Um das zu verhindern gehen wir durch alle Punkte durch und wenn sie ein Zentrum sind, sollen sie ihrem eigenen Cluster zugewiesen werden. Das gleiche machen machen wir mit den Fairlett-Partnern der Zentren.\newline
+            Dies kann in Sonderfällen aber zu einer verschlechterung des maximalen Radius führen, obwohl man mehr Cluster zulässt. Dazu mehr im Kapitel Auswertung \ref{sec:center-aware-auswertung}
+        

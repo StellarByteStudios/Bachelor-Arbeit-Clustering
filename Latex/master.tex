@@ -41,7 +41,7 @@ bibliography=totoc]{scrbook}
 \usepackage{lscape}
 \usepackage{tabularx}
 \usepackage{booktabs}
-\usepackage{todonotes}
+
 \usepackage{listings}
 %\usepackage[chapter]{minted}
 %\usepackage[%
@@ -104,11 +104,42 @@ bibliography=totoc]{scrbook}
 
 
 
+
+
+
 % ============== Eigene Preambel befehle ============== %
 
 % Unterdrücken der Warnungen, wenn etwas leicht über den Schriftrand geht
 \vfuzz=2.000pt 
 \hfuzz=9.000pt 
+
+% Eingefügt vor todo-Package auf Empfelung einer Fehlermeldung 
+\setlength {\marginparwidth }{2cm}
+% Dieses Packet war auch vorher schon drin nur wirft es warnungen
+\usepackage{todonotes}
+% Das soll auch helfen
+\usepackage{scrhack}
+
+% Darstellung von Pseudocode
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
+% Musste nachinstallieren:  sudo apt-get install texlive-science
+
+
+% Schönere Referenzen
+%\usepackage{hyperref} %funktioniert leider nicht
+
+% SubSubSection Numbering
+\setcounter{secnumdepth}{3}
+
+
+
+
+
+% Um Bilder nebeneinander darzustellen
+
+
+
 
 %\bibliographystyle{abbrv}
 %\bibliography{bib/erferences}
@@ -137,6 +168,8 @@ bibliography=totoc]{scrbook}
 \pdfbookmark[0]{\contentsname}{content}
 \tableofcontents
 
+\listofalgorithms % Liste aller Algorithmen
+
 %\listoffigures % Abbildungsverzeichniss - entfernen, wenn leer
 
 %\listoftables % Teabellenverzeichniss - entfernen, wenn leer
@@ -155,15 +188,15 @@ bibliography=totoc]{scrbook}
 
 \input{intro} 
 
-\input{dataCleaning}
-
 \input{usedAlgorithms}
+
+\input{dataCleaning}
 
 \input{experimentsPipeline}
 
 \input{conclusion}
 
-\input{citeinport.tex}
+\input{citeinport}
 
 % Auskommentieren, falls kein Anhang notwendig
 %\input{anhang}

@@ -9,3 +9,25 @@
 
 \section{Güte der Algorithmen}
     Konvergieren die Algorithmen gut? Wie groß ist der Kostenunterschied? Wie groß ist der Unterschied zwischen den Datensätzen?
+\section{Center-Aware Problem} \label{sec:center-aware-auswertung}
+    Beim Fair-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} weisen wir explizit die Punke, welche auch Zentren sind automatisch ihren eigenen Clustern zu. Approximativ wird die Güte dadurch nicht schlechter \cite{BA_Clustering_Irina} jedoch ist bei den Experimenten aufgefallen, dass bei spezifischen Datensamples der Maximale Radius des Clusters größer wird, obwohl wir mehr Zentren zulassen. \newline
+    Durch weitere Nachforschung kam raus, dass es tatsächlich Randfälle gibt, in welchen der maximale Radius wieder ansteigen kann, wenn man ein neues Cluster dazu nimmt.
+
+    \subsection*{Beispiel einer Radiussteigung}
+        Hier ein Beispiel eines solchen Falles bei einer Steigerung von $k = 3$ auf $k = 4$. Voraussetzung dafür ist, das ein Fairlettpaar $r \in P$ und $b \in P$ im Fall $k = 3$ Teil des Clusters $c_0$ ist. Im Beispielbild \ref{fig:centerAware-Edge-k3} ist zu sehen, das $r$ mit $dist(r, c_0)$ masgeblich für den Maximalen Radius ist. Dabei sind $r$ und $b$ dem Cluster von $c_0$ zugewiesen weil die Distanz des Ankers $\alpha$ zum Zentrum $c_0$ am kleinsten ist. \newline
+        Im nächsten Schritt wird $r$ als neues Zentrum ($c_4$) gewählt, weil es der am weitesten entfernte Punkt von allen anderen Zentren ist. Allerdings muss jetzt sowohl $r$ selbst als auch sein Fairlettpartner $b$ dem neuen Cluster $c_4$ zugewiesen werden. Dadurch erhöht sich der maximale Radius enorm auf $dist(r, b)$
+        \begin{figure}
+            \centering
+            \begin{minipage}{0.45\textwidth}
+                %\centering
+                \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=3.jpg}
+                \caption{Clustering with k = 3}
+                \label{fig:centerAware-Edge-k3}
+            \end{minipage}\hfill
+            \begin{minipage}{0.45\textwidth}
+                %\centering
+                \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=4.jpg}
+                \caption{Clustering with k = 4}
+                \label{fig:centerAware-Edge-k4}
+            \end{minipage}
+        \end{figure}
