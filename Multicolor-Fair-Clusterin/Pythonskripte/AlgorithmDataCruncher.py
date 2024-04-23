@@ -97,7 +97,7 @@ def do_algorithm(samplename, folderPath, numOfSamples = 20, maxCluster = 20, alg
         process.communicate()
         # Zeitmessung stoppen
         algoTimer.append(time.process_time_ns() - startTime)
-        print(f"# = # = # = Cluster made for Sample: {inputfile} with {algPathAdd}= # = # = #")
+        print(f"# = # = # = Cluster made for Sample: {inputfile} with {algPathAdd} = # = # = #")
     
     return algoTimer
 

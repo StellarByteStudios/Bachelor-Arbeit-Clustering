@@ -11,8 +11,8 @@ def main():
     # Programm-Parameter
     dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
     pictureFolder = "../Data/OutputData/Final/Pictures/"
-    clusters = 5
-    numOfSamples = 3
+    clusters = 15
+    numOfSamples = 5
     
     
     # Daten neu in Subsamples unterteilen

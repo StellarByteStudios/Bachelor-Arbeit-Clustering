@@ -18,28 +18,40 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
                      maxCluster = 15, 
                    numOfSamples = 5, algs = ["g", "r", "f"]):
         
-    # Großen Gemeinsamen leeren Plot bauen
-    # Für jede Algorithmusart einmal durchgehen
-    for i in range(0, 3):
-        
-        # # # Daten einlesen
-        timestamps = read_timestamps_from_csv(dataFolder, algorithm=algs[i])
-        analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=algs[i])
-        
-        # ====== Verarbeitung Bank ====== #
-        do_analysis_of_sampleset("bank", pictureFolder, dataFolder, 
-                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
-        # ====== Verarbeitung Zensus ====== #
-        do_analysis_of_sampleset("census", pictureFolder, dataFolder, 
-                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
-        # ====== Verarbeitung Diabetes ====== #
-        do_analysis_of_sampleset("diabetes", pictureFolder, dataFolder, 
-                                 numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
     
     
-        # ====== Große Bilder zusammensetzen ====== #
-        clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster, numOfSamples=numOfSamples, algorithm=algs[i])    
-
+    # Einmal für jedes Datenset durchgehen
+    for dataSet in ["bank", "census", "diabetes"]:
+        # Großen Gemeinsamen leeren Plot bauen
+        # Variablen für gemeinsamen Plot erzeugen
+        fig, ax = plt.subplots(figsize=(9,6))
+    
+        # Für jede Algorithmusart einmal durchgehen
+        for i in range(0, 3):
+            # Verarbeitung der Radius-Daten
+            do_analysis_of_sampleset(dataSet, pictureFolder, dataFolder, axis=ax,
+                                     numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
+        
+        # Rest vom Graph zusammensetzen
+        ax.set_title(f"Max Radius Comparison of all Algorithms with {dataSet}-Data")
+        ax.set_xlabel("Cluster")
+        ax.set_ylabel("max Radius")
+        ax.legend()
+        plt.savefig(f"{pictureFolder}/Collective Analysis {dataSet}(Cluster-{maxCluster}).jpg", dpi=400)
+        plt.show()
+        
+        
+    
+    # Analyse der Laufzeiten    
+    for alg in algs:
+        # Daten einlesen
+        timestamps = read_timestamps_from_csv(dataFolder, algorithm=alg)
+        # Plot bauen
+        analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
+    
+    # ====== Große Bilder zusammensetzen ====== #
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
+    
     return
 
 
@@ -49,7 +61,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
 
 
 # # # Analysiert die geclusterten Daten und gibt ein Diagramm dazu aus # # #
-def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples = 20, maxCluster = 20, algorithm="g"):
+def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, numOfSamples = 20, maxCluster = 20, algorithm="g"):
     print(f"\n# --------- Working with {samplename} Data --------- # \n")
     
     # Zusammensetzen des Pfades
@@ -61,22 +73,23 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples
     
     # # # Einlesen der neuen Daten
     listOfRadiiLists = []
+    listOfFairlettRadius = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
-        #inputfile = f"Data/Subsamples/{bank}/{bank}Sample-{i}.csv"
         outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
-        radiiList = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)
+        radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)
         # radienverlauf hinszufügen
         listOfRadiiLists.append(radiiList)
+        # Fairlettgröße hinzufügen
+        listOfFairlettRadius.append(fairlettRadius)
         
     
     
     # # # Analyse der Daten
     # Radien in Pandas-Dataframe für weiterverarbeitung packen
     dfRadius = pd.DataFrame(listOfRadiiLists)#.transpose()
-    #print(dfRadius.head())
     
     # erzeugen eines Analyse-Dataframes
     dfImportantValues = pd.DataFrame()
@@ -88,21 +101,28 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, numOfSamples
     dfImportantValues["upperQuantile"] = dfRadius.quantile(0.75)
     dfImportantValues["lowerQuantile"] = dfRadius.quantile(0.25)
     
+    # Median des Fairlett-Radius bilden
+    fairRadiusMean = sum(listOfFairlettRadius) / len(listOfFairlettRadius)  
+    
     print(dfImportantValues.head(10))
     
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(pictureFolder, exist_ok=True) 
-    print(f"picture Path: {pictureFolder}/{algPathAdd}-{samplename}(Cluster-{maxCluster}).jpg")
-    build_plot_axis(dfImportantValues, 
-                f"{pictureFolder}/{algPathAdd}-{samplename}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
-                f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
+
+    # Entscheidung ob einfach nur einzeler Graph oder alles in einen Großen
+    if axis == False:
+        plot_single_dataset(dfImportantValues, 
+                   f"{pictureFolder}/{algPathAdd}-{samplename}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+                   f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
+    else:
+        build_plot_axis(axis, dfImportantValues, fairlettRadiusMean=fairRadiusMean, algorithm=algorithm)
 
     return
 
 
 
-
-def build_plot_axis(dfRadius, picturePath, title, algorithm="g"):
+# # # Printet die Ergebnisse eines einzigen algorithmus in einen Graphen # # #
+def plot_single_dataset(dfRadius, picturePath, title, algorithm="g"):
     # Wie weit ist der Abstand der x-Beschriftung
     intervalls = max(int(len(dfRadius)/10),1)
 
@@ -134,6 +154,45 @@ def build_plot_axis(dfRadius, picturePath, title, algorithm="g"):
 
 
 
+
+
+
+
+# # # Fügt einem gegebenen Graphen die Daten eines Algorithmuses hinzu # # #
+def build_plot_axis(axis, dfRadius, fairlettRadiusMean=0, algorithm="g"):
+    # Wie weit ist der Abstand der x-Beschriftung
+    intervalls = max(int(len(dfRadius)/10),1)
+    
+    # Bessere Beschriftung
+    algName = "Gonzalez-Clustering"
+    algColor = "tab:blue"
+    if(algorithm == "r"):
+        algName = "Red-Clustering"
+        algColor = "orangered"
+    if(algorithm == "f"):
+        algName = "Fast-Clustering"
+        algColor = "tab:green"
+
+    if(algorithm == "g"):
+        # Unfaire Beschriftung
+        axis.plot(dfRadius["clustersize"], dfRadius["mean"],
+                color = algColor, label = f"Unfair {algName} (mean)")
+    else:
+        # Faire Beschriftung
+        axis.plot(dfRadius["clustersize"], dfRadius["mean"],
+                 color = algColor, label = f"Fair {algName} (mean)")
+        axis.axhline(y=fairlettRadiusMean, color = algColor, linestyle='--', label=f"Max Farlett of {algName}")
+
+    
+    axis.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
+
+
+
+
+
+
+
+
 # # # Holt aus den geklusterten Daten die maximalen Radien raus# # #
 def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
     # Liste für die berechneten Maximalen Radien
@@ -146,12 +205,14 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
         # nur die Radien auslesen mit Hilfsmethode
         if(algorithm == "g"):
             _, maxClusterRadius = Points.read_points(filename)
+            maxFairlettRadius = 0 # Nur der Fall, wenn keine Fairletts gebildet werden
         else:
-            _, maxClusterRadius, _ = Points.read_fair_points(filename)
+            _, maxClusterRadius, maxFairlettRadius = Points.read_fair_points(filename)
         # Anfügen des einen Radius
         radiiList.append(maxClusterRadius)
 
-    return radiiList
+    #print(f"Der Fairlettradius der eingelesen wurde ist: {maxFairlettRadius}")
+    return radiiList, maxFairlettRadius
 
 
 
@@ -183,10 +244,10 @@ def read_timestamps_from_csv(dataFolder, algorithm="g"):
         
         numericList.append(timesOfSample)
             
-    
-    print(numericList)
+    # Liste noch Transformieren für die richtige Ausgabe
+    transformedList = [list(values) for values in zip(*numericList)]
 
-    return numericList
+    return transformedList
 
 
 
@@ -233,9 +294,20 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
     if(algorithm == "f"):
         algPathAdd = "FastClustering"
     
-    images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
-                                      f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg"]]
+    images = []
+    
+    # Alte Bildtypen
+    #images = [Image.open(x) for x in [f"{pictureFolder}/{algPathAdd}-{samplename[0]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+    #                                  f"{pictureFolder}/{algPathAdd}-{samplename[1]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
+    #                                  f"{pictureFolder}/{algPathAdd}-{samplename[2]}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg"]]
+    
+    # Neue Bildtypen
+    for i in range(0, len(samplename)):
+        pathToPicture = f"{pictureFolder}/Collective Analysis {samplename[i]}(Cluster-{maxCluster}).jpg"
+        # print(f"Bild wird geladen: {pathToPicture}")
+        images.append(Image.open(pathToPicture))
+    
+    
     widths, heights = zip(*(i.size for i in images))
     
     total_width = sum(widths)
@@ -247,10 +319,11 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
     for im in images:
       new_im.paste(im, (x_offset,0))
       x_offset += im.size[0]
-     
-    if(algorithm == "g"): 
-        new_im.save(f"{pictureFolder}Gonzalez-Unfair(Cluster-{maxCluster}).jpg")
-    else:
-        new_im.save(f"{pictureFolder}/{algPathAdd}-FairClued(Cluster-{maxCluster}).jpg")
+    # Alter Name
+    #if(algorithm == "g"): 
+    #    new_im.save(f"{pictureFolder}Gonzalez-UnfairNew(Cluster-{maxCluster}).jpg")
+    #else:
+    #    new_im.save(f"{pictureFolder}/{algPathAdd}-FairCluedNew(Cluster-{maxCluster}).jpg")
+    new_im.save(f"{pictureFolder}/Collective Clued(Cluster-{maxCluster}).jpg")
     
     return
