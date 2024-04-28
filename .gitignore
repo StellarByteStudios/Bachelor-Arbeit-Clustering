@@ -8,6 +8,8 @@ Multicolor-Fair-Clusterin/Data/Subsamples/
 Multicolor-Fair-Clusterin/Data/OutputData/*
 !Multicolor-Fair-Clusterin/Data/OutputData/ClusteredData (Old)
 !Multicolor-Fair-Clusterin/Data/OutputData/Pictures/
+# Finale Auswertung hochladen
+!Multicolor-Fair-Clusterin/Data/OutputData/Final/
 
 # Zusatzdateien von der Lemon Libary
 Multicolor-Fair-Clusterin/Lemon-Library/lemon-1.3.1/build

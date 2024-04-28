@@ -11,17 +11,18 @@ def main():
     # Programm-Parameter
     dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
     pictureFolder = "../Data/OutputData/Final/Pictures/"
-    clusters = 15
-    numOfSamples = 5
+    clusters = 30
+    numOfSamples = 20
     
     
     # Daten neu in Subsamples unterteilen
-    #CleanData.main()
+    CleanData.main()
     
     
     # Algorithmen Ausführen
-    #AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
-    #                                     maxCluster = clusters, numOfSamples = numOfSamples)
+    AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
+                                         maxCluster = clusters, numOfSamples = numOfSamples,
+                                         makeCompiling = True)
      
     # Analyse und Bilderzeugung
     DataAnalyzer.analyzeDatasetzs(pictureFolder = pictureFolder, 
