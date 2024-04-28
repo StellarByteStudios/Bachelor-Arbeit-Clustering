@@ -16,13 +16,13 @@ def main():
     
     
     # Daten neu in Subsamples unterteilen
-    CleanData.main()
+    #CleanData.main()
     
     
     # Algorithmen Ausführen
-    AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
-                                         maxCluster = clusters, numOfSamples = numOfSamples,
-                                         makeCompiling = True)
+    #AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
+    #                                     maxCluster = clusters, numOfSamples = numOfSamples,
+    #                                     makeCompiling = True)
      
     # Analyse und Bilderzeugung
     DataAnalyzer.analyzeDatasetzs(pictureFolder = pictureFolder, 
