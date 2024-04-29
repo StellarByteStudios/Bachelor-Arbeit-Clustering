@@ -2,7 +2,9 @@
 % !TeX spellcheck = de_DE
 
 \chapter{Experimente}
+ Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen haben wir Test-Pipeline programmiert. Mithilfe dieser die Algorithmen automatisiert auf den Subsamples gestestet werden, nachdem die Daten aufbereitet wurden.
 
+    \iffalse
     \begin{itemize}
         \item Was genau hab ich jetzt berechnet
         \item Welche Daten habe ich explizit verwendet (kurz)
@@ -10,6 +12,49 @@
         \item Umgebung (vielleicht technische Daten)
         \item Graphen aus Python
     \end{itemize}
+    \fi
+\section{Implementierung der Algorithmen}
+    Die Algorithmen wurden alle in C++ implementiert. Für die Flussalgorithmen wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript, welches über die Kommandozeile bedient werden kann. \newline
+    Das Program lässt sich in zwei Modi Kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt werden soll. Dies wurde für die automatischen tests deaktiviert, da das zu Unübersichtlichkeit führt.
+
+\section{Automatisierte Analyse}
+    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um ein Subsample auf einem Algorithmus für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. \newline
+    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell aufgebaut und für jedes Sample das Bash-Skript aufgerufen. ==== Dann wir alles wieder eingelesen bla bla
+    
+
+\section{Testumgebung}
+    Eine Auflistung der technischen Daten der Umgebung in welcher die Tests durchgeführt wurden:
+    \begin{itemize}
+        \item OS: Ubuntu 20.04 LTS
+        \item Prozessor AMD Ryzen 7 5800x
+        \item RAM: 16 GB
+    \end{itemize}
+
+    Versionierung von Python und den Modulen:
+    \begin{itemize}
+        \item Python: 3.11.8
+        \item MatPlotLib: 3.8.0
+        \item Numpy: 1.26.4
+        \item Pandas: 2.2.1
+        \item pip: 23.3.1
+    \end{itemize}
+
+    Kompiler für C++ Code: g++ 9.4.
+
+    \iffalse
+    #### Versionen von Sprachen und Libraries
+* MatPlotLib: 3.8.0
+* Numpy: 1.26.4
+* Pandas: 2.2.1
+* pip: 23.3.1
+* Python: 3.11.8
+* g++ 9.4.0
+
+#### System auf welchem Analysiert wurde
+* OS: Ubuntu 20.04 LTS
+* Prozessor AMD Ryzen 7 5800x
+* RAM: 16 GB
+\fi
 
 \section{Graphen}
     \subsection{Güte-Analyse}
