@@ -39,9 +39,9 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
         ax.legend()
         plt.savefig(f"{pictureFolder}/Collective Analysis {dataSet}(Cluster-{maxCluster}).jpg", dpi=400)
         plt.show()
-        
-        
-    
+
+
+
     # Analyse der Laufzeiten    
     for alg in algs:
         # Daten einlesen
@@ -51,6 +51,10 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
     
     # ====== Große Bilder zusammensetzen ====== #
     clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
+    
+    
+    # Analyse für das Center-Aware Problem von Fast-Anchor
+    fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=10)
     
     return
 
@@ -342,3 +346,91 @@ def clue_pictures_together(samplename, pictureFolder, maxCluster, numOfSamples =
     new_im.save(f"{pictureFolder}/Collective Clued(Cluster-{maxCluster}).jpg")
     
     return
+
+
+
+# # # Nochmals Separate Analyse für das Center-Aware Problem von Fast-Anchor # # #
+def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSamples = 20, maxCluster = 30):
+    print(f"\n# --------- Working with {samplename} Data --------- # \n")
+    
+    # Zusammensetzen des Pfades
+    algPathAdd = "FastClustering"
+    
+    # # # Einlesen der neuen Daten
+    listOfRadiiLists = []
+    for i in range(0, numOfSamples): 
+        # Pfade algorithmisch zusammensetzen
+        outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}"
+        outputfile = f"{samplename}{i}"
+        # Maximale Radien für jede Clustergröße holen
+        radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="f")
+        # radienverlauf hinszufügen
+        listOfRadiiLists.append(radiiList)
+        
+    
+    
+    # # # Analyse der Daten
+    # Radien in Pandas-Dataframe für weiterverarbeitung packen
+    dfRadius = pd.DataFrame(listOfRadiiLists)
+    
+    # erzeugen eines Analyse-Dataframes
+    dfImportantValues = pd.DataFrame()
+    # Index (Clustersize)
+    dfImportantValues["clustersize"] = list(range(1, maxCluster+1))
+    dfImportantValues["mean"] = dfRadius.mean()
+    dfImportantValues["maxValue"] = dfRadius.max()
+    dfImportantValues["minValue"] = dfRadius.min()
+    dfImportantValues["upperQuantile"] = dfRadius.quantile(0.75)
+    dfImportantValues["lowerQuantile"] = dfRadius.quantile(0.25)
+    
+    # Ordner erstellen, falls nicht vorhanden
+    os.makedirs(pictureFolder, exist_ok=True) 
+    print_radii(dfImportantValues,  
+                f"{pictureFolder}/Fast-Anchor Edge-Case.jpg", 
+                f"Fast-Clustering census Edge-Case Example", algorithm="f", fairlettRadius=fairlettRadius)
+
+    return
+
+
+# # # Plot für einzelnen Algorithmus # # #
+def print_radii(dfRadius, picturePath, title, algorithm="f", fairlettRadius=-1):
+    
+    # Zusammensetzen der Beschriftung
+    algorithmName = "Gonzalez-Algorithm"
+    if(algorithm == "r"):
+        algorithmName = "Red-Clustering"
+    if(algorithm == "f"):
+        algorithmName = "Fast-Clustering"
+    
+    
+    # Wie weit ist der Abstand der x-Beschriftung
+    intervalls = max(int(len(dfRadius)/10),1)
+    
+    fig, ax = plt.subplots(figsize=(9,6))
+
+    
+    if(algorithm == "g"):
+        # Unfaire Beschriftung
+        ax.plot(dfRadius["clustersize"], dfRadius["mean"],
+                color = "brown", label = "Unfair (mean)")
+        ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "Unfair (max/min)")
+    else:
+        # Faire Beschriftung
+        ax.plot(dfRadius["clustersize"], dfRadius["mean"],
+                color = "brown", label = "max Radius (mean)")
+        ax.plot(dfRadius["clustersize"], dfRadius["maxValue"],
+                color = "red", linestyle = "dashed", alpha = 0.5, label = "max Radius (max)")
+        ax.plot(dfRadius["clustersize"], dfRadius["minValue"],
+                color = "green", linestyle = "dashed", alpha = 0.5, label = "max Radius (min)")
+        if (fairlettRadius >= 0):
+            ax.axhline(y=fairlettRadius, linestyle='--', label="Mean Farlett Radus")
+    
+
+    ax.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
+    ax.set_title(title)
+    ax.set_xlabel("Cluster")
+    ax.set_ylabel("max Radius")
+    ax.legend()
+    plt.savefig(picturePath, dpi=400)
+    plt.show()
