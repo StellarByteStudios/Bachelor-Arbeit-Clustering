@@ -3,31 +3,46 @@
 
 \chapter{Auswertung}
 
-    Was habe ich aus den Experimenten gelernt
-
-\section{Beschreibung der Bilder}
+% \section{Beschreibung der Bilder}
+% Bereits im Kapitel davor gemacht
 
 \section{Güte der Algorithmen}
-    Konvergieren die Algorithmen gut? Wie groß ist der Kostenunterschied? Wie groß ist der Unterschied zwischen den Datensätzen?
-\section{Center-Aware Problem} \label{sec:center-aware-auswertung}
-    Beim Fair-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} weisen wir explizit die Punke, welche auch Zentren sind automatisch ihren eigenen Clustern zu. Approximativ wird die Güte dadurch nicht schlechter \cite{BA_Clustering_Irina} jedoch ist bei den Experimenten aufgefallen, dass bei spezifischen Datensamples der maximale Radius des Clusters größer wird, obwohl wir mehr Zentren zulassen. \newline
-    Durch weitere Nachforschung kam raus, dass es tatsächlich Randfälle gibt, in welchen der maximale Radius wieder ansteigen kann, wenn man ein neues Cluster dazu nimmt.
+    Wenn wir uns die Graphen \ref{fig:CluedQuality30} anschauen, dann sehen wir, dass alle Algorithmen mit steigendem $k$ Cluster mit geringeren Kosten berechnen. Dabei handelt es sich allerdings um den Median über jeweils 20 Subsamples pro Datensatz. Auffällig ist, dass die Kurve für das Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} nicht monoton fällt. Das ist in den Graphen mit Median \ref{fig:CluedQuality30} für den Datensatz der Zensusdaten \cite{misc_adult_2} von $k = 16$ auf $k = 17$ zu erkennen. Besser noch im einzelnen Graphen \ref{fig:Edge-Case-Curve} in welchem an der Maximumslinie klar eine Steigerung zu sehen ist. Ein Einblick in die Daten zeigt, dass es beim Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} vorkommen kann, dass ein neuer Punkt als Zentrum gewählt wird und diesem Cluster dann das Zentrum selbst und der Partnerknoten zugewiesen werden müssen. Dies kann die Kosten erhöhen \ref{sec:center-aware-auswertung}. \newline
+    Auch ist zu sehen, dass das Red-Clustering bei den Datensätzen der Bankdaten \cite{misc_bank_marketing_222} und der Zensusdaten \cite{misc_adult_2} merklich bessere Cluster berechnet. Besser meint hier Cluster mit geringeren Kosten. Bei den Diabestes-Daten \cite{misc_diabetes_130_richtig} ist das Fast-Anchor-Clustering besser, jedoch nur sehr gering im Gegensatz zu den anderen Datensätzen. \newline
+    Das gewählte $r_{opt}$ für die Fairlettbildung ist in allen Fällen beim Fast-Anchor-Clustering besser. Das liegt voraussichtlich daren, dass die Fairletts welche beim Red-Clustering gebildet werden \ref{alg:fairlett-red} auch eine legitime Lösung für die Fairlettbildung beim Fast-Anchor-Clustering \ref{alg:fairlett-fast-anchor} ist.
 
-    \subsection*{Beispiel einer Radiussteigung}
-        Hier ein Beispiel eines solchen Falles bei einer Steigerung von $k = 3$ auf $k = 4$. Voraussetzung dafür ist, das ein Fairlettpaar $r \in P$ und $b \in P$ im Fall $k = 3$ Teil des Clusters $c_0$ ist. Im Beispielbild \ref{fig:centerAware-Edge-k3} ist zu sehen, das $r$ mit $dist(r, c_0)$ masgeblich für den Maximalen Radius ist. Dabei sind $r$ und $b$ dem Cluster von $c_0$ zugewiesen weil die Distanz des Ankers $\alpha$ zum Zentrum $c_0$ am kleinsten ist. \newline
-        Im nächsten Schritt wird $r$ als neues Zentrum ($c_4$) gewählt, weil es der am weitesten entfernte Punkt von allen anderen Zentren ist. Allerdings muss jetzt sowohl $r$ selbst als auch sein Fairlettpartner $b$ dem neuen Cluster $c_4$ zugewiesen werden. Dadurch erhöht sich der maximale Radius enorm auf $dist(r, b)$
-        \begin{figure}
-            \centering
-            \begin{minipage}{0.45\textwidth}
-                %\centering
-                \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=3.jpg}
-                \caption{Fast-Anchor-Clustering Edge-Case mit k = 3}
-                \label{fig:centerAware-Edge-k3}
-            \end{minipage}\hfill
-            \begin{minipage}{0.45\textwidth}
-                %\centering
-                \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=4.jpg}
-                \caption{Fast-Anchor-Clustering Edge-Case mit k = 4}
-                \label{fig:centerAware-Edge-k4}
-            \end{minipage}
-        \end{figure}
+
+    
+    \subsection{Center-Aware Problem} \label{sec:center-aware-auswertung}
+        Beim Fair-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} weisen wir explizit die Punke, welche Zentren sind automatisch ihren eigenen Clustern zu. Außerdem werden auch ihre Fairlett-Partner dem selben Cluster zugewiesen. Approximativ wird die Güte dadurch nicht schlechter \cite{BA_Clustering_Irina} jedoch fällt bei den Experimenten auf, dass bei spezifischen Datensamples \ref{fig:Edge-Case-Curve} der maximale Radius des Clusters größer wird, obwohl wir mehr Zentren zulassen. \newline
+        Durch weitere Nachforschung kam raus, dass es tatsächlich Randfälle gibt, in welchen der maximale Radius wieder ansteigen kann, wenn man ein neues Cluster dazu nimmt.
+
+        \subsubsection{Beispiel einer Radiussteigung}
+            Hier ein Beispiel eines solchen Falles bei einer Steigerung von $k = 3$ auf $k = 4$. Voraussetzung dafür ist, das ein Fairlettpaar $r \in P$ und $b \in P$ im Fall $k = 3$ Teil des Clusters $c_0$ ist. Im Beispielbild \ref{fig:centerAware-Edge-k3} ist zu sehen, dass $r$ mit $dist(r, c_0)$ maßgeblich für den maximalen Radius ist. Dabei sind $r$ und $b$ dem Cluster von $c_0$ zugewiesen weil die Distanz des Ankers $\alpha$ zum Zentrum $c_0$ am kleinsten ist. \newline
+            Im nächsten Schritt wird $r$ als neues Zentrum ($c_4$) gewählt, weil es der am weitesten entfernte Punkt von allen anderen Zentren ist. Allerdings muss jetzt sowohl $r$ selbst als auch sein Fairlettpartner $b$ dem neuen Cluster $c_4$ zugewiesen werden. Dadurch erhöht sich der maximale Radius enorm auf $dist(r, b)$
+            \begin{figure}
+                \centering
+                \begin{minipage}{0.45\textwidth}
+                    %\centering
+                    \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=3.jpg}
+                    \caption{Fast-Anchor-Clustering Edge-Case mit k = 3}
+                    \label{fig:centerAware-Edge-k3}
+                \end{minipage}\hfill
+                \begin{minipage}{0.45\textwidth}
+                    %\centering
+                    \includegraphics[width=0.9\textwidth]{fig/Edge-Case bigger maxRadius/Bigger Cluster Edge-Case k=4.jpg}
+                    \caption{Fast-Anchor-Clustering Edge-Case mit k = 4}
+                    \label{fig:centerAware-Edge-k4}
+                \end{minipage}
+            \end{figure}
+
+\section{Laufzeitanalyse}
+    Vergleichen wir die Laufzeit des Red-Clusterings \ref{fig:RuntimeRedClustering} mit der des Fast-Anchor-Clusterings \ref{fig:RuntimeFastAnchor} dann stellen wir fest, dass die Laufzeit des Fast-Anchor-Clusterings mehr als doppelt, im Falle der Diabetest-Daten \cite{misc_diabetes_130_richtig} sogar fast das vierfache an Laufzeit braucht. \newline
+    Es ist zu erwarten, dass der Fast-Anchor Algorithmus länger braucht, da er zusätzlich zum finden der Fairletts auch noch die Anker berechnen muss \ref{alg:fairlett-fast-anchor}. Diese Berechnung ist mit einer Theoretischen Laufzeit von $\Theta(n^{3})$ sehr teuer. \newline
+    Es ist ebenfalls erwartbar, dass die Laufzeit von Gonzalez \ref{fig:RuntimeGonzalez} um einiges schneller ist. Er hat nicht nur die bessere Theoretische Laufzeit, sondern er wird auch von den anderen Algorithmen als Teilfunktion benutzt.
+
+
+\section{Fazit}
+    In der Praxis ist der Fast-Anchor Algorithmus \ref{sec:Fast-Anchor-Clustering} nicht nur langsamer, sondern produziert auch in einigen Fällen eine schlechere Lösung. Das ist überraschend, denn für den Red-Clustering Algorithms \ref{sec:Red-Clustering} wurde eine Approximationsgarantie von $\mathcal{O}(n^{4})$ gezeigt \cite{chierichetti2018fair} während für das Fast-Anchor-Cluster eine Approximationsgarantie von $\mathcal{O}(n^{3})$ gezeigt wurde \cite{BA_Clustering_Irina}. \newline
+    Ursachen für dieses Ergebniss sind möglicherweiße die Daten, durch die Sonderfälle wie in \ref{sec:center-aware-auswertung} auftreten. Dieser Effekt wird noch verstärkt dadurch, dass die Fairletts beim Fast-Anchor-Clustering theoretisch doppelt so weit voneinander entfernt sein können als beim Red-Clustering. Das liegt daran, da beim bilden der Fairletts \ref{alg:fairlett-fast-anchor} nur der Abstand zum Anker $\alpha$ für beide Punkte $(a, b)$ betrachtet wird. Für diesen gilt aufgrund dessen, dass wir eine Metrik verwenden $dist(\alpha, a) + dist(\alpha, b) \leq dist(a, b)$ und demetsprechend im schlimmsten Fall $dist(a, b) = dist(\alpha, a) + dist(\alpha, b) = 2 * dist(\alpha, a)$. Dadurch wird bei der Wahl von $a$ als neues Zentrum der maximale Radius ggf. auf $dist(\alpha, a) + dist(\alpha, b) = 2 * dist(\alpha, a)$ verschlechtert. \newline
+    Auch sind wahrscheinlich beide Algorithmen in der Praxis deutlich besser sind, als die Approximationsgarantie, welche sie versprechen. Dies wird in dieser Arbeit jedoch nicht überprüft, da man dazu zu jedem Datensatz eine Optimale Lösung haben müsste um das zu vergleichen.

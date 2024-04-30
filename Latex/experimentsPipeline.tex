@@ -18,8 +18,8 @@
     Das Program lässt sich in zwei Modi kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt werden soll. Dies wurde für die automatischen Tests deaktiviert, da das zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist das von Vorteil.
 
 \section{Automatisierte Analyse}
-    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um einen Algorihtmus auf einem Subsample für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. Dieses führt sukzessive für ein bestimmtes Sample und einen Algorithmus jedes Clustering von 1 bis $k$ Cluster durch und speichert die Ergebnisse in einem Ordner. \newline
-    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell aufgebaut und für jedes Sample das Bash-Skript aufgerufen. Nach der Berechnung sind die geclusterten Daten in CSV Dateien gespeichert und werden wieder von einem Pythonskript eingelesen, welches dann die Ergebnisse analysiert und die Graphen erstellt. \newline
+    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um einen Algorithmus auf einem Subsample für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. Dieses führt sukzessive für ein bestimmtes Sample und einen Algorithmus jedes Clustering von 1 bis $k$ Cluster durch und speichert die Ergebnisse in einem Ordner. \newline
+    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell geöffnet und für jedes Sample das Bash-Skript aufgerufen. Nach der Berechnung sind die geclusterten Daten in CSV Dateien gespeichert und werden wieder von einem Pythonskript eingelesen, welches dann die Ergebnisse analysiert und die Graphen erstellt. \newline
     Die Verwenung des Moduls \verb+subprocess+ und des Bash-Skriptes führen zu einer Platformabhänigkeit auf GNU/Linux für das automatisierte Testen. Die C++ Implementierung ist jedoch Platformunabhängig.
     
 
@@ -69,29 +69,40 @@
         Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
         Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze
 
+        \subsubsection{Randfall Güteverschlechterung}
+            Für Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} wird noch ein zusätzlicher Graph erzeugt. Auf diesem sind nicht nur die Durchschnitts-Kosten zu sehen, sondern auch die maximalen und die minimalen Kosten der jeweiligen $k$
+
+            \begin{figure}
+                \centering
+                \includegraphics[height=(\textheight/2-40pt)]{fig/Edge-Case bigger maxRadius/Edge-Case Curve.jpg}
+                \caption{Kosten mit Median und Min/Max des Zensusdatensatzes mit den ersten 10 Subsamples}
+                \label{fig:Edge-Case-Curve}
+            \end{figure}
+
 
     \subsection{Laufzeit-Analyse}
         Um die Laufzeit der Algorithmen zu analysieren verwenden wir in Python aus dem Modul \verb+time+ die Funktion \verb+time.process_time_ns()+ welche die Prozessor-Zeit misst, in welcher der Aufruf des Bash-Skriptes rechnet. Die einzelnen Graphen Zeigen die Laufzeit eines Algorithmuses wobei die verschiedenen Datensätze verglichen werden.
 
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Gonzalez-Algorithm.jpg}
+            \caption{Laufzeit des Gonzalezalgorithmus}
+            \label{fig:RuntimeGonzalez}
+        \end{figure}
+
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Red-Clustering.jpg}
+            \caption{Laufzeit des Red-Clustering-Algorithmus}
+            \label{fig:RuntimeRedClustering}
+        \end{figure}
+
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Fast-Clustering.jpg}
+            \caption{Laufzeit des Fast-Anchor-Algorithmus}
+            \label{fig:RuntimeFastAnchor}
+        \end{figure}
+
     
-    \begin{figure}
-        \centering
-        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Red-Clustering.jpg}
-        \caption{Laufzeit des Red-Clustering-Algorithmus}
-        \label{fig:RuntimeRedClustering}
-    \end{figure}
-
-    \begin{figure}
-        \centering
-        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Fast-Clustering.jpg}
-        \caption{Laufzeit des Fast-Anchor-Algorithmus}
-        \label{fig:RuntimeFastAnchor}
-    \end{figure}
-
-    \begin{figure}
-        \centering
-        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Gonzalez-Algorithm.jpg}
-        \caption{Laufzeit des Gonzalezalgorithmus}
-        \label{fig:RuntimeGonzalez}
-    \end{figure}
         
