@@ -2,7 +2,7 @@
 % !TeX spellcheck = de_DE
 
 \chapter{Experimente}
- Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen haben wir Test-Pipeline programmiert. Mithilfe dieser die Algorithmen automatisiert auf den Subsamples gestestet werden, nachdem die Daten aufbereitet wurden.
+ Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen nutzen wir eine Test-Pipeline, mithilfe der die Algorithmen automatisiert auf den Subsamples gestestet werden, nachdem die Daten aufbereitet wurden.
 
     \iffalse
     \begin{itemize}
@@ -15,11 +15,12 @@
     \fi
 \section{Implementierung der Algorithmen}
     Die Algorithmen wurden alle in C++ implementiert. Für die Flussalgorithmen wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript, welches über die Kommandozeile bedient werden kann. \newline
-    Das Program lässt sich in zwei Modi Kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt werden soll. Dies wurde für die automatischen tests deaktiviert, da das zu Unübersichtlichkeit führt.
+    Das Program lässt sich in zwei Modi kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt werden soll. Dies wurde für die automatischen Tests deaktiviert, da das zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist das von Vorteil.
 
 \section{Automatisierte Analyse}
-    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um ein Subsample auf einem Algorithmus für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. \newline
-    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell aufgebaut und für jedes Sample das Bash-Skript aufgerufen. ==== Dann wir alles wieder eingelesen bla bla
+    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um einen Algorihtmus auf einem Subsample für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. Dieses führt sukzessive für ein bestimmtes Sample und einen Algorithmus jedes Clustering von 1 bis $k$ Cluster durch und speichert die Ergebnisse in einem Ordner. \newline
+    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell aufgebaut und für jedes Sample das Bash-Skript aufgerufen. Nach der Berechnung sind die geclusterten Daten in CSV Dateien gespeichert und werden wieder von einem Pythonskript eingelesen, welches dann die Ergebnisse analysiert und die Graphen erstellt. \newline
+    Die Verwenung des Moduls \verb+subprocess+ und des Bash-Skriptes führen zu einer Platformabhänigkeit auf GNU/Linux für das automatisierte Testen. Die C++ Implementierung ist jedoch Platformunabhängig.
     
 
 \section{Testumgebung}
@@ -39,7 +40,7 @@
         \item pip: 23.3.1
     \end{itemize}
 
-    Kompiler für C++ Code: g++ 9.4.
+    Kompiler für C++ Implementierung: g++ 9.4.
 
     \iffalse
     #### Versionen von Sprachen und Libraries
@@ -58,10 +59,39 @@
 
 \section{Graphen}
     \subsection{Güte-Analyse}
-        Um die Algorithmen zu vergleichen betrachten wir ihre Güte auf den Test-Daten mit verschiedener Anzahl an Clustern
+        Um die Algorithmen zu vergleichen betrachten wir ihre Güte auf den Test-Daten mit verschiedener Anzahl an Clustern.
         \begin{figure}
             \centering
             \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued(Cluster-30).jpg}
-            \caption{Zusammengefasste kosten der Cluster bis zu 15 Cluster}
-            \label{fig:CluedQuality15}
+            \caption{Zusammengefasste kosten der Cluster bis zu 30 Cluster}
+            \label{fig:CluedQuality30}
         \end{figure}
+        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
+        Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze
+
+
+    \subsection{Laufzeit-Analyse}
+        Um die Laufzeit der Algorithmen zu analysieren verwenden wir in Python aus dem Modul \verb+time+ die Funktion \verb+time.process_time_ns()+ welche die Prozessor-Zeit misst, in welcher der Aufruf des Bash-Skriptes rechnet. Die einzelnen Graphen Zeigen die Laufzeit eines Algorithmuses wobei die verschiedenen Datensätze verglichen werden.
+
+    
+    \begin{figure}
+        \centering
+        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Red-Clustering.jpg}
+        \caption{Laufzeit des Red-Clustering-Algorithmus}
+        \label{fig:RuntimeRedClustering}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Fast-Clustering.jpg}
+        \caption{Laufzeit des Fast-Anchor-Algorithmus}
+        \label{fig:RuntimeFastAnchor}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Gonzalez-Algorithm.jpg}
+        \caption{Laufzeit des Gonzalezalgorithmus}
+        \label{fig:RuntimeGonzalez}
+    \end{figure}
+        
