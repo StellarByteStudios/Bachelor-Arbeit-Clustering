@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 import csv
+import numpy as np
 
 from PIL import Image
 
@@ -19,7 +20,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
                    numOfSamples = 5, algs = ["g", "r", "f"]):
         
     
-    
+    """
     # Einmal für jedes Datenset durchgehen
     for dataSet in ["bank", "census", "diabetes"]:
         # Großen Gemeinsamen leeren Plot bauen
@@ -41,7 +42,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
         plt.show()
 
 
-
+    """
     # Analyse der Laufzeiten    
     for alg in algs:
         # Daten einlesen
@@ -50,11 +51,11 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
         analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
     
     # ====== Große Bilder zusammensetzen ====== #
-    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
+    #clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
     
     
     # Analyse für das Center-Aware Problem von Fast-Anchor
-    fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=10)
+    #fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=10)
     
     return
 
@@ -264,21 +265,42 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
         algorithmName = "Red-Clustering"
     if(algorithm == "f"):
         algorithmName = "Fast-Clustering"
+        
+    
     
     # Ordner erstellen, falls nicht vorhanden
     os.makedirs(picturePath, exist_ok=True) 
     
+    # Intervallgröße einstellen
     intervalls = max(int(len(timestamps[0])/10),1)
     
+    # Farben festlegen
+    colors = ["tab:blue", "tab:orange", "tab:green"]
+    
+    # Plot erzeugen
     fig, ax = plt.subplots(figsize=(9,6))
+    
+    
     for i in range(0, len(labels)):
-        ax.plot(range(0, len(timestamps[0])), [e / 1_000_000 for e in timestamps[i]], label = labels[i])
+        # Median der Zeiten berechnen
+        mean_of_times = np.mean(timestamps[i])  / 1_000_000
+        # Plotten der Kurve
+        ax.plot(range(0, len(timestamps[0])), 
+                [e / 1_000_000 for e in timestamps[i]], 
+                label = f"{labels[i]} (mean: {mean_of_times:.2f} ms)", color = colors[i])
+        #ax.plot(range(0, len(timestamps[0])), 
+        #        [e / 1_000_000 for e in timestamps[i]], 
+        #        label = f"{labels[i]}", color = colors[i])
+        # Plotten des Medians
+        #ax.axhline(y=mean_of_times, linestyle='--', 
+        #           label=f"{labels[i]} mean: {mean_of_times:.2f} ms" , color = colors[i])
+    
 
     ax.set_xticks(list(range(0, len(timestamps[0]) + 1, intervalls)))
     ax.set_title(f"CPU Times of {algorithmName} Excecution")
     ax.set_xlabel("Sample")
     ax.set_ylabel("time in ms")
-    ax.legend()
+    ax.legend(loc='upper right')
     plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg", dpi=400)
     plt.show()   
     
