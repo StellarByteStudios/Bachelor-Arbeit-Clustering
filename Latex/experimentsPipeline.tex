@@ -2,7 +2,7 @@
 % !TeX spellcheck = de_DE
 
 \chapter{Experimente}
- Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen nutzen wir eine Test-Pipeline, mithilfe der die Algorithmen automatisiert auf den Subsamples gestestet werden, nachdem die Daten aufbereitet wurden.
+ Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen nutzen wir eine Test-Pipeline, mithilfe der die Algorithmen automatisiert auf den Subsamples für verschiedene Clusteranzahl $k$ gestestet werden, nachdem die Daten aufbereitet wurden. 
 
     \iffalse
     \begin{itemize}
@@ -15,12 +15,13 @@
     \fi
 \section{Implementierung der Algorithmen}
     Die Algorithmen wurden alle in C++ implementiert. Für die Flussalgorithmen wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript, welches über die Kommandozeile bedient werden kann. \newline
-    Das Program lässt sich in zwei Modi kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt werden soll. Dies wurde für die automatischen Tests deaktiviert, da das zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist das von Vorteil.
+    Das Program lässt sich in zwei Modi kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt wird. Dies wurde für die automatischen Tests deaktiviert, da das zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist das von Vorteil.
 
 \section{Automatisierte Analyse}
     Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um einen Algorithmus auf einem Subsample für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript. Dieses führt sukzessive für ein bestimmtes Sample und einen Algorithmus jedes Clustering von 1 bis $k$ Cluster durch und speichert die Ergebnisse in einem Ordner. \newline
     Um die verschiedenen Subsamples zu testen wird in einem Pythonskript mithilfe von Subprozessen eine Shell geöffnet und für jedes Sample das Bash-Skript aufgerufen. Nach der Berechnung sind die geclusterten Daten in CSV Dateien gespeichert und werden wieder von einem Pythonskript eingelesen, welches dann die Ergebnisse analysiert und die Graphen erstellt. \newline
-    Die Verwenung des Moduls \verb+subprocess+ und des Bash-Skriptes führen zu einer Platformabhänigkeit auf GNU/Linux für das automatisierte Testen. Die C++ Implementierung ist jedoch Platformunabhängig.
+    Die Verwenung des Moduls \verb+subprocess+ und des Bash-Skriptes führen zu einer Platformabhänigkeit auf GNU/Linux für das automatisierte Testen. Die C++ Implementierung ist jedoch Platformunabhängig. \newline
+    Es werden alle Samples jeweils drei Algorithmen ausgeführt (Gonzalez \ref{alg:plain_gonzalez}, Red-CLustering \ref{sec:Red-Clustering} und Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering})
     
 
 \section{Testumgebung}
@@ -67,10 +68,10 @@
             \label{fig:CluedQuality30}
         \end{figure}
         Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
-        Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze
+        Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze.
 
         \subsubsection{Randfall Güteverschlechterung}
-            Für Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} wird noch ein zusätzlicher Graph erzeugt. Auf diesem sind nicht nur die Durchschnitts-Kosten zu sehen, sondern auch die maximalen und die minimalen Kosten der jeweiligen $k$
+            Für Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} wird noch ein zusätzlicher Graph erzeugt. Auf diesem sind nicht nur die Durchschnitts-Kosten zu sehen, sondern auch die maximalen und die minimalen Kosten der jeweiligen $k$.
 
             \begin{figure}
                 \centering
