@@ -20,7 +20,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
                    numOfSamples = 5, algs = ["g", "r", "f"]):
         
     
-    """
+    
     # Einmal für jedes Datenset durchgehen
     for dataSet in ["bank", "census", "diabetes"]:
         # Großen Gemeinsamen leeren Plot bauen
@@ -42,7 +42,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
         plt.show()
 
 
-    """
+    
     # Analyse der Laufzeiten    
     for alg in algs:
         # Daten einlesen
@@ -51,11 +51,11 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
         analyze_times(timestamps, pictureFolder, ["bank", "census", "diabetes"], algorithm=alg)
     
     # ====== Große Bilder zusammensetzen ====== #
-    #clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
+    clue_pictures_together(["bank", "census", "diabetes"], pictureFolder, maxCluster=maxCluster)
     
     
     # Analyse für das Center-Aware Problem von Fast-Anchor
-    #fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=10)
+    fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=numOfSamples, maxCluster=maxCluster)
     
     return
 
