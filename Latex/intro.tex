@@ -4,12 +4,10 @@
 \chapter{Einleitung}
 
 \section{Motivation}
-
-Das hier ist die Einleitung.
-Hier sollte darauf eingegangen werden, was die Motivation der Arbeit ist.
+    Große Mengen an Daten zu analysieren ist inzwischen ein alltägliches Problem. Vorallem die Mustererkennung und das finden von Beziehungen einzelner Elemente aus den Daten ist von großer Bedeutung. Eine Möglichkeit solche Beziehungen zu finden ist das Clustering. Dabei versucht man algorithmmisch \glqq nahe\grqq \ Punkte, wobei hier Nähe sehr unterschiedlich definiert sein kann, zu Gruppen, gennant Clustern, zusammenzufassen. \newline
+    Es zeigt sich jedoch, dass dieses Gruppieren in der Regel sehr schwer zu berechnen ist \cite{Clustering_Skript} und man daher auf Algorithmen zurückgreift welche zwar schneller rechnen, aber dafür nicht die optimale Lösung liefern. Umso schwerer wird es wenn man neben der \glqq Nähe\grqq \ auch noch weitere Nebenbedingung an die berechneten Cluster stellt. Darunter fällt z.b. die gerechte Aufteilung auf Cluster. Dabei hat jeder Punkt eine zusätzliche Eigenschaft, welche fair in den Clustern verteilt werden soll. In der Arbeit wird hier abstrakt von Farben gesprochen, doch diese Eigenschaft kann beliebig gewählt werden. Beispiele dafür währen das Geschlecht, der Familinenstand oder Ähnliches.
+    
 
 \section{Aufbau der Arbeit}
-
-Gehe kurz darauf ein, was den Leser in den nächsten Abschnitten erwartet.
-Die Gliederung kann vorab mit der betreuenden Person abgesprochen werden.
-Erwähnen was Clustering ist \cite{Clustering_Skript}
+    In dieser Arbeit sollen verschiedene Clustering-Algorithmen getestet werden. Dazu erklären wir erst, einige grundlegende Algorithmen, welche verwendet werden und gehen dann auf die zu vergleichenden Algorithmen ein. Alle hier in dieser Arbeit verwendeten Algorithmen können nur Daten mit 2 Farben verarbeiten. Sie lassen sich allerdings auch verallgemeinern \cite{BA_Clustering_Irina} \cite{chierichetti2018fair}. Anschließend nehmen wir uns der Daten an, mit welchen wir die Algorithmen testen wollen und sprechen darüber wo sie her kommen und wie wir sie für das Clustering vorbereiten. \newline
+    Anschließend sprechen wir darüber auf welche Weise die Algorithmen getestet werden. Dabei wird einerseits auf die Testumgebung eingegangen und andererseits auch die Ergebnisse in Form einiger Graphen präsentiert. Zum Schluss versuchen wir die Ergebnisse einzuordnen und schauen welche Schlüsse wir daraus ziehen können.
