@@ -72,7 +72,8 @@
                         \EndIf
                     \EndFor
                 \EndFor
-                \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+                \State $r_{max} = max(d_{min})$
+                \State return $(Z, P, r_{max})$ \Comment{in P wurden Punkte aktualisiert}
             \EndFunction
         \end{algorithmic}
     \end{algorithm}
@@ -103,7 +104,7 @@
 
         \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
-            Ansschliesend bauen wir einen bipatiten Graphen auf in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap P = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
+            Anschliesend bauen wir einen bipatiten Graphen auf in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap P = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
             Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk um die Fairletts zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten. Dazu \glqq raten\grqq \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ ein für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
             In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $f$ gleich der Anzahl an roten Punkten ist $f = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in \{dist(a, b)\}$ bis wir das kleinste $r_{test}$ gefunden haben für die das Matching erfolgreich war ($f = |R|$). \newline 
             Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. Dadurch haben wir statt der $\mathcal{O}(n^{2})$ möglichen Vergleiche nur noch $\mathcal{O}(log(n^{2})) = \mathcal{O}(2*log(n)) = \mathcal{O}(log(n))$\newline
