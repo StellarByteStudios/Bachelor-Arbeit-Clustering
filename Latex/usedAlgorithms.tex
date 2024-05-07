@@ -8,9 +8,7 @@
 \section{Matching}
     Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare. Die Paare sollen sich dabei nicht überschneiden und die Knoten eines Paares sind immer über eine Kante verbunden sind. Sind alle Punkte in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
     \subsection{Bipatites Matching}
-        Wird ein Matching in einem Bipatiten Graphen, also einem Graphen welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren, gesucht, dann ist das ein Bipatites Matching.
-
-
+        Ein bipatiter Graph ist ein Graph, welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren. Wird ein Matching in einem bipatiten Graphen gesucht spricht man von einem bipatiten Matching.
 
 
 
@@ -24,9 +22,12 @@
             \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten.
         \end{enumerate}
 
-    \subsection{Max-Flow Algorithmus}
+    \subsection{Max-Flow Algorithmus} \label{sec:Max-Flow}
         Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen\cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
         Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
+
+    \subsection{Min-Cost-Flow (nutzen nicht sicher)}
+        Es ist auch möglich zusätzlich zum Flusswert auch noch weitere Eigenschaften zu berücksichtigen. Gibt man den Kanten neben der Kapazität auch noch Kosten ist es möglich einen Fluss zu berechnen, welcher maximal ist, aber auch möglichst wenig Kosten verursacht. Dabei sind die Kosten die Summe aller Kantenkosten der Kanten über welche auch Fluss fließt. Hierbei wurde der Capacity Scaling Algorithms, auch aus der Lemon Library \cite{Lemon-Lib} verwendet.
 
 
 
@@ -34,9 +35,9 @@
 
 
 \section{Gonzalez}
-    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering mit dem k-center Problem als Zielfunktion. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil des fairen Algorithmus hier verwendet.
-    Der Algorithmus ist ein greedy-Algorithmus, welcher k Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und ein k, welches die Anzahl an gewünschten Clustern angibt.
-    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg ist von diesem ersten Zentrum, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man k verschiedene Zentren hat.
+    Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering mit dem k-center Problem als Zielfunktion. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil der fairen Algorithmen hier verwendet.
+    Der Algorithmus ist ein greedy-Algorithmus, welcher $k$ Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und einem $k$, welches die Anzahl an gewünschten Clustern angibt.
+    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg von diesem ersten Zentrum ist, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man jetzt so oft bis man $k$ verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewiesen, zu welchem er den geringsten Abstand hat. 
     Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximalen Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
@@ -111,7 +112,7 @@
             Um jetzt die Fairletts zueinander zu zuweisen erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e_i = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e_i$ fliest, weisen wir $a$ und $b$ mit $e_i = (a, b)$ die selbe FairlettID zu, was sie zu einem Fairlett macht. 
         
         \subsubsection{Finden der Ausreißer} \label{sec:find-Outlier-red}
-            Um die Ausreißer zu finden müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde gilt, dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $e_{t_{i}}$ 0 ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweißung zu den Zentren ausgelassen
+            Um die Ausreißer zu finden müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde gilt, dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $f(e_{t_{i}}) = 0$ ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweißung zu den Zentren ausgelassen
 
         \begin{algorithm}
             \caption{Farilett-Finder Red Clustering}\label{alg:fairlett-red}
@@ -335,7 +336,8 @@
                                 \EndIf
                             \EndFor
                         \EndFor
-                        \State return $(Z, P)$ \Comment{in P wurden Punkte aktualisiert}
+                        \State $r_{max} = max(d_{min})$
+                        \State return $(Z, P, r_{max})$  \Comment{in P wurden Punkte aktualisiert}
                     \EndFunction
                 \end{algorithmic}
             \end{algorithm}
