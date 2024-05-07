@@ -1,14 +1,16 @@
 % !TeX root = master.tex
 % !TeX spellcheck = de_DE
 
-\chapter{Einleitung}
+\chapter{Einleitung} \label{chap:Einleitung}
 
 \section{Motivation}
-
-Das hier ist die Einleitung.
-Hier sollte darauf eingegangen werden, was die Motivation der Arbeit ist.
+    Große Mengen an Daten zu analysieren ist inzwischen ein alltägliches Problem. Vor allem die Mustererkennung und das finden von Beziehungen einzelner Elemente aus den Daten ist von großer Bedeutung. Eine Möglichkeit solche Beziehungen zu finden ist das Clustering. Dabei versucht man algorithmmisch \glqq nahe\grqq \ Punkte, wobei hier die Nähe sehr unterschiedlich definiert sein kann, zu Gruppen, gennant Clustern, zusammenzufassen. Diese Form der Datenverarbeitung fällt unter das unüberwachte maschinelle Lernen, da wir versuchen eine Eigenschaft in den Daten zu finden, ohne vorher Wissen über diese Eigenschaft zu besitzen.\newline
+    Es zeigt sich jedoch, dass dieses Gruppieren in der Regel sehr schwer zu berechnen ist. Genauer gesagt sind die meisten Clustering-Probleme NP-Vollständig \cite{Clustering_Skript}. Man greift daher auf Algorithmen zurück, welche zwar schneller rechnen, aber dafür nicht die optimale Lösung liefern. Dabei gibt es bereits Algorithmen welche schon effizient und schnell diese nicht-optimalen Cluster berechnen, wie beispielsweiße der Algorithmus von Gonzalez \cite{GONZALEZ1985293}, welcher mit einer 2er Approximation sehr gute Lösungen in polynomieller Zeit erzielen kann. Auch ein bekannter Algorithmus, welcher sehr viel in der Data Science benutzt wird, ist der k-means Algorithmus \cite{macqueen1967some}. Dieser produziert vorallem in der Praxis sehr gute Lösungen. \newline 
+    Umso schwerer werden die Berechnungen, wenn man neben der \glqq Nähe\grqq \ auch noch weitere Nebenbedingung an die berechneten Cluster stellt. Darunter fällt z.b. die gerechte Aufteilung auf Cluster. Dabei hat jeder Punkt eine zusätzliche Eigenschaft, welche fair auf die Cluster verteilt werden soll. Die oben genannt Algorithmen sind nicht in der Lage eine solche Nebenbedingung zu berücksichtigen. In der Arbeit wird hier abstrakt von Farben gesprochen, doch diese Eigenschaft kann beliebig gewählt werden. Beispiele dafür währen das Geschlecht, der Familinenstand oder Ähnliches. \newline
+    Algorithmen welche dieses Clustering mit Nebenbedingung berechnen können sind noch nicht so gut erforscht. Daher versuchen wir in dieser Arbeit zwei Algorithmen, welche eine derartige Berechnung durchführen können, zu implementieren und auf echten Daten auszuwerten.
+    
 
 \section{Aufbau der Arbeit}
-
-Gehe kurz darauf ein, was den Leser in den nächsten Abschnitten erwartet.
-Die Gliederung kann vorab mit der betreuenden Person abgesprochen werden.
+    In dieser Arbeit sollen verschiedene Clustering-Algorithmen getestet werden. Dazu erklären wir in Kapitel \ref{chap:Algorithms} erst, einige grundlegende Algorithmen, welche verwendet werden. Größere Aufmerksamkeit bekommt dabei der Algorithmus von Gonzalez \cite{GONZALEZ1985293}, da dieser von den anderen Algorithmen als Unterroutine benutzt wird. Dann gehen wir auf die zu vergleichenden Algorithmen Red-Clustering \cite{chierichetti2018fair} und Fast-Anchor-Clustering \cite{BA_Clustering_Irina} ein. Alle hier in dieser Arbeit verwendeten Algorithmen können nur Daten mit 2 Farben verarbeiten. Sie lassen sich allerdings auch verallgemeinern \cite{BA_Clustering_Irina} \cite{chierichetti2018fair}. Im Nächsten Kapitel \ref{chap:Daten} nehmen wir uns der Daten an, mit welchen wir die Algorithmen testen wollen und sprechen darüber wo sie her kommen und wie wir sie für das Clustering vorbereiten. \newline
+    Anschließend sprechen wir in Kapitel \ref{chap:Experimente} darüber auf welche Weise die Algorithmen getestet werden. Dabei wird einerseits auf die Testumgebung eingegangen und andererseits auch die Ergebnisse in Form einiger Graphen präsentiert. Zum Schluss \ref{chap:Auswertung} versuchen wir die Ergebnisse einzuordnen und schauen welche Schlüsse wir daraus ziehen können.
+    Sämtlicher Code für die Implementierung und Auswertung mit allen wichtigen Datensätzen sind in einem Repository hochgeladen \cite{Code-Repository}

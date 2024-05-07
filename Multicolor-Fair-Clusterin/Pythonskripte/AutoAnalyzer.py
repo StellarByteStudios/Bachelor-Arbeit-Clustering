@@ -9,10 +9,10 @@ import DataAnalyzer
 
 def main():
     # Programm-Parameter
-    dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
-    pictureFolder = "../Data/OutputData/Final/Pictures/"
-    clusters = 30
-    numOfSamples = 20
+    dataFolder = "Data/OutputData/FinalFreeCenter/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
+    pictureFolder = "../Data/OutputData/FinalFreeCenter/Pictures/"
+    clusters = 20
+    numOfSamples = 5
     
     
     # Daten neu in Subsamples unterteilen

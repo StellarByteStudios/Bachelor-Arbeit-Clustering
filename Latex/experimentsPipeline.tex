@@ -1,31 +1,86 @@
 % !TeX root = master.tex
 % !TeX spellcheck = de_DE
 
-\chapter{Experimente}
+\chapter{Experimente} \label{chap:Experimente}
+ Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen nutzen wir eine Test-Pipeline, mithilfe der die Algorithmen automatisiert auf den Subsamples für verschiedene Clusteranzahl $k$ ausgeführt werden, nachdem die Daten aufbereitet wurden. 
 
+\section{Implementierung der Algorithmen}
+    Die Algorithmen wurden alle in C++ implementiert. Für die Flussalgorithmen \ref{sec:Max-Flow} wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript \verb+ClusteringMain.cpp+, welches über die Kommandozeile bedient werden kann. In der \verb+ClusteringTest.cpp+ sind einige Test-Methoden, welche beim Entwickeln der Algorithmen verwendet wurden um die einzelnen Schritte zu überprüfen. \newline
+    Das Program lässt sich in zwei Modi kompilieren (Setzen des Flags \verb+-DPROCESS_BAR+). Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt wird. Dies wurde für die automatischen Tests deaktiviert, da das sonst zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist diese Statusausgabe von Vorteil.
+
+\section{Automatisierte Analyse}
+    Wie schon zufor genannt sollen die Algorithmen auf einigen Subsamples und mit verschiedener Clusteranzahl $k$ durchgeführt werden. Um einen Algorithmus auf einem Subsample für verschiedene $k$ durchzuführen verwenden wir ein Bash-Skript \verb+AlgFeeder.sh+. Dieses führt sukzessive für ein bestimmtes Sample und einen Algorithmus jedes Clustering von 1 bis $k$ Cluster durch und speichert die Ergebnisse in einem Ordner. \newline
+    Um die verschiedenen Subsamples zu testen wird in einem Pythonskript \\ (\verb+AlgorithmDataCruncher.py+) mithilfe von Subprozessen eine Shell geöffnet und für jedes Sample das Bash-Skript \verb+AlgFeeder.sh+ aufgerufen. Nach der Berechnung sind die geclusterten Daten in CSV Dateien gespeichert und werden wieder von einem anderen Pythonskript (\verb+DataAnalyzer.py+) eingelesen, welches dann die Ergebnisse analysiert und die Graphen erstellt. Alles zusammen wird in \verb+AutoAnalyzer.py+ automatisch nacheinander ausgeführt. Die Unterteilung wurde deshalb gemacht um die Analyse mehrfach anzupassen zu können ohne jedes mal das ganze Clustering neu berechnen zu müssen.\newline
+    Die Verwenung des Moduls \verb+subprocess+ und des Bash-Skriptes führen zu einer Platformabhänigkeit auf GNU/Linux für das automatisierte Testen. Die C++ Implementierung ist jedoch Platformunabhängig. \newline
+    Es werden auf allen Samples jeweils drei Algorithmen ausgeführt (Gonzalez \ref{alg:plain_gonzalez}, Red-CLustering \ref{sec:Red-Clustering} und Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering})
+    
+
+\section{Testumgebung}
+    Eine Auflistung der technischen Daten der Umgebung in welcher die Tests durchgeführt wurden:
     \begin{itemize}
-        \item Was genau hab ich jetzt berechnet
-        \item Welche Daten habe ich explizit verwendet (kurz)
-        \item Diagramm der Testing-Pipline
-        \item Umgebung (vielleicht technische Daten)
-        \item Graphen aus Python
+        \item OS: Ubuntu 20.04 LTS
+        \item Prozessor AMD Ryzen 7 5800x
+        \item RAM: 16 GB
     \end{itemize}
+
+    Versionierung von Python und den Modulen:
+    \begin{itemize}
+        \item Python: 3.11.8
+        \item MatPlotLib: 3.8.0
+        \item Numpy: 1.26.4
+        \item Pandas: 2.2.1
+        \item pip: 23.3.1
+    \end{itemize}
+
+    Kompiler für C++ Implementierung: g++ 9.4.
+
 
 \section{Graphen}
     \subsection{Güte-Analyse}
-        Um die Algorithmen zu vergleichen betrachten wir ihre Güte auf den Test-Daten mit verschiedener Anzahl an Clustern
+        Um die Algorithmen zu vergleichen betrachten wir ihre Güte auf den Test-Daten mit verschiedener Anzahl an Clustern.
         \begin{figure}
             \centering
-            \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued Vertical (Cluster-15).jpg}
-            \caption{Zusammengefasste kosten der Cluster bis zu 15 Cluster}
-            \label{fig:CluedQuality15}
+            \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued(Cluster-30).jpg}
+            \caption{Zusammengefasste kosten der Cluster bis zu 30 Cluster}
+            \label{fig:CluedQuality30}
+        \end{figure}
+        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. Dabei wird für jedes $k$ der Mittelwert der Kosten aller Subsamples des entsprechenden Datensatzens gebildet. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings \ref{sec:Fast-Anchor-Clustering} wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
+        Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze.
+
+        \subsubsection{Randfall Güteverschlechterung}
+            Für Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} wird noch ein zusätzlicher Graph erzeugt \ref{fig:Edge-Case-Curve}. Auf diesem sind nicht nur die Durchschnitts-Kosten zu sehen, sondern auch die maximalen und die minimalen Kosten der jeweiligen $k$.
+
+            \begin{figure}
+                \centering
+                \includegraphics[height=(\textheight/2-40pt)]{fig/Edge-Case bigger maxRadius/Edge-Case Curve.jpg}
+                \caption{Kosten mit Median und Min/Max des Zensusdatensatzes mit den ersten 10 Subsamples}
+                \label{fig:Edge-Case-Curve}
+            \end{figure}
+
+
+    \subsection{Laufzeit-Analyse}
+        Um die Laufzeit der Algorithmen zu analysieren verwenden wir in Python aus dem Modul \verb+time+ die Funktion \verb+time.process_time_ns()+ welche die Prozessor-Zeit misst, in welcher der Aufruf des Bash-Skriptes rechnet. Die einzelnen Graphen zeigen die Laufzeit eines Algorithmus wobei die verschiedenen Datensätze verglichen werden. Zusätzlich ist der Mittelwert der Laufzeit für jeden Datensatz in der Legende mit angegeben.
+
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Gonzalez-Algorithm.jpg}
+            \caption{Laufzeit des Gonzalezalgorithmus}
+            \label{fig:RuntimeGonzalez}
         \end{figure}
 
-    \iffalse
-    \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth]{fig/OutputPictures/Gonzalez/UnfairBig(Cluster-30).jpg}
-        \caption{Kosten für Gonzalez bis zu 30 Cluster}
-        \label{fig:Gonzalez30}
-    \end{figure}
-    \fi
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Red-Clustering.jpg}
+            \caption{Laufzeit des Red-Clustering-Algorithmus}
+            \label{fig:RuntimeRedClustering}
+        \end{figure}
+
+        \begin{figure}
+            \centering
+            \includegraphics[height=(\textheight/2-40pt)]{fig/OutputPictures/Runtimes/Timinganalysis Fast-Clustering.jpg}
+            \caption{Laufzeit des Fast-Anchor-Algorithmus}
+            \label{fig:RuntimeFastAnchor}
+        \end{figure}
+
+    
+        

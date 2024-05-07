@@ -105,6 +105,8 @@ void fastAnchorClustering::updateClusterOfMainPoints(vector<ColoredPoint>* marke
             continue;
         }
         
+        
+        //=================== ENTFERNT UM NOT CENTER AWARE ZU TESTEN ===================
         // wenn er schon hinzugefügt wurde überspringen (Zentren und ihre Partner)
         if (markedPoints->at(i).getCluster() >= 0){
             // einen Punkt bei den Gefilterten weiter gehen
