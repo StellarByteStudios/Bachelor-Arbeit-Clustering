@@ -1,18 +1,9 @@
 % !TeX root = master.tex
 % !TeX spellcheck = de_DE
 
-\chapter{Experimente}
+\chapter{Experimente} \label{chap:Experimente}
  Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen nutzen wir eine Test-Pipeline, mithilfe der die Algorithmen automatisiert auf den Subsamples für verschiedene Clusteranzahl $k$ gestestet werden, nachdem die Daten aufbereitet wurden. 
 
-    \iffalse
-    \begin{itemize}
-        \item Was genau hab ich jetzt berechnet
-        \item Welche Daten habe ich explizit verwendet (kurz)
-        \item Diagramm der Testing-Pipline
-        \item Umgebung (vielleicht technische Daten)
-        \item Graphen aus Python
-    \end{itemize}
-    \fi
 \section{Implementierung der Algorithmen}
     Die Algorithmen wurden alle in C++ implementiert. Für die Flussalgorithmen wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript, welches über die Kommandozeile bedient werden kann. \newline
     Das Program lässt sich in zwei Modi kompilieren. Es lässt sich entscheiden ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt wird. Dies wurde für die automatischen Tests deaktiviert, da das zu Unübersichtlichkeit führt. Aber bei der richtigen Anwendung der Programme mit größeren Daten ist das von Vorteil.
