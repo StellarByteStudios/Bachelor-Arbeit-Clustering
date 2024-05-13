@@ -35,6 +35,14 @@
                     \label{fig:centerAware-Edge-k4}
                 \end{minipage}
             \end{figure}
+    
+
+    
+    \subsection{Tests mit Min-Cost-Flow}
+        Um den Fast-Anchor-Algorithms \ref{sec:Fast-Anchor-Clustering} etwas zu verbessern wurde probiert den Max-Flow \ref{sec:Max-Flow} welcher bei der Fairlettbildung \ref{sec:fast-anchor-fairletts} verwendet wird durch einen Min-Cost-Flow \ref{sec:Min-Cost-Flow} zu ersetzen. Jedoch ist dem Graphen \ref{fig:Min-Cost-Flow_comparison} zu entnehmen, dass die Verbesserungen sehr klein sind. In dieser Arbeit wurde deshalb der Min-Cost-Flow nicht verwendet.
+
+
+
 
 \section{Laufzeitanalyse}
     Vergleichen wir die Laufzeit des Red-Clusterings \ref{fig:RuntimeRedClustering} mit der des Fast-Anchor-Clusterings \ref{fig:RuntimeFastAnchor} dann stellen wir fest, dass die Laufzeit des Fast-Anchor-Clusterings mehr als doppelt, im Falle der Diabetest-Daten \cite{misc_diabetes_130_richtig} sogar fast das vierfache an Laufzeit braucht. \newline
