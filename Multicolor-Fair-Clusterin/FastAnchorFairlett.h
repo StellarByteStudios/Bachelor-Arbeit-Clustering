@@ -76,4 +76,23 @@ namespace fastAnchorFairlett{
     void printDistMatrix(const vector<vector<double>>&);
 
     void fairlettPartnerSanaty(vector<ColoredPoint>*);
+
+
+
+
+    // ==== Testing Min Cost Flow ====//
+    // calclulates the fairletts of some Points and updates the vector
+    // returns the biggest distance of a fairlett
+    double markMinCostFairletts(vector<ColoredPoint>*); // === TO-DO ===
+
+
+    // Goes though all main arcs and marks the Fairletts if there is Flow
+    // Also saves the AnchorsID
+    // returns the Number of Fairletts made
+    int markMainNodesMinCost(const Graph&, const CapScaling&, vector<Arc>, int, vector<ColoredPoint>*, AnchorMatrix&); // === TO-DO ===
+
+    // Goes though all target arcs and marks all outliers which havent been
+    // submittet to a Fairlett
+    // returns the amount of outliers
+    int markOutliersMinCost(const Graph&, const CapScaling&, vector<Arc>, int, vector<ColoredPoint>*); // === TO-DO ===
 }

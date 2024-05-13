@@ -208,3 +208,212 @@ void fastAnchorFlow::printFlow(const Flow& preflow, const Graph& graph, const Ca
 			run();
     return; 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// * * * =========== Building the Graph and let it Flow =========== * * * //
+void fastAnchorFlow:: buildupGraphFromAnchorDistMinCost(Graph& graph, GraphData& gData, CapacityMap& capacity, CostMap& costs, double potRad, vector<ColoredPoint>* points){
+    // Knoten hinzufügen
+	addNodesToGraphMinCost(graph, gData, points);
+
+	// Kanten hinzufügen
+	addArcsToGraphMinCost(graph, gData, costs, potRad, points);
+
+	// Kapazitäten hinzufügen
+	addCapacitiesToGraphMinCost(capacity, gData);
+}
+
+
+
+void fastAnchorFlow::addNodesToGraphMinCost(Graph& graph, GraphData& gData, vector<ColoredPoint>* points){
+
+    // Anzahl aller Punkte
+    int n = (int) points->size();
+
+    // Rote Knoten hinzufügen (Krit Feature = 0)
+    for (int i = 0; i < n; i++){
+        if (points->at(i).getColor() == RED){
+            gData.redNodes.push_back(graph.addNode());
+        }
+    }
+
+    // Blaue Knoten hinzufügen (Krit Feature = 1)
+    for (int i = 0; i < n; i++){
+        if (points->at(i).getColor() == BLUE){
+            gData.blueNodes.push_back(graph.addNode());
+        }
+    }
+
+    // Quelle und Senke hinzufügen
+    gData.s = graph.addNode();
+    gData.t = graph.addNode();
+
+    return; 
+}
+
+
+
+void fastAnchorFlow::addArcsToGraphMinCost(Graph& graph, GraphData& gData, CostMap& costs, double potRad, vector<ColoredPoint>* points){
+    // Anzahl an Knoten herausfinden
+    int nRed = (int) gData.redNodes.size();
+    int nBlue = (int) gData.blueNodes.size();
+
+    // Kanten von s zu allen Roten Knoten
+    for (int i = 0; i < nRed; i++){
+        gData.sourceArcs.push_back(graph.addArc(gData.s, gData.redNodes.at(i)));
+    }
+
+    // Kanten von Blau zu t
+    for (int i = 0; i < nBlue; i++){
+        gData.targetArcs.push_back(graph.addArc(gData.blueNodes.at(i), gData.t));
+    }
+
+    // Kanten von Rot nach Blau, abhänging von ihrem Abstand (potRad)
+    // Punkte in Farben Aufteilen
+    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+	vector<ColoredPoint>* bluePoints = ColoredPoint::getPointsOfColor(points, BLUE);
+
+
+    // Kurzer Sanity Check
+    if (nRed != (int) redPoints->size() || nBlue != (int) bluePoints->size()){
+        printf("ERROR: Fehler bei Grapherstellung!\n");
+        printf("Anzahl roter Knoten im Graph %d; \t Anzahl roter Punkte %ld\n", nRed, redPoints->size());
+        printf("Anzahl blauer Knoten im Graph %d; \t Anzahl blauer Punkte %ld\n", nBlue, bluePoints->size());
+    }
+    
+    // Alle roten Punkte durchgehen
+    for (int redIndex = 0; redIndex < nRed; redIndex++){
+        // Alle blauen Punkte durchgehen
+        for (int blueIndex = 0; blueIndex < nBlue; blueIndex++){
+            // Schauen ob das eine Passende Kante ist
+            if (gData.anchorDistance[redIndex][blueIndex].distToPartners <= potRad){
+                // Kante in Graphen Packen
+                Arc arc = graph.addArc(gData.redNodes.at(redIndex), gData.blueNodes.at(blueIndex));
+
+                // Kante ihre Kosten geben
+                costs[arc] = redPoints->at(redIndex).distTo(bluePoints->at(blueIndex));
+
+                // Kante Hinzufügen
+                gData.mainArcs.push_back(arc);
+            } 
+        }
+    }
+
+    // Gefilterte Punkte wieder frei geben
+    delete redPoints;
+    delete bluePoints;
+
+    return;
+}
+
+
+
+void fastAnchorFlow::addCapacitiesToGraphMinCost(CapacityMap& capacityMap, GraphData& gData){
+    // Kapazität von Quelle zu allen Roten
+    for (size_t i = 0; i < gData.sourceArcs.size(); i++){
+        capacityMap[gData.sourceArcs.at(i)] = 1;
+    }
+
+    // Kapazität von allen Blauen zur Senke
+    for (size_t i = 0; i < gData.targetArcs.size(); i++){
+        capacityMap[gData.targetArcs.at(i)] = 1;
+    }
+
+    // Zwischenkanten Kapazität
+    for (size_t i = 0; i < gData.mainArcs.size(); i++){
+        capacityMap[gData.mainArcs.at(i)] = 1;
+    }
+
+}
+
+
+
+CapScaling* fastAnchorFlow::calculateFlowMinCost(const Graph& graph, const CapacityMap& capacityMap, CostMap& costs, const GraphData& gData){
+    // Preflow-Object erstellen
+    CapScaling* flow = new CapScaling(graph);
+
+    // Parameter Festlegen
+    flow->upperMap(capacityMap).costMap(costs).stSupply(gData.s, gData.t, (int) gData.redNodes.size());
+
+    // Flussalgorithmus ausführen
+    flow->run();
+
+    return flow;
+}
+
+
+
+
+
+int fastAnchorFlow::getFlowOfArcMinCost(const CapScaling& flow, const Arc arc){
+    int flowValue = flow.flow(arc);
+    return flowValue;
+}

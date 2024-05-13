@@ -81,7 +81,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
     listOfFairlettRadius = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
-        outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}/"
+        outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
         radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)

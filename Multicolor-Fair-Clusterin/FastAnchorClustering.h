@@ -60,6 +60,19 @@ namespace fastAnchorClustering{
 
     // Goes through all Centers and returns the Clusternumber of the nearest one
     int getNextCenterOfPoint(ColoredPoint, vector<ColoredPoint>*); // === TO-DO ===
+
+
+
+
+
+
+
+
+
+
+    // ==== Testing Min-Cost ==== //
+    // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
+    FastAnchorReturnValues* makeFastAnchorClusteringMinCost(vector<ColoredPoint>*, int);  // === TO-DO ===
 }
 
 

@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
 	}
 	case 'f':{
 		// ==== Fast-Anchor-Clustering Gonzalez ==== //
-		fastAnchorClustering::FastAnchorReturnValues * returnValues = fastAnchorClustering::makeFastAnchorClustering(points, numberOfCluster);
+		fastAnchorClustering::FastAnchorReturnValues * returnValues = fastAnchorClustering::makeFastAnchorClusteringMinCost(points, numberOfCluster);
 
 		// Build Headder of File:
 		stringstream header;

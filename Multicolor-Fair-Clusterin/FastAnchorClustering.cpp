@@ -292,3 +292,72 @@ int fastAnchorClustering::getNextCenterOfPoint(ColoredPoint singlePoint, vector<
 
     return nearestCluster;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// * * * =========== Using the Algorithm =========== * * * //
+fastAnchorClustering::FastAnchorReturnValues* fastAnchorClustering::makeFastAnchorClusteringMinCost(vector<ColoredPoint>* points, int k){
+    // Rückgabestruct erzeugen
+    fastAnchorClustering::FastAnchorReturnValues* fairValues = fastAnchorClustering::createFastAnchorReturns(points);
+    
+    // Fairletts markieren
+    double fairlettRadius = fastAnchorFairlett::markMinCostFairletts(fairValues->clusteredPoints);
+    fairValues->maxFairlettRadius = fairlettRadius;
+    printProcess("-finished marking of fairlets");
+ 
+    // ==== Clustering berechnen ====
+    clusterFairlettPoints(fairValues, k);
+    printProcess("-finished clustering");
+
+
+    // maximalen Radius der Cluster berechnen
+    fairValues->maxClusterRadius = calculateMaxRadius(*fairValues->clusteredPoints, k); 
+    printProcess("-finished maxRadius Calc");
+
+    return fairValues;
+}

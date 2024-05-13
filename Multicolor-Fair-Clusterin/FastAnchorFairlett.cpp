@@ -577,3 +577,212 @@ void fastAnchorFairlett::fairlettPartnerSanaty(vector<ColoredPoint>* markedPoint
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// * * * =========== Calculating the Fairlets =========== * * * //
+double fastAnchorFairlett::markMinCostFairletts(vector<ColoredPoint>* points){
+    // Farben richtig Sortieren
+    makeCritFeatureSmalestFirst(points);
+    printProcess("--smallFeature-- ");
+
+    // Anker berechnen
+    AnchorMatrix anchorMatrix;
+    calculateAnchors(points, anchorMatrix);
+
+    // Optimalen Radius Finden
+    double optRad = findBinaryPotentionalRadius(points, anchorMatrix);
+    printProcess("--found potRad-- ");
+
+    // Graph mit Optimalem Radius Aufbauen
+    // Variablen erzeugen
+	Graph g;
+	FGraphData gData;
+	CapacityMap capacity(g);
+    CostMap cost(g);
+
+    // Ankermatrix hinzufügen
+    gData.anchorDistance = anchorMatrix;
+
+    // Graph Initialisieren
+    fastAnchorFlow::buildupGraphFromAnchorDistMinCost(g, gData, capacity, cost, optRad, points);
+    printProcess("--build Graph-- ");
+
+    // Fluss berechnen
+    CapScaling* capFlow = fastAnchorFlow::calculateFlowMinCost(g, capacity, cost, gData);
+    printProcess("--made Flow-- ");
+
+    // Main-Kanten durchgehen und Partner markieren
+    // Punkte Filtern
+    vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
+    int nRed = (int) redPoints->size();
+
+    // Main Fairletts bilden
+    int fairlettCounter = markMainNodesMinCost(g, *capFlow, gData.mainArcs, nRed, points, anchorMatrix);
+    printProcess("--marked Fairlets-- ");    
+
+    // Ausreißer markieren
+    int numOfOutlier = markOutliersMinCost(g, *capFlow, gData.targetArcs, nRed, points);
+    printProcess("--marked outlier-- ");
+    printProcess("----number of fairletts: " << fairlettCounter << ";\tnumber of outlier: " << numOfOutlier <<" --");
+
+    // Sanaty-Check
+    fairlettPartnerSanaty(points);
+
+    // Aufräumen 
+    delete redPoints;
+    delete capFlow;
+
+    return optRad;
+}
+
+
+int fastAnchorFairlett::markMainNodesMinCost(const Graph& g, const CapScaling& flow, 
+                                    vector<Arc> mainArcs, int nRed, 
+                                    vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix){
+
+    int fairlettCounter = 0;
+
+    // Alle main-Kanten durchgehen
+    for (int i = 0; i < (int) mainArcs.size(); i++){
+        // Hat die Kante überhaupt Fluss?
+        if (fastAnchorFlow::getFlowOfArcMinCost(flow, mainArcs.at(i)) < 1){
+            continue;
+        }
+        
+        // Nodes herausfinden
+        Node redNode = g.source(mainArcs.at(i));
+        Node blueNode = g.target(mainArcs.at(i));
+
+        // FarbIndex herausfinden
+        int redIndex = mapIDtoIndexByColor(g.id(redNode), RED, nRed);
+        int blueIndex = mapIDtoIndexByColor(g.id(blueNode), BLUE, nRed);
+
+        // Ankerknoten bestimmen
+        int anchorID = anchorMatrix[redIndex][blueIndex].trueAnchorID;
+
+        // Echte Punkte mit fairlettID markieren
+        markFairlettWithAnchor(fairlettCounter, anchorID, g.id(redNode), RED, nRed, points);
+        markFairlettWithAnchor(fairlettCounter, anchorID, g.id(blueNode), BLUE, nRed, points);
+
+
+        // IDs hochzählen
+        fairlettCounter++;
+    }
+    
+    // Anzahl an Fairletts zurückgeben
+    return fairlettCounter;
+}
+
+
+int fastAnchorFairlett::markOutliersMinCost(const Graph& g, const CapScaling& flow, 
+                                    vector<Arc> targetArcs, int nRed, 
+                                    vector<ColoredPoint>* points){
+    int outlier = 0;
+
+    // Alle main-Kanten durchgehen
+    for (int i = 0; i < (int) targetArcs.size(); i++){
+        // Hat die Kante überhaupt Fluss?
+        if (fastAnchorFlow::getFlowOfArcMinCost(flow, targetArcs.at(i)) > 0){
+            continue;
+        }
+        
+        // Nodes herausfinden
+        Node blueNode = g.source(targetArcs.at(i));
+
+        // Echte Punkte mit fairlettID markieren
+        markFairlettWithAnchor(-2, -2, g.id(blueNode), BLUE, nRed, points);
+
+        // Anzahl hochzählen
+        outlier++;
+    }
+
+    return outlier;
+}

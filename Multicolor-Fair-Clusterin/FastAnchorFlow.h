@@ -7,6 +7,9 @@
 #include <lemon/list_graph.h>
 #include <lemon/preflow.h>
 
+#include <lemon/smart_graph.h>
+#include <lemon/capacity_scaling.h>
+
 using namespace lemon;
 
 typedef ListDigraph Graph;
@@ -15,6 +18,12 @@ typedef Graph::Arc Arc;
 typedef ListDigraph::ArcMap<int> CapacityMap;
 typedef Preflow<Graph, CapacityMap> Flow;
 //typedef EdmondsKarp<Graph, CapacityMap> Flow;
+
+// Für den Min-Cost Flow
+typedef CapacityScaling<ListDigraph> CapScaling;
+typedef ListDigraph::ArcMap<double> CostMap;
+
+
 
 namespace fastAnchorFlow{
 
@@ -92,4 +101,44 @@ namespace fastAnchorFlow{
 
     // Print all Data with Flow
     void printFlow(const Flow&, const Graph&, const CapacityMap&, const GraphData&);
+
+
+
+
+
+
+
+
+
+
+
+    // ==== Testing Min Cost Flow ====//
+    // uses an Radius and builds up finished Graph
+    void buildupGraphFromAnchorDistMinCost(Graph&, GraphData&, CapacityMap&, CostMap&, double, vector<ColoredPoint>*);
+
+    // Adding all red and blue Nodes and s and t to the graph
+    void addNodesToGraphMinCost(Graph&, GraphData&, vector<ColoredPoint>*);
+    
+    // Adding all needed arcs to Graph
+    // source --> redNodes
+    // blueNodes --> target
+    // redNodes --> blueNodes (if AnchorDist <= potRadius)
+    // Costs --> dist(r, b)
+    void addArcsToGraphMinCost(Graph&, GraphData&, CostMap&, double, vector<ColoredPoint>*); 
+
+    // sets the capacity of all arcs to one
+    void addCapacitiesToGraphMinCost(CapacityMap&, GraphData&);
+
+
+
+    // ==== Evaluate the Flow ==== //
+    // calculates the Flow of the build-up graph
+    CapScaling* calculateFlowMinCost(const Graph&, const CapacityMap&,  CostMap&, const GraphData&);
+
+
+
+    // gets the Flow on a single Arc
+    int getFlowOfArcMinCost(const CapScaling&, const Arc);
+    
+
 }
