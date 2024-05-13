@@ -26,7 +26,7 @@
         Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen\cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
         Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
-    \subsection{Min-Cost-Flow (nutzen nicht sicher)}
+    \subsection{Min-Cost-Flow} \label{sec:Min-Cost-Flow}
         Es ist auch möglich zusätzlich zum Flusswert auch noch weitere Eigenschaften zu berücksichtigen. Gibt man den Kanten neben der Kapazität auch noch Kosten ist es möglich einen Fluss zu berechnen, welcher maximal ist, aber auch möglichst wenig Kosten verursacht. Dabei sind die Kosten die Summe aller Kantenkosten der Kanten über welche auch Fluss fließt. Hierbei wurde der Capacity Scaling Algorithms, auch aus der Lemon Library \cite{Lemon-Lib} verwendet.
 
 
