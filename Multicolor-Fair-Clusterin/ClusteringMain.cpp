@@ -6,7 +6,7 @@
 #include "Points/PointParser.h"
 #include "Gonzalez/Gonzalez.h"
 
-#include "RedCenterClustering.h"
+#include "RedClustering/RedCenterClustering.h"
 #include "FastAnchorClustering.h"
 
 #ifdef PROCESS_BAR

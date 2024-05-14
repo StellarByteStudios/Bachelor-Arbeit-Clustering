@@ -28,7 +28,7 @@ hFilesGonzalez = $(folderGonzalez)Gonzalez.h
 cppFilesGonzalez = $(folderGonzalez)Gonzalez.cpp
 
 # RedClustering
-folderRedClustering = $(srcdir)/
+folderRedClustering = $(srcdir)/RedClustering/
 hFilesRedClustering = $(folderRedClustering)FairlettFinder.h $(folderRedClustering)RedCenterClustering.h $(folderRedClustering)GraphFlow.h
 cppFilesRedClustering = $(folderRedClustering)FairlettFinder.cpp $(folderRedClustering)RedCenterClustering.cpp $(folderRedClustering)GraphFlow.cpp
 

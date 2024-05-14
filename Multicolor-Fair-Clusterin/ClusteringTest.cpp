@@ -6,9 +6,9 @@
 #include "Points/ColoredPoint.h"
 #include "Points/PointParser.h"
 #include "Gonzalez/Gonzalez.h"
-#include "FairlettFinder.h"
-#include "RedCenterClustering.h"
-#include "GraphFlow.h"
+#include "RedClustering/FairlettFinder.h"
+#include "RedClustering/RedCenterClustering.h"
+#include "RedClustering/GraphFlow.h"
 
 #include "FastAnchorClustering.h"
 #include "FastAnchorFairlett.h"
