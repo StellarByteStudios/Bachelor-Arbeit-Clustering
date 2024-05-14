@@ -9,20 +9,20 @@ import DataAnalyzer
 
 def main():
     # Programm-Parameter
-    dataFolder = "Data/OutputData/Final/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
-    pictureFolder = "../Data/OutputData/Final/Pictures/"
-    clusters = 30
-    numOfSamples = 20
+    dataFolder = "Data/OutputData/RefactorTest/AnalyzedSubsamples/" # ohne ../ wegen Shellskript
+    pictureFolder = "../Data/OutputData/RefactorTest/Pictures/"
+    clusters = 5
+    numOfSamples = 2
     
     
     # Daten neu in Subsamples unterteilen
-    #CleanData.main()
+    CleanData.main()
     
     
     # Algorithmen Ausführen
-    #AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
-    #                                     maxCluster = clusters, numOfSamples = numOfSamples,
-    #                                     makeCompiling = True)
+    AlgorithmDataCruncher.makeAlgorithms(outputFolder = dataFolder, 
+                                         maxCluster = clusters, numOfSamples = numOfSamples,
+                                         makeCompiling = True)
      
     # Analyse und Bilderzeugung
     DataAnalyzer.analyzeDatasetzs(pictureFolder = pictureFolder, 

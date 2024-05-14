@@ -15,7 +15,7 @@ TestArgs = $(InputFile) $(TestOutputFolder)$(TestOutputFileName) $(ClusterNum)
 
 # # # All Files to be Included
 # Source-directory if different from building direktory
-srcdir = .
+srcdir = ./src
 
 # Points
 folderPoints = $(srcdir)/Points/
