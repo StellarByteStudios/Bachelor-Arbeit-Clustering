@@ -10,9 +10,9 @@
 #include "RedClustering/RedCenterClustering.h"
 #include "RedClustering/GraphFlow.h"
 
-#include "FastAnchorClustering.h"
-#include "FastAnchorFairlett.h"
-#include "FastAnchorFlow.h"
+#include "FastAnchorClustering/FastAnchorClustering.h"
+#include "FastAnchorClustering/FastAnchorFairlett.h"
+#include "FastAnchorClustering/FastAnchorFlow.h"
 
 
 // Declaration of Test functions

@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 
-#include "Points/ColoredPoint.h"
-#include "Gonzalez/Gonzalez.h"
+#include "../Points/ColoredPoint.h"
+#include "../Gonzalez/Gonzalez.h"
 #include "FastAnchorFlow.h"
 
 typedef fastAnchorFlow::GraphData FGraphData;

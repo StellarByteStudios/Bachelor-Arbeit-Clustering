@@ -7,7 +7,7 @@
 #include "Gonzalez/Gonzalez.h"
 
 #include "RedClustering/RedCenterClustering.h"
-#include "FastAnchorClustering.h"
+#include "FastAnchorClustering/FastAnchorClustering.h"
 
 #ifdef PROCESS_BAR
     #define printProcess(process) std::cout << process << endl;

@@ -33,7 +33,7 @@ hFilesRedClustering = $(folderRedClustering)FairlettFinder.h $(folderRedClusteri
 cppFilesRedClustering = $(folderRedClustering)FairlettFinder.cpp $(folderRedClustering)RedCenterClustering.cpp $(folderRedClustering)GraphFlow.cpp
 
 # FastClustering
-folderFastClustering = $(srcdir)/
+folderFastClustering = $(srcdir)/FastAnchorClustering/
 hFilesFastClustering = $(folderFastClustering)FastAnchorClustering.h $(folderFastClustering)FastAnchorFairlett.h $(folderFastClustering)FastAnchorFlow.h
 cppFilesFastClustering = $(folderFastClustering)FastAnchorClustering.cpp $(folderFastClustering)FastAnchorFairlett.cpp $(folderFastClustering)FastAnchorFlow.cpp
 
