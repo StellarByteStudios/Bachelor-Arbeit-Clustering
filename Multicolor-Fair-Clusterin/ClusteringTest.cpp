@@ -64,20 +64,20 @@ int main(int argc, char *argv[]) {
 
 	// ==== Parsing of Points ==== //
 	PointParser parser =  PointParser(inputFileName);
-	vector<ColoredPoint>* points = parser.parseFile();
+	vector<ColoredPoint>* manyPoints = parser.parseFile();
     
     // Get new Points
-	string unfairHandpointsFile = "Data/RandomGenerated/HandmadeFairlettPoints.csv"; //"Data/RandomGenerated/Unfair-Twocolor-2D.txt";
+	string unfairHandpointsFile = "Data/RandomGenerated/Unfair-Twocolor-2D.txt"; //"Data/RandomGenerated/HandmadeFairlettPoints.csv"; //
 	parser =  PointParser(unfairHandpointsFile);
-	vector<ColoredPoint>* unfairPoints = parser.parseFile();
+	vector<ColoredPoint>* handpickedPoints = parser.parseFile();
 	
 	
 	// ==== * ==== * ==== Gonzalez Testing ==== * ==== * ==== ///
 	// ==== Testing of Gonzalez ==== //
-	//vector<ColoredPoint>* clusteredPoints = testGonzalez(points, numberOfCluster);
+	vector<ColoredPoint>* clusteredPoints = testGonzalez(manyPoints, numberOfCluster);
     
     //cout << "Alle Punkte direkt nach Gonzalez" << endl;
-    //printAllpoints(clusteredPoints);
+    printAllpoints(clusteredPoints);
 	
 
 
@@ -90,17 +90,17 @@ int main(int argc, char *argv[]) {
 
 	// ==== * ==== * ==== Red-Clustering Testing ==== * ==== * ==== ///
 	// ==== Testing graph Buildup ==== //
-    //testGraphBuildup(points);
+    testGraphBuildup(handpickedPoints);
 
 
 
     // ==== Check some possible Radii ==== //
-    //testRadiusChecker(unfairPoints);
+    //testRadiusChecker(handpickedPoints);
 
 	
 
 	// ==== Calculate all possible Radii ==== //
-    //testCalculationOfAllRadii(points);
+    //testCalculationOfAllRadii(manyPoints);
 
 
 
@@ -111,15 +111,15 @@ int main(int argc, char *argv[]) {
 
 
 	// ==== Testing Color-Filter ==== //
-    //testColorFiltering(unfairPoints);	
+    testColorFiltering(manyPoints);	
 
 
 	// ==== Testing Clustering only with red points ==== //
-	//testOnlyRedClustering(unfairPoints, numberOfCluster);
+	//testOnlyRedClustering(handpickedPoints, numberOfCluster);
 
 
 	// ==== Testing Fair-Red-Clustering ==== ///
-	//testFairRedClustering(points, numberOfCluster);
+	testFairRedClustering(handpickedPoints, numberOfCluster);
 
 
 
@@ -130,31 +130,31 @@ int main(int argc, char *argv[]) {
 
 	// ==== * ==== * ==== Fast-Anchor Testing ==== * ==== * ==== ///
 	// ==== Testing Fair-Red-Clustering ==== ///
-	//testFairlettFlitering(unfairPoints);
+	//testFairlettFlitering(handpickedPoints);
 
 
 	// ==== Testing Calculation of Anchormatrix ==== ///
-	//testAnchorMatrixFill(points);
+	testAnchorMatrixFill(handpickedPoints);
 
 
 	// ==== Testing Searching Opt Rad with Anchors ==== ///
-	//testAnchorRadiusChecker(unfairPoints);
+	//testAnchorRadiusChecker(handpickedPoints);
 
 
 	// ==== Mark the Fairletts ==== //
-    //testAnchorMarkingFairlets(points);
+    //testAnchorMarkingFairlets(manyPoints);
 	
 
 	// ==== Test getting the nearest Centers ==== //
-    //testCalculatingNearestCenter(unfairPoints);
+    //testCalculatingNearestCenter(handpickedPoints);
 
 
 	// ==== Testing Fast-Anchor-Clustering ==== ///
-	testFastAnchorClustering(points, numberOfCluster);
+	//testFastAnchorClustering(handpickedPoints, numberOfCluster);
 
 
 	// ==== Testing Center-Aware Gonzalez ==== ///
-	testCenterAwareGonzalez(points, numberOfCluster);
+	testCenterAwareGonzalez(handpickedPoints, numberOfCluster);
 
 
 
@@ -164,9 +164,9 @@ int main(int argc, char *argv[]) {
 
 	// ==== Clear-Up ==== //
 	// vector für Punkte wieder Freigeben
-	delete points;
-	delete unfairPoints;
-    //delete clusteredPoints;
+	delete manyPoints;
+	delete handpickedPoints;
+    delete clusteredPoints;
 
 	
 
