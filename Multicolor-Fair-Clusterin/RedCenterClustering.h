@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "ColoredPoint.h"
+#include "Points/ColoredPoint.h"
 #include "Gonzalez.h"
 #include "FairlettFinder.h"
 

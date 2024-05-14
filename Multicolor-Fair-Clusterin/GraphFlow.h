@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "ColoredPoint.h"
+#include "Points/ColoredPoint.h"
 
 #include <lemon/lgf_writer.h>
 #include <lemon/list_graph.h>

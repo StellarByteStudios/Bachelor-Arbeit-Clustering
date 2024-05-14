@@ -3,8 +3,8 @@
 #include <iomanip> // setw() Feste Anzahl an Digits
 #include <string>
 
-#include "ColoredPoint.h"
-#include "PointParser.h"
+#include "Points/ColoredPoint.h"
+#include "Points/PointParser.h"
 #include "Gonzalez.h"
 #include "FairlettFinder.h"
 #include "RedCenterClustering.h"

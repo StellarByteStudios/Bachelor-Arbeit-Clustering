@@ -2,8 +2,8 @@
 #include <fstream>  // ifstream (Dateien ein/auslesen)
 #include <string>
 
-#include "ColoredPoint.h"
-#include "PointParser.h"
+#include "Points/ColoredPoint.h"
+#include "Points/PointParser.h"
 #include "Gonzalez.h"
 
 #include "RedCenterClustering.h"

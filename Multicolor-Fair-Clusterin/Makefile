@@ -11,8 +11,8 @@ CLUSTERNUM = 4
 TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
 
 
-HDATEIEN = ColoredPoint.h PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
-CPPSOURCE = ColoredPoint.cpp PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
+HDATEIEN = Points/ColoredPoint.h Points/PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
+CPPSOURCE = Points/ColoredPoint.cpp Points/PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
 
 FASTHDATEIEN = FastAnchorClustering.h FastAnchorFairlett.h FastAnchorFlow.h
 FASTSOURCE = FastAnchorClustering.cpp FastAnchorFairlett.cpp FastAnchorFlow.cpp

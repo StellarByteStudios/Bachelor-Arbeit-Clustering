@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "ColoredPoint.h"
+#include "Points/ColoredPoint.h"
 
 using namespace std;
 
