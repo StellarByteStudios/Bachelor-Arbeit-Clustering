@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "Points/ColoredPoint.h"
-#include "Gonzalez.h"
+#include "Gonzalez/Gonzalez.h"
 #include "FastAnchorFlow.h"
 
 typedef fastAnchorFlow::GraphData FGraphData;

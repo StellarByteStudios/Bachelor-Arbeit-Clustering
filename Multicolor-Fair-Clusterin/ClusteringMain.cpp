@@ -4,7 +4,7 @@
 
 #include "Points/ColoredPoint.h"
 #include "Points/PointParser.h"
-#include "Gonzalez.h"
+#include "Gonzalez/Gonzalez.h"
 
 #include "RedCenterClustering.h"
 #include "FastAnchorClustering.h"

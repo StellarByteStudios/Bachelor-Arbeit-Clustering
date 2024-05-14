@@ -5,7 +5,7 @@
 
 #include "Points/ColoredPoint.h"
 #include "Points/PointParser.h"
-#include "Gonzalez.h"
+#include "Gonzalez/Gonzalez.h"
 #include "FairlettFinder.h"
 #include "RedCenterClustering.h"
 #include "GraphFlow.h"

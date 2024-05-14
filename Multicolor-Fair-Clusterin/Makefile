@@ -23,7 +23,7 @@ hFilesPoints = $(folderPoints)ColoredPoint.h $(folderPoints)PointParser.h
 cppFilesPoints = $(folderPoints)ColoredPoint.cpp $(folderPoints)PointParser.cpp
 
 # Gonzalez
-folderGonzalez = $(srcdir)/
+folderGonzalez = $(srcdir)/Gonzalez/
 hFilesGonzalez = $(folderGonzalez)Gonzalez.h
 cppFilesGonzalez = $(folderGonzalez)Gonzalez.cpp
 
