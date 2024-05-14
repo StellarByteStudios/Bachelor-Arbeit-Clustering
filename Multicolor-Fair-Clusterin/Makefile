@@ -1,78 +1,102 @@
+# # # Everything for compiling
 CC = g++
-CFLAGS = -Wall -g #-std=c++14
-BINNAME = Fair-Clustering
-TESTNAME = Clustering-Test
-
-INPUTFILE = Data/Subsamples/bank/bankSample-0.csv
-OUTPUTFOLDER = Data/OutputData/MakefileTest/
-OUTPUTFILENAME = ClusterOut2.csv
-CLUSTERNUM = 4
-
-TESTARGS = $(INPUTFILE) $(OUTPUTFOLDER)$(OUTPUTFILENAME) $(CLUSTERNUM)
+CFlags = -Wall -g #-std=c++14
+BinName = Fair-Clustering
+TestBinName = Clustering-Test
 
 
-HDATEIEN = Points/ColoredPoint.h Points/PointParser.h Gonzalez.h FairlettFinder.h RedCenterClustering.h GraphFlow.h
-CPPSOURCE = Points/ColoredPoint.cpp Points/PointParser.cpp Gonzalez.cpp FairlettFinder.cpp RedCenterClustering.cpp GraphFlow.cpp
+# # # Some Test Arguments
+InputFile = Data/Subsamples/bank/bankSample-0.csv
+TestOutputFolder = Data/OutputData/MakefileTest/
+TestOutputFileName = ClusterOut2.csv
+ClusterNum = 4
 
-FASTHDATEIEN = FastAnchorClustering.h FastAnchorFairlett.h FastAnchorFlow.h
-FASTSOURCE = FastAnchorClustering.cpp FastAnchorFairlett.cpp FastAnchorFlow.cpp
+TestArgs = $(InputFile) $(TestOutputFolder)$(TestOutputFileName) $(ClusterNum)
 
-CPPMAIN = ClusteringMain.cpp $(CPPSOURCE) $(FASTSOURCE)
-CPPTEST = ClusteringTest.cpp $(CPPSOURCE) $(FASTSOURCE)
+# # # All Files to be Included
+# Source-directory if different from building direktory
+srcdir = .
 
-LINKLIB = -lemon -L/home/stellarbyte/Installationen/Lemon-Lib/lib
-HEADERS = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
+# Points
+folderPoints = $(srcdir)/Points/
+hFilesPoints = $(folderPoints)ColoredPoint.h $(folderPoints)PointParser.h
+cppFilesPoints = $(folderPoints)ColoredPoint.cpp $(folderPoints)PointParser.cpp
 
-VALFLAGS = --leak-check=full
+# Gonzalez
+folderGonzalez = $(srcdir)/
+hFilesGonzalez = $(folderGonzalez)Gonzalez.h
+cppFilesGonzalez = $(folderGonzalez)Gonzalez.cpp
 
-# Preprocessor-Flags
-PROCESSBAR = -DPROCESS_BAR
+# RedClustering
+folderRedClustering = $(srcdir)/
+hFilesRedClustering = $(folderRedClustering)FairlettFinder.h $(folderRedClustering)RedCenterClustering.h $(folderRedClustering)GraphFlow.h
+cppFilesRedClustering = $(folderRedClustering)FairlettFinder.cpp $(folderRedClustering)RedCenterClustering.cpp $(folderRedClustering)GraphFlow.cpp
+
+# FastClustering
+folderFastClustering = $(srcdir)/
+hFilesFastClustering = $(folderFastClustering)FastAnchorClustering.h $(folderFastClustering)FastAnchorFairlett.h $(folderFastClustering)FastAnchorFlow.h
+cppFilesFastClustering = $(folderFastClustering)FastAnchorClustering.cpp $(folderFastClustering)FastAnchorFairlett.cpp $(folderFastClustering)FastAnchorFlow.cpp
+
+
+# Alle SourceDateien zusammensetzen
+hFiles = $(hFilesPoints) $(hFilesGonzalez) $(hFilesRedClustering) $(hFilesFastClustering)
+cppFiles = $(cppFilesPoints) $(cppFilesGonzalez) $(cppFilesRedClustering) $(cppFilesFastClustering)
+
+# Befehle für Main oder Test
+cppMain = $(srcdir)/ClusteringMain.cpp $(cppFiles)
+cppTest = $(srcdir)/ClusteringTest.cpp $(cppFiles)
+
+
+# # # Bibliothek Flags
+linkLemonLib = -lemon -L/home/stellarbyte/Installationen/Lemon-Lib/lib
+lemonLibHeadder = -isystem /home/stellarbyte/Installationen/Lemon-Lib/include
+
+
+# # # Flags für Valgrind
+ValFlags = --leak-check=full
+
+# # # Preprocessor-Flags
+Processbar = -DPROCESS_BAR
 
 
 
-#run: $(BINNAME)
-#	mkdir -p $(OUTPUTFOLDER)
-#	./$(BINNAME) $(ARGS)
-
-#$(BINNAME): $(HDATEIEN) $(CPPDATEIEN)
-#	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPDATEIEN) $(LINKLIB) $(HEADERS)
 	
-build: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
-	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS)
+build: $(hFiles) $(cppMain)
+	$(CC) $(CFlags) -o $(BinName) $(cppMain) $(linkLemonLib) $(lemonLibHeadder)
 
-buildProcessBar: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
-	$(CC) $(CFLAGS) -o $(BINNAME) $(CPPMAIN) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
+buildProcessBar: $(hFiles) $(cppMain)
+	$(CC) $(CFlags) -o $(BinName) $(cppMain) $(linkLemonLib) $(lemonLibHeadder) $(Processbar)
 
-runTest: $(TESTNAME)
-	./$(TESTNAME) $(TESTARGS)
+runTest: $(TestBinName)
+	./$(TestBinName) $(TestArgs)
 
-$(TESTNAME): $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
-	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS)
+$(TestBinName): $(hFiles) $(cppTest)
+	$(CC) $(CFlags) -o $(TestBinName) $(cppTest) $(linkLemonLib) $(lemonLibHeadder)
 
 val: buildTestProcess
-	valgrind $(VALFLAGS) ./$(TESTNAME) $(TESTARGS) 
+	valgrind $(ValFlags) ./$(TestBinName) $(TestArgs) 
 
 
-buildTestProcess: $(HDATEIEN) $(FASTHDATEIEN) $(CPPTEST)
-	$(CC) $(CFLAGS) -o $(TESTNAME) $(CPPTEST) $(LINKLIB) $(HEADERS) $(PROCESSBAR)
+buildTestProcess: $(hFiles) $(cppTest)
+	$(CC) $(CFlags) -o $(TestBinName) $(cppTest) $(linkLemonLib) $(lemonLibHeadder) $(Processbar)
 
 runTestProcess: buildTestProcess
-	./$(TESTNAME) $(TESTARGS) 
+	./$(TestBinName) $(TestArgs) 
 
-testAutofeeder: $(HDATEIEN) $(FASTHDATEIEN) $(CPPMAIN)
-	/bin/bash ./AlgFeeder.sh -i $(INPUTFILE) -o $(OUTPUTFOLDER) -n $(OUTPUTFILENAME) -c $(CLUSTERNUM) -a r
+testAutofeeder: $(hFiles) $(cppMain)
+	/bin/bash ./AlgFeeder.sh -i $(InputFile) -o $(TestOutputFolder) -n $(TestOutputFileName) -c $(ClusterNum) -a r
 
 
 printVar: Makefile
 
 #	echo "CC: $(CC)"
-#	echo "CFLAGS: $(CFLAGS)"
-#	echo "BINNAME: $(BINNAME)"
-#	echo "INPUTFILE: $(INPUTFILE)"
-#	echo "OUTPUTFOLDER: $(OUTPUTFOLDER)"
-#	echo "OUTPUTFILENAME: $(OUTPUTFILENAME)"
-#	echo "CLUSTERNUM: $(CLUSTERNUM)"
-	echo "ARGS: $(ARGS)"
-#	echo "HDATEIEN: $(HDATEIEN)"
-#	echo "CPPDATEIEN: $(CPPDATEIEN)" 
+#	echo "CFlags: $(CFlags)"
+#	echo "BinName: $(BinName)"
+#	echo "InputFile: $(InputFile)"
+#	echo "TestOutputFolder: $(TestOutputFolder)"
+#	echo "TestOutputFileName: $(TestOutputFileName)"
+#	echo "ClusterNum: $(ClusterNum)"
+	echo "TestArgs: $(TestArgs)"
+#	echo "hFiles: $(hFiles)"
+#	echo "cppFiles: $(cppFiles)" 
 	
