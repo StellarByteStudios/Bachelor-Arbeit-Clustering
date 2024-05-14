@@ -3,7 +3,7 @@
 #include <math.h>   // sqrt, pow
 
 
-// * * * =========== Kon/Destruktor =========== * * * //
+// * * * =========== Konstruktor =========== * * * //
 ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Dimensionen übertragen
 	this->dim = dimensions;
@@ -29,8 +29,6 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Punkt ist erstmal kein Zentrum
 	this->isCenter = false;
 }
-
-ColoredPoint::~ColoredPoint(){}
 
 double ColoredPoint::distTo(ColoredPoint other){
 	// Rückgabevariable

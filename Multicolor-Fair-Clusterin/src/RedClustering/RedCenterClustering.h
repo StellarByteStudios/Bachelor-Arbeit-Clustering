@@ -9,6 +9,7 @@
 using namespace std;
 
 namespace redclustering{
+    // * * * =========== Struct of Returnvalues =========== * * * //
     struct FairFlowReturnValues{
 		vector<ColoredPoint>* clusteredPoints;
 		vector<ColoredPoint>* centers;
@@ -16,6 +17,7 @@ namespace redclustering{
         double maxFairlettRadius;
 	};
 
+    // * * * =========== Main Red-Clustering Algorithm =========== * * * //
     // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
     FairFlowReturnValues* makeFairRedClustering(vector<ColoredPoint>*, int);
 
@@ -29,8 +31,7 @@ namespace redclustering{
 
 
 
-    // ==== Clustering with Fairlets ==== //
-    
+    // * * * =========== Clustering with Fairlets =========== * * * //
     // clusters points with krit-feature = 0 with Gonzalez algorithm
     void clusterRedPoints(FairFlowReturnValues*, int);
 

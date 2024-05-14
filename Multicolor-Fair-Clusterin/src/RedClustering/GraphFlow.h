@@ -19,7 +19,7 @@ typedef Preflow<Graph, CapacityMap> Flow;
 
 namespace graphFlow{
 
-    // ==== Building the Graph and let it Flow ==== //
+    // * * * =========== Building the Graph and let it Flow =========== * * * //
     // struct of an build-up graph to pass-through functions
     struct GraphData{
         // Key-Nodes (source and target)
@@ -32,7 +32,6 @@ namespace graphFlow{
 
         // Base-structure arcs (everything using source and target)
         std::vector<Arc> targetArcs;
-        // Maybe not used in future
         std::vector<Arc> sourceArcs;
 
         // Arcs between the main-nodes of the graph
@@ -72,11 +71,11 @@ namespace graphFlow{
 
 
 
-    // ==== Debugging ==== //
+    // * * * =========== Debugging =========== * * * //
     // Print Data from Graph
     void printGraph(const Graph&, const GraphData&);
     
-    // Print Data from Graph
+    // Print Data from Graph with capacity
     void printGraphCapacity(const Graph&, const CapacityMap&, const GraphData&);
 
     // Print all Data with Flow

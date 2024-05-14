@@ -9,7 +9,7 @@ typedef graphFlow::GraphData GraphData;
 
 namespace fairlettFinder{
     
-    // ==== Calculating the Fairlets ==== //
+    // * * * =========== Calculating the Fairlets =========== * * * //
     // calclulates the fairletts of some Points and updates the vector
     // returns the biggest distance of a fairlett
     double markFairletts(vector<ColoredPoint>*);
@@ -19,7 +19,7 @@ namespace fairlettFinder{
     int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*);
 
     // Goes though all target arcs and marks all outliers which havent been
-    // submittet to a Fairlett
+    // submitted to a Fairlett
     // returns the amount of outliers
     int markOutliers(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*);
 
@@ -41,7 +41,7 @@ namespace fairlettFinder{
 
 
 
-    // ==== Utility ==== //
+    // * * * =========== Utility =========== * * * //
     // maps the ID of a Node in a Graph to the Index in the filtered Points list
     int mapIDtoIndexByColor(int, Pointcolor, int);
 

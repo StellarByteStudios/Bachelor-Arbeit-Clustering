@@ -7,14 +7,7 @@
 using namespace std;
 
 namespace Gonzalez{
-	/* Gonzalez Return Struct
-	* Struct with all importent Values returned
-	* by the Gonzalez-Algorithm
-	*
-	* clusteredPoints: Deep-Copy of Points with Clustersignature
-	* centers: List of all Centers as Points
-	* maxRadius: value of the calculated maxRadius
-	*/
+	// Struct with all importent Values returned by the Gonzalez-Algorithm
 	struct GonzalezReturnValues{
 		vector<ColoredPoint>* clusteredPoints;
 		vector<ColoredPoint>* centers;
@@ -30,23 +23,12 @@ namespace Gonzalez{
 
 
 
-	/* Gonzalez-Algorithm
-	* Calculates the good Centers for given Points
-	*
-	* @param points: Set of Points to be Clusterd
-	* @param clusters: Number of desired Clusters
-	*
-	* @return max radius
-	*/
+	// * * * =========== Main Gonzalez Algorithm =========== * * * //
 	GonzalezReturnValues* makeGonzalez(vector<ColoredPoint>*, int);
 
-
-	/* Gonzalez-Algorithm
-	* makes Gonzalez, but with fairlettpoints, where two partners can`t be
-	* both Centers
-	*/
+	// Makes Gonzalez, but with fairlettpoints, where two partners can`t be both Centers
 	GonzalezReturnValues* makeAwareGonzalez(vector<ColoredPoint>*, int);
 
-	// Finds the Index of the Fairlettpartner of Given Point
+	// Finds the Index of the fairlett-partner of given Point
 	int getIndexOfPartner(ColoredPoint, int, vector<ColoredPoint>*);
 }

@@ -12,25 +12,16 @@ using namespace std;
 
 class PointParser{
 public:
-	/* Konstruktor
-	* @param path: Path of File to be read
-	*/
+	// Constructor
 	PointParser(string);
 
-	/* Destruktor
-	*/
-	~PointParser();
-
-	/* Reads File
-	* reads komplete File and converts into
-	* a vector of Points
-	*
-	* @return char* of File-content
-	*/
+	// Reads komplete File and converts into vector of Points
 	vector<ColoredPoint>* parseFile();
 
 private:
+	// Path of the File which is Parsed
 	string path;
 
+	// Utility Method for counting how much Dimensions the Inputdata has
 	int countDim(string);
 };

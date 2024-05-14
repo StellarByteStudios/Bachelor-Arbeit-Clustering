@@ -28,7 +28,7 @@ namespace fastAnchorFlow{
     };
 
 
-    // ==== Building the Graph ==== //
+    // * * * =========== Building the graph =========== * * * //
     // struct of an build-up graph to pass-through functions
     struct GraphData{
         // Key-Nodes (source and target)
@@ -41,7 +41,6 @@ namespace fastAnchorFlow{
 
         // Base-structure arcs (everything using source and target)
         std::vector<Arc> targetArcs;
-        // Maybe not used in future
         std::vector<Arc> sourceArcs;
 
         // Arcs between the main-nodes of the graph
@@ -68,7 +67,7 @@ namespace fastAnchorFlow{
 
 
 
-    // ==== Evaluate the Flow ==== //
+    // * * * =========== Evaluate the Flow =========== * * * //
     // calculates the Flow of the build-up graph
     Flow* calculateFlow(const Graph&, const CapacityMap&, const GraphData&);
 
@@ -83,7 +82,7 @@ namespace fastAnchorFlow{
 
 
 
-    // ==== Debugging ==== //
+    // * * * =========== Debugging =========== * * * //
     // Print Data from Graph
     void printGraph(const Graph&, const GraphData&);
     

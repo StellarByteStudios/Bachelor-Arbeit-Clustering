@@ -11,22 +11,22 @@ typedef vector<vector<fastAnchorFlow::Anchor>> AnchorMatrix;
 
 namespace fastAnchorFairlett{
     
-    // ==== Calculating the Fairlets ==== //
+    // * * * =========== Calculating the Fairlets =========== * * * //
     // calclulates the fairletts of some Points and updates the vector
     // returns the biggest distance of a fairlett
-    double markFairletts(vector<ColoredPoint>*); // === TO-DO ===
+    double markFairletts(vector<ColoredPoint>*);
 
     // Goes though all main arcs and marks the Fairletts if there is Flow
     // Also saves the AnchorsID
     // returns the Number of Fairletts made
-    int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*, AnchorMatrix&); // === TO-DO ===
+    int markMainNodes(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*, AnchorMatrix&);
 
     // Goes though all target arcs and marks all outliers which havent been
     // submittet to a Fairlett
     // returns the amount of outliers
-    int markOutliers(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*); // === TO-DO ===
+    int markOutliers(const Graph&, const Flow&, vector<Arc>, int, vector<ColoredPoint>*);
 
-    // Change Kritical feature that 0 has less member than 1 for simpler calculation
+    // Change critical feature in a way that 0 has less member than 1 for simpler calculation
     void makeCritFeatureSmalestFirst(vector<ColoredPoint>*);
 
     // Calculate all possible radii and find the lowest working radius with binary search
@@ -36,14 +36,15 @@ namespace fastAnchorFairlett{
     vector<double>* calculateAllRadii(vector<ColoredPoint>*);
 
     // Checks if given radius is building all Fairletts
-    // Needs first to have nRed <= nBlue
+    // Needs to have nRed <= nBlue
     bool checkRadius(vector<ColoredPoint>*, AnchorMatrix&, double);
     
 
 
 
 
-    // ==== Matrix Calculation ==== //
+
+    // * * * =========== Matrix Calculation =========== * * * //
     // Calculates the Anchors for all possible pairs
     void calculateAnchors(vector<ColoredPoint>*, AnchorMatrix&);
 
@@ -55,12 +56,12 @@ namespace fastAnchorFairlett{
 
 
 
-    // ==== Utility ==== //
+    // * * * =========== Utility =========== * * * //
     // maps the ID of a Node in a Graph to the Index in the filtered Points list
     int mapIDtoIndexByColor(int, Pointcolor, int);
 
     // Marks the Point in the base List with the new Fairlett ID
-    void markFairlettWithAnchor(int, int, int, Pointcolor, int, vector<ColoredPoint>*); // === TO-DO ===
+    void markFairlettWithAnchor(int, int, int, Pointcolor, int, vector<ColoredPoint>*);
 
     // Gets the Index of the nth Point of a certain color
     int getTrueIndexOfPoint(int, Pointcolor, int, vector<ColoredPoint>*);
@@ -70,7 +71,7 @@ namespace fastAnchorFairlett{
 
 
 
-    // ==== Debugging ==== //
+    // * * * =========== Debugging =========== * * * //
     void printAnchorMatrix(const AnchorMatrix&); 
 
     void printDistMatrix(const vector<vector<double>>&);

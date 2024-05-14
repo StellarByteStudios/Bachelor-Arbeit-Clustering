@@ -9,6 +9,7 @@
 using namespace std;
 
 namespace fastAnchorClustering{
+    // * * * =========== Struct of Returnvalues =========== * * * //
     struct FastAnchorReturnValues{
 		vector<ColoredPoint>* clusteredPoints;
 		vector<ColoredPoint>* centers;
@@ -16,32 +17,32 @@ namespace fastAnchorClustering{
         double maxFairlettRadius;
 	};
 
+    // * * * =========== Main Fast-Anchor Algorithm =========== * * * //
     // Method which uses the Max-Flow and Gonzalez Algorithm to cluster an unfair amount of Points
-    FastAnchorReturnValues* makeFastAnchorClustering(vector<ColoredPoint>*, int);  // === TO-DO ===
+    FastAnchorReturnValues* makeFastAnchorClustering(vector<ColoredPoint>*, int);
 
     // Creating an empty Struct for Max-Flow-Clustering
-	FastAnchorReturnValues* createFastAnchorReturns(vector<ColoredPoint>*);  // === TO-DO ===
+	FastAnchorReturnValues* createFastAnchorReturns(vector<ColoredPoint>*);
 
 	// Clean-Up for Max-Flow-Clustering Returnvalues
-	void deleteFastAnchorReturns(FastAnchorReturnValues*);  // === TO-DO ===
+	void deleteFastAnchorReturns(FastAnchorReturnValues*);
 
 
 
 
 
-    // ==== Clustering with Fairlets ==== //
-    
+    // * * * =========== Clustering with Fairlets =========== * * * //
     // clusters points who are in a fairlett with Gonzalez algorithm
-    void clusterFairlettPoints(FastAnchorReturnValues*, int);  // === TO-DO ===
+    void clusterFairlettPoints(FastAnchorReturnValues*, int);
 
     // Updates the rest of the Points which are not Outliers
-    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+    void updateClusterOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*);
 
     // Updates the centers from Gonzalez Returns to FastAnchorReturns
-    void updateCentersOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);  // === TO-DO ===
+    void updateCentersOfMainPoints(vector<ColoredPoint>*, vector<ColoredPoint>*, vector<ColoredPoint>*);
 
     // Updates the Cluster of all Points which partners are Centers
-    void updateCenterPartners(vector<ColoredPoint>*, vector<ColoredPoint>*); // === TO-DO ===
+    void updateCenterPartners(vector<ColoredPoint>*, vector<ColoredPoint>*);
 
 
 
@@ -49,17 +50,15 @@ namespace fastAnchorClustering{
 
 
 
-    // ==== Utility ==== //
-
+    // * * * =========== Utility =========== * * * //  
     // walks though all points, filter by their cluster and calculates the biggest cluster
-    double calculateMaxRadius(vector<ColoredPoint>, int);  // === TO-DO ===
-
+    double calculateMaxRadius(vector<ColoredPoint>, int);
 
     // Returns a Array in which every Point save the Clusternum of the neares Center
-    vector<int>* getNearesCenters(vector<ColoredPoint>*, vector<ColoredPoint>*); // === TO-DO ===
+    vector<int>* getNearesCenters(vector<ColoredPoint>*, vector<ColoredPoint>*);
 
     // Goes through all Centers and returns the Clusternumber of the nearest one
-    int getNextCenterOfPoint(ColoredPoint, vector<ColoredPoint>*); // === TO-DO ===
+    int getNextCenterOfPoint(ColoredPoint, vector<ColoredPoint>*);
 }
 
 
