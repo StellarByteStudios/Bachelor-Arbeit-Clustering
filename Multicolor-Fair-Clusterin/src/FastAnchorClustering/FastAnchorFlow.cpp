@@ -154,7 +154,7 @@ int fastAnchorFlow::getFlowOfArc(const Flow& flow, const Arc arc){
 
 
 
-// ==== Debugging ==== //
+// * * * =========== Debugging =========== * * * //
 void fastAnchorFlow::printGraph(const Graph& graph, const GraphData& gData){
     // Grunddaten
     printf("=== Daten welche zum Graphen gespeichert sind ===\n");

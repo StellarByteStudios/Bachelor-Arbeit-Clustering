@@ -2,6 +2,8 @@
 #include <sstream>  // stringstream (String builder)
 #include <math.h>   // sqrt, pow
 
+
+// * * * =========== Konstruktor =========== * * * //
 ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	// Dimensionen übertragen
 	this->dim = dimensions;
@@ -28,8 +30,6 @@ ColoredPoint::ColoredPoint(int dimensions, Pointcolor color, double coords[]){
 	this->isCenter = false;
 }
 
-ColoredPoint::~ColoredPoint(){}
-
 double ColoredPoint::distTo(ColoredPoint other){
 	// Rückgabevariable
 	double dist = 0;
@@ -49,12 +49,8 @@ double ColoredPoint::distTo(ColoredPoint other){
 }
 
 
-bool ColoredPoint::sameClusterAs(ColoredPoint other){
-	return this->cluster == other.cluster;
-}
 
-
-
+// * * * =========== String-Methods =========== * * * //
 string ColoredPoint::toString(){
 	stringstream stringStream;
 	stringStream << "Dims: " << this->dim ;
@@ -117,6 +113,8 @@ string ColoredPoint::toCSV(){
 	return stringStream.str();
 }
 
+
+// * * * =========== Getter/Setter =========== * * * //
 int ColoredPoint::getDim(){
 	return this->dim;
 }
@@ -164,7 +162,12 @@ void ColoredPoint::setAnchorID(int anchorID){
 
 
 
-// ==== Utility ==== //
+// * * * =========== Instance-Methods =========== * * * //
+bool ColoredPoint::sameClusterAs(ColoredPoint other){
+	return this->cluster == other.cluster;
+}
+
+
 vector<ColoredPoint>* ColoredPoint::getPointsOfColor(vector<ColoredPoint>* points, Pointcolor color){
     // Neuer Vector anlegen
     vector<ColoredPoint>* filteredPoints = new vector<ColoredPoint>;

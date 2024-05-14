@@ -2,12 +2,12 @@
 #include <fstream>  // ifstream (Dateien ein/auslesen)
 #include <string>
 
-#include "ColoredPoint.h"
-#include "PointParser.h"
-#include "Gonzalez.h"
+#include "Points/ColoredPoint.h"
+#include "Points/PointParser.h"
+#include "Gonzalez/Gonzalez.h"
 
-#include "RedCenterClustering.h"
-#include "FastAnchorClustering.h"
+#include "RedClustering/RedCenterClustering.h"
+#include "FastAnchorClustering/FastAnchorClustering.h"
 
 #ifdef PROCESS_BAR
     #define printProcess(process) std::cout << process << endl;

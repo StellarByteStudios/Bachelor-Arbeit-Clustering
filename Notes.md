@@ -14,25 +14,15 @@
 * [x] Treffen mit Daniel am 26.3 um 10:30
 * [x] Treffen mit Daniel am 9.4 um 12:15
 * [x] Treffen mit Daniel am 22.4 um 15:00
-* [ ] Treffen mit Daniel am 6.5 um 15:00
+* [x] Treffen mit Daniel am 6.5 um 15:00
+* [x] Treffen mit Daniel am 13.5 um 15:00
+* [ ] Treffen mit Daniel am 21.5 um 13:00
 
 ### Fragen an Besprechung
-* [ ] Sollen die Einschübe wie zu Bipatitem Matching und Flusseigenschaften im Inhaltsverzeichniss auftauchen oder nicht?
-
-
-
-
-
-
-#### Alte Fragen
-* [x] Erste Augenscheinliche vergleiche lassen vermuten, Red-Clustering ist im Average besser
-    * [ ] Plane noch graphen zu einem Bild zusammen zu schmelzen
-    * [ ] Vielleicht mal mit Min-Cost-Flow probieren (Capacity Scaling)
 
 
 #### Nach der Besprechung
-* [ ] Regeln zum schreiben von Knuth durchlesen
-* [ ] Technisches Schreiben von Peter Rechenberg suchen (in)
+* [ ] API als Markdown ins Repo
 
 
 
@@ -41,7 +31,7 @@
 
 ---
 ### To-Dos
-
+Schreiben, schreiben, schreiben
 
 
 
@@ -51,8 +41,7 @@
 ---
 ### Notizen zum Thema/Code
 Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf8d6df66d3e7ab3e9a85af90
-
-!! Lemon Lib ist sehr einschränkend was auslagern in Funktionen betrifft !!
+Beispiel Min-Cost-Flow: https://gist.github.com/karmadonov/5388488
 
 
 #### Versionen von Sprachen und Libraries
@@ -61,7 +50,14 @@ Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf
 * Pandas: 2.2.1
 * pip: 23.3.1
 * Python: 3.11.8
+* g++ 9.4.0
 
+#### System auf welchem Analysiert wurde
+* OS: Ubuntu 20.04 LTS
+* Prozessor AMD Ryzen 7 5800x
+* RAM: 16 GB
+
+-> Volle Rechenzeit etwa 3.5 h für 20 Samples pro Dataset und 30 Cluster
 
 
 
@@ -651,6 +647,40 @@ Beispiel für einen Max-Flow in Lemon: https://gist.github.com/huanyud/45f98d8bf
         * Erste Versuche Vergleichsgraphen zu erzeugen
     * Latex - Algorithmen Kapitel soweit fertig gemacht
     * Latex - Angefangen in der Auswertung das Center-Aware Problem zu erklären
+* So 28.4:
+    * Einmal alle Samples durch alle Algorithmen durchlaufen lassen am Hauptrechner
+    * Daniels Verbesserungs von Lesekorrektur druchlesen
+    * Latex - Feedback umsetzen
+* Mo 29.4:
+    * Latex - Kapitel Algorithmen nochmal durchlesen
+    * Latex - Kapitel Experimente anfangen
+* Di 30.4:
+    * Latex - Kapitel Experimente weiter gemacht
+        * Laufzeitanalyse hinzugefügt (mit Bildern)
+    * Latex - Abbildungsverzeichnis hinzugefügt
+    * Latex - Auswertung angefangen und grobe Struktur fertig
+    * Extra Bild für Fast-Anchor Edge-Case hinzugefügt
+    * Neue Bilder für Laufzeitanalyse. Jetzt mit Median
+* Mo 6.5:
+    * Termin mit Daniel
+    * Latex - Nochmal selbst korrekturlesen
+* Di 7.5:
+    * Latex - Einleitung weiter schreiben
+    * Latex - Eingehen auf Besprechungsfeedback
+    * Latex - Weitere kleinere Verbesserungen
+* Fr 10.5:
+    * Probieren Min-Cost-Flow zu implementieren in Fast-Anchor
+    * Testlauf mit Min-Cost-Flow
+        * Hat nicht viel was verändert
+* Mo 13.5:
+    * Besprechung mit Daniel
+    * Varianz in Graphen eingefügt
+    * Latex - Graphen für Max-Flow / Min-Cost Vergleich hinzugefügt
+    * Latex - Erweitert um Min-Cost Analyse
+    * Latex - weitere Korrekturen
+* Di 14.5:
+    * Latex - CD-Seite gelöscht
+    * Refactoring Begonnen
 
 
 

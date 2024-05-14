@@ -3,14 +3,12 @@
 #include <fstream>  // ifstream (Dateieneinlesen)
 
 
-
+// * * * =========== Konstruktor =========== * * * //
 PointParser::PointParser(string path){
 	this->path = path;
 }
 
-PointParser::~PointParser(){
-}
-
+// * * * =========== Parsing of CSV File =========== * * * //
 vector<ColoredPoint>* PointParser::parseFile(){
     // File aufmachen
     ifstream file = ifstream(this->path, ios::in);
