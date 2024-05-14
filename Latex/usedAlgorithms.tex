@@ -3,7 +3,7 @@
 
 \chapter{Algorithmen}\label{chap:Algorithms}
 
-    In der Arbeit werden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erläutert werden
+    In der Arbeit werden einige verschiedene Algorithmen verwendet. Einige davon sind als gegeben vorausgesetzt. Diese sollen hier aufgezählt und erläutert werden.
 
 \section{Matching}
     Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare. Die Paare sollen sich dabei nicht überschneiden und die Knoten eines Paares sind immer über eine Kante verbunden sind. Sind alle Punkte in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
@@ -23,10 +23,10 @@
         \end{enumerate}
 
     \subsection{Max-Flow Algorithmus} \label{sec:Max-Flow}
-        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen\cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
+        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen \cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
         Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den Maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow Algorithmus.
 
-    \subsection{Min-Cost-Flow (nutzen nicht sicher)}
+    \subsection{Min-Cost-Flow} \label{sec:Min-Cost-Flow}
         Es ist auch möglich zusätzlich zum Flusswert auch noch weitere Eigenschaften zu berücksichtigen. Gibt man den Kanten neben der Kapazität auch noch Kosten ist es möglich einen Fluss zu berechnen, welcher maximal ist, aber auch möglichst wenig Kosten verursacht. Dabei sind die Kosten die Summe aller Kantenkosten der Kanten über welche auch Fluss fließt. Hierbei wurde der Capacity Scaling Algorithms, auch aus der Lemon Library \cite{Lemon-Lib} verwendet.
 
 
@@ -101,7 +101,7 @@
 
     
     \subsection{Red-Clustering} \label{sec:Red-Clustering}
-        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorihtmus welcher von Chierichetti et al. \cite{chierichetti2018fair} vorgestellt wurde für 1:1 Clustering. Hier wurde er erweitert um auch mit der Berücksichtigung von Ausreißern arbeiten zu können.
+        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorithmus welcher von Chierichetti et al. \cite{chierichetti2018fair} vorgestellt wurde für 1:1 Clustering. Hier wurde er erweitert um auch mit der Berücksichtigung von Ausreißern arbeiten zu können.
 
         \subsubsection{Bilden der Red-Cluster Fairletts \ref{alg:fairlett-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches weniger, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe linear einfach tauschen können. \newline
@@ -180,7 +180,7 @@
 
 
         \begin{algorithm}
-            \caption{Red Clustering Algorihtmus}\label{alg:red-clustering}
+            \caption{Red Clustering Algorithmus}\label{alg:red-clustering}
             \begin{algorithmic}[1]
                 \Function{red-clustering}{P, dist, k}
                     % Fairletts Markieren
@@ -217,9 +217,9 @@
 
 
     \subsection{Fast-Anchor-Clustering} \label{sec:Fast-Anchor-Clustering}
-        Als zweiten Clustering-Algorithmus betrachten wir den Fast-Anchor-Algorihtmus \cite{BA_Clustering_Irina}. Dieser Arbeitet ähnlich wie der Red-Clustering Algorithmus \ref{sec:Red-Clustering} bildet aber nach einer grundlegend anderen Bedingung die Fairletts
+        Als zweiten Clustering-Algorithmus betrachten wir den Fast-Anchor-Algorithmus \cite{BA_Clustering_Irina}. Dieser Arbeitet ähnlich wie der Red-Clustering Algorithmus \ref{sec:Red-Clustering} bildet aber nach einer grundlegend anderen Bedingung die Fairletts
 
-        \subsubsection{Bilden der Anchor-Fairletts \ref{alg:fairlett-fast-anchor}} 
+        \subsubsection{Bilden der Anchor-Fairletts \label{sec:fast-anchor-fairletts} \ref{alg:fairlett-fast-anchor}}
             Auch wie im Red-Clustering Algorithmus \ref{sec:Red-Clustering} bauen wir ein Flussnetzwerk zum finden der Fairletts auf. Unterschiedlich ist nur die Bedingung für das hinzufügen der Kanten zwischen $a \in R$ und $b \in B$. Man testet für alle Paare $(a, b) \in \{a \in R | b \in B\}$ jeden Punkt $\alpha \in P$ ob $\alpha$ als Anker in Frage kommt. Dabei wird der Anker so gewählt, das $\max(dist(\alpha, a),\ dist(\alpha, b))$ minimal ist. \newline
             Diese Anker werden auch abgespeichert, denn durch sie bestimmen wir später welchem Cluster wir das Fairlett zuweisen. \newline
             Beim hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$, sondern betrachten den Anker also $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$ und fügen dementsprechend Kanten mit Kapazität 1 ein. \newline
@@ -347,7 +347,7 @@
 
         
             \begin{algorithm}
-                \caption{Fast-Anchor Clustering Algorihtmus}\label{alg:fast-clustering}
+                \caption{Fast-Anchor Clustering Algorithmus}\label{alg:fast-clustering}
                 \begin{algorithmic}[1]
                     \Function{Fast-Anchor-clustering}{P, dist, k}
                         % Fairletts Markieren

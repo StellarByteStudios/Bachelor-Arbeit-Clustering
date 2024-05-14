@@ -40,11 +40,11 @@
         Um die Algorithmen zu vergleichen betrachten wir ihre Güte auf den Test-Daten mit verschiedener Anzahl an Clustern.
         \begin{figure}
             \centering
-            \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued(Cluster-30).jpg}
+            \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued with Variance.jpg}
             \caption{Zusammengefasste kosten der Cluster bis zu 30 Cluster}
             \label{fig:CluedQuality30}
         \end{figure}
-        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. Dabei wird für jedes $k$ der Mittelwert der Kosten aller Subsamples des entsprechenden Datensatzens gebildet. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings \ref{sec:Fast-Anchor-Clustering} wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
+        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. Dabei wird für jedes $k$ der Mittelwert der Kosten aller Subsamples des entsprechenden Datensatzens gebildet. Der helle Bereich um den Mittelwert gibt die Breite der Varianz der Ergebnisse an. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius welches ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, welcher der größte Abstand ist, welche zwei Fairlettpartner voneinander haben bzw. im Falle des Fast-Anchor Clusterings \ref{sec:Fast-Anchor-Clustering} wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
         Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze.
 
         \subsubsection{Randfall Güteverschlechterung}
@@ -55,6 +55,16 @@
                 \includegraphics[height=(\textheight/2-40pt)]{fig/Edge-Case bigger maxRadius/Edge-Case Curve.jpg}
                 \caption{Kosten mit Median und Min/Max des Zensusdatensatzes mit den ersten 10 Subsamples}
                 \label{fig:Edge-Case-Curve}
+            \end{figure}
+
+        \subsubsection{Min-Cost-Test}
+            Wir haben auch knapp getestet, ob sich die Ergebnisse verbessern lassen, wenn man beim Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} statt eines Max-Flows einen Min-Cost-Flow \ref{sec:Min-Cost-Flow} benutzt und die Unterschiede (auf einem kleineren Teildatensatz) dargestellt. Wobei links die Analyse mit einem Max-Flow \ref{sec:Max-Flow} und rechts die Analyse mit einem Min-Cost-Flow \ref{sec:Min-Cost-Flow} dargestellt wird.
+
+            \begin{figure}
+                \centering
+                \includegraphics[width=(\textwidth)]{fig/Min-Cost-Try/Comparison Joined.jpg}
+                \caption{Unterschied zwischen einfachen Max-Flow und Min-Cost-Flow}
+                \label{fig:Min-Cost-Flow_comparison}
             \end{figure}
 
 

@@ -105,6 +105,9 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
     dfImportantValues["minValue"] = dfRadius.min()
     dfImportantValues["upperQuantile"] = dfRadius.quantile(0.75)
     dfImportantValues["lowerQuantile"] = dfRadius.quantile(0.25)
+    dfImportantValues["variance"] = dfRadius.var();
+    
+    
     
     # Median des Fairlett-Radius bilden
     fairRadiusMean = sum(listOfFairlettRadius) / len(listOfFairlettRadius)  
@@ -121,6 +124,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
                    f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
     else:
         build_plot_axis(axis, dfImportantValues, fairlettRadiusMean=fairRadiusMean, algorithm=algorithm)
+        add_plot_variance(axis, dfImportantValues, algorithm=algorithm)
 
     return
 
@@ -191,6 +195,29 @@ def build_plot_axis(axis, dfRadius, fairlettRadiusMean=0, algorithm="g"):
     
     axis.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
 
+
+
+# # # Füllt den Graphen mit der Varianz # # #
+def add_plot_variance(axis, dfRadius, algorithm):
+    
+    # Bessere Beschriftung
+    algName = "Gonzalez-Clustering"
+    algColor = "lightblue"
+    if(algorithm == "r"):
+        algName = "Red-Clustering"
+        algColor = "pink"
+    if(algorithm == "f"):
+        algName = "Fast-Clustering"
+        algColor = "palegreen"
+
+    # Gonzalez erstmal ausschließen
+    if not (algorithm == "g") :
+        
+        # Varianz in den Graphen einfügen
+        axis.fill_between(dfRadius["clustersize"], 
+                         dfRadius["mean"]-dfRadius["variance"]/2, dfRadius["mean"] + dfRadius["variance"]/2, 
+                         color = algColor, label = f"Variance {algName}")
+        
 
 
 
