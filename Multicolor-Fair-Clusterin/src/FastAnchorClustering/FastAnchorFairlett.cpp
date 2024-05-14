@@ -337,8 +337,7 @@ bool fastAnchorFairlett::checkRadius(vector<ColoredPoint>* points, AnchorMatrix&
 
 
 
-
-// ==== Matrix Calculation ==== //
+// * * * =========== Matrix Calculation =========== * * * //
 void fastAnchorFairlett::calculateAnchors(vector<ColoredPoint>* points, AnchorMatrix& anchorMatrix){
     // Erstmal nach Blau und Rot filtern
     vector<ColoredPoint>* redPoints = ColoredPoint::getPointsOfColor(points, RED);
@@ -467,7 +466,7 @@ void fastAnchorFairlett::fillDistanceMatrix(vector<ColoredPoint>* points, vector
 
 
 
-// ==== Utility ==== //
+// * * * =========== Utility =========== * * * //
 int fastAnchorFairlett::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
     // Farben-Fallunterscheidung
     if (color == RED)   { return ID; }
@@ -526,7 +525,7 @@ int fastAnchorFairlett::getTrueIndexOfPoint(int colorOnlyIndex, Pointcolor color
 
 
 
-// ==== Debugging ==== //
+// * * * =========== Debugging =========== * * * //
 void fastAnchorFairlett::printAnchorMatrix(const std::vector<std::vector<Anchor>>& matrix) {
     for (const auto& row : matrix) {
         for (Anchor element : row) {

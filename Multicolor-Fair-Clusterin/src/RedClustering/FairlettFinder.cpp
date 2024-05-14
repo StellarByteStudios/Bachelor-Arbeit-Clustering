@@ -311,8 +311,7 @@ bool fairlettFinder::checkRadius(vector<ColoredPoint>* points, double potRad){
 
 
 
-// ==== Utility ==== //
-
+// * * * =========== Utility =========== * * * //
 int fairlettFinder::mapIDtoIndexByColor(int ID, Pointcolor color, int nRed){
     // Farben-Fallunterscheidung
     if (color == RED)   { return ID; }
@@ -328,7 +327,6 @@ void fairlettFinder::markSinglePointWithFairlett(int fairlettID, int nodeID, Poi
     // Die Nummer wievielter Punkt dieser Farbe der Punkt ist
     int colorIndex = mapIDtoIndexByColor(nodeID, color, nRed);
 
-    ///*
     // Index des entsprechenden Punktes suchen
     int trueIndex = -1;
     // So lange durchgehen bis ich den richtigen Index gefunden habe oder am Ende der Liste bin
@@ -345,24 +343,8 @@ void fairlettFinder::markSinglePointWithFairlett(int fairlettID, int nodeID, Poi
             trueIndex = i;
             break;
         }
-        
-    }//*/
-
-    // Noch unklar welche Variante ich benutze
-    /*
-    // Index des entsprechenden Punktes suchen
-    int trueIndex = -1;
-    // So lange durchgehen bis ich den richtigen Index gefunden
-    while (colorIndex >= 0) {
-        trueIndex++;
-
-        // Hat der Knoten die richtige Farbe?
-        if (points->at(trueIndex).getColor() == color){
-                colorIndex--;
-        }
-    }*/
-
+    }
+    // FairlettID an richtigem Punkt aktuallisieren
     points->at(trueIndex).setFairlettID(fairlettID);
-
     return;
 }

@@ -154,7 +154,7 @@ int graphFlow::getFlowOfArc(const Flow& flow, const Arc arc){
 
 
 
-// ==== Debugging ==== //
+// * * * =========== Debugging =========== * * * //
 void graphFlow::printGraph(const Graph& graph, const GraphData& gData){
     // Grunddaten
     printf("=== Daten welche zum Graphen gespeichert sind ===\n");
