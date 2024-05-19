@@ -34,9 +34,9 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
                                      numOfSamples=numOfSamples, maxCluster=maxCluster, algorithm=algs[i])
         
         # Rest vom Graph zusammensetzen
-        ax.set_title(f"Max Radius Comparison of all Algorithms with {dataSet}-Data")
-        ax.set_xlabel("Cluster")
-        ax.set_ylabel("max Radius")
+        ax.set_title(f"max radius comparison of all algorithms with {dataSet}-data")
+        ax.set_xlabel("cluster")
+        ax.set_ylabel("max radius")
         ax.legend()
         plt.savefig(f"{pictureFolder}/Collective Analysis {dataSet}(Cluster-{maxCluster}).jpg", dpi=400)
         plt.show()
@@ -55,7 +55,7 @@ def analyzeDatasetzs(pictureFolder = "../Data/OutputData/Final/Pictures/",
     
     
     # Analyse für das Center-Aware Problem von Fast-Anchor
-    fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=numOfSamples, maxCluster=maxCluster)
+    fast_anchor_maxline_analysis("census", pictureFolder, dataFolder, numOfSamples=6, maxCluster=maxCluster)
     
     return
 
@@ -141,20 +141,20 @@ def plot_single_dataset(dfRadius, picturePath, title, algorithm="g"):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "Unfair (mean)")
+                color = "brown", label = "unfair (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
-                color = "orange", linestyle = "dashed", alpha = 0.5, label = "Unfair (max/min)")
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "unfair (max/min)")
     else:
         # Faire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "Fair (mean)")
+                color = "brown", label = "fair (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
-                color = "orange", linestyle = "dashed", alpha = 0.5, label = "Fair (max/min)")
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "fair (max/min)")
     
     ax.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
     ax.set_title(title)
-    ax.set_xlabel("Cluster")
-    ax.set_ylabel("max Radius")
+    ax.set_xlabel("cluster")
+    ax.set_ylabel("max radius")
     ax.legend()
     plt.savefig(picturePath, dpi=400)
     plt.show()
@@ -185,12 +185,12 @@ def build_plot_axis(axis, dfRadius, fairlettRadiusMean=0, algorithm="g"):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         axis.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = algColor, label = f"Unfair {algName} (mean)")
+                color = algColor, label = f"unfair {algName} (mean)")
     else:
         # Faire Beschriftung
         axis.plot(dfRadius["clustersize"], dfRadius["mean"],
-                 color = algColor, label = f"Fair {algName} (mean)")
-        axis.axhline(y=fairlettRadiusMean, color = algColor, linestyle='--', label=f"Max Farlett of {algName}")
+                 color = algColor, label = f"fair {algName} (mean)")
+        axis.axhline(y=fairlettRadiusMean, color = algColor, linestyle='--', label=f"max Fairlett-radius of {algName}")
 
     
     axis.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
@@ -216,7 +216,7 @@ def add_plot_variance(axis, dfRadius, algorithm):
         # Varianz in den Graphen einfügen
         axis.fill_between(dfRadius["clustersize"], 
                          dfRadius["mean"]-dfRadius["variance"]/2, dfRadius["mean"] + dfRadius["variance"]/2, 
-                         color = algColor, label = f"Variance {algName}")
+                         color = algColor, label = f"variance {algName}")
         
 
 
@@ -324,8 +324,8 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
     
 
     ax.set_xticks(list(range(0, len(timestamps[0]) + 1, intervalls)))
-    ax.set_title(f"CPU Times of {algorithmName} Excecution")
-    ax.set_xlabel("Sample")
+    ax.set_title(f"CPU times of {algorithmName} excecution")
+    ax.set_xlabel("cample")
     ax.set_ylabel("time in ms")
     ax.legend(loc='upper right')
     plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg", dpi=400)
@@ -407,6 +407,7 @@ def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSam
     
     # # # Einlesen der neuen Daten
     listOfRadiiLists = []
+    listOfFairlettsizes = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
         outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}"
@@ -415,6 +416,8 @@ def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSam
         radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="f")
         # radienverlauf hinszufügen
         listOfRadiiLists.append(radiiList)
+        # fairlettRadius hinzufügen
+        listOfFairlettsizes.append(fairlettRadius)
         
     
     
@@ -436,7 +439,7 @@ def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSam
     os.makedirs(pictureFolder, exist_ok=True) 
     print_radii(dfImportantValues,  
                 f"{pictureFolder}/Fast-Anchor Edge-Case.jpg", 
-                f"Fast-Clustering census Edge-Case Example", algorithm="f", fairlettRadius=fairlettRadius)
+                "Fast-Clustering census Edge-Case Example", algorithm="f", fairlettRadius=np.mean(fairlettRadius))
 
     return
 
@@ -461,24 +464,24 @@ def print_radii(dfRadius, picturePath, title, algorithm="f", fairlettRadius=-1):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "Unfair (mean)")
+                color = "brown", label = "unfair (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
-                color = "orange", linestyle = "dashed", alpha = 0.5, label = "Unfair (max/min)")
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "unfair (max/min)")
     else:
         # Faire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "max Radius (mean)")
+                color = "brown", label = "max radius (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius["maxValue"],
-                color = "red", linestyle = "dashed", alpha = 0.5, label = "max Radius (max)")
+                color = "red", linestyle = "dashed", alpha = 0.5, label = "max radius (max)")
         ax.plot(dfRadius["clustersize"], dfRadius["minValue"],
-                color = "green", linestyle = "dashed", alpha = 0.5, label = "max Radius (min)")
+                color = "green", linestyle = "dashed", alpha = 0.5, label = "max radius (min)")
         if (fairlettRadius >= 0):
-            ax.axhline(y=fairlettRadius, linestyle='--', label="Mean Farlett Radus")
+            ax.axhline(y=fairlettRadius, linestyle='--', label="mean Fairlett-radus")
     
 
     ax.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
     ax.set_title(title)
-    ax.set_xlabel("Cluster")
+    ax.set_xlabel("cluster")
     ax.set_ylabel("max Radius")
     ax.legend()
     plt.savefig(picturePath, dpi=400)
