@@ -4,7 +4,7 @@
 \chapter{Aufbereiten der Daten} \label{chap:Daten}
 
     %Was waren die Ursprungsdaten, und wie habe ich diese Aufgebereitet (Subsampling und so)
-    Wir vergleichen unsere Algorithmen mit einem Ansatz von Chierichetti et al. \cite{chierichetti2018fair}, in welchem ebenfalls probiert wird, Fair-k-Center zu lösen. Um die experimetelle Güte zu vergleichen haben werwenden wir den selben Datensatz.
+    Wir vergleichen unsere Algorithmen mit einem Ansatz von Chierichetti et al. \cite{chierichetti2018fair}, in welchem ebenfalls probiert wird, Fair-k-Center zu lösen. Um die experimetelle Güte zu vergleichen, haben werwenden wir den selben Datensatz.
 
 \section{Ursprungsdaten}
     Chierichetti et al. \cite{chierichetti2018fair} verwenden drei unterschiedliche Datensätze. Diese sind:
@@ -18,7 +18,7 @@
         Ein Problem der Daten ist, dass sie einerseits nicht in einem normalisierten \textit{CSV} Format vorhanden sind und andererseits Chierichetti et al. \cite{chierichetti2018fair} Subsamples benutzen, jedoch nicht angeben, welche Datenpunke genommen und welche Features der Daten verwendet werden. Bei Letzterem werden für jeden Datensatz einige Features genannt. Diese wir hier verwenden. Die folgenden Experimente verwenden daher ein eigenes Subsampling, welches im Folgenden beschrieben wird.
 
 \section{Cleaning-Pipeline}
-    Um die Daten verwendbar zu machen, brauchen wir einige Schritte. Dafür verwenden wir ein Python-Skript, welches einerseits automatisiert, andererseits deterministisch und konfigurierbar die Daten aufbereitet. Die Daten werden nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert, damit man ggf. mit diesen Daten weiterarbeiten kann, ohne sie noch einmal neu erzeugen zu müssen.
+    Um die Daten verwendbar zu machen, benötigen wir einige Schritte. Dafür verwenden wir ein Python-Skript, welches einerseits automatisiert, andererseits deterministisch und konfigurierbar die Daten aufbereitet. Die Daten werden nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert, damit man ggf. mit diesen Daten weiterarbeiten kann, ohne sie noch einmal neu erzeugen zu müssen.
     
     \subsection{Normalisierung}
         Als Erstes werden die Daten in ein einheitliches CSV-Format übertragen. Das ist zwar bei dem Diabetes-Datensatz \cite{misc_diabetes_130_richtig} nicht notwendig, bei den anderen zwei anderen Datensätzen \cite{misc_adult_2} \cite{misc_bank_marketing_222} müssen Zeichen ersetzt werden und die Zensus-Daten werden um Überschriften ergänzt.
