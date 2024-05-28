@@ -2,7 +2,7 @@
 \documentclass[12pt,a4paper,twoside=false,% twoside=true zum drucken!
 %BCOR=12mm,% Auskommentiert, sonst nicht Zentriert
 DIV=14,%
-headsepline,%
+%headsepline,%
 cleardoublepage=empty,%
 chapterprefix,%
 parskip,%
@@ -133,13 +133,21 @@ bibliography=totoc]{scrbook}
 \setcounter{secnumdepth}{3}
 
 
+% Überschriften schlanker machen
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{chapter}
 
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{section}
 
-
-% Um Bilder nebeneinander darzustellen
-
-
-
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{subsection}
 
 %\bibliographystyle{abbrv}
 %\bibliography{bib/erferences}
