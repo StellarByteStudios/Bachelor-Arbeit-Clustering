@@ -6,39 +6,45 @@
     In der Arbeit werden verschiedene Algorithmen verwendet. Einige davon sind als bekannt vorausgesetzt und sollen nur kurz erläutert werden. Dannach gehen wir auf die implementierten Algorithmen ausführlicher ein.
 
 \section{Matching}
-    Ein Matching ist eine Aufteilung eines Graphen in disjukte 2er Paare. Die Paare sollen sich dabei nicht überschneiden und die Knoten eines Paares sind immer über eine Kante verbunden. Sind alle Punkte des Graphens in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
+    Ein Matching ist eine Aufteilung eines Graphen $G$ mit Knotenmenge $V$ und Kantenmenge $E$ in 2er Paare $<a, b>$. Die Paare bestehen immer aus zwei Knoten $<a, b> |\ a,b \in V$, welche mit einer Kante verbunden sind $(a, b) \in E$. Ein Knoten ist dabei immer maximal in einem Paar enthalten. Sind alle Knoten des Graphens in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
     \subsection{Bipatites Matching}
-        Ein bipatiter Graph ist ein Graph, welcher in zwei disjukte Mengen aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren. Wird ein Matching in einem bipatiten Graphen gesucht spricht man von einem bipatiten Matching.
+        Ein bipatiter Graph $G = (V, E)$ ist ein Graph, welcher in zwei disjukte Mengen $A$ und $B$ mit $A \cap B = \emptyset$ und $A \cup B = V$ aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren. D.h $\forall (v, w) \in E |\ v \in A, w \in B$ oder $w \in A, v \in B$. Wird ein Matching in einem bipatiten Graphen gesucht spricht man von einem bipatiten Matching.
 
 
 
 \section{Flussnetzwerke}
-    Die verwendeten Clustering-Algorithmen greifen auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität, über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei zusätzliche Knoten, die Quelle $s$ und die Senke $t$ \cite{Graphen_Skript}.
+    Die verwendeten Clustering-Algorithmen greifen auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk $G = (V, E)$ und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität $c(e)$, über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei zusätzliche Knoten, die Quelle $s$ und die Senke $t$ \cite{Graphen_Skript}. Der Fluss $f$ ist eine Funktion $f : E \rightarrow \mathbb{R}^{+}_{0}$ welche angibt wie viel Fluss durch das Netzwerk fliest.
 
     \subsection{Flusseigenschaften}
-        Für einen Fluss, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
+        Für einen Fluss $f$, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
         \begin{enumerate}
-            \item Jede Kante im Netzwerk muss eine nicht-negative Kapazität und Fluss haben. 
-            \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle $s$ und Senke $t$ immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv.
-            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten.
+            \item Jede Kante im Netzwerk muss eine nicht-negative Kapazität und Fluss haben: $c(e) \geq 0$
+            \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle $s$ und Senke $t$ immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv: \newline 
+            $\forall v \in V \setminus \{s, t\}$ gilt $f_{in}(v) = \sum_{(u, v) \in E}f(u, v) = \sum_{(v, u) \in E}f(v, u) = f_{out}$ \newline
+            $f_{out}(s) = f_{in}(t) \geq 0$
+            \item \textit{Kapazitäterhaltung}: Der Fluss welcher über eine Kante fließt, darf zu keinem Zeitpunkt die Kapazität dieser Kante überschreiten: $\forall e \in E$ gilt $0 \leq f(e) \leq c(e)$
         \end{enumerate}
 
     \subsection{Max-Flow Algorithmus} \label{sec:Max-Flow}
         Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen \cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
-        Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow-Algorithmus.
+        Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow-Algorithmus von Goldberg und Trajan \cite{Preflow-article}.
 
     \subsection{Min-Cost-Flow} \label{sec:Min-Cost-Flow}
         Es ist möglich zusätzlich zum Flusswert noch weitere Eigenschaften zu berücksichtigen. Wenn die Kanten neben der Kapazität noch Kosten haben, dann ist es möglich einen Fluss zu berechnen, welcher einerseits maximal ist, aber andererseit möglichst wenig Kosten verursacht. Dabei sind die Kosten die Summe aller Kantenkosten der Kanten, über welche Fluss fließt. Hierbei wurde der Capacity Scaling Algorithms, ebenfalls aus der Lemon Library \cite{Lemon-Lib} verwendet.
 
 
+\section{Cluster und k-center Problem}
+    Man kann eine Menge von Punkten $P$ in $k$ Cluster $C^k = {C_1, ... C_k}$ aufteilen. Dabei gilt $\forall (i, j)$ mit $i, j \in {0, ..., k}: C_i \cap C_j = \emptyset$ und $C_1 \cup C_2 \cup ... C_k = P$. Für das k-center Problem werden noch Zentren $Z^k = {z_1, ..., z_k}$ und $Z^k \subseteq P$ benötigt. Die Qualität eines Clusterings wird mit einer Zielfunktion definiert. Die Zielfunktion minimiert den maximalen Abstand eines Punktes zu dem nächsten Zentrum: $\displaystyle maxRadius(C^k) := \max_{x \in P} \min_{z \in Z^k} dist(z, x)$.
 
+    \subsection{Clustern mit Nebenbedingungen}
+        Neben der Zielfunktion kann man auch weitere Bedingungen an das Clustering $C^k$ stellen. In dieser Arbeit wird faires Clustering durchgeführt. Voraussetzung dafür ist eine vorhandene Färbung der Punke in $R \cup B = P$ und $R \cap B = \emptyset$. Bei fair Clustering wird von den Algorithmen gewährleistet, dass in den Clustern die Verteilung der Farben gleich der in der Menge $P$ ist $\forall i \in \{1, ..., k\}$ gilt $\frac{|C_{i\ blau}|}{|C|} = \frac{|B|}{|P|}$ und $\frac{|C_{i\ rot}|}{|C|} = \frac{|R|}{|P|}$
 
 
 
 \section{Gonzalez}
     Der Algorithmus von Gonzalez \cite{GONZALEZ1985293} berechnet auf einer Punktemenge ein Clustering mit dem k-center Problem als Zielfunktion. Allerdings berücksichtigt er dabei keine Fairness. Dennoch wird er als Teil der fairen Algorithmen verwendet.
-    Der Algorithmus ist ein greedy-Algorithmus, welcher $k$ Cluster sucht. Er hat also als Eingabe eine Menge an Punkten mit einer Metrik (dist) und einem $k$, welches die Anzahl an gewünschten Clustern angibt.
-    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt, welcher am weitesten weg von diesem ersten Zentrum ist, als nächstes Zentrum gewählt. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man so oft bis, man $k$ verschiedene Zentren hat.
+    Der Algorithmus ist ein greedy-Algorithmus, welcher $k$ Cluster sucht. Er hat als Eingabe eine Menge an Punkten mit einer Metrik ($dist$) und einem $k$, welches die Anzahl an gewünschten Clustern angibt.
+    Er beginnt damit, dass man einen beliebigen Punkt als Zentrum festlegt. Anschließend wird der Punkt als nächstes Zentrum gewählt, welcher nach der Metrik von diesem ersten Zentrum am weitesten entfernt ist. Für das dritte Zentrum wird der Punkt gewählt für den gilt, dass der Abstand zu den anderen Zentren maximal ist. Diese Schritte wiederholt man so oft bis, man $k$ verschiedene Zentren hat.
     Zum Schluss wird jeder Punkt dem Zentrum zugewiesen, zu welchem er den geringsten Abstand hat. 
     Zurück gibt der Algorithmus die Zentren, die Knoten mit ihrer Clusterzugehörigkeit und den maximalen Radius, also der größte Abstand von einem Knoten zu seinem Zentrum.
 
@@ -95,9 +101,9 @@
 
 
 
-\section{Fair-Clustering mit Ausreißer}
+\section{Fair-Clustering mit Ausreißern}
     \subsection{Ausreißer-Punkte}
-    In reellen Daten ist das Feature, welches man fair auf die Cluster verteilen will, meist nicht perfekt $1:1$ verteilt. Damit man trotzdem ein faires Clustering durchführen kann, ist es möglich einige Punkte als Ausreißer zu bestimmen. Diese Ausreißer werden dann nicht mehr beim Clustering berücksichtigt und werden dementsprechend nicht einem Cluster zugewiesen. \newline
+    In realen Daten ist das Feature, welches man fair auf die Cluster verteilen will, meist nicht perfekt $1:1$ verteilt. Damit man trotzdem ein faires Clustering durchführen kann, ist es möglich einige Punkte als Ausreißer zu bestimmen. Diese Ausreißer werden dann nicht mehr beim Clustering berücksichtigt und werden dementsprechend nicht einem Cluster zugewiesen. \newline
     In einem Verhältniss von $n:n+x$ Punkten werden $n$ einzelne $1:1$ Fairlets gebildet und $x$ Ausreißer definiert.
 
     
@@ -107,8 +113,8 @@
         \subsubsection{Bilden der Red-Cluster Fairlets \ref{alg:Fairlet-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches seltener, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe in linearer Laufzeit einfach tauschen können. \newline
             Anschliesend bauen wir einen bipatiten Graphen auf, in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap B = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
-            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk, um die Fairlets zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten. Dazu \glqq raten\grqq \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ ein, für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Liste von allen möglichen paarweißen Distanzen $r_{test} \in \{dist(a, b) | a \in R, \ b \in B\}$. \newline
-            In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $f$ gleich der Anzahl an roten Punkten ist $f = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in \{dist(a, b)\}$, bis wir das kleinste $r_{test}$ gefunden haben, für die das Matching erfolgreich war ($f = |R|$). \newline 
+            Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk, um die Fairlets zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten. Dazu \glqq raten\grqq \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ ein, für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Menge $T$ von allen möglichen paarweißen Distanzen $ T = \{dist(a, b) | a \in R, \ b \in B\}$. Dabei ist $|T| \in \mathcal{O}(n^{2})$ wobei $n = |P|$\newline
+            In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $|f|$ gleich der Anzahl an roten Punkten ist $|f| = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in T$, bis wir das kleinste $r_{test}$ gefunden haben, für welches das Matching erfolgreich war ($f = |R|$). \newline 
             Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. Dadurch haben wir statt der $\mathcal{O}(n^{2})$ möglichen Vergleiche nur noch $\mathcal{O}(log(n^{2})) = \mathcal{O}(2*log(n)) = \mathcal{O}(log(n))$. \newline
             Um jetzt die Fairlets einander zuzuweisen, erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e_i = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e_i$ fliest, weisen wir $a$ und $b$ mit $e_i = (a, b)$ die selbe FairletID zu, was sie zu einem Fairlet macht. 
         
@@ -223,7 +229,7 @@
         \subsubsection{Bilden der Anchor-Fairlets \label{sec:fast-anchor-Fairlets} \ref{alg:Fairlet-fast-anchor}}
             Wie im Red-Clustering Algorithmus \ref{sec:Red-Clustering} bauen wir ein Flussnetzwerk zum Finden der Fairlets auf. Unterschiedlich ist nur die Bedingung für das Hinzufügen der Kanten zwischen $a \in R$ und $b \in B$. Man testet für alle Paare $(a, b) \in \{a \in R | b \in B\}$ jeden Punkt $\alpha \in P$, ob $\alpha$ als Anker in Frage kommt. Dabei wird der Anker so gewählt, dass $\max(dist(\alpha, a),\ dist(\alpha, b))$ minimal ist. \newline
             Diese Anker werden abgespeichert, denn durch sie bestimmen wir später, welchem Cluster wir das Fairlet zuweisen. \newline
-            Beim Hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$, sondern betrachten den Anker, also $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$ und fügen dementsprechend Kanten mit Kapazität 1 ein. \newline
+            Beim Hinzufügen der Kanten zwischen $a \in R$ und $b \in B$ prüfen wir jetzt nicht mehr auf die Bedingung $dist(a, b) \leq r_{test}$ wie beim Red-Clustering \ref{sec:Red-Clustering}, sondern betrachten den Anker. Wir fügen eine Kante mit Kapazität 1 ein, wenn $\max(dist(\alpha, a),\ dist(\alpha, b)) \leq r_{test}$. \newline
             Die Ausreißer werden genauso wie beim Red-Clustering bestimmt \ref{sec:find-Outlier-red}
 
 
@@ -380,7 +386,6 @@
                 \end{algorithmic}
             \end{algorithm} 
         
-            
 
         \subsubsection{Center-Aware Zuweisung}
             Da wir die Punkte dem Zentrum zuweisen, welches am nächsten am Ankerpunkt $\alpha$ ist, könnte es sein, dass ein Zentrum nicht Teil seines eigenen Clusters ist. Nehmen wir an, ein Punkt $c \in Z$ wird als Zentrum gewählt, dessen Anker $\alpha$ ist. Zusätzlich gibt es noch ein weiteres Zentrum $c_2 \in Z$ und es gilt $dist(c, \alpha) > dist(c_2, \alpha)$. Dann würde bei der Zuweisung in \ref{alg:fast-clustering} der Punkt $c$ dem Cluster von Punkt $c_2$ zugewiesen werden. Um das zu verhindern werden alle Zentren ihrem eigenen Cluster zugewiesen. Das gleiche machen machen wir mit den Fairlet-Partnern der Zentren.\newline
