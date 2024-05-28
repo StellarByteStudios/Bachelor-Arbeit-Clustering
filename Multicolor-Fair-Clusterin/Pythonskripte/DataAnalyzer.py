@@ -78,17 +78,17 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
     
     # # # Einlesen der neuen Daten
     listOfRadiiLists = []
-    listOfFairlettRadius = []
+    listOffairletRadius = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
         outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}/"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
-        radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)
+        radiiList, fairletRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm=algorithm)
         # radienverlauf hinszufügen
         listOfRadiiLists.append(radiiList)
-        # Fairlettgröße hinzufügen
-        listOfFairlettRadius.append(fairlettRadius)
+        # fairletgröße hinzufügen
+        listOffairletRadius.append(fairletRadius)
         
     
     
@@ -109,8 +109,8 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
     
     
     
-    # Median des Fairlett-Radius bilden
-    fairRadiusMean = sum(listOfFairlettRadius) / len(listOfFairlettRadius)  
+    # Median des fairlet-Radius bilden
+    fairRadiusMean = sum(listOffairletRadius) / len(listOffairletRadius)  
     
     print(dfImportantValues.head(10))
     
@@ -123,7 +123,7 @@ def do_analysis_of_sampleset(samplename, pictureFolder, dataFolder, axis=False, 
                    f"{pictureFolder}/{algPathAdd}-{samplename}(Samples-{numOfSamples})(Cluster-{maxCluster}).jpg", 
                    f"{algPathAdd} - {samplename} k-center", algorithm=algorithm)
     else:
-        build_plot_axis(axis, dfImportantValues, fairlettRadiusMean=fairRadiusMean, algorithm=algorithm)
+        build_plot_axis(axis, dfImportantValues, fairletRadiusMean=fairRadiusMean, algorithm=algorithm)
         add_plot_variance(axis, dfImportantValues, algorithm=algorithm)
 
     return
@@ -141,9 +141,9 @@ def plot_single_dataset(dfRadius, picturePath, title, algorithm="g"):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "unfair (mean)")
+                color = "brown", label = "colorblind (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
-                color = "orange", linestyle = "dashed", alpha = 0.5, label = "unfair (max/min)")
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "colorblind (max/min)")
     else:
         # Faire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
@@ -168,7 +168,7 @@ def plot_single_dataset(dfRadius, picturePath, title, algorithm="g"):
 
 
 # # # Fügt einem gegebenen Graphen die Daten eines Algorithmuses hinzu # # #
-def build_plot_axis(axis, dfRadius, fairlettRadiusMean=0, algorithm="g"):
+def build_plot_axis(axis, dfRadius, fairletRadiusMean=0, algorithm="g"):
     # Wie weit ist der Abstand der x-Beschriftung
     intervalls = max(int(len(dfRadius)/10),1)
     
@@ -185,12 +185,12 @@ def build_plot_axis(axis, dfRadius, fairlettRadiusMean=0, algorithm="g"):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         axis.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = algColor, label = f"unfair {algName} (mean)")
+                color = algColor, label = f"colorblind {algName} (mean)")
     else:
         # Faire Beschriftung
         axis.plot(dfRadius["clustersize"], dfRadius["mean"],
                  color = algColor, label = f"fair {algName} (mean)")
-        axis.axhline(y=fairlettRadiusMean, color = algColor, linestyle='--', label=f"max Fairlett-radius of {algName}")
+        axis.axhline(y=fairletRadiusMean, color = algColor, linestyle='--', label=f"max fairlet-radius of {algName}")
 
     
     axis.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
@@ -237,14 +237,14 @@ def get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="g"):
         # nur die Radien auslesen mit Hilfsmethode
         if(algorithm == "g"):
             _, maxClusterRadius = Points.read_points(filename)
-            maxFairlettRadius = 0 # Nur der Fall, wenn keine Fairletts gebildet werden
+            maxfairletRadius = 0 # Nur der Fall, wenn keine fairlets gebildet werden
         else:
-            _, maxClusterRadius, maxFairlettRadius = Points.read_fair_points(filename)
+            _, maxClusterRadius, maxfairletRadius = Points.read_fair_points(filename)
         # Anfügen des einen Radius
         radiiList.append(maxClusterRadius)
 
-    #print(f"Der Fairlettradius der eingelesen wurde ist: {maxFairlettRadius}")
-    return radiiList, maxFairlettRadius
+    #print(f"Der fairletradius der eingelesen wurde ist: {maxfairletRadius}")
+    return radiiList, maxfairletRadius
 
 
 
@@ -325,7 +325,7 @@ def analyze_times(timestamps, picturePath, labels, algorithm="g"):
 
     ax.set_xticks(list(range(0, len(timestamps[0]) + 1, intervalls)))
     ax.set_title(f"CPU times of {algorithmName} excecution")
-    ax.set_xlabel("cample")
+    ax.set_xlabel("sample")
     ax.set_ylabel("time in ms")
     ax.legend(loc='upper right')
     plt.savefig(picturePath + f"/Timinganalysis {algorithmName}.jpg", dpi=400)
@@ -407,17 +407,17 @@ def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSam
     
     # # # Einlesen der neuen Daten
     listOfRadiiLists = []
-    listOfFairlettsizes = []
+    listOffairletsizes = []
     for i in range(0, numOfSamples): 
         # Pfade algorithmisch zusammensetzen
         outputfolder = f"{dataFolder}{algPathAdd}/{samplename}/Sample{i}"
         outputfile = f"{samplename}{i}"
         # Maximale Radien für jede Clustergröße holen
-        radiiList, fairlettRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="f")
+        radiiList, fairletRadius = get_radii_of_subsample(outputfolder, outputfile, maxCluster, algorithm="f")
         # radienverlauf hinszufügen
         listOfRadiiLists.append(radiiList)
-        # fairlettRadius hinzufügen
-        listOfFairlettsizes.append(fairlettRadius)
+        # fairletRadius hinzufügen
+        listOffairletsizes.append(fairletRadius)
         
     
     
@@ -439,13 +439,13 @@ def fast_anchor_maxline_analysis(samplename, pictureFolder, dataFolder, numOfSam
     os.makedirs(pictureFolder, exist_ok=True) 
     print_radii(dfImportantValues,  
                 f"{pictureFolder}/Fast-Anchor Edge-Case.jpg", 
-                "Fast-Clustering census Edge-Case Example", algorithm="f", fairlettRadius=np.mean(fairlettRadius))
+                "fast-clustering census edge-case example", algorithm="f", fairletRadius=np.mean(fairletRadius))
 
     return
 
 
 # # # Plot für einzelnen Algorithmus # # #
-def print_radii(dfRadius, picturePath, title, algorithm="f", fairlettRadius=-1):
+def print_radii(dfRadius, picturePath, title, algorithm="f", fairletRadius=-1):
     
     # Zusammensetzen der Beschriftung
     algorithmName = "Gonzalez-Algorithm"
@@ -464,9 +464,9 @@ def print_radii(dfRadius, picturePath, title, algorithm="f", fairlettRadius=-1):
     if(algorithm == "g"):
         # Unfaire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
-                color = "brown", label = "unfair (mean)")
+                color = "brown", label = "colorblind (mean)")
         ax.plot(dfRadius["clustersize"], dfRadius[["maxValue", "minValue"]],
-                color = "orange", linestyle = "dashed", alpha = 0.5, label = "unfair (max/min)")
+                color = "orange", linestyle = "dashed", alpha = 0.5, label = "colorblind (max/min)")
     else:
         # Faire Beschriftung
         ax.plot(dfRadius["clustersize"], dfRadius["mean"],
@@ -475,8 +475,8 @@ def print_radii(dfRadius, picturePath, title, algorithm="f", fairlettRadius=-1):
                 color = "red", linestyle = "dashed", alpha = 0.5, label = "max radius (max)")
         ax.plot(dfRadius["clustersize"], dfRadius["minValue"],
                 color = "green", linestyle = "dashed", alpha = 0.5, label = "max radius (min)")
-        if (fairlettRadius >= 0):
-            ax.axhline(y=fairlettRadius, linestyle='--', label="mean Fairlett-radus")
+        if (fairletRadius >= 0):
+            ax.axhline(y=fairletRadius, linestyle='--', label="mean fairlet-radus")
     
 
     ax.set_xticks(list(range(1, len(dfRadius) + 1, intervalls)))
