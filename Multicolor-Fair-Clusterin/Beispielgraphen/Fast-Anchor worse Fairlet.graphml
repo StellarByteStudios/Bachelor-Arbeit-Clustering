@@ -13,9 +13,8 @@
   <key attr.name="description" attr.type="string" for="edge" id="d9"/>
   <key for="edge" id="d10" yfiles.type="edgegraphics"/>
   <graph edgedefault="directed" id="G">
-    <data key="d0"/>
+    <data key="d0" xml:space="preserve"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="386.9400000000009" y="491.0"/>
@@ -34,7 +33,6 @@
       </data>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="386.9400000000009" y="345.192"/>
@@ -53,7 +51,6 @@
       </data>
     </node>
     <node id="n2">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="386.9400000000009" y="636.808"/>
@@ -72,7 +69,6 @@
       </data>
     </node>
     <node id="n3">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="169.28000000000202" y="490.99999999999994"/>
@@ -91,7 +87,6 @@
       </data>
     </node>
     <node id="n4">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="169.28000000000202" y="345.19199999999995"/>
@@ -110,7 +105,6 @@
       </data>
     </node>
     <node id="n5">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="30.0" x="169.28000000000202" y="636.808"/>
@@ -129,11 +123,10 @@
       </data>
     </node>
     <node id="n6">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="55.60000000000005" width="199.60000000000005" x="302.1400000000009" y="275.544166666667"/>
-          <y:Fill color="#CCFFFF" transparent="false"/>
+          <y:Fill color="#C0C0C0" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="197.248046875" x="1.1759765625000114" xml:space="preserve" y="11.831250000000011">Mögliche Lösung für 
 Fast-Anchor-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -142,11 +135,10 @@ Fast-Anchor-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="55.60000000000005" width="199.60000000000005" x="84.480000000002" y="275.544166666667"/>
-          <y:Fill color="#CCFFFF" transparent="false"/>
+          <y:Fill color="#C0C0C0" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="31.9375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="177.185546875" x="11.207226562500026" xml:space="preserve" y="11.831250000000011">Einzige mögliche Lösung für 
 Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -155,7 +147,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </node>
     <edge id="e0" source="n0" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -167,7 +158,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e1" source="n0" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -179,7 +169,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e2" source="n3" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -191,7 +180,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e3" source="n3" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -203,7 +191,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e4" source="n1" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -217,7 +204,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e5" source="n3" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -230,7 +216,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e6" source="n3" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -243,7 +228,6 @@ Red-Clustering bei r = a<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y
       </data>
     </edge>
     <edge id="e7" source="n3" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
