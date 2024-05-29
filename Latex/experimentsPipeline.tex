@@ -5,7 +5,7 @@
  Um die oben genannten Algorithmen \ref{chap:Algorithms} experimentell zu testen, nutzen wir eine Test-Pipeline, mithilfe derer Algorithmen automatisiert auf den Subsamples für verschiedene Clustermengen $k$ ausgeführt werden, nachdem die Daten aufbereitet wurden. 
 
 \section{Implementierung der Algorithmen}
-    Die Algorithmen sind alle in C++ implementiert. Für die Flussalgorithmen \ref{sec:Max-Flow} wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript \verb+ClusteringMain.cpp+, welches über die Kommandozeile bedient werden kann. In der \verb+ClusteringTest.cpp+ sind einige Test-Methoden, welche beim Entwickeln der Algorithmen verwendet wurden, um die einzelnen Schritte zu überprüfen. \newline
+    Die Algorithmen sind alle in C++ implementiert. Für die Flussalgorithmen \ref{sec:Max-Flow} wird die Open-Source Bibliothek Lemon Graph Library \cite{Lemon-Lib} verwendet. Gesteuert werden sie durch ein Hauptskript\ \verb+ClusteringMain.cpp+, welches über die Kommandozeile bedient werden kann. \newline In \verb+ClusteringTest.cpp+ sind einige Test-Methoden, welche beim Entwickeln der Algorithmen verwendet wurden, um die einzelnen Schritte zu überprüfen. \newline
     Das Program lässt sich in zwei Modi kompilieren (setzen des Flags \verb+-DPROCESS_BAR+). Es lässt sich so entscheiden, ob eine Fortschrittsanzeige auf der Standardausgabe angezeigt wird. Dies wird für die automatischen Tests deaktiviert, aus Gründen der Übersichtlichkeit. Bei der tatsächlichen Anwendung zur Datenverarbeitung mit größeren Daten ist diese Statusausgabe von Vorteil.
 
 \section{Automatisierte Analyse}
@@ -37,15 +37,16 @@
 
 \section{Graphen}
     \subsection{Güte-Analyse}
-        Um die Algorithmen zu vergleichen, betrachten wir ihre Güte (also die Größe der produzierten Cluster) auf den Testdaten mit verschiedener Anzahl an Clustern.
+        Um die Algorithmen zu vergleichen, betrachten wir ihre Güte (also den maximalen Radius der produzierten Cluster) auf den Testdaten mit verschiedener Anzahl an Clustern.
         \begin{figure}
             \centering
             \includegraphics[height=\textheight-29pt]{fig/OutputPictures/Collective Clued with Variance.jpg}
             \caption{Zusammengefasste Kosten der Cluster bis zu 30 Cluster}
             \label{fig:CluedQuality30}
         \end{figure}
-        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. Dabei wird für jedes $k$ der Mittelwert der Kosten aller Subsamples des entsprechenden Datensatzens gebildet. Der helle Bereich um den Mittelwert gibt die Breite der Varianz der Ergebnisse an. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius, den ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, mit dem größten Abstand zwischen zwei Fairlett-Partner bzw. im Falle des Fast-Anchor Clusterings \ref{sec:Fast-Anchor-Clustering} wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. \newline
-        Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze.
+        Die Graphen \ref{fig:CluedQuality30} zeigen auf der x-Achse wie viele Cluster gebildet wurden und auf der y-Achse wie groß die Kosten der Cluster sind. Dabei wird für jedes $k$ der Mittelwert der Kosten aller Subsamples des entsprechenden Datensatzens gebildet. Der helle Bereich um den Mittelwert gibt die Breite der Varianz der Ergebnisse an. In unserem Fall betrachten wir das k-center Problem. Daher sind unsere betrachteten Kosten der maximale Radius, den ein Cluster in der berechneten Lösung besitzt. Zusätzlich wird noch der Fairlett-Radius angegeben, mit dem größten Abstand zwischen zwei Fairlett-Partner bzw. im Falle des Fast-Anchor Clusterings \ref{sec:Fast-Anchor-Clustering} wie weit ein Fairlett-Punkt von seinem Anker maximal entfernt ist. Die einzelnen Graphen sind aufgeteilt auf die verschiedenen Datensätze. \newline
+        Im Gegensatz zu Chierichetti et al. \cite{chierichetti2018fair} haben wir keinen Wert für die Balance, da unsere Cluster immer perfekt 1:1 verteilt sind. Die Ausreißer werden bei der Analyse der Güte nicht berücksichtigt.
+        
 
         \subsubsection{Randfall Güteverschlechterung}
             Für Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} wird noch ein zusätzlicher Graph erzeugt \ref{fig:Edge-Case-Curve}. Auf diesem sind nicht nur die Durchschnittskosten zu sehen, sondern auch die maximalen und die minimalen Kosten der jeweiligen $k$.
@@ -58,7 +59,7 @@
             \end{figure}
 
         \subsubsection{Min-Cost-Test}
-            Wir haben getestet, ob sich die Ergebnisse verbessern lassen, wenn man beim Fast-Anchor-Clustering \ref{sec:Fast-Anchor-Clustering} statt eines Max-Flows einen Min-Cost-Flow \ref{sec:Min-Cost-Flow} benutzt und die Unterschiede (auf einem kleineren Teildatensatz) berechnet \ref{fig:Min-Cost-Flow_comparison}. Links wird die Analyse mit einem Max-Flow \ref{sec:Max-Flow} und rechts die Analyse mit einem Min-Cost-Flow \ref{sec:Min-Cost-Flow} dargestellt.
+            Wir haben getestet, ob sich die Ergebnisse verbessern lassen, wenn man beim Fast-Anchor-Cluster-ing \ref{sec:Fast-Anchor-Clustering} statt eines Max-Flows einen Min-Cost-Flow \ref{sec:Min-Cost-Flow} benutzt und die Unterschiede (auf einem kleineren Teildatensatz) berechnet \ref{fig:Min-Cost-Flow_comparison}. Links wird die Analyse mit einem Max-Flow \ref{sec:Max-Flow} und rechts die Analyse mit einem Min-Cost-Flow \ref{sec:Min-Cost-Flow} dargestellt.
 
             \begin{figure}
                 \centering
