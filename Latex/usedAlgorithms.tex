@@ -6,19 +6,19 @@
     In der Arbeit werden verschiedene Algorithmen verwendet. Einige davon sind als bekannt vorausgesetzt und sollen nur kurz erläutert werden. Dannach gehen wir auf die implementierten Algorithmen ausführlicher ein.
 
 \section{Matching}
-    Ein Matching ist eine Aufteilung eines Graphen $G$ mit Knotenmenge $V$ und Kantenmenge $E$ in 2er Paare $<a, b>$. Die Paare bestehen immer aus zwei Knoten $<a, b> |\ a,b \in V$, welche mit einer Kante verbunden sind $(a, b) \in E$. Ein Knoten ist dabei immer maximal in einem Paar enthalten. Sind alle Knoten des Graphens in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
-    \subsection{Bipatites Matching}
-        Ein bipatiter Graph $G = (V, E)$ ist ein Graph, welcher in zwei disjukte Mengen $A$ und $B$ mit $A \cap B = \emptyset$ und $A \cup B = V$ aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren. D.h $\forall (v, w) \in E |\ v \in A, w \in B$ oder $w \in A, v \in B$. Wird ein Matching in einem bipatiten Graphen gesucht spricht man von einem bipatiten Matching.
+    Ein Matching ist eine Aufteilung eines Graphen $G$ mit Knotenmenge $V$ und Kantenmenge $E$ in 2er Paare $\{a, b\}$. Die Paare bestehen immer aus zwei Knoten $\{a, b\} |\ a,b \in V$, welche mit einer Kante verbunden sind $\{a, b\} \in E$. Ein Knoten ist dabei immer maximal in einem Paar enthalten. Sind alle Knoten des Graphens in einem Paar spricht man von einem vollständigen Matching \cite{Graphen_Skript}.
+    \subsection{Bipartites Matching}
+        Ein bipartiter Graph $G = (V, E)$ ist ein Graph, welcher in zwei disjukte Mengen $A$ und $B$ mit $A \cap B = \emptyset$ und $A \cup B = V$ aufgeteilt werden kann, sodass nur Kanten zwischen den zwei Mengen existieren. D.h $\forall (v, w) \in E |\ v \in A, w \in B$ oder $w \in A, v \in B$. Wird ein Matching in einem bipartiten Graphen gesucht spricht man von einem bipartiten Matching.
 
 
 
 \section{Flussnetzwerke}
-    Die verwendeten Clustering-Algorithmen greifen auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk $G = (V, E)$ und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität $c(e)$, über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei zusätzliche Knoten, die Quelle $s$ und die Senke $t$ \cite{Graphen_Skript}. Der Fluss $f$ ist eine Funktion $f : E \rightarrow \mathbb{R}^{+}_{0}$ welche angibt wie viel Fluss durch das Netzwerk fliest.
+    Die verwendeten Clustering-Algorithmen greifen auf die Berechnung eines maximalen Flusses in einem Graph-Netzwerk $G = (V, E)$ und das daraus resultierende Matching zurück. Dabei haben die Kanten zwischen den Knoten eine Kapazität $c(e), e \in E$, über welche ein Flusswert fließen kann. Zusätzlich gibt es noch zwei zusätzliche Knoten, die Quelle $s$ und die Senke $t$ \cite{Graphen_Skript}. Der Fluss $f$ ist eine Funktion $f : E \rightarrow \mathbb{R}^{+}_{0}$ welche angibt wie viel Fluss durch das Netzwerk fliest.
 
     \subsection{Flusseigenschaften}
         Für einen Fluss $f$, welcher durch ein Flussnetzwerk fließt, müssen immer folgende 3 Eigenschaften gelten:
         \begin{enumerate}
-            \item Jede Kante im Netzwerk muss eine nicht-negative Kapazität und Fluss haben: $c(e) \geq 0$
+            \item Jede Kante im Netzwerk muss eine nicht-negative Kapazität und Fluss haben: $c(e) \geq 0$ und $f(e) \geq 0$
             \item \textit{Flusserhaltung}: Die Summe des einfließenden und des ausfließenden Flusses muss bei jedem Knoten mit Ausnahme von Quelle $s$ und Senke $t$ immer 0 sein. Bei der Quelle ist die Summe negativ, bei der Senke positiv: \newline 
             $\forall v \in V \setminus \{s, t\}$ gilt $f_{in}(v) = \sum_{(u, v) \in E}f(u, v) = \sum_{(v, u) \in E}f(v, u) = f_{out}$ \newline
             $f_{out}(s) = f_{in}(t) \geq 0$
@@ -26,7 +26,7 @@
         \end{enumerate}
 
     \subsection{Max-Flow Algorithmus} \label{sec:Max-Flow}
-        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen \cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem Bipatiten Graphen zu matchen.
+        Beim maximalen Fluss versucht man zwischen zwei Knoten, der Quelle $s$ und der Senke $t$, möglichst viel Fluss zu schicken ohne die Flusseigenschaften zu verletzen \cite{Graphen_Skript}. Im Folgenden wird das benutzt, um Knoten verschiedener Farbe in einem bipartiten Graphen zu matchen.
         Bei der hier verwendeten Implementierung wurde auf die Bibliothek Lemon Library \cite{Lemon-Lib} zurückgegriffen. Diese bietet die Möglichkeit selbst Graphen aufzubauen und dann den maximalen Fluss in diesen zu berechnen. Verwendet wurde hier der Preflow-Algorithmus von Goldberg und Trajan \cite{Preflow-article}.
 
     \subsection{Min-Cost-Flow} \label{sec:Min-Cost-Flow}
@@ -37,7 +37,7 @@
     Man kann eine Menge von Punkten $P$ in $k$ Cluster $C^k = {C_1, ... C_k}$ aufteilen. Dabei gilt $\forall (i, j)$ mit $i, j \in {0, ..., k}: C_i \cap C_j = \emptyset$ und $C_1 \cup C_2 \cup ... C_k = P$. Für das k-center Problem werden noch Zentren $Z^k = {z_1, ..., z_k}$ und $Z^k \subseteq P$ benötigt. Die Qualität eines Clusterings wird mit einer Zielfunktion definiert. Die Zielfunktion minimiert den maximalen Abstand eines Punktes zu dem nächsten Zentrum: $\displaystyle maxRadius(C^k) := \max_{x \in P} \min_{z \in Z^k} dist(z, x)$.
 
     \subsection{Clustern mit Nebenbedingungen}
-        Neben der Zielfunktion kann man auch weitere Bedingungen an das Clustering $C^k$ stellen. In dieser Arbeit wird faires Clustering durchgeführt. Voraussetzung dafür ist eine vorhandene Färbung der Punke in $R \cup B = P$ und $R \cap B = \emptyset$. Bei fair Clustering wird von den Algorithmen gewährleistet, dass in den Clustern die Verteilung der Farben gleich der in der Menge $P$ ist $\forall i \in \{1, ..., k\}$ gilt $\frac{|C_{i\ blau}|}{|C|} = \frac{|B|}{|P|}$ und $\frac{|C_{i\ rot}|}{|C|} = \frac{|R|}{|P|}$
+        Neben der Zielfunktion kann man auch weitere Bedingungen an das Clustering $C^k$ stellen. In dieser Arbeit wird faires Clustering durchgeführt. Voraussetzung dafür ist eine vorhandene Färbung der Punke in $R \cup B = P$ und $R \cap B = \emptyset$. Bei fair Clustering wird von den Algorithmen gewährleistet, dass in den Clustern die Verteilung der Farben gleich der in der Menge $P$ ist $\forall i \in \{1, ..., k\}$ gilt $\frac{|C_{i\ blau}|}{|C_i|} = \frac{|B|}{|P|}$ und $\frac{|C_{i\ rot}|}{|C_i|} = \frac{|R|}{|P|}$
 
 
 
@@ -88,7 +88,7 @@
 
 \section{Fairlets}
     In dieser Arbeit soll faires Clustering analysiert werden, jedoch kann der Algorithmus von Gonzalez \ref{alg:plain_gonzalez} eine solche Nebenbedingung nicht erfüllen. Wir benutzen hier sogenannte Fairlets.
-    Fairlets sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbedingung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairlets, die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer, wenn wir einen Punkt zu einem Cluster zuweisen, zusätzlich sein Fairlet-Partner demselben Zentrum zugewiesen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}. \newline
+    Fairlets sind die kleinstmögliche, faire Clustereinheit, welche die Nebenbedingung erfüllt. In dieser Analyse verwenden wir nur $1:1$ Fairlets, die aus einem roten und einem blauen Punkt bestehen. Die Grundidee ist, dass wir immer, wenn wir einen Punkt zu einem Cluster zuweisen, zusätzlich sein Fairlet-Partner demselben Cluster zugewiesen wird. So wird die Fairness nie verletzt \cite{BA_Clustering_Irina}. \newline
     In dieser Arbeit werden zwei Arten der Fairletbildung betrachtet und sowohl ihre Laufzeit, als auch ihre Güte miteinander verglichen.
 
 
@@ -108,14 +108,14 @@
 
     
     \subsection{Red-Clustering} \label{sec:Red-Clustering}
-        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorithmus, welcher von Chierichetti et al. \cite{chierichetti2018fair} vorgestellt wurde für 1:1 Clustering. Hier wurde er erweitert, um mit der Berücksichtigung von Ausreißern arbeiten zu können.
+        Als erste Art des Clusterings betrachten wir das Red-Clustering. Der hier verwendete Algorithmus ist eine Abwandlung des Algorithmus, welcher von Chierichetti et al. \cite{chierichetti2018fair} vorgestellt wurde. Hier wurde er erweitert, um mit der Berücksichtigung von Ausreißern arbeiten zu können.
 
         \subsubsection{Bilden der Red-Cluster Fairlets \ref{alg:Fairlet-red}}
             Erst gewährleisten wir, dass das kritische Feature, welches seltener, also nur n mal vorkommt, das rote Feature wird. Das gilt ohne Beschränkung der Allgemeinheit, da wir die Farbe in linearer Laufzeit einfach tauschen können. \newline
-            Anschliesend bauen wir einen bipatiten Graphen auf, in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap B = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
+            Anschliesend bauen wir einen bipartiten Graphen auf, in dem die roten $R \in P$ und blauen $B \in P$ Punkte jeweils in eine Partition geteilt sind $R \cap B = \emptyset, \ R \cup B = P$ und $|R| \leq |B|$. \newline
             Als nächstes berechnen wir ein Matching mit einem Flussnetzwerk, um die Fairlets zu bestimmen. Dazu fügen wir Quelle $s$ und Senke $t$ in das Netzwerk hinzu und ergänzen Kanten zwischen Quelle und den roten Knoten bzw. Kanten zwischen blauen Knoten und Senke, welche alle die Kapazität 1 haben. Nun brauchen wir noch die Kanten zwischen den roten und den blauen Punkten. Dazu \glqq raten\grqq \ wir ein $r_{test}$ und fügen alle Kanten zwischen $a \in R$ und $b \in B$ ein, für welche gilt $dist(a, b) \leq r_{test}$. Dabei wählen wir das $r_{test}$ aus der Menge $T$ von allen möglichen paarweißen Distanzen $ T = \{dist(a, b) | a \in R, \ b \in B\}$. Dabei ist $|T| \in \mathcal{O}(n^{2})$ wobei $n = |P|$\newline
             In diesem Netzwerk wird nun der maximale Fluss berechnet und wenn der Flusswert $|f|$ gleich der Anzahl an roten Punkten ist $|f| = |R|$, wissen wir, dass alle roten Punkte gematcht wurden. Diese Berechnung führen wir so lange mit verschiedenen $r_{test} \in T$, bis wir das kleinste $r_{test}$ gefunden haben, für welches das Matching erfolgreich war ($f = |R|$). \newline 
-            Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. Dadurch haben wir statt der $\mathcal{O}(n^{2})$ möglichen Vergleiche nur noch $\mathcal{O}(log(n^{2})) = \mathcal{O}(2*log(n)) = \mathcal{O}(log(n))$. \newline
+            Um die Anzahl der Vergleiche zu verringern sortieren wir die Menge $\{dist(a, b) | a \in R, \ b \in B\}$ aufsteigend und suchen $r_{opt}$ über die Binäre-Suche. Dadurch haben wir statt der $|T| \in \mathcal{O}(n^{2})$ möglichen Vergleiche nur noch $\mathcal{O}(log(n^{2})) = \mathcal{O}(2*log(n)) = \mathcal{O}(log(n))$. \newline
             Um jetzt die Fairlets einander zuzuweisen, erzeugen wir nochmal das Flussnetzwerk mit den Kanten $e_i = (a, b) \textrm{ für } \{dist(a, b) \leq r_{opt}| a \in R, \ b \in B\}$. Dann betrachten wir die Kanten zwischen den Partitionen $R$ und $B$ und sobald ein Fluss von 1 über die Kante $e_i$ fliest, weisen wir $a$ und $b$ mit $e_i = (a, b)$ die selbe FairletID zu, was sie zu einem Fairlet macht. \newline
             Die Abbildung \ref{fig:example-fairlet-finding} zeigt ein mögliches Flussnetzwerk des Algorithmus. Dabei sind die grünen Kanten solche über die Fluss fliest und die Elipsen bilden die daraus resultierenden Fairlets.
 
@@ -128,7 +128,7 @@
 
         
         \subsubsection{Finden der Ausreißer} \label{sec:find-Outlier-red}
-            Um die Ausreißer zu finden, müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde, gilt, dass der Fluss über die Kante $e_{t_{i}} = (b, t)$ 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $f(e_{t_{i}}) = 0$ ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweisung zu den Zentren ausgelassen
+            Um die Ausreißer zu finden, müssen wir noch alle blauen Punkte suchen, welche nicht gematcht wurden. Für jeden blauen Punkt $b$ welcher nicht gematcht wurde, gilt, dass der Fluss über die Kante $f(e_{t_{i}})$ mit $e_{t_{i}} = (b, t)$ gleich 0 ist. Also gehen wir durch alle Senke-Kanten $e_{t_{i}} = (b_{i}, t) \textrm{ für alle } i \in [0,\ |B|]$ und wenn der Flusswert dieser Kante $f(e_{t_{i}}) = 0$ ist, dann makieren wir $b$ als Ausreißer. Dieser Punkt wird bei der Zuweisung zu den Zentren ausgelassen
 
         \begin{algorithm}
             \caption{Farilett-Finder Red Clustering}\label{alg:Fairlet-red}
