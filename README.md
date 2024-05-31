@@ -1,11 +1,11 @@
 # Implementierung von Fairen Clustering-Algorithmen
-In diesem Repository ist gesammte Code für meine Bachelorarbeit hinterlegt. Darunter fallen die Applikation für das Ausführen der Clustering-Algorithmen, die Daten auf denen Getestet wurde, sowie die Pythonskripte welche die Tests ausgeführt haben und der Latex-Code welcher meine Bachelorarbeit stellt.
+In diesem Repository ist gesammte Code für meine Bachelorarbeit hinterlegt. Darunter fallen die Applikation für das Ausführen der Clustering-Algorithmen, die Daten auf denen getestet wurde, sowie die Pythonskripte welche die Tests ausgeführt haben und der Latex-Code welcher meine Bachelorarbeit stellt.
 
 ## Aufgabe
 Es wurden zwei verschiedene Algorithmen für das Fair-Clustering Problem, mit k-center als Zielfunktion, in C++ implementiert. Diese sollten auf mehreren Daten mit einander verglichen werden
 
 ## API
-Es gibt ein Testskript, welche einige Funktionen der Algorithmen Testet und ein Main-Skript, welches man benutzen kann um die Punkte zu clustern.
+Es gibt ein Testskript, welche einige Funktionen der Algorithmen testet und ein Main-Skript, welches man benutzen kann um die Punkte zu clustern.
 ### C++ Programme & Makefile
 #### Application API
 Nachdem man das Programm kompiliert hat, kann man es aufrufen mit Kommandozeilen Argumente

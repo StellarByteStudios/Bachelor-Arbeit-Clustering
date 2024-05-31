@@ -16,13 +16,13 @@
 * [x] Treffen mit Daniel am 22.4 um 15:00
 * [x] Treffen mit Daniel am 6.5 um 15:00
 * [x] Treffen mit Daniel am 13.5 um 15:00
-* [ ] Treffen mit Daniel am 21.5 um 13:00
+* [x] Treffen mit Daniel am 21.5 um 13:00
 
 ### Fragen an Besprechung
 
 
 #### Nach der Besprechung
-* [ ] API als Markdown ins Repo
+* [x] API als Markdown ins Repo
 
 
 
@@ -31,7 +31,9 @@
 
 ---
 ### To-Dos
-Schreiben, schreiben, schreiben
+* [x] Korrekturen von Lesern machen
+* [x] Abstract schreiben
+* [x] Daniel zur Korrektur geben
 
 
 
@@ -138,8 +140,8 @@ Beispiel Min-Cost-Flow: https://gist.github.com/karmadonov/5388488
 
 --- 
 ### Als Nächstes
-* [ ] Schreiben
-    * [ ] Weiter an Latex-Text schreiben
+* [x] Schreiben
+    * [x] Weiter an Latex-Text schreiben
 
 
 </br></br></br>
@@ -681,7 +683,38 @@ Beispiel Min-Cost-Flow: https://gist.github.com/karmadonov/5388488
 * Di 14.5:
     * Latex - CD-Seite gelöscht
     * Refactoring Begonnen
+* Fr 17.5:
+    * Verbesserungen mit Jana durchgesprochen
+* So 19.5:
+    * Latex - Fehler korrigiert
+    * Typos in Pythonskript gefixt
+* Di 21.5:
+    * Latex - Fehler korrigieren
+    * Latex - Abstract schreiben
+    * Daniel den Entwurf zugeschickt
+* Fr 24.5:
+    * Latex - Weiter Korreturgelesen
+* Di 28.5:
+    * Feedback umsetzen:
+        - Der vordere Teil könnte mehr Theorie haben (es sollte alles ordentlich definiert sein, wenigstens ein paar theoretische Grundlagen sollten besprochen werden). Hier sollte insbesondere klar werden, ob du forderst, dass Zentren sich selbst zugewiesen werden.
 
+        - Der experimentelle Teil könnte sich noch kritischer mit den Ergebnissen auseinandersetzen. Im Moment wirkt es mehr wie "das hier ist herausgekommen", weniger wie eine Analyse.
+
+        Ich hab mal versucht das in konkretere Anmerkungen umzusetzen; die sind vermutlich nicht erschöpfend:
+
+        - [x] Am Anfang wurde ein Vergleich mit Chierichetti versprochen, der fehlt aber? Sehen die Ergebnisse einigermaßen ähnlich aus? Ähnliche Trends? Unterstützen die Ergebnisse die Schlussfolgerungen von Chierichetti?
+        - [x] fairlett -> fairlet
+        - [x] Der vordere Teil ist unpräzise. Die Theorie fehlt; hier müssen mehr Definitionen hin.
+        - [x] Ich würde auf einzeiligen Satz umstellen; die Überschriften produzieren sehr viel Whitespace.
+        - [x] Statt unfair ist es in der Literatur üblich, colorblind zu schreiben.
+        - [ ] Ein Gütebeweis für die 3-/4-Approximation wäre gut, um den Theorieteil noch etwas auszubauen.
+        - [x] Warum Fast-Clustering schlechter ist als Red-Clustering ist mir immer noch nicht klar. Hier wäre ein konkretes Beispiel gut. Der Punkt ist wichtig, weil das Ergebnis entgegen der Vorhersage ist und es interessant wäre, warum das passiert. Ist hier ein Fehler im Code oder übersehen wir in der Theorie etwas?
+        - [ ] Das Beispiel für die Kostensteigerung für steigendes k sollte noch detaillierter besprochen werden.
+* Mi 29.5:
+    * Weiter an Feedback arbeiten
+* Fr 31.5:
+    * Weiter an Feedback arbeiten
+    * Refactoring weiter machen
 
 
 
