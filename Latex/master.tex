@@ -15,44 +15,24 @@ bibliography=totoc]{scrbook}
 
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[utf8]{inputenc} % erlaubt direkte Eingabe von Unicode-Zeichen, insbesondere Umlaute
-\usepackage[T1]{fontenc}
 \usepackage[babel]{csquotes}
 \usepackage[style=alphabetic, backend=biber, block=ragged, maxcitenames=4, maxbibnames=30]{biblatex}
 
-\usepackage{mathptmx}
+
 \usepackage[scaled=0.92]{helvet}
-\usepackage{courier}
 \usepackage[calc]{datetime2}
-\usepackage{amsmath}
 \makeatletter
 \def\displaymath{\typeout{*** Do not use DISPLAYMATH. Use \[...\] instead ***}}
 \def\eqnarray{\typeout{*** Do not use EQNARRAY(*). Use align(*)-environment instead ***}}
 \makeatother
 \usepackage{amsfonts}
-\usepackage{amstext}
-\usepackage{subfigure}
 \usepackage{color}
-\usepackage{graphicx}
-\usepackage{ifpdf}
 \usepackage{iflang}
 \usepackage{makeidx}
-\usepackage{nomencl}
 \usepackage{setspace}
-\usepackage{lscape}
 \usepackage{tabularx}
 \usepackage{booktabs}
 
-\usepackage{listings}
-%\usepackage[chapter]{minted}
-%\usepackage[%
-%    binary-units=true,
-%    per-mode=symbol,
-%    exponent-product=\cdot,
-%    range-units=single,
-%    exponent-to-prefix=true,
-%    zero-decimal-to-integer=true,
-%    list-units=single
-%    ]{siunitx}
 
 % first include the hyperref package, then the cite package
 \usepackage[plainpages=false,pdfpagelabels]{hyperref}
@@ -125,10 +105,6 @@ bibliography=totoc]{scrbook}
 \usepackage{algpseudocode} 
 % Musste nachinstallieren:  sudo apt-get install texlive-science
 
-
-% Schönere Referenzen
-%\usepackage{hyperref} %funktioniert leider nicht
-
 % SubSubSection Numbering
 \setcounter{secnumdepth}{3}
 
@@ -149,9 +125,6 @@ bibliography=totoc]{scrbook}
   afterskip=1pt
 ]{subsection}
 
-%\bibliographystyle{abbrv}
-%\bibliography{bib/erferences}
-
 % ============== ... ============== %
 
 
@@ -168,8 +141,6 @@ bibliography=totoc]{scrbook}
 \input{abstract}
 
 \cleardoublepage
-
-% \input{acknowledgements} Danksagung bei Bachlor unüblich
 
 \cleardoublepage
 
@@ -197,11 +168,6 @@ bibliography=totoc]{scrbook}
 
 \input{conclusion}
 
-%\input{citeinport}
-
-% Auskommentieren, falls kein Anhang notwendig
-%\input{anhang}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%    End of the main document              %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -215,10 +181,6 @@ bibliography=totoc]{scrbook}
 \listofalgorithms % Liste aller Algorithmen
 
 \listoffigures % Abbildungsverzeichniss - entfernen, wenn leer
-
-%\listoftables % Tabellenverzeichniss - entfernen, wenn leer
-
-%\listoflistings % Listenverzeichniss (bugggy) - entfernen, wenn leer
 
 \printindex
 
