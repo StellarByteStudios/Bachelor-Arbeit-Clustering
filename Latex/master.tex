@@ -2,7 +2,7 @@
 \documentclass[12pt,a4paper,twoside=false,% twoside=true zum drucken!
 %BCOR=12mm,% Auskommentiert, sonst nicht Zentriert
 DIV=14,%
-headsepline,%
+%headsepline,%
 cleardoublepage=empty,%
 chapterprefix,%
 parskip,%
@@ -60,7 +60,7 @@ bibliography=totoc]{scrbook}
 
 \def\mauve{0}
 \def\graffi{1}
-\def\melanie{2}
+\def\daniel{2}
 
 \input{thesis_meta}
 
@@ -133,13 +133,21 @@ bibliography=totoc]{scrbook}
 \setcounter{secnumdepth}{3}
 
 
+% Überschriften schlanker machen
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{chapter}
 
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{section}
 
-
-% Um Bilder nebeneinander darzustellen
-
-
-
+\RedeclareSectionCommand[
+  beforeskip=0pt,
+  afterskip=1pt
+]{subsection}
 
 %\bibliographystyle{abbrv}
 %\bibliography{bib/erferences}
@@ -168,13 +176,6 @@ bibliography=totoc]{scrbook}
 \pdfbookmark[0]{\contentsname}{content}
 \tableofcontents
 
-\listofalgorithms % Liste aller Algorithmen
-
-\listoffigures % Abbildungsverzeichniss - entfernen, wenn leer
-
-%\listoftables % Tabellenverzeichniss - entfernen, wenn leer
-
-%\listoflistings % Listenverzeichniss (bugggy) - entfernen, wenn leer
 
 \mainmatter
 
@@ -210,6 +211,14 @@ bibliography=totoc]{scrbook}
 \printbibliography
 
 \cleardoublepage
+
+\listofalgorithms % Liste aller Algorithmen
+
+\listoffigures % Abbildungsverzeichniss - entfernen, wenn leer
+
+%\listoftables % Tabellenverzeichniss - entfernen, wenn leer
+
+%\listoflistings % Listenverzeichniss (bugggy) - entfernen, wenn leer
 
 \printindex
 

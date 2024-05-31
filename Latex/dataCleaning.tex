@@ -4,27 +4,27 @@
 \chapter{Aufbereiten der Daten} \label{chap:Daten}
 
     %Was waren die Ursprungsdaten, und wie habe ich diese Aufgebereitet (Subsampling und so)
-    Wir vergleichen unsere Algorithmen mit einem Ansatz von Chierichetti et al. \cite{chierichetti2018fair}, in welchem ebenfalls probiert wird, Fair-k-Center zu lösen. Um die experimetelle Güte zu vergleichen haben werwenden wir den selben Datensatz.
+    Wir vergleichen unsere Algorithmen mit einem Ansatz von Chierichetti et al. \cite{chierichetti2018fair}, in welchem ein Algorithmus für Fair-k-center Problem vorgestellt wird. Für den Vergleich verwenden wir den selben Datensatz.
 
 \section{Ursprungsdaten}
     Chierichetti et al. \cite{chierichetti2018fair} verwenden drei unterschiedliche Datensätze. Diese sind:
     \begin{itemize}
         \item Daten eines US-Zensus von 1994 \cite{misc_adult_2}
         \item Daten von Telefongesprächen einer Bank \cite{misc_bank_marketing_222}
-        \item Einen Diabetes-Datensatz, wobei der in \cite{chierichetti2018fair} verlinkte Datensatz \cite{misc_diabetes_34_falsch} nicht der richtige Datensatz sein kann (Der Datensatz enthält andere Felder als die im Paper genannten). Nachforschungen haben gezeigt, dass Chierichetti et al. in Wirklichkeit einen anderen Diabetes-Datensatz \cite{misc_diabetes_130_richtig} benutzt haben.
+        \item Ein Diabetes-Datensatz, wobei der in \cite{chierichetti2018fair} verlinkte Datensatz \cite{misc_diabetes_34_falsch} nicht der richtige Datensatz sein kann (Der Datensatz enthält andere Felder als die im Paper genannten). Nachforschungen haben gezeigt, dass Chierichetti et al. in Wirklichkeit einen anderen Diabetes-Datensatz \cite{misc_diabetes_130_richtig} benutzt haben.
     \end{itemize}
 
     \subsection{Problem der Datendokumentation}
-        Ein Problem der Daten war, dass sie einerseits nicht in einem normalisierten \textit{CSV} Format vorhanden sind und andererseits Chierichetti et al. \cite{chierichetti2018fair} Subsamples benutzen, jedoch nicht angeben, welche Datenpunke genommen und welche Features der Daten verwendet werden. Bei Letzterem werden für jeden Datensatz einige Features genannt. Diese wir hier verwenden. Die folgenden Experimente verwenden daher ein eigenes Subsampling, welches im Folgenden beschrieben wird.
+        Ein Problem der Daten ist, dass sie einerseits nicht in einem normalisierten \textit{CSV} Format vorhanden sind und andererseits Chierichetti et al. \cite{chierichetti2018fair} Subsamples benutzen, jedoch nicht angeben, welche Datenpunke genommen und welche Features der Daten verwendet werden. Bei Letzterem werden für jeden Datensatz einige Features genannt. Diese wir hier verwenden. Die folgenden Experimente verwenden daher ein eigenes Subsampling, welches im Folgenden beschrieben wird.
 
 \section{Cleaning-Pipeline}
-    Um die Daten verwendbar zu machen, brauchen wir einige Schritte. Dafür verwenden wir ein Python-Skript, welches einerseits automatisiert, andererseits deterministisch und konfigurierbar die Daten aufbereitet. Die Daten werden nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert, damit man ggf. mit diesen Daten weiterarbeiten kann, ohne sie nochmal neu erzeugen zu müssen.
+    Um die Daten verwendbar zu machen, benötigen wir einige Schritte. Dafür verwenden wir ein Python-Skript, welches einerseits automatisiert, andererseits deterministisch und konfigurierbar die Daten aufbereitet. Die Daten werden nach der Normalisierung, der Reinigung und dem Zerteilen jeweils abgespeichert, damit man ggf. mit diesen Daten weiterarbeiten kann, ohne sie noch einmal neu erzeugen zu müssen.
     
     \subsection{Normalisierung}
         Als Erstes werden die Daten in ein einheitliches CSV-Format übertragen. Das ist zwar bei dem Diabetes-Datensatz \cite{misc_diabetes_130_richtig} nicht notwendig, bei den anderen zwei anderen Datensätzen \cite{misc_adult_2} \cite{misc_bank_marketing_222} müssen Zeichen ersetzt werden und die Zensus-Daten werden um Überschriften ergänzt.
 
     \subsection{Reinigen und Filtern}
-        Anschließend werden die Daten für unser Clustering weiterverarbeitet. Dazu werden alle Spalten entfernt, die wir nicht brauchen, sodass jeder Datensatz nur aus einigen numerischen Werten und dem Critical-Feature besteht. Die gewählten Spalten sind der Tabelle \ref{tab:dataset_table} zu entnehmen. Gleichzeitig wird auch eine Grundanalyse der Critical-Features (Verhältnisse und mergen von Kategorien, welche das gleiche bedeuten) durchgeführt. Das Critical-Feature steht immer in der ersten Spalte. Ganz zum Schluss werden alle Daten auf ein Intervall von [-1, 1] gemappt indem alle Feature jeweils durch den Betrag des maximalen Wertes geteilt werden. So haben Daten mit unterschiedlichen Skalierungen nicht unterschiedlichen große Auswirkung auf das Clustering bzw. die berechneten Distanzen.
+        Anschließend werden die Daten für unser Clustering weiterverarbeitet. Dazu werden alle Spalten entfernt, die wir nicht brauchen, sodass jeder Datensatz nur aus einigen numerischen Werten und dem Critical-Feature besteht. Die gewählten Spalten sind der Tabelle \ref{tab:dataset_table} zu entnehmen. Gleichzeitig wird auch eine Grundanalyse der Critical-Features (Verhältnisse und Mergen von Kategorien, welche das gleiche bedeuten) durchgeführt. Das Critical-Feature steht immer in der ersten Spalte. Ganz zum Schluss werden alle Daten auf ein Intervall von [-1, 1] gemappt, indem alle Feature jeweils durch den Betrag des maximalen Wertes geteilt werden. So haben Daten mit unterschiedlichen Skalierungen nicht unterschiedlichen große Auswirkung auf das Clustering bzw. die berechneten Distanzen.
 
     \subsection{Subsampling}
         Da es um faires Clustering geht, ist die Güte der Algorithmen stark abhängig von der Verteilung der Ursprungsdaten. Um zu vermeiden, ein sehr ungünstiges Subsample zu bekommen, werden alle Daten in 20 disjunkte Subsamples zerteilt, welche die selbe Größe haben wie in \cite{chierichetti2018fair}. In der Analyse werden alle Subsamples getestet und der Durchschnitt sowohl über die Laufzeit als auch die Cluster-Größe gebildet.
@@ -37,7 +37,7 @@
             \caption{Datenformat}
             \begin{tabular}{|>{\raggedright}p{2.4cm}||>{\raggedright}p{3.5cm}|>{\raggedright}p{3.9cm}|>{\raggedright}p{3cm}|p{1.4cm}|} % Letzte Spalte lässt sich nicht Linksbündig schreiben
                 \toprule % Top horizontal rule
-                Datensatz & Critical-Feature & Verhältnis des Critical-Feature & Verwendete numerische Feature & Sub-sample-Größe\\
+                Datensatz & Critical-Feature & Verhältnis des Critical-Feature & Verwendete numerische Features & Sub-sample-Größe\\
                 \hline
                 \hline
                 Zensusdaten \cite{misc_adult_2} & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek & 600 \\

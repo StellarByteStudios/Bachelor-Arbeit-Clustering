@@ -6,7 +6,48 @@
 
 % change from here
 
-Hier beschreibe ich nun auf einer Seite, welches Problem ich betrachtet, wie ich es gelöst habe
-und was die Hauptergebnisse meiner Arbeit sind.
+\iffalse
+\subsection{Problemstellung}
+Was soll gelöst werden? Was ist die Aufgabe?
+\fi
 
-Laut Prüfungsordnung muss es eine Zusammenfassung geben, die nicht länger als eine Seite ist.
+
+Wenn Algorithmen neu entwickelt und theoretische Eigenschaften gezeigt werden, fehlt häufig das Wissen darüber, was diese Algorithmen auf echten Daten leisten. Dies muss dann in der Regel über Experimente auf echten Daten überprüft werden. 
+
+
+
+\iffalse
+\subsection{Zielsetzung}
+Was ist das Ziel der Arbeit? Was soll verglichen werden?
+\fi
+
+
+Diese Bachelorarbeit beschäftigt sich mit der experimentellen Analyse von Fair-Clustering Algorithmen. Genauer mit Algorithmen, welche nicht nur versuchen möglichst kleine Cluster zu erzeugen, sondern zusätzlich ein gewähltes, faires Attribut gleichmäßig auf die Cluster zu verteilen. Dabei soll herausgefunden werden, wie gut die von den Algorithmen produzierte Lösung im Vergleich zueinander ist. Dabei betrachten wird den maximalen Radius, welche die Cluster haben. Außerdem soll auch die Laufzeit verglichen werden.
+Explizit geht es um folgende zwei Algorithmen: Eine Abwandlung des Red-Clustering-Algorithmus von Chierichetti et al. \cite{chierichetti2018fair} und dem Fast-Anchor-Algorithmus von I. Fast \cite{BA_Clustering_Irina}.
+
+\iffalse
+\subsection{Methodik}
+Wie wurde das Problem angangen? Vielleicht schon mal Teaser zum Testing und zur implementierung.
+Welche Quellen/Daten wurden verwendet
+\fi
+
+
+Um die Algorithmen gegeneinander zu testen wurden sie zuerst in C++ implementiert und dann automatisiert, mit Hilfe von Python-Skripts, getestet. Dazu wurden drei verschiedene Datensätze verwendet, wobei diese in einzelne kleine Samples zerlegt wurden.
+
+
+\iffalse
+\subsection{Ergebnisse}
+Was ist rausgekommen? Überraschendes verhalten der Kosten. Edge-Case, der gefunden wurde. Korelation von Felderanzahl und Kostenabstand (?)
+\fi
+
+
+Die Tests zeigen, dass der Red-Clustering Algorithmus, im Schnitt die bessere Lösung, also eine Lösung mit geringeren Kosten, berechnet. Zusätzlich ist der Red-Clustering-Algorithmus deutlich schneller als der verglichene Fast-Anchor-Algorithmus. Beim Testen sind einige Randfälle aufgetreten, wodurch das Clustering des Fast-Anchor-Algorithmus eine schlechere Lösung produziert.
+Es ist ebenfalls aufgefallen, dass mit steigender Dimensionalität der Daten der Abstand der Kosten zwischen den Algorithmen zunimmt.
+
+
+\iffalse
+\subsection{Ausblick}
+Was könnte man noch anders machen? Code-Optimierungen
+\fi
+
+In dieser Arbeit wurden nur Algorithmen verglichen, welche eine 1:1 Verteilung auf den fairen Attributen suchen. Jedoch lassen sich beide Algorithmen auch für beliebige Verhälltnisse und für mehr Farben verallgemeinern.
