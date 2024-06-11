@@ -86,6 +86,11 @@ Latex/master.pdf
 *.ind 
 *.ilg 
 *.loa
+*.snm
+*.nav
+*.vrb 
+*.pyg
+*.bbl
 
 
 
