@@ -27,7 +27,7 @@
 %\usepackage{minted} % Funktioniert grade noch nicht 
 \usepackage[backend=biber,style=verbose,url=false]{biblatex}
 
-\bibliography{lit}
+\bibliography{references}
 % If you want to exclude the appendix from the frame counter you have to use the appendixnumberbeamer package. But be aware that the current version causes a problem with the frame counter.
 \usepackage{appendixnumberbeamer}
 
@@ -55,10 +55,10 @@
 \setbeamertemplate{itemize/enumerate subbody end}{\vspace{.5\baselineskip}}
 
 % % % % % % % % % %  CHANGE TOPIC AND AUTHOR INFORMATION HERE % % % % % % % % %
-\newcommand{\abschluss}{Bachelor/Master/Diplom}                              % HIER UNZUTREFFENDES LÖSCHEN
-\title{\abschluss{}arbeit:\\TITEL DER ABSCHLUSSARBEIT}                      % HIER DEN TITEL DER ARBEIT EINTRAGEN
-\author{VORNAME NAME}                                                       % HIER DEN NAMEN UND VORNAMEN EINTRAGEN
-\date{DATUM}                                                                % HIER DAS PRÄSENTATIONSDATUM EINTRAGEN
+\newcommand{\abschluss}{Bachelor}                                           % HIER UNZUTREFFENDES LÖSCHEN
+\title{\abschluss{}arbeit:\\Experimentelle Analyse von Algorithmen für fair-k-center mit Ausreißern }  % HIER DEN TITEL DER ARBEIT EINTRAGEN
+\author{Carsten Krollmann}                                                       % HIER DEN NAMEN UND VORNAMEN EINTRAGEN
+\date{19.7.2024}                                                                % HIER DAS PRÄSENTATIONSDATUM EINTRAGEN
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 \institute{Institut für Informatik\\Heinrich-Heine-Universität Düsseldorf}
 \subject{Informatik}
@@ -66,6 +66,22 @@
 %
 % Hier beginnt das Dokument
 %
+
+
+% =============== Eigene Präambel-Befehle =============== %
+%\usepackage{wrapfig}
+
+
+% Darstellung von Pseudocode
+\usepackage{algorithm}
+\usepackage{algpseudocode} 
+
+
+
+% ===============    =============== %
+
+
+
 \begin{document}
 
 \backgroundTitle
@@ -89,25 +105,23 @@
   \end{frame}
   \backgroundNormal
 
+
   \begin{frame}
     \thispagestyle{empty}
     \frametitle{Gliederung}
-    Diese Gliederung ist optional und nicht unbedingt empfohlen (vor allem bei Präsentationen unter einer halben Stunde; löschen in master.tex – es ist auch jedem vollkommen klar, dass die grobe Struktur Einleitung, Methoden, Ergebnisse, Fazit ist; die Struktur erwähnt man kurz mündlich, solange man beim Titel-Slide ist)
     \vspace{-5mm}
     \tableofcontents
   \end{frame}
 
   % % % % % % % % % % Ab hier werden die LaTeX-Dateien der einzelnen Abschnitte eingefügt % % % % % % % % % %
 
-  \input{einleitung} 
+  \input{intro.tex}
 
-  \input{ergebnisse}
-  
-  \input{schluss}
+  \input{algorithms.tex}
 
   \appendix
 
-  \input{anhang}
+  
 
   % % % % % % % % % % Ende der eingefügten LaTeX-Dateien % % % % % % % % % %
 

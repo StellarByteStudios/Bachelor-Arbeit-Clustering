@@ -1,0 +1,111 @@
+\section{Einleitung}
+
+\begin{frame}{Auffrischer Clustering}
+    \begin{minipage}[t]{0.6\textwidth}
+        \begin{itemize}
+            \item zur Analyse von Daten
+            \begin{itemize}
+                \item unsupervised
+                \item Nähe von Datenpunkten finden
+            \end{itemize}
+            \item Zielfunktion hier k-center
+            \begin{itemize}
+                \item maximaler Radius minimieren
+                \item Zentren aus der Punktemenge
+            \end{itemize}
+            \item optimales k-center $\in NP$ \footfullcite{Clustering_Skript}
+            \item Algorithmus von Gonzalez als bekannter Vertreter
+        \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.35\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für ein einfaches Clustering
+        \includegraphics[width=\textwidth]{example-image-a}
+    \end{minipage}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Gonzalez}
+    \begin{minipage}[t]{0.6\textwidth}
+        \begin{itemize}
+            \item Appoximationsgarantie von 2
+            \item colorblind
+        \end{itemize}
+        \begin{algorithm}[H]
+            \scriptsize
+            \begin{algorithmic}[1]
+                % Anfangsbedingungen
+                \State $Z := $ leere Zentrenmenge
+                \State Wähle erstes Zentrum $z_0$ zufällig
+
+                % Daten für erstes Zentrum aktuallisieren
+                \ForAll{$x \in P$}
+                    \State $d_{min} = dist(z_0, x)$
+                \EndFor
+
+                % Für Jedes K durchgen
+                \For{$i \in 0,..,k-1$}
+                    % bestes Zentum suchen
+                    \State $z_i = P(argmax(d_{min}))$
+
+                    % Alle Punkte aktuallisieren
+                    \For{$x \in P \setminus Z$}
+                        % Dieser Punkt muss aktuallisiert werden
+                        \State Prüfe ob Punkte näher an neuem Zentrum
+                    \EndFor
+                \EndFor
+                \State $r_{max} = $ größter Abstand zwischen Punkt und seinem Zentrum
+                \State return $(Z, P, r_{max})$
+            \end{algorithmic}
+        \end{algorithm}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.35\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für Gonzalez ausführung
+        \includegraphics[width=\textwidth]{example-image-a}
+    \end{minipage}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Auffrischer fair Clustering}
+    \begin{minipage}[t]{0.6\textwidth}
+        \begin{itemize}
+            \item faires Attribut
+            \item Zusatzbedingung: gleichmäßig aufteilen auf Cluster
+            \item optimales fair k-center ebenfalls $\in NP$ \footfullcite{Clustering_Skript}
+        \end{itemize}
+        % Unfaires Clustering mit Farben
+        \includegraphics[width=\textwidth /2]{example-image-b}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.35\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Faires Clustering mit Farben
+        \includegraphics[width=\textwidth]{example-image-a}
+    \end{minipage}
+
+\end{frame}
+
+

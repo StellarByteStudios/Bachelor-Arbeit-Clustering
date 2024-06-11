@@ -1,0 +1,136 @@
+% Chierichetti Paper
+@misc{chierichetti2018fair,
+      title={Fair Clustering Through Fairlets}, 
+      author={Flavio Chierichetti and Ravi Kumar and Silvio Lattanzi and Sergei Vassilvitskii},
+      year={2018},
+      eprint={1802.05733},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+% Datensatz Bank
+@misc{misc_bank_marketing_222,
+  author       = {Moro,S. and Rita,P. and Cortez,P.},
+  title        = {{Bank Marketing}},
+  year         = {2012},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5K306}
+}
+
+% Datensatz Zensus
+@misc{misc_adult_2,
+  author       = {Becker,Barry and Kohavi,Ronny},
+  title        = {{Adult}},
+  year         = {1996},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5XW20}
+}
+
+% Datensatz Diabetes (Richtiger)
+@misc{misc_diabetes_130_richtig,
+  author       = {Clore,John and Cios,Krzysztof and DeShazo,Jon and Strack,Beata},
+  title        = {{Diabetes 130-US hospitals for years 1999-2008}},
+  year         = {2014},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5230J}
+}
+
+% Datensatz Diabetes (Falscher)
+@misc{misc_diabetes_34_falsch,
+  author       = {Kahn,Michael},
+  title        = {{Diabetes}},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5T59G}
+}
+
+% Bachelorarbeit Irina
+@unpublished{BA_Clustering_Irina,
+  author  = {Fast,Irina},
+  title   = "Fair k-Center Clustering mit Ausreißern",
+  school  = "Heinrich Heine University",
+  year    = 2023,
+  address = "Düsseldorf, NRW, Germany",
+  month   = dec
+}
+
+
+% Skript Clustering
+@unpublished{Clustering_Skript,
+  author = {Schmidt,Melanie},
+  title  = "Kombinatorische Algorithmen für Clusteringprobleme - Vorlesungsskript",
+  year   = 2023
+}
+
+% Skript Graphenalgorithmen
+@unpublished{Graphen_Skript,
+  author = {Schmidt,Melanie},
+  title  = "Graphenalgorithmen 1 - Vorlesungsskript",
+  year   = 2023
+}
+
+
+% Lemon-Library
+@software{Lemon-Lib,
+  author        = {J{\"u}ttner, A and Dezs{\"o}, B and Kov{\'a}cs, P},
+  title         = "Lemon Library - open source graph library",
+  howpublished  = "https://lemon.cs.elte.hu/trac/lemon",
+  shortauthor   = {Lemon}
+}
+
+% Paper zum Gonzalez-Algorithmus
+@article{GONZALEZ1985293,
+title = {Clustering to minimize the maximum intercluster distance},
+journal = {Theoretical Computer Science},
+volume = {38},
+pages = {293-306},
+year = {1985},
+issn = {0304-3975},
+doi = {https://doi.org/10.1016/0304-3975(85)90224-5},
+url = {https://www.sciencedirect.com/science/article/pii/0304397585902245},
+author = {Teofilo F. Gonzalez},
+keywords = {Algorithms, clustering, NP-completeness, approximation algorithms, minimizing the maximum intercluster distance},
+abstract = {The problem of clustering a set of points so as to minimize the maximum intercluster distance is studied. An O(kn) approximation algorithm, where n is the number of points and k is the number of clusters, that guarantees solutions with an objective function value within two times the optimal solution value is presented. This approximation algorithm succeeds as long as the set of points satisfies the triangular inequality. We also show that our approximation algorithm is best possible, with respect to the approximation bound, if P ≠ NP.}
+}
+
+
+% Paper zu k-means
+@inproceedings{macqueen1967some,
+  title={Some methods for classification and analysis of multivariate observations},
+  author={MacQueen, James and others},
+  booktitle={Proceedings of the fifth Berkeley symposium on mathematical statistics and probability},
+  volume={1},
+  number={14},
+  pages={281--297},
+  year={1967},
+  organization={Oakland, CA, USA}
+}
+
+
+% Eigenes Repository
+@software{Code-Repository,
+  author        = {Krollmann,Carsten},
+  title         = "Implemetation Bachelor-Arbeit-Clustering",
+  howpublished  = "https://gitlab.cs.uni-duesseldorf.de/krollmann/Bachelor-Arbeit-Clustering",
+}
+
+
+
+% Artikel zum Preflow Algorithmus
+@article{Preflow-article,
+  author = {Goldberg, Andrew V. and Tarjan, Robert E.},
+  title = {A new approach to the maximum-flow problem},
+  year = {1988},
+  issue_date = {Oct. 1988},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {35},
+  number = {4},
+  issn = {0004-5411},
+  url = {https://doi.org/10.1145/48014.61051},
+  doi = {10.1145/48014.61051},
+  abstract = {All previously known efficient maximum-flow algorithms work by finding augmenting paths, either one path at a time (as in the original Ford and Fulkerson algorithm) or all shortest-length augmenting paths at once (using the layered network approach of Dinic). An alternative method based on the preflow concept of Karzanov is introduced. A preflow is like a flow, except that the total amount flowing into a vertex is allowed to exceed the total amount flowing out. The method maintains a preflow in the original network and pushes local flow excess toward the sink along what are estimated to be shortest paths. The algorithm and its analysis are simple and intuitive, yet the algorithm runs as fast as any other known method on dense graphs, achieving an O(n3) time bound on an n-vertex graph. By incorporating the dynamic tree data structure of Sleator and Tarjan, we obtain a version of the algorithm running in O(nm log(n2/m)) time on an n-vertex, m-edge graph. This is as fast as any known method for any graph density and faster on graphs of moderate density. The algorithm also admits efficient distributed and parallel implementations. A parallel implementation running in O(n2log n) time using n processors and O(m) space is obtained. This time bound matches that of the Shiloach-Vishkin algorithm, which also uses n processors but requires O(n2) space.},
+  journal = {J. ACM},
+  month = {10},
+  pages = {921–940},
+  numpages = {20}
+}
