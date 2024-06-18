@@ -108,31 +108,47 @@
 
 
 \begin{frame}{Red-Clustering}
-    \begin{minipage}[t]{0.6\textwidth}
-        \begin{large}
-            Finden der Fairlets
-        \end{large}
-        \begin{itemize}
-            \item bipartiter Graph mit Roten und Blauen Knoten aufbauen
-            \item mit Quelle $s$ und Senke $t$ zum Flussnetzwerk machen
-            \item Kanten $s \rightarrow$ Rot und Blau $\rightarrow t$ einfügen
-            \item Kanten zwischen den Mengen nach Bedingung:
+    \begin{minipage}[t]{0.55\textwidth}
+        \Copy{RedClusteringFluss}{
+            \begin{large}
+                Finden der Fairlets
+            \end{large}
             \begin{itemize}
-                \item $r_{test} \geq dist(a, b)$ dann Kannte
+                \item bipartiter Graph mit Roten und Blauen Knoten aufbauen
+                \item mit Quelle $s$ und Senke $t$ zum Flussnetzwerk machen
+                \item Kanten $s \rightarrow$ Rot und Blau $\rightarrow t$ einfügen
+                \item Kanten zwischen den Mengen nach Bedingung:
+                \begin{itemize}
+                    \item $r_{test} \geq dist(a, b)$ dann Kannte
+                \end{itemize}
+                \item maximaler Fluss berechnen
+                \item bestes Überdeckendes Matching suchen
+                \item gematchte Punkte sind Fairlets
+                \item nicht gematchte Punkte $\rightarrow$ Ausreißer
             \end{itemize}
-            \item maximaler Fluss berechnen
-            \item bestes Überdeckendes Matching suchen
-            \item gematchte Punkte sind Fairlets
-            \item nicht gematchte Punkte $\rightarrow$ Ausreißer
-        \end{itemize}
+        }
     \end{minipage}
     \hfill
-    \begin{minipage}[t]{0.35\textwidth}
+    \begin{minipage}[t]{0.44\textwidth}
         \vspace{-\baselineskip} % Move image to the top
         % Beispiel Flusserstellung
-        \includegraphics[width=\textwidth]{example-image-a}
+        \includegraphics[width=\textwidth]{fig/Flüsse/Flussbeispiel Fairlettbildung (ohne Fluss).jpg}
     \end{minipage}
 \end{frame}
+
+
+\begin{frame}{Red-Clustering}
+    \begin{minipage}[t]{0.55\textwidth}
+        \Paste{RedClusteringFluss}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.44\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel Flusserstellung
+        \includegraphics[width=\textwidth]{fig/Flüsse/Flussbeispiel Fairlettbildung.jpg}
+    \end{minipage}
+\end{frame}
+
 
 
 
