@@ -37,6 +37,9 @@ Multicolor-Fair-Clusterin/Pythonskripte/.spyproject
 # neu hochgeladen werden
 Latex/master.pdf
 
+Vortrag/master.pdf
+
+
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
@@ -500,4 +503,3 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-# Automatische Adds
