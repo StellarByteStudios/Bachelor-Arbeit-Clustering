@@ -1,0 +1,22 @@
+\section{Testdaten}
+
+\begin{frame}{Welche Daten wurden verwendet}
+    Angelehnt an das Paper von Chierichetti et al. \footfullcite{chierichetti2018fair}
+
+    \begin{table}[htbp]
+        \centering
+        \begin{scriptsize}
+            \begin{tabular}{|p{1.45cm}||p{3.1cm}|p{3.5cm}|p{2.7cm}|p{0.9cm}|}
+                \toprule
+                Datensatz & Critical-Feature & Verhältnis des Critical-Feature & Verwendete numerische Features & Sub-sample-Größe\\
+                \midrule
+                Zensusdaten & sex (male = 0; female = 1) & Male 21790 / Female 10771 $\approx$ 2.02 & age, fnlwgt, education-num, capital-gain, hours-perweek & 600 \\
+                \midrule
+                Bankdaten & bin-martial (selbsterzeugt aus Spalte "marital") (single = 0; divorced = 0; married = 1) & Es gibt single, married und divorced. Zähle single und divorced zusammen. Verhältnis: 27214 married / 17997 not-married $\approx$ 1.51 & age, balance, duration of call & 1000 \\
+                \midrule
+                Diabetesdaten & sex (male = 0; female = 1) & Verhältnis Male 47055 / Female 54708 $\approx$ 0.86 & age, time-in-hostpial & 1000 \\
+                \bottomrule
+            \end{tabular}
+        \end{scriptsize}
+    \end{table}
+\end{frame}
