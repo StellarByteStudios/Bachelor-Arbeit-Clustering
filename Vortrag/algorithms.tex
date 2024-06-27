@@ -119,7 +119,7 @@
                 \item Kanten $s \rightarrow$ Rot und Blau $\rightarrow t$ einfügen
                 \item Kanten zwischen den Mengen nach Bedingung:
                 \begin{itemize}
-                    \item $r_{test} \geq dist(a, b)$ dann Kannte
+                    \item $r_{test} \geq dist(a, b)$ dann Kante
                 \end{itemize}
                 \item maximaler Fluss berechnen
                 \item bestes Überdeckendes Matching suchen
@@ -173,7 +173,11 @@
             \end{large}
             \begin{itemize}
                 \item nur Rote Punkte Clustern
-                \item alle Blauen Punkte zu ihren Partnern zuweisen
+                \begin{itemize}
+                    \item mit Gonzalez
+                \end{itemize}
+                \item alle blauen Punkte zu ihren Partnern zuweisen
+                \item Ausreißer bleiben bestehen
             \end{itemize}
         }
     \end{minipage}
@@ -273,7 +277,7 @@
             
             \item Kanten zwischen den Mengen nach Bedingung:
             \begin{itemize}
-                \item $r_{test} \geq anchor-dist(a, b)$ dann Kannte
+                \item $r_{test} \geq anchor-dist(a, b)$ dann Kante
             \end{itemize}
             \begin{scriptsize}
                 \item maximaler Fluss berechnen
