@@ -311,27 +311,101 @@
 
 
 
+
+
+% ================= Fast-Anchor Frames ================= %
+
 \begin{frame}{Fast-Anchor-Clustering}
-    \begin{minipage}[t]{0.6\textwidth}
-        \begin{large}
-            Clustern mit Fairlet-Anker
-        \end{large}
-        \begin{itemize}
-            \item alle Punkte ohne Ausreißer Clustern
-            \item Zentren und ihre Fairletpartner sich selbst zuweisen
+    \begin{minipage}[t]{0.44\textwidth}
+        \Copy{FastAnchorAlgorithmus}{
+            \begin{large}
+                Clustern mit Fairlet-Anker
+            \end{large}
             \begin{itemize}
-                \item $\rightarrow$ Center-Awareness
+                \item alle Punkte ohne Ausreißer Clustern
+                \item Zentren und ihre Fairletpartner sich selbst zuweisen
+                \begin{itemize}
+                    \item $\rightarrow$ Center-Awareness
+                \end{itemize}
+                \item Punkte dem nächsten Zentrum ihres Ankers zuweisen
             \end{itemize}
-            \item Punkte dem nächsten Zentrum ihres Ankers zuweisen
-        \end{itemize}
+        }
     \end{minipage}
     \hfill
-    \begin{minipage}[t]{0.35\textwidth}
+    \begin{minipage}[t]{0.55\textwidth}
         \vspace{-\baselineskip} % Move image to the top
         % Beispiel fertiges Fast-Anchor-Clustering
-        \includegraphics[width=\textwidth]{example-image-b}
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor ohne Ausreisermarkierung.jpg}
     \end{minipage}
 \end{frame}
+
+
+
+\begin{frame}{Fast-Anchor-Clustering}
+    \begin{minipage}[t]{0.44\textwidth}
+        \Paste{FastAnchorAlgorithmus}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel fertiges Fast-Anchor-Clustering
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor Ausgangslage.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Fast-Anchor-Clustering}
+    \begin{minipage}[t]{0.44\textwidth}
+        \Paste{FastAnchorAlgorithmus}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel fertiges Fast-Anchor-Clustering
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor mit Fairlettmarkierung.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Fast-Anchor-Clustering}
+    \begin{minipage}[t]{0.44\textwidth}
+        \Paste{FastAnchorAlgorithmus}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel fertiges Fast-Anchor-Clustering
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor nach Gonzalez.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Fast-Anchor-Clustering}
+    \begin{minipage}[t]{0.44\textwidth}
+        \Paste{FastAnchorAlgorithmus}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel fertiges Fast-Anchor-Clustering
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor nach Clusterzuweisung.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Fast-Anchor-Clustering}
+    \begin{minipage}[t]{0.44\textwidth}
+        \Paste{FastAnchorAlgorithmus}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.55\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel fertiges Fast-Anchor-Clustering
+        \includegraphics[width=\textwidth*6/7]{fig/Fast-Anchor Clustering/Fast-Anchor mit Clusteranzeige.jpg}
+    \end{minipage}
+\end{frame}
+
+
 
 
 
