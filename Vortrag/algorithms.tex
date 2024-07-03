@@ -4,20 +4,22 @@
 
 \begin{frame}{Algorithmen für fair k-center}
     \begin{minipage}[t]{0.5\textwidth}
-        \begin{itemize}
-            \item vergleich 2 Verschiedener Ansätze
+        \Copy{AlgorithmenÜbersicht}{
             \begin{itemize}
-                \item Red-Clustering \footfullcite{chierichetti2018fair}
-                \item Fast-Anchor-Clustering \footfullcite{BA_Clustering_Irina}
+                \item Vergleich 2 verschiedener Ansätze
+                \begin{itemize}
+                    \item Red-Clustering \footfullcite{chierichetti2018fair}
+                    \item Fast-Anchor-Clustering \footfullcite{BA_Clustering_Irina}
+                \end{itemize}
+                \item Nutzen von Fairlets
+                \begin{itemize}
+                    \item kleinst mögliche Clustereinheit
+                \end{itemize}
+                \item beschränkt auf 2 Farben
+                \item beide Algorithmen verallgemeinbar
+                \item Aufteilung in 1:1 Cluster
             \end{itemize}
-            \item Nutzen von Fairlets
-            \begin{itemize}
-                \item kleinst mögliche Clustereinheit
-            \end{itemize}
-            \item beschränkt auf 2 Farben
-            \item beide Algorithmen verallgemeinbar
-            \item Aufteilung in 1:1 Cluster
-        \end{itemize}
+        }
     \end{minipage}
 \end{frame}
 
@@ -37,20 +39,7 @@
 
 \begin{frame}{Algorithmen für fair k-center (mit Ausreißern)}
     \begin{minipage}[t]{0.5\textwidth}
-        \begin{itemize}
-            \item vergleich 2 Verschiedener Ansätze
-            \begin{itemize}
-                \item Red-Clustering \footfullcite{chierichetti2018fair}
-                \item Fast-Anchor-Clustering \footfullcite{BA_Clustering_Irina}
-            \end{itemize}
-            \item Nutzen von Fairlets
-            \begin{itemize}
-                \item kleinst mögliche Clustereinheit
-            \end{itemize}
-            \item beschränkt auf 2 Farben
-            \item beide Algorithmen verallgemeinbar
-            \item Aufteilung in 1:1 Cluster
-        \end{itemize}
+        \Paste{AlgorithmenÜbersicht}
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.45\textwidth}
@@ -114,7 +103,7 @@
                 Finden der Fairlets
             \end{large}
             \begin{itemize}
-                \item bipartiter Graph mit Roten und Blauen Knoten aufbauen
+                \item bipartiter Graph mit roten und blauen Knoten aufbauen
                 \item mit Quelle $s$ und Senke $t$ zum Flussnetzwerk machen
                 \item Kanten $s \rightarrow$ Rot und Blau $\rightarrow t$ einfügen
                 \item Kanten zwischen den Mengen nach Bedingung:
@@ -122,7 +111,7 @@
                     \item $r_{test} \geq dist(a, b)$ dann Kante
                 \end{itemize}
                 \item maximaler Fluss berechnen
-                \item bestes Überdeckendes Matching suchen
+                \item bestes überdeckendes Matching suchen
                 \item gematchte Punkte sind Fairlets
                 \item nicht gematchte Punkte $\rightarrow$ Ausreißer
             \end{itemize}
@@ -172,7 +161,7 @@
                 Clustern mit Fairlets
             \end{large}
             \begin{itemize}
-                \item nur Rote Punkte Clustern
+                \item nur rote Punkte clustern
                 \begin{itemize}
                     \item mit Gonzalez
                 \end{itemize}
@@ -270,18 +259,18 @@
                 \item $\rightarrow$ max Abstand der Partner zum Anker minimal
             \end{itemize}
             \begin{scriptsize}
-                \item bipartiter Graph mit Roten und Blauen Knoten aufbauen
+                \item bipartiter Graph mit roten und blauen Knoten aufbauen
                 \item mit Quelle $s$ und Senke $t$ zum Flussnetzwerk machen
                 \item Kanten $s \rightarrow$ Rot und Blau $\rightarrow t$ einfügen
             \end{scriptsize}
             
             \item Kanten zwischen den Mengen nach Bedingung:
             \begin{itemize}
-                \item $r_{test} \geq anchor-dist(a, b)$ dann Kante
+                \item $r_{test} \geq anchor\text{-}dist(a, b)$ dann Kante
             \end{itemize}
             \begin{scriptsize}
                 \item maximaler Fluss berechnen
-                \item bestes Überdeckendes Matching suchen
+                \item bestes überdeckendes Matching suchen
                 \item gematchte Punkte sind Fairlets
                 \item nicht gematchte Punkte $\rightarrow$ Ausreißer
             \end{scriptsize}
@@ -322,7 +311,7 @@
                 Clustern mit Fairlet-Anker
             \end{large}
             \begin{itemize}
-                \item alle Punkte ohne Ausreißer Clustern
+                \item alle Punkte ohne Ausreißer clustern
                 \item Zentren und ihre Fairletpartner sich selbst zuweisen
                 \begin{itemize}
                     \item $\rightarrow$ Center-Awareness

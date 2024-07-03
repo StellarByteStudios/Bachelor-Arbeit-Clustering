@@ -6,6 +6,105 @@
 
 
 
+
+
+
+
+
+% Mehrere Gonzalez-Slides mit Bildern
+% Erstmal in den Anhang geschoben
+%\iffalse
+
+\begin{frame}{Gonzalez}
+    \begin{minipage}[t]{0.5\textwidth}
+        \Copy{GonzalezAlgorithm}{
+            \begin{itemize}
+                \item Approximationsgarantie von 2
+                \item colorblind
+            \end{itemize}
+            \begin{algorithm}[H]
+                \scriptsize
+                \begin{algorithmic}[1]
+                    % Anfangsbedingungen
+                    \State $Z := $ leere Zentrenmenge
+                    \State Wähle erstes Zentrum $z_0$ zufällig
+
+                    % Daten für erstes Zentrum aktuallisieren
+                    \ForAll{$x \in P$}
+                        \State $d_{min} = dist(z_0, x)$
+                    \EndFor
+
+                    % Für Jedes K durchgen
+                    \For{$i \in 0,..,k-1$}
+                        % bestes Zentum suchen
+                        \State $z_i = P(argmax(d_{min}))$
+
+                        % Alle Punkte aktuallisieren
+                        \For{$x \in P \setminus Z$}
+                            % Dieser Punkt muss aktuallisiert werden
+                            \State Prüfe ob Punkte näher an neuem Zentrum
+                        \EndFor
+                    \EndFor
+                    \State $r_{max} = $ größter Abstand zwischen Punkt und seinem Zentrum
+                    \State return $(Z, P, r_{max})$
+                \end{algorithmic}
+            \end{algorithm}
+        }
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.49\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für Gonzalez ausführung
+        \includegraphics[width=\textwidth]{fig/Gonzalez Beispiel/Gonzalez Anfang.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Gonzalez}
+    \begin{minipage}[t]{0.5\textwidth}
+        \Paste{GonzalezAlgorithm}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.49\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für Gonzalez ausführung
+        \includegraphics[width=\textwidth]{fig/Gonzalez Beispiel/Gonzalez k=1.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Gonzalez}
+    \begin{minipage}[t]{0.5\textwidth}
+        \Paste{GonzalezAlgorithm}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.49\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für Gonzalez ausführung
+        \includegraphics[width=\textwidth]{fig/Gonzalez Beispiel/Gonzalez k=2.jpg}
+    \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Gonzalez}
+    \begin{minipage}[t]{0.5\textwidth}
+        \Paste{GonzalezAlgorithm}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.49\textwidth}
+        \vspace{-\baselineskip} % Move image to the top
+        % Beispiel für Gonzalez ausführung
+        \includegraphics[width=\textwidth]{fig/Gonzalez Beispiel/Gonzalez k=3.jpg}
+    \end{minipage}
+\end{frame}
+
+
+%\fi
+
+
+
+
+
 % Versuche mit Min-Kosten-Flüsse
 \begin{frame}{Min-Cost-Fluss}
     \begin{center}
